@@ -547,28 +547,38 @@ h3 { font-size: 1.125rem; }
 
 .question-left {
   display: flex;
-  flex-direction: column;
+  align-items: baseline;
   gap: var(--space-sm);
-  padding-right: var(--space-md);
+  flex-wrap: wrap;
+}
+
+.question-number {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--color-text-muted);
+  flex-shrink: 0;
+  min-width: 24px;
 }
 
 .question-text {
-  font-size: 0.9375rem;
+  font-size: 0.875rem;
   font-weight: 500;
   color: var(--color-text);
-  line-height: 1.5;
+  line-height: 1.4;
+  flex: 1;
 }
 
 .question-hint {
-  font-size: 0.8125rem;
+  width: 100%;
+  font-size: 0.75rem;
   color: var(--color-text-muted);
   font-style: italic;
+  padding-left: 30px;
 }
 
 .question-right {
   display: flex;
-  flex-direction: column;
-  gap: var(--space-sm);
+  align-items: center;
 }
 
 /* Maturity level guidance */
@@ -621,59 +631,48 @@ h3 { font-size: 1.125rem; }
   font-size: 0.75rem;
 }
 
-/* Compact radio-style options */
-.option-row {
-  display: flex;
-  align-items: center;
-  gap: var(--space-sm);
+/* Dropdown answer selects */
+.question-select {
+  width: 100%;
   padding: var(--space-sm) var(--space-md);
-  border: 1.5px solid var(--color-border-light);
+  padding-right: 32px;
+  border: 1.5px solid var(--color-border);
   border-radius: var(--radius-md);
-  cursor: pointer;
-  transition: all 0.1s;
-  font-size: 0.875rem;
   background: var(--color-surface);
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%238a9199' d='M2 4l4 4 4-4'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  cursor: pointer;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  line-height: 1.4;
 }
 
-.option-row:hover {
+.question-select:focus {
+  outline: none;
   border-color: var(--color-accent);
-  background: var(--color-accent-muted);
+  box-shadow: 0 0 0 2px rgba(42, 140, 110, 0.15);
 }
 
-.option-row.selected {
+.question-select.answered {
+  color: var(--color-text);
   border-color: var(--color-accent);
-  background: var(--color-accent-muted);
+  background-color: var(--color-accent-muted);
   font-weight: 500;
 }
 
-.option-radio {
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  border: 2px solid var(--color-border);
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.1s;
+.question-select option {
+  font-size: 0.8125rem;
+  color: var(--color-text);
+  padding: var(--space-sm);
 }
 
-.option-row.selected .option-radio {
-  border-color: var(--color-accent);
-  background: var(--color-accent);
-}
-
-.option-row.selected .option-radio::after {
-  content: '';
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: white;
-}
-
-.option-label {
-  flex: 1;
-  font-size: 0.875rem;
+.question-select option[disabled] {
+  color: var(--color-text-muted);
 }
 
 /* Evidence/rationale row — two column */

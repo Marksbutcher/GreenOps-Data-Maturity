@@ -132,7 +132,7 @@ export default function AssessmentFlow({
           <p className="domain-why"><strong>Why it matters:</strong> {domain.why_it_matters}</p>
         </div>
 
-        {/* Questions — dense two-column layout */}
+        {/* Questions — dense two-column layout with dropdowns */}
         <div className="questions-grid">
           {domain.questions.map((q, qIdx) => {
             const selectedIdx = result.question_answers[q.id];
@@ -143,36 +143,28 @@ export default function AssessmentFlow({
                 className={`question-row ${isUnanswered && showIncomplete ? 'unanswered' : ''}`}
               >
                 <div className="question-left">
-                  <div className="question-number">Q{qIdx + 1}</div>
-                  <div className="question-text">{q.text}</div>
+                  <span className="question-number">Q{qIdx + 1}</span>
+                  <span className="question-text">{q.text}</span>
                   {q.evidence_hint && (
-                    <div className="question-hint">Evidence: {q.evidence_hint}</div>
+                    <span className="question-hint">{q.evidence_hint}</span>
                   )}
                 </div>
                 <div className="question-right">
-                  {q.options.map((opt, optIdx) => (
-                    <label
-                      key={optIdx}
-                      className={`option-row ${selectedIdx === optIdx ? 'selected' : ''}`}
-                      tabIndex={0}
-                      onKeyDown={(e) => {
-                        if (e.key === 'Enter' || e.key === ' ') {
-                          e.preventDefault();
-                          handleQuestionAnswer(q.id, optIdx);
-                        }
-                      }}
-                    >
-                      <input
-                        type="radio"
-                        name={q.id}
-                        checked={selectedIdx === optIdx}
-                        onChange={() => handleQuestionAnswer(q.id, optIdx)}
-                        tabIndex={-1}
-                      />
-                      <span className="option-indicator" />
-                      <span className="option-label">{opt.label}</span>
-                    </label>
-                  ))}
+                  <select
+                    className={`question-select ${isUnanswered ? '' : 'answered'}`}
+                    value={selectedIdx !== undefined ? String(selectedIdx) : ''}
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      if (val !== '') handleQuestionAnswer(q.id, Number(val));
+                    }}
+                  >
+                    <option value="" disabled>Select an answer…</option>
+                    {q.options.map((opt, optIdx) => (
+                      <option key={optIdx} value={String(optIdx)}>
+                        {opt.label}
+                      </option>
+                    ))}
+                  </select>
                 </div>
               </div>
             );
