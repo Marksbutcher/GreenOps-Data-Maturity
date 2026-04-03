@@ -256,7 +256,7 @@ export default function ResultsDashboard({
                 <h3>Priority Matrix</h3>
                 <ResponsiveContainer width="100%" height={400}>
                   <ScatterChart margin={{ top: 20, right: 30, bottom: 20, left: 20 }}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+                    <CartesianGrid strokeDasharray="3 3" stroke="#e9ecef" />
                     <XAxis type="number" dataKey="x" name="Maturity" domain={[0.5, 5.5]} label={{ value: 'Maturity', position: 'bottom' }} />
                     <YAxis type="number" dataKey="y" name="Impact" domain={[0.5, 5.5]} label={{ value: 'Impact', angle: -90, position: 'left' }} />
                     <ReferenceLine x={2.75} stroke="#94a3b8" strokeDasharray="4 4" />
@@ -277,15 +277,15 @@ export default function ResultsDashboard({
                     />
                     <Scatter
                       data={scatterData}
-                      fill="#267878"
+                      fill="#5AA63E"
                       shape={(props: any) => {
                         const { cx, cy, payload } = props as { cx: number; cy: number; payload: typeof scatterData[0] };
                         const r = Math.max((payload.confidence || 3) * 4, 12);
                         const label = payload.name.length > 22 ? payload.name.slice(0, 20) + '…' : payload.name;
                         return (
                           <g>
-                            <circle cx={cx} cy={cy} r={r} fill="#267878" fillOpacity={0.6} stroke="#1a5c5c" strokeWidth={1.5} />
-                            <text x={cx} y={cy - r - 4} textAnchor="middle" fontSize={9} fill="#334155">{label}</text>
+                            <circle cx={cx} cy={cy} r={r} fill="#5AA63E" fillOpacity={0.6} stroke="#4A9132" strokeWidth={1.5} />
+                            <text x={cx} y={cy - r - 4} textAnchor="middle" fontSize={9} fill="#495057">{label}</text>
                           </g>
                         );
                       }}
@@ -299,9 +299,9 @@ export default function ResultsDashboard({
                 <h3>Maturity Radar</h3>
                 <ResponsiveContainer width="100%" height={400}>
                   <RadarChart data={radarData} outerRadius="75%">
-                    <PolarGrid stroke="#e2e8f0" />
+                    <PolarGrid stroke="#e9ecef" />
                     <PolarAngleAxis dataKey="domain" tick={{ fontSize: 9 }} />
-                    <Radar name="Maturity" dataKey="maturity" stroke="#267878" fill="#267878" fillOpacity={0.3} />
+                    <Radar name="Maturity" dataKey="maturity" stroke="#5AA63E" fill="#5AA63E" fillOpacity={0.3} />
                     <Radar name="Impact" dataKey="impact" stroke="#f59e0b" fill="#f59e0b" fillOpacity={0.1} />
                     <Radar name="Target" dataKey="target" stroke="#94a3b8" fill="none" strokeDasharray="4 4" />
                     <Tooltip />

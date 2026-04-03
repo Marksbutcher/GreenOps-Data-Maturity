@@ -1,5 +1,6 @@
 import { useState, useCallback, useMemo } from 'react';
 import { MaturityModel, DomainAssessment } from '../types';
+import PosetivLogo from './PosetivLogo';
 
 interface AssessmentFlowProps {
   model: MaturityModel;
@@ -107,6 +108,9 @@ export default function AssessmentFlow({
       {/* Left sidebar — domain progress panel */}
       <aside className="assessment-sidebar">
         <div className="sidebar-header">
+          <div className="sidebar-logo">
+            <PosetivLogo variant="dark" height={22} />
+          </div>
           <div className="sidebar-title">Assessment progress</div>
           <div className="sidebar-summary">
             {completedCount} of {total} domains complete
@@ -142,6 +146,32 @@ export default function AssessmentFlow({
 
       {/* Main content area */}
       <main className="assessment-main">
+        {/* Assessment introduction — shown on the first domain */}
+        {currentIndex === 0 && (
+          <div className="assessment-intro">
+            <h2 className="assessment-intro-title">GreenOps Data Input Maturity Assessment</h2>
+            <p className="assessment-intro-text">
+              This assessment evaluates your organisation's data maturity across {total} domains
+              that underpin effective GreenOps decision-making — from energy and carbon measurement
+              through to AI workload governance and lifecycle management.
+            </p>
+            <div className="assessment-intro-details">
+              <div className="intro-detail">
+                <strong>How it works</strong>
+                <span>Answer {domain.questions.length} questions per domain using the dropdown selectors. Your maturity scores are calculated automatically from the answers — there is no manual self-scoring.</span>
+              </div>
+              <div className="intro-detail">
+                <strong>Navigation</strong>
+                <span>Use the panel on the left to track progress and jump between domains. You can revisit and change answers at any point before completing.</span>
+              </div>
+              <div className="intro-detail">
+                <strong>What you'll receive</strong>
+                <span>A scored maturity profile across all {total} domains, decision-readiness analysis, dimension-level breakdowns, and a prioritised improvement roadmap — available on-screen and as PDF or CSV export.</span>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Domain context intro */}
         <div className="domain-intro">
           <div className="domain-intro-header">

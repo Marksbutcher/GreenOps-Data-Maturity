@@ -1,3 +1,5 @@
+import PosetivLogo from './PosetivLogo';
+
 interface LandingPageProps {
   onStartNew: (mode: 'self' | 'facilitated') => void;
   onLoadDemo: () => void;
@@ -8,9 +10,9 @@ export default function LandingPage({ onStartNew, onLoadDemo }: LandingPageProps
     <div className="landing">
       <div className="landing-hero">
         <div className="container">
-          <p className="label" style={{ color: 'rgba(255,255,255,0.5)', marginBottom: 8 }}>
-            Posetiv
-          </p>
+          <div className="landing-hero-brand">
+            <PosetivLogo variant="light" height={28} />
+          </div>
           <h1>GreenOps Data Input Maturity Assessment</h1>
           <p className="subtitle">
             Assess the maturity of data inputs used in GreenOps calculations across your technology estate.
@@ -22,6 +24,9 @@ export default function LandingPage({ onStartNew, onLoadDemo }: LandingPageProps
       <div className="landing-actions">
         <div className="container">
           <h2>Start an assessment</h2>
+          <p className="landing-actions-subtitle">
+            Choose how you want to work through the assessment.
+          </p>
           <div className="action-cards">
             <div className="card action-card" onClick={() => onStartNew('self')}>
               <h3>Self-assessment</h3>
@@ -55,7 +60,7 @@ export default function LandingPage({ onStartNew, onLoadDemo }: LandingPageProps
             <div className="feature-item">
               <h4>Maturity scores</h4>
               <p>
-                Structured 1–5 maturity scoring across 13 data input domains, from asset inventory
+                Structured 1-5 maturity scoring across 13 data input domains, from asset inventory
                 through to decision integration.
               </p>
             </div>

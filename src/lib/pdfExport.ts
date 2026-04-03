@@ -5,13 +5,13 @@ import { DomainNarrative } from './narrativeAnalysis';
 import { calculateOverallStats } from './scoring';
 
 const BRAND = {
-  teal: [38, 120, 120] as [number, number, number],
-  tealDark: [26, 92, 92] as [number, number, number],
-  tealLight: [232, 244, 244] as [number, number, number],
-  slate: [51, 65, 85] as [number, number, number],
+  teal: [90, 166, 62] as [number, number, number],       // Posetiv green
+  tealDark: [45, 45, 45] as [number, number, number],    // Charcoal primary
+  tealLight: [237, 247, 233] as [number, number, number], // Light green bg
+  slate: [73, 80, 87] as [number, number, number],
   white: [255, 255, 255] as [number, number, number],
-  gray: [148, 163, 184] as [number, number, number],
-  grayLight: [241, 245, 249] as [number, number, number],
+  gray: [134, 142, 150] as [number, number, number],
+  grayLight: [241, 243, 245] as [number, number, number],
 };
 
 function addPageFooter(doc: jsPDF, pageNum: number) {
