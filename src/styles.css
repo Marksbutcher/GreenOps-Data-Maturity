@@ -154,6 +154,10 @@ h3 { font-size: 1.125rem; }
   align-items: center;
   justify-content: center;
   gap: var(--space-sm);
+  white-space: normal;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  text-align: center;
   padding: 10px 22px;
   border: none;
   border-radius: var(--radius-md);
@@ -611,9 +615,9 @@ h3 { font-size: 1.125rem; }
 .sidebar-domain-name {
   flex: 1;
   line-height: 1.35;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  white-space: normal;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
 }
 
 .sidebar-domain-count {
@@ -825,6 +829,9 @@ h3 { font-size: 1.125rem; }
   font-weight: 500;
   color: var(--color-text);
   line-height: 1.5;
+  white-space: normal;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
   flex: 1;
 }
 
@@ -848,6 +855,9 @@ h3 { font-size: 1.125rem; }
   padding: var(--space-sm) var(--space-md);
   padding-right: 36px;
   border: 1.5px solid var(--color-border);
+  white-space: normal;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
   border-radius: var(--radius-md);
   background: var(--color-surface);
   font-family: var(--font-body);
@@ -880,6 +890,9 @@ h3 { font-size: 1.125rem; }
   font-size: 0.8125rem;
   color: var(--color-text);
   padding: var(--space-sm);
+  white-space: normal;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
 }
 
 .question-select option[disabled] {
@@ -1784,9 +1797,9 @@ h3 { font-size: 1.125rem; }
   color: var(--color-text-secondary);
   text-transform: capitalize;
   font-weight: 500;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  white-space: normal;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
 }
 
 .dim-bar-track {
@@ -1818,17 +1831,26 @@ h3 { font-size: 1.125rem; }
   font-weight: 600;
   color: var(--color-text);
   min-width: 160px;
+  white-space: normal;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
 }
 
 .ds-cell {
   font-size: 0.75rem;
   max-width: 180px;
+  white-space: normal;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
 }
 
 .flags-cell {
   font-size: 0.75rem;
   color: var(--color-medium);
   max-width: 200px;
+  white-space: normal;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
 }
 
 /* ===== Viz grid ===== */

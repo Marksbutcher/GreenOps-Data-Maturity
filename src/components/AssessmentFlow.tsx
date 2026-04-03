@@ -109,7 +109,7 @@ export default function AssessmentFlow({
       <aside className="assessment-sidebar">
         <div className="sidebar-header">
           <div className="sidebar-logo">
-            <PosetivLogo variant="dark" height={22} />
+            <PosetivLogo variant="dark" height={32} />
           </div>
           <div className="sidebar-title">Assessment progress</div>
           <div className="sidebar-summary">

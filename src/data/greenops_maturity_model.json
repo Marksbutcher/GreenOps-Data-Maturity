@@ -133,23 +133,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Major gaps. We do not have a reliable view across the full estate.",
+              "label": "No meaningful coverage or not tracked. Visibility is fragmented and unreliable.",
               "score": 1
             },
             {
-              "label": "We cover some key areas, but there are clear gaps or inconsistencies.",
+              "label": "Covers 20-40% of scope. Limited to main or core areas. Significant gaps remain.",
               "score": 2
             },
             {
-              "label": "We have a usable inventory across most main environments.",
+              "label": "Covers 50-75% of scope with documented standard coverage. Gaps remain in secondary areas or edge cases.",
               "score": 3
             },
             {
-              "label": "We have good coverage and actively check data quality.",
+              "label": "Covers 75-90% of scope with consistent methods. Gaps are known and actively managed.",
               "score": 4
             },
             {
-              "label": "We have strong, trusted coverage across the estate and keep it up to date.",
+              "label": "Covers >90% of scope with continuous discovery and automated updates.",
               "score": 5
             }
           ]
@@ -164,23 +164,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Very limited. We often only know the basics, if that.",
+              "label": "Only basic attributes collected. Critical fields (model, SKU, lifecycle, location) missing for most assets.",
               "score": 1
             },
             {
-              "label": "Some useful fields exist, but data is patchy and inconsistent.",
+              "label": "Partial data for some assets. Inconsistent fields across platforms. Model and SKU data missing or unreliable for 40-60% of assets.",
               "score": 2
             },
             {
-              "label": "We hold the main fields needed for most assets.",
+              "label": "Standard schema applied to core assets. Model, SKU, and lifecycle data available for 50-75% of estate. Gaps in secondary environments.",
               "score": 3
             },
             {
-              "label": "We have good-quality detailed data across most of the estate.",
+              "label": "Rich asset records (model, SKU, owner, location, lifecycle state, warranty) for 75-90% of the estate. Data quality actively managed with regular audits.",
               "score": 4
             },
             {
-              "label": "We have rich, trusted asset data that supports operational and GreenOps decisions.",
+              "label": "Comprehensive, validated asset records (model, SKU, location, owner, lifecycle, warranty, power, heat) for >90% of estate with continuous validation.",
               "score": 5
             }
           ]
@@ -195,23 +195,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Rarely. Most assets are not meaningfully linked.",
+              "label": "No meaningful link. Energy, emissions, or costs cannot be attributed to services, teams, or workloads.",
               "score": 1
             },
             {
-              "label": "Some links exist, but only for certain platforms or teams.",
+              "label": "Attribution possible for 20-40% of IT load, mainly limited to major platforms or data halls. Service-level attribution is rare.",
               "score": 2
             },
             {
-              "label": "We can link many key assets to known owners or services.",
+              "label": "Attribution covers 50-75% of IT load across main platforms and environments. Some major services identified. Workload-level gaps remain.",
               "score": 3
             },
             {
-              "label": "We can link most relevant assets to services, platforms or teams.",
+              "label": "Energy can be attributed to specific services or teams for 75-90% of IT load. Allocation rules are documented and applied consistently.",
               "score": 4
             },
             {
-              "label": "We have strong service and ownership mapping across the estate.",
+              "label": "Energy, emissions, and costs can be attributed at service/workload level for >90% of IT load with continuous validation and fine-grained traceability.",
               "score": 5
             }
           ]
@@ -226,23 +226,23 @@
           "tags": [],
           "options": [
             {
-              "label": "It is often out of date.",
+              "label": "Updates are sporadic or absent. Data often 30+ days out of date.",
               "score": 1
             },
             {
-              "label": "Updates happen, but not reliably or quickly.",
+              "label": "Updates happen monthly or quarterly, with lags of 2-4 weeks for major changes.",
               "score": 2
             },
             {
-              "label": "It is usually updated in a reasonable timeframe.",
+              "label": "Updates occur monthly or bi-monthly for most scope. Reflects changes within 2-4 week cycle.",
               "score": 3
             },
             {
-              "label": "It is kept up to date across most key environments.",
+              "label": "Updates occur weekly or bi-weekly across main scope. Most changes reflected within 1-2 weeks.",
               "score": 4
             },
             {
-              "label": "Changes are reflected quickly and consistently as part of normal operations.",
+              "label": "Updates are automated and near-continuous. Changes reflected within days or as part of operational workflows.",
               "score": 5
             }
           ]
@@ -257,23 +257,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Not reliably.",
+              "label": "Location data missing or unreliable for most assets.",
               "score": 1
             },
             {
-              "label": "Only at a broad level for some areas.",
+              "label": "Location known at broad level (data centre region, building) for 20-40% of assets. Specific detail unknown.",
               "score": 2
             },
             {
-              "label": "We can usually place assets by key environment or location.",
+              "label": "Location known at zone/rack level for 50-75% of assets. Cloud regions and main facilities identified.",
               "score": 3
             },
             {
-              "label": "We can locate assets well across most of the estate.",
+              "label": "Location known at zone/rack/room level for 75-90% of assets. Cloud regions, AZs clearly identified.",
               "score": 4
             },
             {
-              "label": "We can pinpoint assets at the level needed for real operational and GreenOps use.",
+              "label": "Precise location (zone, rack, row, container) known for >90% of assets with automated tracking.",
               "score": 5
             }
           ]
@@ -288,23 +288,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Very difficult. Matching is mostly manual or guesswork.",
+              "label": "No formal process. Data collection is manual, error-prone, or not attempted.",
               "score": 1
             },
             {
-              "label": "We can match some assets, but with lots of effort and inconsistency.",
+              "label": "Ad-hoc process with high manual effort. Inconsistent results. 20-40% of scope covered with confidence.",
               "score": 2
             },
             {
-              "label": "We can match many core assets reasonably well.",
+              "label": "Documented process with partial automation. 50-75% of scope covered reliably. Some gaps remain.",
               "score": 3
             },
             {
-              "label": "Matching works well across most of the relevant estate.",
+              "label": "Established process with strong tooling. 75-90% of scope covered with documented confidence levels.",
               "score": 4
             },
             {
-              "label": "Matching is strong, efficient and reliable across the main asset base.",
+              "label": "Fully automated process with continuous validation. >90% of scope covered with high confidence. Continuous improvement active.",
               "score": 5
             }
           ]
@@ -319,23 +319,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Not clearly.",
+              "label": "Lineage not clear or tracked. Data sources and confidence levels not understood.",
               "score": 1
             },
             {
-              "label": "We know some main sources, but trust varies a lot.",
+              "label": "Main sources documented but with variable quality. Confidence tracking exists for <50% of data.",
               "score": 2
             },
             {
-              "label": "We can explain the main sources and trust them reasonably well.",
+              "label": "Sources documented with confidence assigned for 50-75% of data. Some trust gaps in secondary areas.",
               "score": 3
             },
             {
-              "label": "Source systems and trust levels are clear across most key areas.",
+              "label": "Data lineage documented with clear confidence levels for 75-90% of inputs. Regular audits of source quality.",
               "score": 4
             },
             {
-              "label": "Lineage and confidence are clear, understood and actively managed.",
+              "label": "Complete lineage with confidence scoring for >90% of inputs. Continuous monitoring of source quality.",
               "score": 5
             }
           ]
@@ -350,23 +350,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Hardly at all.",
+              "label": "Lifecycle status not tracked or tracked for <20% of assets.",
               "score": 1
             },
             {
-              "label": "We track some lifecycle states, but not consistently.",
+              "label": "Lifecycle states tracked for 20-40% of assets. Inconsistent definitions or gaps in spare/retired inventory.",
               "score": 2
             },
             {
-              "label": "We have a workable lifecycle view for most main assets.",
+              "label": "Standard lifecycle states tracked for 50-75% of assets. Documented definitions.",
               "score": 3
             },
             {
-              "label": "Lifecycle tracking is strong across most of the estate.",
+              "label": "Lifecycle tracking covers 75-90% of assets with regular updates. Supports refresh planning and retirement workflows.",
               "score": 4
             },
             {
-              "label": "Lifecycle status is clear, trusted and supports refresh and circularity decisions.",
+              "label": "Comprehensive lifecycle tracking for >90% of assets, fully automated, integrated with disposal processes.",
               "score": 5
             }
           ]
@@ -535,23 +535,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Mostly estimates based on spend, contracts, floor space or broad assumptions.",
+              "label": "No formal process. Data collection is manual, error-prone, or not attempted.",
               "score": 1
             },
             {
-              "label": "Site or provider totals with simple allocation rules.",
+              "label": "Ad-hoc process with high manual effort. Inconsistent results. 20-40% of scope covered with confidence.",
               "score": 2
             },
             {
-              "label": "Measured site-level energy data for most key environments.",
+              "label": "Documented process with partial automation. 50-75% of scope covered reliably. Some gaps remain.",
               "score": 3
             },
             {
-              "label": "Measured data at a more detailed level, such as hall, rack or cluster.",
+              "label": "Established process with strong tooling. 75-90% of scope covered with documented confidence levels.",
               "score": 4
             },
             {
-              "label": "Granular, trusted energy data linked to actual platforms, services or workloads.",
+              "label": "Fully automated process with continuous validation. >90% of scope covered with high confidence. Continuous improvement active.",
               "score": 5
             }
           ]
@@ -566,23 +566,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Very broad only.",
+              "label": "Only aggregate total consumption available. No sub-metering or breakdown by zone, facility, or service.",
               "score": 1
             },
             {
-              "label": "Broad totals with limited breakdown.",
+              "label": "Basic breakdown available (e.g., by building or data centre). Coverage 20-40%. Hourly or daily data inconsistently collected.",
               "score": 2
             },
             {
-              "label": "Good enough for major sites or environments.",
+              "label": "Facility-level metering available for 50-75% of operations. Daily or weekly granularity. Some gaps in sub-facility or service-level detail.",
               "score": 3
             },
             {
-              "label": "Detailed across most operationally important areas.",
+              "label": "Hourly metering for 75-90% of facilities. Breakdown by zone, circuit, or major platform available. Data collection consistent and documented.",
               "score": 4
             },
             {
-              "label": "Detailed enough to support targeted optimisation and attribution.",
+              "label": "Real-time or near-continuous metering for >90% of operations. Granular data (sub-facility, circuit, service level) with high confidence and automated aggregation.",
               "score": 5
             }
           ]
@@ -597,23 +597,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Very little.",
+              "label": "No meaningful coverage or not tracked. Visibility is fragmented and unreliable.",
               "score": 1
             },
             {
-              "label": "Some important areas only.",
+              "label": "Covers 20-40% of scope. Limited to main or core areas. Significant gaps remain.",
               "score": 2
             },
             {
-              "label": "Most main environments are covered.",
+              "label": "Covers 50-75% of scope with documented standard coverage. Gaps remain in secondary areas or edge cases.",
               "score": 3
             },
             {
-              "label": "Coverage is strong across most of the relevant estate.",
+              "label": "Covers 75-90% of scope with consistent methods. Gaps are known and actively managed.",
               "score": 4
             },
             {
-              "label": "Coverage is broad, trusted and actively monitored.",
+              "label": "Covers >90% of scope with continuous discovery and automated updates.",
               "score": 5
             }
           ]
@@ -628,23 +628,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Not really.",
+              "label": "No meaningful link. Energy, emissions, or costs cannot be attributed to services, teams, or workloads.",
               "score": 1
             },
             {
-              "label": "Only at a very broad level.",
+              "label": "Attribution possible for 20-40% of IT load, mainly limited to major platforms or data halls. Service-level attribution is rare.",
               "score": 2
             },
             {
-              "label": "We can make some useful links for major areas.",
+              "label": "Attribution covers 50-75% of IT load across main platforms and environments. Some major services identified. Workload-level gaps remain.",
               "score": 3
             },
             {
-              "label": "We can link energy to many operational owners or services.",
+              "label": "Energy can be attributed to specific services or teams for 75-90% of IT load. Allocation rules are documented and applied consistently.",
               "score": 4
             },
             {
-              "label": "We can link energy meaningfully to the level where action can be taken.",
+              "label": "Energy, emissions, and costs can be attributed at service/workload level for >90% of IT load with continuous validation and fine-grained traceability.",
               "score": 5
             }
           ]
@@ -659,23 +659,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Irregularly or only for reporting exercises.",
+              "label": "Data available less than quarterly. Long delays between collection and availability.",
               "score": 1
             },
             {
-              "label": "Periodically, but not often enough for much operational use.",
+              "label": "Data available quarterly or monthly, but with 2-4 week lags. Sufficient for periodic reviews only.",
               "score": 2
             },
             {
-              "label": "Often enough for baseline tracking and some decisions.",
+              "label": "Data available monthly or bi-monthly with 1-2 week currency. Supports monthly management cycles.",
               "score": 3
             },
             {
-              "label": "Frequent enough for regular operational use.",
+              "label": "Data available weekly or bi-weekly with near-current information. Supports ongoing operational management.",
               "score": 4
             },
             {
-              "label": "Timely enough for ongoing optimisation where needed.",
+              "label": "Data available daily or near-real-time. Supports continuous monitoring and immediate decision-making.",
               "score": 5
             }
           ]
@@ -690,23 +690,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Very slow.",
+              "label": "Updates are sporadic or absent. Data often 30+ days out of date.",
               "score": 1
             },
             {
-              "label": "Slow enough to limit usefulness.",
+              "label": "Updates happen monthly or quarterly, with lags of 2-4 weeks for major changes.",
               "score": 2
             },
             {
-              "label": "Reasonable for most reporting and planning needs.",
+              "label": "Updates occur monthly or bi-monthly for most scope. Reflects changes within 2-4 week cycle.",
               "score": 3
             },
             {
-              "label": "Fast enough for regular management use.",
+              "label": "Updates occur weekly or bi-weekly across main scope. Most changes reflected within 1-2 weeks.",
               "score": 4
             },
             {
-              "label": "Fast enough to support near-operational action where needed.",
+              "label": "Updates are automated and near-continuous. Changes reflected within days or as part of operational workflows.",
               "score": 5
             }
           ]
@@ -721,23 +721,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Hardly at all.",
+              "label": "Location data missing or unreliable for most assets.",
               "score": 1
             },
             {
-              "label": "Only at broad site or provider level.",
+              "label": "Location known at broad level (data centre region, building) for 20-40% of assets. Specific detail unknown.",
               "score": 2
             },
             {
-              "label": "Generally yes for major environments.",
+              "label": "Location known at zone/rack level for 50-75% of assets. Cloud regions and main facilities identified.",
               "score": 3
             },
             {
-              "label": "Yes across most of the places that matter.",
+              "label": "Location known at zone/rack/room level for 75-90% of assets. Cloud regions, AZs clearly identified.",
               "score": 4
             },
             {
-              "label": "Yes, with strong location accuracy for real decision-making.",
+              "label": "Precise location (zone, rack, row, container) known for >90% of assets with automated tracking.",
               "score": 5
             }
           ]
@@ -752,23 +752,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Not clearly.",
+              "label": "Lineage not clear or tracked. Data sources and confidence levels not understood.",
               "score": 1
             },
             {
-              "label": "Partly, but there are gaps.",
+              "label": "Main sources documented but with variable quality. Confidence tracking exists for <50% of data.",
               "score": 2
             },
             {
-              "label": "The main source and method are clear.",
+              "label": "Sources documented with confidence assigned for 50-75% of data. Some trust gaps in secondary areas.",
               "score": 3
             },
             {
-              "label": "Source and method are clear across most relevant areas.",
+              "label": "Data lineage documented with clear confidence levels for 75-90% of inputs. Regular audits of source quality.",
               "score": 4
             },
             {
-              "label": "Source, method and confidence are transparent and trusted.",
+              "label": "Complete lineage with confidence scoring for >90% of inputs. Continuous monitoring of source quality.",
               "score": 5
             }
           ]
@@ -970,23 +970,23 @@
           "tags": [],
           "options": [
             {
-              "label": "No, or almost none.",
+              "label": "No meaningful coverage or not tracked. Visibility is fragmented and unreliable.",
               "score": 1
             },
             {
-              "label": "Limited data from some sites or providers.",
+              "label": "Covers 20-40% of scope. Limited to main or core areas. Significant gaps remain.",
               "score": 2
             },
             {
-              "label": "A usable baseline for the main facilities that matter.",
+              "label": "Covers 50-75% of scope with documented standard coverage. Gaps remain in secondary areas or edge cases.",
               "score": 3
             },
             {
-              "label": "Good-quality water data across most relevant environments.",
+              "label": "Covers 75-90% of scope with consistent methods. Gaps are known and actively managed.",
               "score": 4
             },
             {
-              "label": "Strong, trusted water data that supports real decisions.",
+              "label": "Covers >90% of scope with continuous discovery and automated updates.",
               "score": 5
             }
           ]
@@ -1001,23 +1001,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Very broad only.",
+              "label": "Only aggregate total consumption available. No sub-metering or breakdown by zone, facility, or service.",
               "score": 1
             },
             {
-              "label": "Some totals, but little useful breakdown.",
+              "label": "Basic breakdown available (e.g., by building or data centre). Coverage 20-40%. Hourly or daily data inconsistently collected.",
               "score": 2
             },
             {
-              "label": "Enough detail for baseline reporting and some analysis.",
+              "label": "Facility-level metering available for 50-75% of operations. Daily or weekly granularity. Some gaps in sub-facility or service-level detail.",
               "score": 3
             },
             {
-              "label": "Good detail across most relevant sites or providers.",
+              "label": "Hourly metering for 75-90% of facilities. Breakdown by zone, circuit, or major platform available. Data collection consistent and documented.",
               "score": 4
             },
             {
-              "label": "Detailed enough to support operational and location-specific decisions.",
+              "label": "Real-time or near-continuous metering for >90% of operations. Granular data (sub-facility, circuit, service level) with high confidence and automated aggregation.",
               "score": 5
             }
           ]
@@ -1032,23 +1032,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Not really.",
+              "label": "No meaningful link. Energy, emissions, or costs cannot be attributed to services, teams, or workloads.",
               "score": 1
             },
             {
-              "label": "Only with broad assumptions.",
+              "label": "Attribution possible for 20-40% of IT load, mainly limited to major platforms or data halls. Service-level attribution is rare.",
               "score": 2
             },
             {
-              "label": "We can make a reasonable link for key environments.",
+              "label": "Attribution covers 50-75% of IT load across main platforms and environments. Some major services identified. Workload-level gaps remain.",
               "score": 3
             },
             {
-              "label": "We can link water use well across most relevant areas.",
+              "label": "Energy can be attributed to specific services or teams for 75-90% of IT load. Allocation rules are documented and applied consistently.",
               "score": 4
             },
             {
-              "label": "We can link it credibly enough to support decisions and trade-offs.",
+              "label": "Energy, emissions, and costs can be attributed at service/workload level for >90% of IT load with continuous validation and fine-grained traceability.",
               "score": 5
             }
           ]
@@ -1063,23 +1063,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Rarely.",
+              "label": "Data available less than quarterly. Long delays between collection and availability.",
               "score": 1
             },
             {
-              "label": "Periodically, but quite limited.",
+              "label": "Data available quarterly or monthly, but with 2-4 week lags. Sufficient for periodic reviews only.",
               "score": 2
             },
             {
-              "label": "Regular enough for baseline tracking.",
+              "label": "Data available monthly or bi-monthly with 1-2 week currency. Supports monthly management cycles.",
               "score": 3
             },
             {
-              "label": "Frequent enough for regular review.",
+              "label": "Data available weekly or bi-weekly with near-current information. Supports ongoing operational management.",
               "score": 4
             },
             {
-              "label": "Timely enough to support active management where needed.",
+              "label": "Data available daily or near-real-time. Supports continuous monitoring and immediate decision-making.",
               "score": 5
             }
           ]
@@ -1094,23 +1094,23 @@
           "tags": [],
           "options": [
             {
-              "label": "No meaningful location context.",
+              "label": "Location data missing or unreliable for most assets.",
               "score": 1
             },
             {
-              "label": "Limited location context only.",
+              "label": "Location known at broad level (data centre region, building) for 20-40% of assets. Specific detail unknown.",
               "score": 2
             },
             {
-              "label": "Some useful location context for main sites.",
+              "label": "Location known at zone/rack level for 50-75% of assets. Cloud regions and main facilities identified.",
               "score": 3
             },
             {
-              "label": "Good location context across most relevant environments.",
+              "label": "Location known at zone/rack/room level for 75-90% of assets. Cloud regions, AZs clearly identified.",
               "score": 4
             },
             {
-              "label": "Strong location context, including where local conditions materially matter.",
+              "label": "Precise location (zone, rack, row, container) known for >90% of assets with automated tracking.",
               "score": 5
             }
           ]
@@ -1125,23 +1125,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Very slowly.",
+              "label": "Updates are sporadic or absent. Data often 30+ days out of date.",
               "score": 1
             },
             {
-              "label": "Slow enough to reduce usefulness.",
+              "label": "Updates happen monthly or quarterly, with lags of 2-4 weeks for major changes.",
               "score": 2
             },
             {
-              "label": "Reasonable for most reporting needs.",
+              "label": "Updates occur monthly or bi-monthly for most scope. Reflects changes within 2-4 week cycle.",
               "score": 3
             },
             {
-              "label": "Good enough for regular management.",
+              "label": "Updates occur weekly or bi-weekly across main scope. Most changes reflected within 1-2 weeks.",
               "score": 4
             },
             {
-              "label": "Fast enough for practical decision support.",
+              "label": "Updates are automated and near-continuous. Changes reflected within days or as part of operational workflows.",
               "score": 5
             }
           ]
@@ -1156,23 +1156,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Weak or unclear.",
+              "label": "No formal process. Data collection is manual, error-prone, or not attempted.",
               "score": 1
             },
             {
-              "label": "Basic and heavily assumption-led.",
+              "label": "Ad-hoc process with high manual effort. Inconsistent results. 20-40% of scope covered with confidence.",
               "score": 2
             },
             {
-              "label": "Reasonable and repeatable for the main use cases.",
+              "label": "Documented process with partial automation. 50-75% of scope covered reliably. Some gaps remain.",
               "score": 3
             },
             {
-              "label": "Strong and consistent across most relevant areas.",
+              "label": "Established process with strong tooling. 75-90% of scope covered with documented confidence levels.",
               "score": 4
             },
             {
-              "label": "Robust enough for credible decision-making.",
+              "label": "Fully automated process with continuous validation. >90% of scope covered with high confidence. Continuous improvement active.",
               "score": 5
             }
           ]
@@ -1187,23 +1187,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Not clearly.",
+              "label": "Lineage not clear or tracked. Data sources and confidence levels not understood.",
               "score": 1
             },
             {
-              "label": "Only partly.",
+              "label": "Main sources documented but with variable quality. Confidence tracking exists for <50% of data.",
               "score": 2
             },
             {
-              "label": "The main source and confidence level are reasonably clear.",
+              "label": "Sources documented with confidence assigned for 50-75% of data. Some trust gaps in secondary areas.",
               "score": 3
             },
             {
-              "label": "Source and confidence are clear across most relevant areas.",
+              "label": "Data lineage documented with clear confidence levels for 75-90% of inputs. Regular audits of source quality.",
               "score": 4
             },
             {
-              "label": "Source, method and confidence are transparent and trusted.",
+              "label": "Complete lineage with confidence scoring for >90% of inputs. Continuous monitoring of source quality.",
               "score": 5
             }
           ]
@@ -1370,23 +1370,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Assumed values, design figures or provider marketing claims.",
+              "label": "No formal process. Data collection is manual, error-prone, or not attempted.",
               "score": 1
             },
             {
-              "label": "Broad site or provider values that are repeatable but generic.",
+              "label": "Ad-hoc process with high manual effort. Inconsistent results. 20-40% of scope covered with confidence.",
               "score": 2
             },
             {
-              "label": "Documented values with reasonably clear boundaries.",
+              "label": "Documented process with partial automation. 50-75% of scope covered reliably. Some gaps remain.",
               "score": 3
             },
             {
-              "label": "Measured operational values reviewed over time.",
+              "label": "Established process with strong tooling. 75-90% of scope covered with documented confidence levels.",
               "score": 4
             },
             {
-              "label": "Well-defined, trusted metrics fit for real decision-making.",
+              "label": "Fully automated process with continuous validation. >90% of scope covered with high confidence. Continuous improvement active.",
               "score": 5
             }
           ]
@@ -1401,23 +1401,23 @@
           "tags": [],
           "options": [
             {
-              "label": "No.",
+              "label": "Lineage not clear or tracked. Data sources and confidence levels not understood.",
               "score": 1
             },
             {
-              "label": "Only partly.",
+              "label": "Main sources documented but with variable quality. Confidence tracking exists for <50% of data.",
               "score": 2
             },
             {
-              "label": "Yes for the main areas, with some gaps.",
+              "label": "Sources documented with confidence assigned for 50-75% of data. Some trust gaps in secondary areas.",
               "score": 3
             },
             {
-              "label": "Yes across most relevant environments.",
+              "label": "Data lineage documented with clear confidence levels for 75-90% of inputs. Regular audits of source quality.",
               "score": 4
             },
             {
-              "label": "Yes, very clearly and consistently.",
+              "label": "Complete lineage with confidence scoring for >90% of inputs. Continuous monitoring of source quality.",
               "score": 5
             }
           ]
@@ -1432,23 +1432,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Not really.",
+              "label": "No formal process. Data collection is manual, error-prone, or not attempted.",
               "score": 1
             },
             {
-              "label": "Only loosely.",
+              "label": "Ad-hoc process with high manual effort. Inconsistent results. 20-40% of scope covered with confidence.",
               "score": 2
             },
             {
-              "label": "Broadly yes for the main areas.",
+              "label": "Documented process with partial automation. 50-75% of scope covered reliably. Some gaps remain.",
               "score": 3
             },
             {
-              "label": "Yes across most operationally important areas.",
+              "label": "Established process with strong tooling. 75-90% of scope covered with documented confidence levels.",
               "score": 4
             },
             {
-              "label": "Yes, including changing conditions where that matters.",
+              "label": "Fully automated process with continuous validation. >90% of scope covered with high confidence. Continuous improvement active.",
               "score": 5
             }
           ]
@@ -1463,23 +1463,23 @@
           "tags": [],
           "options": [
             {
-              "label": "No, they are too broad.",
+              "label": "Metrics collected at high level only (e.g., PUE for entire data centre). No breakdown by zone, system, or service.",
               "score": 1
             },
             {
-              "label": "Only for high-level reporting.",
+              "label": "Metrics available for 20-40% of infrastructure scope. Some breakdown by zone or system. Gaps in secondary areas.",
               "score": 2
             },
             {
-              "label": "Good enough for some practical use.",
+              "label": "Standard metrics collected across 50-75% of infrastructure. Zone-level or system-level detail available. Some edge cases uncovered.",
               "score": 3
             },
             {
-              "label": "Good enough for most intended uses.",
+              "label": "Detailed metrics for 75-90% of infrastructure scope. Sub-zone or component-level breakdown available. Regular quality reviews.",
               "score": 4
             },
             {
-              "label": "Detailed enough for targeted and credible allocation.",
+              "label": "Comprehensive metrics for >90% of infrastructure with fine-grained detail (equipment, zone, system level) and continuous validation.",
               "score": 5
             }
           ]
@@ -1494,23 +1494,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Rarely.",
+              "label": "Location data missing or unreliable for most assets.",
               "score": 1
             },
             {
-              "label": "Only at a broad level.",
+              "label": "Location known at broad level (data centre region, building) for 20-40% of assets. Specific detail unknown.",
               "score": 2
             },
             {
-              "label": "Usually for the main sites or environments.",
+              "label": "Location known at zone/rack level for 50-75% of assets. Cloud regions and main facilities identified.",
               "score": 3
             },
             {
-              "label": "Yes across most relevant cases.",
+              "label": "Location known at zone/rack/room level for 75-90% of assets. Cloud regions, AZs clearly identified.",
               "score": 4
             },
             {
-              "label": "Yes, with strong location and boundary accuracy.",
+              "label": "Precise location (zone, rack, row, container) known for >90% of assets with automated tracking.",
               "score": 5
             }
           ]
@@ -1525,23 +1525,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Hardly ever.",
+              "label": "Updates are sporadic or absent. Data often 30+ days out of date.",
               "score": 1
             },
             {
-              "label": "Infrequently.",
+              "label": "Updates happen monthly or quarterly, with lags of 2-4 weeks for major changes.",
               "score": 2
             },
             {
-              "label": "Periodically and reasonably consistently.",
+              "label": "Updates occur monthly or bi-monthly for most scope. Reflects changes within 2-4 week cycle.",
               "score": 3
             },
             {
-              "label": "Regularly enough for management and review.",
+              "label": "Updates occur weekly or bi-weekly across main scope. Most changes reflected within 1-2 weeks.",
               "score": 4
             },
             {
-              "label": "Frequently enough to stay decision-relevant.",
+              "label": "Updates are automated and near-continuous. Changes reflected within days or as part of operational workflows.",
               "score": 5
             }
           ]
@@ -1556,23 +1556,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Low confidence.",
+              "label": "No meaningful link. Energy, emissions, or costs cannot be attributed to services, teams, or workloads.",
               "score": 1
             },
             {
-              "label": "Some confidence, but major caveats.",
+              "label": "Attribution possible for 20-40% of IT load, mainly limited to major platforms or data halls. Service-level attribution is rare.",
               "score": 2
             },
             {
-              "label": "Reasonable confidence for broad use.",
+              "label": "Attribution covers 50-75% of IT load across main platforms and environments. Some major services identified. Workload-level gaps remain.",
               "score": 3
             },
             {
-              "label": "Good confidence for most intended decisions.",
+              "label": "Energy can be attributed to specific services or teams for 75-90% of IT load. Allocation rules are documented and applied consistently.",
               "score": 4
             },
             {
-              "label": "Strong confidence for real operational and GreenOps use.",
+              "label": "Energy, emissions, and costs can be attributed at service/workload level for >90% of IT load with continuous validation and fine-grained traceability.",
               "score": 5
             }
           ]
@@ -1587,23 +1587,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Not clearly.",
+              "label": "Lineage not clear or tracked. Data sources and confidence levels not understood.",
               "score": 1
             },
             {
-              "label": "Only partly.",
+              "label": "Main sources documented but with variable quality. Confidence tracking exists for <50% of data.",
               "score": 2
             },
             {
-              "label": "The main source and logic are clear.",
+              "label": "Sources documented with confidence assigned for 50-75% of data. Some trust gaps in secondary areas.",
               "score": 3
             },
             {
-              "label": "The derivation is clear across most relevant cases.",
+              "label": "Data lineage documented with clear confidence levels for 75-90% of inputs. Regular audits of source quality.",
               "score": 4
             },
             {
-              "label": "The metrics are transparent, traceable and well evidenced.",
+              "label": "Complete lineage with confidence scoring for >90% of inputs. Continuous monitoring of source quality.",
               "score": 5
             }
           ]
@@ -1772,23 +1772,23 @@
           "tags": [],
           "options": [
             {
-              "label": "We do not really have embodied data, or we use spend-based factors only.",
+              "label": "No formal process. Data collection is manual, error-prone, or not attempted.",
               "score": 1
             },
             {
-              "label": "Broad category averages.",
+              "label": "Ad-hoc process with high manual effort. Inconsistent results. 20-40% of scope covered with confidence.",
               "score": 2
             },
             {
-              "label": "Product-family or supplier-level averages for most key areas.",
+              "label": "Documented process with partial automation. 50-75% of scope covered reliably. Some gaps remain.",
               "score": 3
             },
             {
-              "label": "Product- or supplier-specific data in many cases.",
+              "label": "Established process with strong tooling. 75-90% of scope covered with documented confidence levels.",
               "score": 4
             },
             {
-              "label": "High-quality product-level lifecycle data that supports real decisions.",
+              "label": "Fully automated process with continuous validation. >90% of scope covered with high confidence. Continuous improvement active.",
               "score": 5
             }
           ]
@@ -1803,23 +1803,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Not very specific at all.",
+              "label": "No specific data. Using generic factors not matched to actual products or assets.",
               "score": 1
             },
             {
-              "label": "Only loosely matched.",
+              "label": "Some product-specific factors used for 20-40% of assets. Mostly generic or average factors for remainder.",
               "score": 2
             },
             {
-              "label": "Reasonably specific for many key assets.",
+              "label": "Product-specific or model-specific factors used for 50-75% of asset portfolio. Gaps in edge devices or lesser-used product lines.",
               "score": 3
             },
             {
-              "label": "Specific across most of the relevant estate.",
+              "label": "Matched, product-specific embodied factors for 75-90% of assets. Documented data sources with confidence scoring.",
               "score": 4
             },
             {
-              "label": "Highly specific and trusted at product level.",
+              "label": "Comprehensive, validated embodied data matched to >90% of assets. Regular updates and continuous validation against manufacturer data.",
               "score": 5
             }
           ]
@@ -1834,23 +1834,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Very little.",
+              "label": "No meaningful coverage or not tracked. Visibility is fragmented and unreliable.",
               "score": 1
             },
             {
-              "label": "Some core areas only.",
+              "label": "Covers 20-40% of scope. Limited to main or core areas. Significant gaps remain.",
               "score": 2
             },
             {
-              "label": "A usable portion of the main estate.",
+              "label": "Covers 50-75% of scope with documented standard coverage. Gaps remain in secondary areas or edge cases.",
               "score": 3
             },
             {
-              "label": "Most relevant assets can be matched well.",
+              "label": "Covers 75-90% of scope with consistent methods. Gaps are known and actively managed.",
               "score": 4
             },
             {
-              "label": "Matching coverage is strong and actively managed.",
+              "label": "Covers >90% of scope with continuous discovery and automated updates.",
               "score": 5
             }
           ]
@@ -1865,23 +1865,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Not really.",
+              "label": "No meaningful link. Energy, emissions, or costs cannot be attributed to services, teams, or workloads.",
               "score": 1
             },
             {
-              "label": "Only in limited cases.",
+              "label": "Attribution possible for 20-40% of IT load, mainly limited to major platforms or data halls. Service-level attribution is rare.",
               "score": 2
             },
             {
-              "label": "For some important asset groups.",
+              "label": "Attribution covers 50-75% of IT load across main platforms and environments. Some major services identified. Workload-level gaps remain.",
               "score": 3
             },
             {
-              "label": "For most relevant assets and decisions.",
+              "label": "Energy can be attributed to specific services or teams for 75-90% of IT load. Allocation rules are documented and applied consistently.",
               "score": 4
             },
             {
-              "label": "Yes, as part of normal lifecycle and circularity management.",
+              "label": "Energy, emissions, and costs can be attributed at service/workload level for >90% of IT load with continuous validation and fine-grained traceability.",
               "score": 5
             }
           ]
@@ -1896,23 +1896,23 @@
           "tags": [],
           "options": [
             {
-              "label": "No.",
+              "label": "Location data missing or unreliable for most assets.",
               "score": 1
             },
             {
-              "label": "Only occasionally.",
+              "label": "Location known at broad level (data centre region, building) for 20-40% of assets. Specific detail unknown.",
               "score": 2
             },
             {
-              "label": "In some key cases.",
+              "label": "Location known at zone/rack level for 50-75% of assets. Cloud regions and main facilities identified.",
               "score": 3
             },
             {
-              "label": "In most relevant cases.",
+              "label": "Location known at zone/rack/room level for 75-90% of assets. Cloud regions, AZs clearly identified.",
               "score": 4
             },
             {
-              "label": "Yes, consistently where it affects decisions.",
+              "label": "Precise location (zone, rack, row, container) known for >90% of assets with automated tracking.",
               "score": 5
             }
           ]
@@ -1927,23 +1927,23 @@
           "tags": [],
           "options": [
             {
-              "label": "No.",
+              "label": "Updates are sporadic or absent. Data often 30+ days out of date.",
               "score": 1
             },
             {
-              "label": "Only loosely.",
+              "label": "Updates happen monthly or quarterly, with lags of 2-4 weeks for major changes.",
               "score": 2
             },
             {
-              "label": "Broadly yes for key decisions.",
+              "label": "Updates occur monthly or bi-monthly for most scope. Reflects changes within 2-4 week cycle.",
               "score": 3
             },
             {
-              "label": "Yes for most relevant decisions.",
+              "label": "Updates occur weekly or bi-weekly across main scope. Most changes reflected within 1-2 weeks.",
               "score": 4
             },
             {
-              "label": "Yes, and it is actively maintained for decision use.",
+              "label": "Updates are automated and near-continuous. Changes reflected within days or as part of operational workflows.",
               "score": 5
             }
           ]
@@ -1958,23 +1958,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Not clearly.",
+              "label": "Lineage not clear or tracked. Data sources and confidence levels not understood.",
               "score": 1
             },
             {
-              "label": "Only at a basic level.",
+              "label": "Main sources documented but with variable quality. Confidence tracking exists for <50% of data.",
               "score": 2
             },
             {
-              "label": "The main basis is reasonably clear.",
+              "label": "Sources documented with confidence assigned for 50-75% of data. Some trust gaps in secondary areas.",
               "score": 3
             },
             {
-              "label": "Sources and evidence quality are clear across most cases.",
+              "label": "Data lineage documented with clear confidence levels for 75-90% of inputs. Regular audits of source quality.",
               "score": 4
             },
             {
-              "label": "The values are well evidenced, transparent and trusted.",
+              "label": "Complete lineage with confidence scoring for >90% of inputs. Continuous monitoring of source quality.",
               "score": 5
             }
           ]
@@ -1989,23 +1989,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Only broad reporting, if that.",
+              "label": "No meaningful link. Energy, emissions, or costs cannot be attributed to services, teams, or workloads.",
               "score": 1
             },
             {
-              "label": "Mostly rough directional insight.",
+              "label": "Attribution possible for 20-40% of IT load, mainly limited to major platforms or data halls. Service-level attribution is rare.",
               "score": 2
             },
             {
-              "label": "Good enough for some practical decisions.",
+              "label": "Attribution covers 50-75% of IT load across main platforms and environments. Some major services identified. Workload-level gaps remain.",
               "score": 3
             },
             {
-              "label": "Good enough for most refresh and procurement decisions.",
+              "label": "Energy can be attributed to specific services or teams for 75-90% of IT load. Allocation rules are documented and applied consistently.",
               "score": 4
             },
             {
-              "label": "Clearly decision-grade for lifecycle, supplier and circularity choices.",
+              "label": "Energy, emissions, and costs can be attributed at service/workload level for >90% of IT load with continuous validation and fine-grained traceability.",
               "score": 5
             }
           ]
@@ -2242,23 +2242,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Broad annual average factors.",
+              "label": "No formal process. Data collection is manual, error-prone, or not attempted.",
               "score": 1
             },
             {
-              "label": "Standard factor sets, but still quite coarse.",
+              "label": "Ad-hoc process with high manual effort. Inconsistent results. 20-40% of scope covered with confidence.",
               "score": 2
             },
             {
-              "label": "A defined set of factors with clear rules across the main areas.",
+              "label": "Documented process with partial automation. 50-75% of scope covered reliably. Some gaps remain.",
               "score": 3
             },
             {
-              "label": "More location- and time-relevant factors where needed.",
+              "label": "Established process with strong tooling. 75-90% of scope covered with documented confidence levels.",
               "score": 4
             },
             {
-              "label": "Decision-grade factors matched to the actual use case.",
+              "label": "Fully automated process with continuous validation. >90% of scope covered with high confidence. Continuous improvement active.",
               "score": 5
             }
           ]
@@ -2273,23 +2273,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Rarely.",
+              "label": "Location data missing or unreliable for most assets.",
               "score": 1
             },
             {
-              "label": "Only in broad terms.",
+              "label": "Location known at broad level (data centre region, building) for 20-40% of assets. Specific detail unknown.",
               "score": 2
             },
             {
-              "label": "Usually for the main use cases.",
+              "label": "Location known at zone/rack level for 50-75% of assets. Cloud regions and main facilities identified.",
               "score": 3
             },
             {
-              "label": "Yes across most relevant decisions.",
+              "label": "Location known at zone/rack/room level for 75-90% of assets. Cloud regions, AZs clearly identified.",
               "score": 4
             },
             {
-              "label": "Yes, with strong location relevance where it matters.",
+              "label": "Precise location (zone, rack, row, container) known for >90% of assets with automated tracking.",
               "score": 5
             }
           ]
@@ -2304,23 +2304,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Very broad and static.",
+              "label": "Data available less than quarterly. Long delays between collection and availability.",
               "score": 1
             },
             {
-              "label": "Limited time sensitivity.",
+              "label": "Data available quarterly or monthly, but with 2-4 week lags. Sufficient for periodic reviews only.",
               "score": 2
             },
             {
-              "label": "Good enough for regular reporting and planning.",
+              "label": "Data available monthly or bi-monthly with 1-2 week currency. Supports monthly management cycles.",
               "score": 3
             },
             {
-              "label": "Good time relevance for most important use cases.",
+              "label": "Data available weekly or bi-weekly with near-current information. Supports ongoing operational management.",
               "score": 4
             },
             {
-              "label": "Strong enough for time-sensitive operational decisions where needed.",
+              "label": "Data available daily or near-real-time. Supports continuous monitoring and immediate decision-making.",
               "score": 5
             }
           ]
@@ -2335,23 +2335,23 @@
           "tags": [],
           "options": [
             {
-              "label": "No.",
+              "label": "Lineage not clear or tracked. Data sources and confidence levels not understood.",
               "score": 1
             },
             {
-              "label": "Only partly.",
+              "label": "Main sources documented but with variable quality. Confidence tracking exists for <50% of data.",
               "score": 2
             },
             {
-              "label": "Yes for the main reporting use cases.",
+              "label": "Sources documented with confidence assigned for 50-75% of data. Some trust gaps in secondary areas.",
               "score": 3
             },
             {
-              "label": "Yes across most relevant areas.",
+              "label": "Data lineage documented with clear confidence levels for 75-90% of inputs. Regular audits of source quality.",
               "score": 4
             },
             {
-              "label": "Yes, clearly governed and consistently applied.",
+              "label": "Complete lineage with confidence scoring for >90% of inputs. Continuous monitoring of source quality.",
               "score": 5
             }
           ]
@@ -2366,23 +2366,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Mostly broad defaults.",
+              "label": "No meaningful coverage or not tracked. Visibility is fragmented and unreliable.",
               "score": 1
             },
             {
-              "label": "Some fit-for-purpose logic, but not much.",
+              "label": "Covers 20-40% of scope. Limited to main or core areas. Significant gaps remain.",
               "score": 2
             },
             {
-              "label": "A workable approach across most key areas.",
+              "label": "Covers 50-75% of scope with documented standard coverage. Gaps remain in secondary areas or edge cases.",
               "score": 3
             },
             {
-              "label": "A strong fit-for-purpose approach across the main estate.",
+              "label": "Covers 75-90% of scope with consistent methods. Gaps are known and actively managed.",
               "score": 4
             },
             {
-              "label": "Factors are well matched to the decisions they support.",
+              "label": "Covers >90% of scope with continuous discovery and automated updates.",
               "score": 5
             }
           ]
@@ -2397,23 +2397,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Very slowly.",
+              "label": "Updates are sporadic or absent. Data often 30+ days out of date.",
               "score": 1
             },
             {
-              "label": "With noticeable lag.",
+              "label": "Updates happen monthly or quarterly, with lags of 2-4 weeks for major changes.",
               "score": 2
             },
             {
-              "label": "In a reasonable timeframe.",
+              "label": "Updates occur monthly or bi-monthly for most scope. Reflects changes within 2-4 week cycle.",
               "score": 3
             },
             {
-              "label": "Quickly enough for most needs.",
+              "label": "Updates occur weekly or bi-weekly across main scope. Most changes reflected within 1-2 weeks.",
               "score": 4
             },
             {
-              "label": "Fast enough to stay decision-relevant.",
+              "label": "Updates are automated and near-continuous. Changes reflected within days or as part of operational workflows.",
               "score": 5
             }
           ]
@@ -2428,23 +2428,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Not clearly.",
+              "label": "Lineage not clear or tracked. Data sources and confidence levels not understood.",
               "score": 1
             },
             {
-              "label": "Only partly.",
+              "label": "Main sources documented but with variable quality. Confidence tracking exists for <50% of data.",
               "score": 2
             },
             {
-              "label": "The main logic is clear.",
+              "label": "Sources documented with confidence assigned for 50-75% of data. Some trust gaps in secondary areas.",
               "score": 3
             },
             {
-              "label": "The source and rationale are clear across most cases.",
+              "label": "Data lineage documented with clear confidence levels for 75-90% of inputs. Regular audits of source quality.",
               "score": 4
             },
             {
-              "label": "The logic is transparent, defensible and well understood.",
+              "label": "Complete lineage with confidence scoring for >90% of inputs. Continuous monitoring of source quality.",
               "score": 5
             }
           ]
@@ -2459,23 +2459,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Mostly broad reporting only.",
+              "label": "No meaningful link. Energy, emissions, or costs cannot be attributed to services, teams, or workloads.",
               "score": 1
             },
             {
-              "label": "Directional use at best.",
+              "label": "Attribution possible for 20-40% of IT load, mainly limited to major platforms or data halls. Service-level attribution is rare.",
               "score": 2
             },
             {
-              "label": "Good enough for some practical decisions.",
+              "label": "Attribution covers 50-75% of IT load across main platforms and environments. Some major services identified. Workload-level gaps remain.",
               "score": 3
             },
             {
-              "label": "Good enough for most key GreenOps decisions.",
+              "label": "Energy can be attributed to specific services or teams for 75-90% of IT load. Allocation rules are documented and applied consistently.",
               "score": 4
             },
             {
-              "label": "Clearly strong enough for decision-grade use.",
+              "label": "Energy, emissions, and costs can be attributed at service/workload level for >90% of IT load with continuous validation and fine-grained traceability.",
               "score": 5
             }
           ]
@@ -2682,23 +2682,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Very little.",
+              "label": "No meaningful coverage or not tracked. Visibility is fragmented and unreliable.",
               "score": 1
             },
             {
-              "label": "Some broad visibility only.",
+              "label": "Covers 20-40% of scope. Limited to main or core areas. Significant gaps remain.",
               "score": 2
             },
             {
-              "label": "A workable view across the main platforms.",
+              "label": "Covers 50-75% of scope with documented standard coverage. Gaps remain in secondary areas or edge cases.",
               "score": 3
             },
             {
-              "label": "Good visibility across most relevant environments.",
+              "label": "Covers 75-90% of scope with consistent methods. Gaps are known and actively managed.",
               "score": 4
             },
             {
-              "label": "Strong, trusted visibility that supports optimisation.",
+              "label": "Covers >90% of scope with continuous discovery and automated updates.",
               "score": 5
             }
           ]
@@ -2713,23 +2713,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Hardly at all.",
+              "label": "No real usage data. Capacity or deployment assumptions used instead. No measurement of actual workload or demand.",
               "score": 1
             },
             {
-              "label": "Only for some services.",
+              "label": "Limited usage measurement for 20-40% of applications. Manual surveys or infrequent snapshots. Gaps for background or non-critical services.",
               "score": 2
             },
             {
-              "label": "We can measure usage for many important services.",
+              "label": "Regular usage measurement for 50-75% of applications. Available at application or component level. Some services measured indirectly.",
               "score": 3
             },
             {
-              "label": "We have good service usage visibility across most main areas.",
+              "label": "Detailed usage data for 75-90% of applications with consistent metrics (CPU, memory, storage). Regular collection and documentation.",
               "score": 4
             },
             {
-              "label": "We measure service usage well enough to drive real decisions.",
+              "label": "Continuous usage measurement for >90% of applications with granular metrics (CPU, memory, I/O, network) and automated data collection.",
               "score": 5
             }
           ]
@@ -2744,23 +2744,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Rarely.",
+              "label": "No meaningful link. Energy, emissions, or costs cannot be attributed to services, teams, or workloads.",
               "score": 1
             },
             {
-              "label": "Only in some cases.",
+              "label": "Attribution possible for 20-40% of IT load, mainly limited to major platforms or data halls. Service-level attribution is rare.",
               "score": 2
             },
             {
-              "label": "For many important services or platforms.",
+              "label": "Attribution covers 50-75% of IT load across main platforms and environments. Some major services identified. Workload-level gaps remain.",
               "score": 3
             },
             {
-              "label": "For most relevant services and workloads.",
+              "label": "Energy can be attributed to specific services or teams for 75-90% of IT load. Allocation rules are documented and applied consistently.",
               "score": 4
             },
             {
-              "label": "Yes, clearly and consistently.",
+              "label": "Energy, emissions, and costs can be attributed at service/workload level for >90% of IT load with continuous validation and fine-grained traceability.",
               "score": 5
             }
           ]
@@ -2775,23 +2775,23 @@
           "tags": [],
           "options": [
             {
-              "label": "We mostly do not.",
+              "label": "No formal process. Data collection is manual, error-prone, or not attempted.",
               "score": 1
             },
             {
-              "label": "We notice some obvious cases.",
+              "label": "Ad-hoc process with high manual effort. Inconsistent results. 20-40% of scope covered with confidence.",
               "score": 2
             },
             {
-              "label": "We can identify many of the main issues.",
+              "label": "Documented process with partial automation. 50-75% of scope covered reliably. Some gaps remain.",
               "score": 3
             },
             {
-              "label": "We detect them well across most relevant areas.",
+              "label": "Established process with strong tooling. 75-90% of scope covered with documented confidence levels.",
               "score": 4
             },
             {
-              "label": "We identify and challenge them as part of normal operations.",
+              "label": "Fully automated process with continuous validation. >90% of scope covered with high confidence. Continuous improvement active.",
               "score": 5
             }
           ]
@@ -2806,23 +2806,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Rarely.",
+              "label": "Data available less than quarterly. Long delays between collection and availability.",
               "score": 1
             },
             {
-              "label": "Only periodically.",
+              "label": "Data available quarterly or monthly, but with 2-4 week lags. Sufficient for periodic reviews only.",
               "score": 2
             },
             {
-              "label": "Often enough for baseline management.",
+              "label": "Data available monthly or bi-monthly with 1-2 week currency. Supports monthly management cycles.",
               "score": 3
             },
             {
-              "label": "Frequently enough for regular optimisation.",
+              "label": "Data available weekly or bi-weekly with near-current information. Supports ongoing operational management.",
               "score": 4
             },
             {
-              "label": "Quickly enough to support active demand management.",
+              "label": "Data available daily or near-real-time. Supports continuous monitoring and immediate decision-making.",
               "score": 5
             }
           ]
@@ -2837,23 +2837,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Not really.",
+              "label": "Location data missing or unreliable for most assets.",
               "score": 1
             },
             {
-              "label": "Only in broad terms.",
+              "label": "Location known at broad level (data centre region, building) for 20-40% of assets. Specific detail unknown.",
               "score": 2
             },
             {
-              "label": "Yes for many major areas.",
+              "label": "Location known at zone/rack level for 50-75% of assets. Cloud regions and main facilities identified.",
               "score": 3
             },
             {
-              "label": "Yes across most of the main estate.",
+              "label": "Location known at zone/rack/room level for 75-90% of assets. Cloud regions, AZs clearly identified.",
               "score": 4
             },
             {
-              "label": "Yes, in a way that supports real comparison and decision-making.",
+              "label": "Precise location (zone, rack, row, container) known for >90% of assets with automated tracking.",
               "score": 5
             }
           ]
@@ -2868,23 +2868,23 @@
           "tags": [],
           "options": [
             {
-              "label": "We do not track this meaningfully.",
+              "label": "No formal process. Data collection is manual, error-prone, or not attempted.",
               "score": 1
             },
             {
-              "label": "We have a few basic figures, but they are incomplete.",
+              "label": "Ad-hoc process with high manual effort. Inconsistent results. 20-40% of scope covered with confidence.",
               "score": 2
             },
             {
-              "label": "We can see core AI demand measures for the main services.",
+              "label": "Documented process with partial automation. 50-75% of scope covered reliably. Some gaps remain.",
               "score": 3
             },
             {
-              "label": "We have good AI usage visibility and can compare services and use cases.",
+              "label": "Established process with strong tooling. 75-90% of scope covered with documented confidence levels.",
               "score": 4
             },
             {
-              "label": "We have strong AI usage data that supports governance and optimisation.",
+              "label": "Fully automated process with continuous validation. >90% of scope covered with high confidence. Continuous improvement active.",
               "score": 5
             }
           ]
@@ -2899,23 +2899,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Not clearly.",
+              "label": "Lineage not clear or tracked. Data sources and confidence levels not understood.",
               "score": 1
             },
             {
-              "label": "Only partly.",
+              "label": "Main sources documented but with variable quality. Confidence tracking exists for <50% of data.",
               "score": 2
             },
             {
-              "label": "The main sources are reasonably clear.",
+              "label": "Sources documented with confidence assigned for 50-75% of data. Some trust gaps in secondary areas.",
               "score": 3
             },
             {
-              "label": "Source and confidence are clear across most relevant areas.",
+              "label": "Data lineage documented with clear confidence levels for 75-90% of inputs. Regular audits of source quality.",
               "score": 4
             },
             {
-              "label": "The data is transparent, trusted and fit for decision use.",
+              "label": "Complete lineage with confidence scoring for >90% of inputs. Continuous monitoring of source quality.",
               "score": 5
             }
           ]
@@ -3186,23 +3186,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Most impact is still at total-estate level.",
+              "label": "Attribution rules not defined or documented. No consistent methodology for apportioning environmental impact.",
               "score": 1
             },
             {
-              "label": "We can split some impact, but only in broad terms.",
+              "label": "Basic rules exist (e.g., divide equally by count). Applied to 20-40% of IT load. Significant gaps in service-level attribution.",
               "score": 2
             },
             {
-              "label": "We can attribute most major areas to known services, teams or environments.",
+              "label": "Documented rules for 50-75% of IT load (e.g., proportional by utilisation, cost-based). Some areas use proxy methods.",
               "score": 3
             },
             {
-              "label": "We have good operational attribution across much of the estate.",
+              "label": "Clear, validated attribution rules for 75-90% of IT load, documented and applied consistently. Mix of measured and evidence-based allocation.",
               "score": 4
             },
             {
-              "label": "We have strong, decision-grade attribution that supports accountability and action.",
+              "label": "Comprehensive, audited attribution rules for >90% of IT load with continuous validation. Service-level attribution supported by measured data.",
               "score": 5
             }
           ]
@@ -3217,23 +3217,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Low credibility.",
+              "label": "No formal process. Data collection is manual, error-prone, or not attempted.",
               "score": 1
             },
             {
-              "label": "Basic and assumption-heavy.",
+              "label": "Ad-hoc process with high manual effort. Inconsistent results. 20-40% of scope covered with confidence.",
               "score": 2
             },
             {
-              "label": "Reasonable for the main use cases.",
+              "label": "Documented process with partial automation. 50-75% of scope covered reliably. Some gaps remain.",
               "score": 3
             },
             {
-              "label": "Strong across most relevant decisions.",
+              "label": "Established process with strong tooling. 75-90% of scope covered with documented confidence levels.",
               "score": 4
             },
             {
-              "label": "Robust and trusted enough for real accountability.",
+              "label": "Fully automated process with continuous validation. >90% of scope covered with high confidence. Continuous improvement active.",
               "score": 5
             }
           ]
@@ -3248,23 +3248,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Very little.",
+              "label": "No meaningful coverage or not tracked. Visibility is fragmented and unreliable.",
               "score": 1
             },
             {
-              "label": "Some areas only.",
+              "label": "Covers 20-40% of scope. Limited to main or core areas. Significant gaps remain.",
               "score": 2
             },
             {
-              "label": "A good portion of the main footprint.",
+              "label": "Covers 50-75% of scope with documented standard coverage. Gaps remain in secondary areas or edge cases.",
               "score": 3
             },
             {
-              "label": "Most key areas can be attributed usefully.",
+              "label": "Covers 75-90% of scope with consistent methods. Gaps are known and actively managed.",
               "score": 4
             },
             {
-              "label": "Attribution coverage is strong and operationally useful.",
+              "label": "Covers >90% of scope with continuous discovery and automated updates.",
               "score": 5
             }
           ]
@@ -3279,23 +3279,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Rarely.",
+              "label": "No meaningful link. Energy, emissions, or costs cannot be attributed to services, teams, or workloads.",
               "score": 1
             },
             {
-              "label": "Only in some areas.",
+              "label": "Attribution possible for 20-40% of IT load, mainly limited to major platforms or data halls. Service-level attribution is rare.",
               "score": 2
             },
             {
-              "label": "For many main services or teams.",
+              "label": "Attribution covers 50-75% of IT load across main platforms and environments. Some major services identified. Workload-level gaps remain.",
               "score": 3
             },
             {
-              "label": "For most relevant owners and services.",
+              "label": "Energy can be attributed to specific services or teams for 75-90% of IT load. Allocation rules are documented and applied consistently.",
               "score": 4
             },
             {
-              "label": "Yes, clearly and consistently.",
+              "label": "Energy, emissions, and costs can be attributed at service/workload level for >90% of IT load with continuous validation and fine-grained traceability.",
               "score": 5
             }
           ]
@@ -3310,23 +3310,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Mostly static rules.",
+              "label": "Static allocation rules used throughout. No time-based variation for demand or utilisation.",
               "score": 1
             },
             {
-              "label": "Some usage input, but still mainly broad allocation.",
+              "label": "Some usage input for 20-40% of assets. Allocation updated quarterly or less frequently.",
               "score": 2
             },
             {
-              "label": "A workable mix of real usage and allocation logic.",
+              "label": "Allocation reflects actual usage patterns for 50-75% of assets. Updated monthly with documented refresh cycles.",
               "score": 3
             },
             {
-              "label": "Good use of actual demand across most relevant areas.",
+              "label": "Allocation reflects actual demand for 75-90% of assets. Updated weekly or bi-weekly, supporting operational decisions.",
               "score": 4
             },
             {
-              "label": "Strong demand-based attribution where it matters.",
+              "label": "Real-time or near-real-time attribution reflecting current demand across >90% of assets. Continuous update with automated workflows.",
               "score": 5
             }
           ]
@@ -3341,23 +3341,23 @@
           "tags": [],
           "options": [
             {
-              "label": "No.",
+              "label": "Location data missing or unreliable for most assets.",
               "score": 1
             },
             {
-              "label": "Only loosely.",
+              "label": "Location known at broad level (data centre region, building) for 20-40% of assets. Specific detail unknown.",
               "score": 2
             },
             {
-              "label": "Broadly yes for main use cases.",
+              "label": "Location known at zone/rack level for 50-75% of assets. Cloud regions and main facilities identified.",
               "score": 3
             },
             {
-              "label": "Yes across most relevant decisions.",
+              "label": "Location known at zone/rack/room level for 75-90% of assets. Cloud regions, AZs clearly identified.",
               "score": 4
             },
             {
-              "label": "Yes, with strong locational accuracy where it matters.",
+              "label": "Precise location (zone, rack, row, container) known for >90% of assets with automated tracking.",
               "score": 5
             }
           ]
@@ -3372,23 +3372,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Not really.",
+              "label": "Lineage not clear or tracked. Data sources and confidence levels not understood.",
               "score": 1
             },
             {
-              "label": "Only at a high level.",
+              "label": "Main sources documented but with variable quality. Confidence tracking exists for <50% of data.",
               "score": 2
             },
             {
-              "label": "Yes for the main use cases.",
+              "label": "Sources documented with confidence assigned for 50-75% of data. Some trust gaps in secondary areas.",
               "score": 3
             },
             {
-              "label": "Yes, clearly across most relevant areas.",
+              "label": "Data lineage documented with clear confidence levels for 75-90% of inputs. Regular audits of source quality.",
               "score": 4
             },
             {
-              "label": "Yes, in a transparent and defensible way.",
+              "label": "Complete lineage with confidence scoring for >90% of inputs. Continuous monitoring of source quality.",
               "score": 5
             }
           ]
@@ -3403,23 +3403,23 @@
           "tags": [],
           "options": [
             {
-              "label": "No, not yet.",
+              "label": "No meaningful link. Energy, emissions, or costs cannot be attributed to services, teams, or workloads.",
               "score": 1
             },
             {
-              "label": "Only at a broad directional level.",
+              "label": "Attribution possible for 20-40% of IT load, mainly limited to major platforms or data halls. Service-level attribution is rare.",
               "score": 2
             },
             {
-              "label": "Good enough for some practical decisions.",
+              "label": "Attribution covers 50-75% of IT load across main platforms and environments. Some major services identified. Workload-level gaps remain.",
               "score": 3
             },
             {
-              "label": "Good enough for most key operational and management decisions.",
+              "label": "Energy can be attributed to specific services or teams for 75-90% of IT load. Allocation rules are documented and applied consistently.",
               "score": 4
             },
             {
-              "label": "Clearly strong enough for decision-grade use and accountability.",
+              "label": "Energy, emissions, and costs can be attributed at service/workload level for >90% of IT load with continuous validation and fine-grained traceability.",
               "score": 5
             }
           ]
@@ -3622,23 +3622,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Very little.",
+              "label": "No meaningful coverage or not tracked. Visibility is fragmented and unreliable.",
               "score": 1
             },
             {
-              "label": "Some data, but coverage is patchy or inconsistent.",
+              "label": "Covers 20-40% of scope. Limited to main or core areas. Significant gaps remain.",
               "score": 2
             },
             {
-              "label": "A usable baseline across most key cloud environments.",
+              "label": "Covers 50-75% of scope with documented standard coverage. Gaps remain in secondary areas or edge cases.",
               "score": 3
             },
             {
-              "label": "Good telemetry coverage and consistent use.",
+              "label": "Covers 75-90% of scope with consistent methods. Gaps are known and actively managed.",
               "score": 4
             },
             {
-              "label": "Strong, trusted telemetry that supports operational decisions.",
+              "label": "Covers >90% of scope with continuous discovery and automated updates.",
               "score": 5
             }
           ]
@@ -3653,23 +3653,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Very limited.",
+              "label": "Limited telemetry available. Unable to break down consumption or performance by workload, service, or tenant.",
               "score": 1
             },
             {
-              "label": "Basic only.",
+              "label": "Basic telemetry available for 20-40% of cloud resources. VM-level or instance-level data. Limited service or application mapping.",
               "score": 2
             },
             {
-              "label": "Enough detail for baseline analysis and some decisions.",
+              "label": "Detailed telemetry for 50-75% of cloud resources. Application-level metrics available. Some service-level attribution possible.",
               "score": 3
             },
             {
-              "label": "Good detail across most key services and environments.",
+              "label": "Comprehensive telemetry for 75-90% of cloud resources with consistent tagging. Service and workload-level data clearly available.",
               "score": 4
             },
             {
-              "label": "Detailed enough to support targeted optimisation and design choices.",
+              "label": "Rich telemetry for >90% of cloud resources with standardised tagging, cost allocation codes, and fine-grained workload-level attribution.",
               "score": 5
             }
           ]
@@ -3684,23 +3684,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Rarely.",
+              "label": "No meaningful link. Energy, emissions, or costs cannot be attributed to services, teams, or workloads.",
               "score": 1
             },
             {
-              "label": "Only partly.",
+              "label": "Attribution possible for 20-40% of IT load, mainly limited to major platforms or data halls. Service-level attribution is rare.",
               "score": 2
             },
             {
-              "label": "For many important workloads or accounts.",
+              "label": "Attribution covers 50-75% of IT load across main platforms and environments. Some major services identified. Workload-level gaps remain.",
               "score": 3
             },
             {
-              "label": "For most relevant cloud environments.",
+              "label": "Energy can be attributed to specific services or teams for 75-90% of IT load. Allocation rules are documented and applied consistently.",
               "score": 4
             },
             {
-              "label": "Yes, clearly and consistently.",
+              "label": "Energy, emissions, and costs can be attributed at service/workload level for >90% of IT load with continuous validation and fine-grained traceability.",
               "score": 5
             }
           ]
@@ -3715,23 +3715,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Infrequently.",
+              "label": "Data available less than quarterly. Long delays between collection and availability.",
               "score": 1
             },
             {
-              "label": "Periodically, but not very useful operationally.",
+              "label": "Data available quarterly or monthly, but with 2-4 week lags. Sufficient for periodic reviews only.",
               "score": 2
             },
             {
-              "label": "Often enough for regular analysis.",
+              "label": "Data available monthly or bi-monthly with 1-2 week currency. Supports monthly management cycles.",
               "score": 3
             },
             {
-              "label": "Frequent enough for management and optimisation.",
+              "label": "Data available weekly or bi-weekly with near-current information. Supports ongoing operational management.",
               "score": 4
             },
             {
-              "label": "Timely enough for active operational use.",
+              "label": "Data available daily or near-real-time. Supports continuous monitoring and immediate decision-making.",
               "score": 5
             }
           ]
@@ -3746,23 +3746,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Not really.",
+              "label": "Location data missing or unreliable for most assets.",
               "score": 1
             },
             {
-              "label": "Only at broad level.",
+              "label": "Location known at broad level (data centre region, building) for 20-40% of assets. Specific detail unknown.",
               "score": 2
             },
             {
-              "label": "Usually for main cloud environments.",
+              "label": "Location known at zone/rack level for 50-75% of assets. Cloud regions and main facilities identified.",
               "score": 3
             },
             {
-              "label": "Yes across most relevant workloads.",
+              "label": "Location known at zone/rack/room level for 75-90% of assets. Cloud regions, AZs clearly identified.",
               "score": 4
             },
             {
-              "label": "Yes, with strong location accuracy for decision-making.",
+              "label": "Precise location (zone, rack, row, container) known for >90% of assets with automated tracking.",
               "score": 5
             }
           ]
@@ -3777,23 +3777,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Weak or unclear.",
+              "label": "No formal process. Data collection is manual, error-prone, or not attempted.",
               "score": 1
             },
             {
-              "label": "Basic and assumption-heavy.",
+              "label": "Ad-hoc process with high manual effort. Inconsistent results. 20-40% of scope covered with confidence.",
               "score": 2
             },
             {
-              "label": "Reasonable for the main use cases.",
+              "label": "Documented process with partial automation. 50-75% of scope covered reliably. Some gaps remain.",
               "score": 3
             },
             {
-              "label": "Strong across most relevant areas.",
+              "label": "Established process with strong tooling. 75-90% of scope covered with documented confidence levels.",
               "score": 4
             },
             {
-              "label": "Robust enough for real GreenOps decision support.",
+              "label": "Fully automated process with continuous validation. >90% of scope covered with high confidence. Continuous improvement active.",
               "score": 5
             }
           ]
@@ -3808,23 +3808,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Very slowly.",
+              "label": "Updates are sporadic or absent. Data often 30+ days out of date.",
               "score": 1
             },
             {
-              "label": "Slower than we would like.",
+              "label": "Updates happen monthly or quarterly, with lags of 2-4 weeks for major changes.",
               "score": 2
             },
             {
-              "label": "Reasonable for most needs.",
+              "label": "Updates occur monthly or bi-monthly for most scope. Reflects changes within 2-4 week cycle.",
               "score": 3
             },
             {
-              "label": "Fast enough for regular management.",
+              "label": "Updates occur weekly or bi-weekly across main scope. Most changes reflected within 1-2 weeks.",
               "score": 4
             },
             {
-              "label": "Fast enough for practical operational action.",
+              "label": "Updates are automated and near-continuous. Changes reflected within days or as part of operational workflows.",
               "score": 5
             }
           ]
@@ -3839,23 +3839,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Not clearly.",
+              "label": "Lineage not clear or tracked. Data sources and confidence levels not understood.",
               "score": 1
             },
             {
-              "label": "Only partly.",
+              "label": "Main sources documented but with variable quality. Confidence tracking exists for <50% of data.",
               "score": 2
             },
             {
-              "label": "Main sources and confidence are reasonably clear.",
+              "label": "Sources documented with confidence assigned for 50-75% of data. Some trust gaps in secondary areas.",
               "score": 3
             },
             {
-              "label": "Source and confidence are clear across most relevant areas.",
+              "label": "Data lineage documented with clear confidence levels for 75-90% of inputs. Regular audits of source quality.",
               "score": 4
             },
             {
-              "label": "The telemetry is transparent, trusted and fit for decision use.",
+              "label": "Complete lineage with confidence scoring for >90% of inputs. Continuous monitoring of source quality.",
               "score": 5
             }
           ]
@@ -4058,23 +4058,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Very little.",
+              "label": "No meaningful coverage or not tracked. Visibility is fragmented and unreliable.",
               "score": 1
             },
             {
-              "label": "Some data, but it is basic or inconsistent.",
+              "label": "Covers 20-40% of scope. Limited to main or core areas. Significant gaps remain.",
               "score": 2
             },
             {
-              "label": "Enough for a usable baseline.",
+              "label": "Covers 50-75% of scope with documented standard coverage. Gaps remain in secondary areas or edge cases.",
               "score": 3
             },
             {
-              "label": "Good quality data from most key providers.",
+              "label": "Covers 75-90% of scope with consistent methods. Gaps are known and actively managed.",
               "score": 4
             },
             {
-              "label": "Strong, trusted data that supports real decisions.",
+              "label": "Covers >90% of scope with continuous discovery and automated updates.",
               "score": 5
             }
           ]
@@ -4089,23 +4089,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Very broad only.",
+              "label": "Minimal data provided by colocation or cloud provider. Only aggregate facility-level consumption available.",
               "score": 1
             },
             {
-              "label": "Limited breakdown.",
+              "label": "Basic breakdown available (e.g., by cage, cabinet, or region). Coverage 20-40%. Infrequent updates (quarterly or less).",
               "score": 2
             },
             {
-              "label": "Enough detail for baseline analysis.",
+              "label": "Detailed breakdown available for 50-75% of colocation footprint (e.g., per-cabinet or per-circuit). Monthly updates.",
               "score": 3
             },
             {
-              "label": "Good detail across most key providers.",
+              "label": "Granular data for 75-90% of colocation footprint with documented data quality. Weekly or bi-weekly updates with confidence levels.",
               "score": 4
             },
             {
-              "label": "Detailed enough for operational and comparative decisions.",
+              "label": "Near real-time telemetry for >90% of colocation footprint with high granularity (circuit, power distribution). Continuous validation agreements in place.",
               "score": 5
             }
           ]
@@ -4120,23 +4120,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Hardly at all.",
+              "label": "No meaningful link. Energy, emissions, or costs cannot be attributed to services, teams, or workloads.",
               "score": 1
             },
             {
-              "label": "Only in broad terms.",
+              "label": "Attribution possible for 20-40% of IT load, mainly limited to major platforms or data halls. Service-level attribution is rare.",
               "score": 2
             },
             {
-              "label": "For some key environments.",
+              "label": "Attribution covers 50-75% of IT load across main platforms and environments. Some major services identified. Workload-level gaps remain.",
               "score": 3
             },
             {
-              "label": "For most relevant provider-hosted environments.",
+              "label": "Energy can be attributed to specific services or teams for 75-90% of IT load. Allocation rules are documented and applied consistently.",
               "score": 4
             },
             {
-              "label": "Yes, clearly enough to support attribution and action.",
+              "label": "Energy, emissions, and costs can be attributed at service/workload level for >90% of IT load with continuous validation and fine-grained traceability.",
               "score": 5
             }
           ]
@@ -4151,23 +4151,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Not reliably.",
+              "label": "Location data missing or unreliable for most assets.",
               "score": 1
             },
             {
-              "label": "Only at broad provider level.",
+              "label": "Location known at broad level (data centre region, building) for 20-40% of assets. Specific detail unknown.",
               "score": 2
             },
             {
-              "label": "Usually at site level for the main areas.",
+              "label": "Location known at zone/rack level for 50-75% of assets. Cloud regions and main facilities identified.",
               "score": 3
             },
             {
-              "label": "Yes across most relevant provider environments.",
+              "label": "Location known at zone/rack/room level for 75-90% of assets. Cloud regions, AZs clearly identified.",
               "score": 4
             },
             {
-              "label": "Yes, with strong site/environment accuracy.",
+              "label": "Precise location (zone, rack, row, container) known for >90% of assets with automated tracking.",
               "score": 5
             }
           ]
@@ -4182,23 +4182,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Very slow.",
+              "label": "Updates are sporadic or absent. Data often 30+ days out of date.",
               "score": 1
             },
             {
-              "label": "Noticeably delayed.",
+              "label": "Updates happen monthly or quarterly, with lags of 2-4 weeks for major changes.",
               "score": 2
             },
             {
-              "label": "Reasonable for regular reporting.",
+              "label": "Updates occur monthly or bi-monthly for most scope. Reflects changes within 2-4 week cycle.",
               "score": 3
             },
             {
-              "label": "Good enough for management use.",
+              "label": "Updates occur weekly or bi-weekly across main scope. Most changes reflected within 1-2 weeks.",
               "score": 4
             },
             {
-              "label": "Timely enough for practical decision support.",
+              "label": "Updates are automated and near-continuous. Changes reflected within days or as part of operational workflows.",
               "score": 5
             }
           ]
@@ -4213,23 +4213,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Weak or unclear.",
+              "label": "No formal process. Data collection is manual, error-prone, or not attempted.",
               "score": 1
             },
             {
-              "label": "Basic and hard to validate.",
+              "label": "Ad-hoc process with high manual effort. Inconsistent results. 20-40% of scope covered with confidence.",
               "score": 2
             },
             {
-              "label": "Reasonable for baseline use.",
+              "label": "Documented process with partial automation. 50-75% of scope covered reliably. Some gaps remain.",
               "score": 3
             },
             {
-              "label": "Strong across most relevant metrics.",
+              "label": "Established process with strong tooling. 75-90% of scope covered with documented confidence levels.",
               "score": 4
             },
             {
-              "label": "Clear, robust and credible.",
+              "label": "Fully automated process with continuous validation. >90% of scope covered with high confidence. Continuous improvement active.",
               "score": 5
             }
           ]
@@ -4244,23 +4244,23 @@
           "tags": [],
           "options": [
             {
-              "label": "No, not clearly.",
+              "label": "Lineage not clear or tracked. Data sources and confidence levels not understood.",
               "score": 1
             },
             {
-              "label": "Only partly.",
+              "label": "Main sources documented but with variable quality. Confidence tracking exists for <50% of data.",
               "score": 2
             },
             {
-              "label": "Broadly yes for the main numbers.",
+              "label": "Sources documented with confidence assigned for 50-75% of data. Some trust gaps in secondary areas.",
               "score": 3
             },
             {
-              "label": "Yes across most relevant disclosures.",
+              "label": "Data lineage documented with clear confidence levels for 75-90% of inputs. Regular audits of source quality.",
               "score": 4
             },
             {
-              "label": "Yes, with strong transparency and evidence.",
+              "label": "Complete lineage with confidence scoring for >90% of inputs. Continuous monitoring of source quality.",
               "score": 5
             }
           ]
@@ -4275,23 +4275,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Mostly high-level reporting only.",
+              "label": "No meaningful link. Energy, emissions, or costs cannot be attributed to services, teams, or workloads.",
               "score": 1
             },
             {
-              "label": "Directional use at best.",
+              "label": "Attribution possible for 20-40% of IT load, mainly limited to major platforms or data halls. Service-level attribution is rare.",
               "score": 2
             },
             {
-              "label": "Good enough for some practical decisions.",
+              "label": "Attribution covers 50-75% of IT load across main platforms and environments. Some major services identified. Workload-level gaps remain.",
               "score": 3
             },
             {
-              "label": "Good enough for most key provider-related decisions.",
+              "label": "Energy can be attributed to specific services or teams for 75-90% of IT load. Allocation rules are documented and applied consistently.",
               "score": 4
             },
             {
-              "label": "Clearly decision-grade for management and challenge.",
+              "label": "Energy, emissions, and costs can be attributed at service/workload level for >90% of IT load with continuous validation and fine-grained traceability.",
               "score": 5
             }
           ]
@@ -4458,23 +4458,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Very coarse.",
+              "label": "Data available less than quarterly. Long delays between collection and availability.",
               "score": 1
             },
             {
-              "label": "Coarse, with only limited usefulness.",
+              "label": "Data available quarterly or monthly, but with 2-4 week lags. Sufficient for periodic reviews only.",
               "score": 2
             },
             {
-              "label": "Good enough for baseline tracking and planning.",
+              "label": "Data available monthly or bi-monthly with 1-2 week currency. Supports monthly management cycles.",
               "score": 3
             },
             {
-              "label": "Good enough for most practical use.",
+              "label": "Data available weekly or bi-weekly with near-current information. Supports ongoing operational management.",
               "score": 4
             },
             {
-              "label": "Strong enough for time-sensitive decisions where needed.",
+              "label": "Data available daily or near-real-time. Supports continuous monitoring and immediate decision-making.",
               "score": 5
             }
           ]
@@ -4489,23 +4489,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Very slow.",
+              "label": "Updates are sporadic or absent. Data often 30+ days out of date.",
               "score": 1
             },
             {
-              "label": "Slow enough to limit usefulness.",
+              "label": "Updates happen monthly or quarterly, with lags of 2-4 weeks for major changes.",
               "score": 2
             },
             {
-              "label": "Reasonable for most reporting and planning.",
+              "label": "Updates occur monthly or bi-monthly for most scope. Reflects changes within 2-4 week cycle.",
               "score": 3
             },
             {
-              "label": "Good enough for regular management.",
+              "label": "Updates occur weekly or bi-weekly across main scope. Most changes reflected within 1-2 weeks.",
               "score": 4
             },
             {
-              "label": "Fast enough for ongoing operational use where needed.",
+              "label": "Updates are automated and near-continuous. Changes reflected within days or as part of operational workflows.",
               "score": 5
             }
           ]
@@ -4520,23 +4520,23 @@
           "tags": [],
           "options": [
             {
-              "label": "No.",
+              "label": "No formal process. Data collection is manual, error-prone, or not attempted.",
               "score": 1
             },
             {
-              "label": "Only loosely.",
+              "label": "Ad-hoc process with high manual effort. Inconsistent results. 20-40% of scope covered with confidence.",
               "score": 2
             },
             {
-              "label": "Broadly yes across the main areas.",
+              "label": "Documented process with partial automation. 50-75% of scope covered reliably. Some gaps remain.",
               "score": 3
             },
             {
-              "label": "Yes across most relevant data domains.",
+              "label": "Established process with strong tooling. 75-90% of scope covered with documented confidence levels.",
               "score": 4
             },
             {
-              "label": "Yes, clearly and consistently.",
+              "label": "Fully automated process with continuous validation. >90% of scope covered with high confidence. Continuous improvement active.",
               "score": 5
             }
           ]
@@ -4551,23 +4551,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Rarely.",
+              "label": "Lineage not clear or tracked. Data sources and confidence levels not understood.",
               "score": 1
             },
             {
-              "label": "Only in some areas.",
+              "label": "Main sources documented but with variable quality. Confidence tracking exists for <50% of data.",
               "score": 2
             },
             {
-              "label": "Usually for the main datasets.",
+              "label": "Sources documented with confidence assigned for 50-75% of data. Some trust gaps in secondary areas.",
               "score": 3
             },
             {
-              "label": "Yes across most relevant data.",
+              "label": "Data lineage documented with clear confidence levels for 75-90% of inputs. Regular audits of source quality.",
               "score": 4
             },
             {
-              "label": "Yes, clearly and consistently, with good controls.",
+              "label": "Complete lineage with confidence scoring for >90% of inputs. Continuous monitoring of source quality.",
               "score": 5
             }
           ]
@@ -4582,23 +4582,23 @@
           "tags": [],
           "options": [
             {
-              "label": "No, it is too coarse.",
+              "label": "No meaningful link. Energy, emissions, or costs cannot be attributed to services, teams, or workloads.",
               "score": 1
             },
             {
-              "label": "It supports broad reporting, but little else.",
+              "label": "Attribution possible for 20-40% of IT load, mainly limited to major platforms or data halls. Service-level attribution is rare.",
               "score": 2
             },
             {
-              "label": "It is good enough for some operational and planning decisions.",
+              "label": "Attribution covers 50-75% of IT load across main platforms and environments. Some major services identified. Workload-level gaps remain.",
               "score": 3
             },
             {
-              "label": "It supports most of the key decisions we need to make.",
+              "label": "Energy can be attributed to specific services or teams for 75-90% of IT load. Allocation rules are documented and applied consistently.",
               "score": 4
             },
             {
-              "label": "It is strong enough for near-operational optimisation where needed.",
+              "label": "Energy, emissions, and costs can be attributed at service/workload level for >90% of IT load with continuous validation and fine-grained traceability.",
               "score": 5
             }
           ]
@@ -4613,23 +4613,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Very little.",
+              "label": "No meaningful coverage or not tracked. Visibility is fragmented and unreliable.",
               "score": 1
             },
             {
-              "label": "Some important areas only.",
+              "label": "Covers 20-40% of scope. Limited to main or core areas. Significant gaps remain.",
               "score": 2
             },
             {
-              "label": "A good portion of the relevant estate.",
+              "label": "Covers 50-75% of scope with documented standard coverage. Gaps remain in secondary areas or edge cases.",
               "score": 3
             },
             {
-              "label": "Most key areas are covered.",
+              "label": "Covers 75-90% of scope with consistent methods. Gaps are known and actively managed.",
               "score": 4
             },
             {
-              "label": "Coverage is broad and fit for decision use.",
+              "label": "Covers >90% of scope with continuous discovery and automated updates.",
               "score": 5
             }
           ]
@@ -4644,23 +4644,23 @@
           "tags": [],
           "options": [
             {
-              "label": "No.",
+              "label": "Location data missing or unreliable for most assets.",
               "score": 1
             },
             {
-              "label": "Only loosely.",
+              "label": "Location known at broad level (data centre region, building) for 20-40% of assets. Specific detail unknown.",
               "score": 2
             },
             {
-              "label": "Broadly yes for key areas.",
+              "label": "Location known at zone/rack level for 50-75% of assets. Cloud regions and main facilities identified.",
               "score": 3
             },
             {
-              "label": "Yes across most relevant use cases.",
+              "label": "Location known at zone/rack/room level for 75-90% of assets. Cloud regions, AZs clearly identified.",
               "score": 4
             },
             {
-              "label": "Yes, with strong fit to the operational reality.",
+              "label": "Precise location (zone, rack, row, container) known for >90% of assets with automated tracking.",
               "score": 5
             }
           ]
@@ -4675,23 +4675,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Not really.",
+              "label": "Lineage not clear or tracked. Data sources and confidence levels not understood.",
               "score": 1
             },
             {
-              "label": "Only partly.",
+              "label": "Main sources documented but with variable quality. Confidence tracking exists for <50% of data.",
               "score": 2
             },
             {
-              "label": "Yes for the main datasets.",
+              "label": "Sources documented with confidence assigned for 50-75% of data. Some trust gaps in secondary areas.",
               "score": 3
             },
             {
-              "label": "Yes across most relevant areas.",
+              "label": "Data lineage documented with clear confidence levels for 75-90% of inputs. Regular audits of source quality.",
               "score": 4
             },
             {
-              "label": "Yes, clearly enough for users to judge fitness for purpose.",
+              "label": "Complete lineage with confidence scoring for >90% of inputs. Continuous monitoring of source quality.",
               "score": 5
             }
           ]
@@ -4859,23 +4859,23 @@
           "tags": [],
           "options": [
             {
-              "label": "No.",
+              "label": "Lineage not clear or tracked. Data sources and confidence levels not understood.",
               "score": 1
             },
             {
-              "label": "Only partly.",
+              "label": "Main sources documented but with variable quality. Confidence tracking exists for <50% of data.",
               "score": 2
             },
             {
-              "label": "Yes for the main outputs.",
+              "label": "Sources documented with confidence assigned for 50-75% of data. Some trust gaps in secondary areas.",
               "score": 3
             },
             {
-              "label": "Yes across most relevant areas.",
+              "label": "Data lineage documented with clear confidence levels for 75-90% of inputs. Regular audits of source quality.",
               "score": 4
             },
             {
-              "label": "Yes, clearly and consistently.",
+              "label": "Complete lineage with confidence scoring for >90% of inputs. Continuous monitoring of source quality.",
               "score": 5
             }
           ]
@@ -4890,23 +4890,23 @@
           "tags": [],
           "options": [
             {
-              "label": "No.",
+              "label": "No formal process. Data collection is manual, error-prone, or not attempted.",
               "score": 1
             },
             {
-              "label": "Only at a basic level.",
+              "label": "Ad-hoc process with high manual effort. Inconsistent results. 20-40% of scope covered with confidence.",
               "score": 2
             },
             {
-              "label": "Broadly yes for the main calculations.",
+              "label": "Documented process with partial automation. 50-75% of scope covered reliably. Some gaps remain.",
               "score": 3
             },
             {
-              "label": "Yes across most relevant methods.",
+              "label": "Established process with strong tooling. 75-90% of scope covered with documented confidence levels.",
               "score": 4
             },
             {
-              "label": "Yes, clearly and in a way others can use confidently.",
+              "label": "Fully automated process with continuous validation. >90% of scope covered with high confidence. Continuous improvement active.",
               "score": 5
             }
           ]
@@ -4921,23 +4921,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Unlikely.",
+              "label": "Lineage not clear or tracked. Data sources and confidence levels not understood.",
               "score": 1
             },
             {
-              "label": "Only with significant effort.",
+              "label": "Main sources documented but with variable quality. Confidence tracking exists for <50% of data.",
               "score": 2
             },
             {
-              "label": "Probably for the main outputs.",
+              "label": "Sources documented with confidence assigned for 50-75% of data. Some trust gaps in secondary areas.",
               "score": 3
             },
             {
-              "label": "Yes for most relevant outputs.",
+              "label": "Data lineage documented with clear confidence levels for 75-90% of inputs. Regular audits of source quality.",
               "score": 4
             },
             {
-              "label": "Yes, reproducibly and with confidence.",
+              "label": "Complete lineage with confidence scoring for >90% of inputs. Continuous monitoring of source quality.",
               "score": 5
             }
           ]
@@ -4952,23 +4952,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Hardly at all.",
+              "label": "No meaningful coverage or not tracked. Visibility is fragmented and unreliable.",
               "score": 1
             },
             {
-              "label": "In some places only.",
+              "label": "Covers 20-40% of scope. Limited to main or core areas. Significant gaps remain.",
               "score": 2
             },
             {
-              "label": "Broadly yes for the main outputs.",
+              "label": "Covers 50-75% of scope with documented standard coverage. Gaps remain in secondary areas or edge cases.",
               "score": 3
             },
             {
-              "label": "Yes across most relevant areas.",
+              "label": "Covers 75-90% of scope with consistent methods. Gaps are known and actively managed.",
               "score": 4
             },
             {
-              "label": "Yes, clearly and as part of normal governance.",
+              "label": "Covers >90% of scope with continuous discovery and automated updates.",
               "score": 5
             }
           ]
@@ -4983,23 +4983,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Not really.",
+              "label": "No meaningful link. Energy, emissions, or costs cannot be attributed to services, teams, or workloads.",
               "score": 1
             },
             {
-              "label": "Only vaguely.",
+              "label": "Attribution possible for 20-40% of IT load, mainly limited to major platforms or data halls. Service-level attribution is rare.",
               "score": 2
             },
             {
-              "label": "Usually for the main outputs.",
+              "label": "Attribution covers 50-75% of IT load across main platforms and environments. Some major services identified. Workload-level gaps remain.",
               "score": 3
             },
             {
-              "label": "Yes across most important outputs.",
+              "label": "Energy can be attributed to specific services or teams for 75-90% of IT load. Allocation rules are documented and applied consistently.",
               "score": 4
             },
             {
-              "label": "Yes, confidence and caveats are clear and well understood.",
+              "label": "Energy, emissions, and costs can be attributed at service/workload level for >90% of IT load with continuous validation and fine-grained traceability.",
               "score": 5
             }
           ]
@@ -5014,23 +5014,23 @@
           "tags": [],
           "options": [
             {
-              "label": "No.",
+              "label": "Updates are sporadic or absent. Data often 30+ days out of date.",
               "score": 1
             },
             {
-              "label": "Only loosely.",
+              "label": "Updates happen monthly or quarterly, with lags of 2-4 weeks for major changes.",
               "score": 2
             },
             {
-              "label": "Broadly yes for the main methods.",
+              "label": "Updates occur monthly or bi-monthly for most scope. Reflects changes within 2-4 week cycle.",
               "score": 3
             },
             {
-              "label": "Yes across most relevant areas.",
+              "label": "Updates occur weekly or bi-weekly across main scope. Most changes reflected within 1-2 weeks.",
               "score": 4
             },
             {
-              "label": "Yes, in a controlled and auditable way.",
+              "label": "Updates are automated and near-continuous. Changes reflected within days or as part of operational workflows.",
               "score": 5
             }
           ]
@@ -5045,23 +5045,23 @@
           "tags": [],
           "options": [
             {
-              "label": "No, or hardly at all.",
+              "label": "No formal process. Data collection is manual, error-prone, or not attempted.",
               "score": 1
             },
             {
-              "label": "Only partly.",
+              "label": "Ad-hoc process with high manual effort. Inconsistent results. 20-40% of scope covered with confidence.",
               "score": 2
             },
             {
-              "label": "Yes in most key areas.",
+              "label": "Documented process with partial automation. 50-75% of scope covered reliably. Some gaps remain.",
               "score": 3
             },
             {
-              "label": "Yes, clearly and consistently in the main outputs.",
+              "label": "Established process with strong tooling. 75-90% of scope covered with documented confidence levels.",
               "score": 4
             },
             {
-              "label": "Yes, explicitly and in a way stakeholders can rely on.",
+              "label": "Fully automated process with continuous validation. >90% of scope covered with high confidence. Continuous improvement active.",
               "score": 5
             }
           ]
@@ -5076,23 +5076,23 @@
           "tags": [],
           "options": [
             {
-              "label": "No.",
+              "label": "Lineage not clear or tracked. Data sources and confidence levels not understood.",
               "score": 1
             },
             {
-              "label": "Only for limited use.",
+              "label": "Main sources documented but with variable quality. Confidence tracking exists for <50% of data.",
               "score": 2
             },
             {
-              "label": "Good enough for baseline reporting and some decisions.",
+              "label": "Sources documented with confidence assigned for 50-75% of data. Some trust gaps in secondary areas.",
               "score": 3
             },
             {
-              "label": "Good enough for most intended stakeholders and uses.",
+              "label": "Data lineage documented with clear confidence levels for 75-90% of inputs. Regular audits of source quality.",
               "score": 4
             },
             {
-              "label": "Strong enough for decision-grade and governance use.",
+              "label": "Complete lineage with confidence scoring for >90% of inputs. Continuous monitoring of source quality.",
               "score": 5
             }
           ]
@@ -5260,23 +5260,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Mainly for reporting or presentations.",
+              "label": "No meaningful link. Energy, emissions, or costs cannot be attributed to services, teams, or workloads.",
               "score": 1
             },
             {
-              "label": "It occasionally informs one-off decisions.",
+              "label": "Attribution possible for 20-40% of IT load, mainly limited to major platforms or data halls. Service-level attribution is rare.",
               "score": 2
             },
             {
-              "label": "It is used in some regular decision processes.",
+              "label": "Attribution covers 50-75% of IT load across main platforms and environments. Some major services identified. Workload-level gaps remain.",
               "score": 3
             },
             {
-              "label": "It is used consistently in key operational and planning decisions.",
+              "label": "Energy can be attributed to specific services or teams for 75-90% of IT load. Allocation rules are documented and applied consistently.",
               "score": 4
             },
             {
-              "label": "It is embedded in normal management, optimisation and governance.",
+              "label": "Energy, emissions, and costs can be attributed at service/workload level for >90% of IT load with continuous validation and fine-grained traceability.",
               "score": 5
             }
           ]
@@ -5291,23 +5291,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Rarely.",
+              "label": "No meaningful link. Energy, emissions, or costs cannot be attributed to services, teams, or workloads.",
               "score": 1
             },
             {
-              "label": "Only in some cases.",
+              "label": "Attribution possible for 20-40% of IT load, mainly limited to major platforms or data halls. Service-level attribution is rare.",
               "score": 2
             },
             {
-              "label": "For many important actions.",
+              "label": "Attribution covers 50-75% of IT load across main platforms and environments. Some major services identified. Workload-level gaps remain.",
               "score": 3
             },
             {
-              "label": "For most relevant actions and decisions.",
+              "label": "Energy can be attributed to specific services or teams for 75-90% of IT load. Allocation rules are documented and applied consistently.",
               "score": 4
             },
             {
-              "label": "Yes, clearly and consistently.",
+              "label": "Energy, emissions, and costs can be attributed at service/workload level for >90% of IT load with continuous validation and fine-grained traceability.",
               "score": 5
             }
           ]
@@ -5322,23 +5322,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Very weak or ad hoc.",
+              "label": "No formal process. Data collection is manual, error-prone, or not attempted.",
               "score": 1
             },
             {
-              "label": "Basic and inconsistent.",
+              "label": "Ad-hoc process with high manual effort. Inconsistent results. 20-40% of scope covered with confidence.",
               "score": 2
             },
             {
-              "label": "A workable process exists for the main areas.",
+              "label": "Documented process with partial automation. 50-75% of scope covered reliably. Some gaps remain.",
               "score": 3
             },
             {
-              "label": "A strong repeatable workflow exists across most relevant areas.",
+              "label": "Established process with strong tooling. 75-90% of scope covered with documented confidence levels.",
               "score": 4
             },
             {
-              "label": "Optimisation is part of normal operating practice.",
+              "label": "Fully automated process with continuous validation. >90% of scope covered with high confidence. Continuous improvement active.",
               "score": 5
             }
           ]
@@ -5353,23 +5353,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Very little.",
+              "label": "No meaningful coverage or not tracked. Visibility is fragmented and unreliable.",
               "score": 1
             },
             {
-              "label": "Some areas only.",
+              "label": "Covers 20-40% of scope. Limited to main or core areas. Significant gaps remain.",
               "score": 2
             },
             {
-              "label": "A good portion of the main estate.",
+              "label": "Covers 50-75% of scope with documented standard coverage. Gaps remain in secondary areas or edge cases.",
               "score": 3
             },
             {
-              "label": "Most relevant areas are covered.",
+              "label": "Covers 75-90% of scope with consistent methods. Gaps are known and actively managed.",
               "score": 4
             },
             {
-              "label": "Coverage is broad and operationally meaningful.",
+              "label": "Covers >90% of scope with continuous discovery and automated updates.",
               "score": 5
             }
           ]
@@ -5384,23 +5384,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Slowly, if at all.",
+              "label": "Updates are sporadic or absent. Data often 30+ days out of date.",
               "score": 1
             },
             {
-              "label": "With noticeable delay.",
+              "label": "Updates happen monthly or quarterly, with lags of 2-4 weeks for major changes.",
               "score": 2
             },
             {
-              "label": "In a reasonable timeframe.",
+              "label": "Updates occur monthly or bi-monthly for most scope. Reflects changes within 2-4 week cycle.",
               "score": 3
             },
             {
-              "label": "Quickly enough for most operational needs.",
+              "label": "Updates occur weekly or bi-weekly across main scope. Most changes reflected within 1-2 weeks.",
               "score": 4
             },
             {
-              "label": "Fast enough to support continuous improvement.",
+              "label": "Updates are automated and near-continuous. Changes reflected within days or as part of operational workflows.",
               "score": 5
             }
           ]
@@ -5415,23 +5415,23 @@
           "tags": [],
           "options": [
             {
-              "label": "No.",
+              "label": "Location data missing or unreliable for most assets.",
               "score": 1
             },
             {
-              "label": "Only in a very limited way.",
+              "label": "Location known at broad level (data centre region, building) for 20-40% of assets. Specific detail unknown.",
               "score": 2
             },
             {
-              "label": "Broadly yes for some key use cases.",
+              "label": "Location known at zone/rack level for 50-75% of assets. Cloud regions and main facilities identified.",
               "score": 3
             },
             {
-              "label": "Yes for most relevant decisions.",
+              "label": "Location known at zone/rack/room level for 75-90% of assets. Cloud regions, AZs clearly identified.",
               "score": 4
             },
             {
-              "label": "Yes, in a way that supports real operational optimisation.",
+              "label": "Precise location (zone, rack, row, container) known for >90% of assets with automated tracking.",
               "score": 5
             }
           ]
@@ -5446,23 +5446,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Rarely.",
+              "label": "No systematic measurement of actual outcomes. Actions assumed to have worked.",
               "score": 1
             },
             {
-              "label": "Only in some cases.",
+              "label": "Outcomes measured for 20-40% of optimisation actions. Mostly retrospective or one-off assessments.",
               "score": 2
             },
             {
-              "label": "Broadly yes for major actions.",
+              "label": "Regular outcome tracking for 50-75% of key actions. Monthly or quarterly measurement cycles documented.",
               "score": 3
             },
             {
-              "label": "Yes across most important actions.",
+              "label": "Systematic outcome measurement for 75-90% of actions. Weekly or monthly assessment with confidence scoring.",
               "score": 4
             },
             {
-              "label": "Yes, consistently and in a way that improves future decisions.",
+              "label": "Continuous outcome measurement for >90% of actions with automated tracking and feedback loops.",
               "score": 5
             }
           ]
@@ -5477,23 +5477,23 @@
           "tags": [],
           "options": [
             {
-              "label": "No.",
+              "label": "Lineage not clear or tracked. Data sources and confidence levels not understood.",
               "score": 1
             },
             {
-              "label": "Only in a few limited areas.",
+              "label": "Main sources documented but with variable quality. Confidence tracking exists for <50% of data.",
               "score": 2
             },
             {
-              "label": "In some important areas, yes.",
+              "label": "Sources documented with confidence assigned for 50-75% of data. Some trust gaps in secondary areas.",
               "score": 3
             },
             {
-              "label": "Across most key decisions, yes.",
+              "label": "Data lineage documented with clear confidence levels for 75-90% of inputs. Regular audits of source quality.",
               "score": 4
             },
             {
-              "label": "Yes, clearly and consistently.",
+              "label": "Complete lineage with confidence scoring for >90% of inputs. Continuous monitoring of source quality.",
               "score": 5
             }
           ]

@@ -11,7 +11,7 @@ export default function LandingPage({ onStartNew, onLoadDemo }: LandingPageProps
       <div className="landing-hero">
         <div className="container">
           <div className="landing-hero-brand">
-            <PosetivLogo variant="light" height={28} />
+            <PosetivLogo variant="light" height={44} />
           </div>
           <h1>GreenOps Data Input Maturity Assessment</h1>
           <p className="subtitle">
