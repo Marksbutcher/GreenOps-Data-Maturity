@@ -496,7 +496,8 @@ function VisualsTab({
             <Scatter
               data={scatterData}
               fill="#267878"
-              shape={({ cx, cy, payload }: { cx: number; cy: number; payload: typeof scatterData[0] }) => {
+              shape={(props: any) => {
+                const { cx, cy, payload } = props as { cx: number; cy: number; payload: typeof scatterData[0] };
                 const r = Math.max((payload.confidence || 3) * 4, 12);
                 const label = payload.name.length > 22
                   ? payload.name.slice(0, 20) + '…'
