@@ -1,44 +1,59 @@
-// Types derived from the GreenOps maturity model
+// Types derived from the GreenOps v2 deepened maturity model
 
 export interface MaturityLevel {
   label: string;
   description: string;
 }
 
-export interface DecisionSupportStatus {
-  id: string;
-  label: string;
-  description: string;
-}
-
-export interface CrossCuttingLens {
-  id: string;
+export interface DecisionSupportTier {
   label: string;
   description: string;
 }
 
 export interface QuestionOption {
-  text: string;
-  level: number;
+  label: string;
+  score: number;
 }
 
 export interface Question {
   id: string;
   text: string;
-  type: string;
-  options: string[];
-  maps_to_levels: number[];
+  dimension: string;
+  weight: number;
+  guidance: string;
+  evidence_hint: string;
+  tags: string[];
+  options: QuestionOption[];
 }
 
-export interface DecisionSupportByLevel {
+export interface DomainScoring {
+  method: string;
+  normalisation: string;
+  question_override_rules: string[];
+  confidence_logic: Record<string, string>;
+  decision_support_mapping: Record<string, string>;
+}
+
+export interface DecisionSupportByScore {
+  status: string;
   supports: string[];
   does_not_support: string[];
 }
 
-export interface RecommendationThemes {
-  low: string[];
-  mid: string[];
-  high: string[];
+export interface RecommendationTrigger {
+  if_maturity_lte?: number;
+  if_maturity_equals?: number;
+  if_maturity_gte?: number;
+  priority: string;
+  guidance: string;
+}
+
+export interface GlobalScoringRules {
+  primary_principle: string;
+  derived_score_logic: string;
+  direct_manual_override_policy: string;
+  confidence_guidance: string;
+  impact_guidance: string;
 }
 
 export interface Domain {
@@ -48,11 +63,13 @@ export interface Domain {
   why_it_matters: string;
   default_impact_score: number;
   decision_areas: string[];
-  maturity_levels: Record<string, string>;
+  common_evidence_examples: string[];
+  recommendation_themes: string[];
+  scoring: DomainScoring;
   questions: Question[];
-  decision_support_by_level: Record<string, DecisionSupportByLevel>;
-  recommendation_themes: RecommendationThemes;
-  evidence_examples: string[];
+  maturity_levels: Record<string, MaturityLevel>;
+  decision_support_by_score: Record<string, DecisionSupportByScore>;
+  recommendation_triggers: RecommendationTrigger[];
 }
 
 export interface MaturityModel {
@@ -60,11 +77,11 @@ export interface MaturityModel {
   version: string;
   description: string;
   maturity_scale: Record<string, MaturityLevel>;
-  decision_support_statuses: DecisionSupportStatus[];
-  cross_cutting_lenses: CrossCuttingLens[];
-  default_impact_scores: Record<string, number>;
+  decision_support_tiers: Record<string, DecisionSupportTier>;
+  global_cross_cutting_lenses: string[];
+  global_scoring_rules: GlobalScoringRules;
+  decision_readiness_categories: string[];
   domains: Domain[];
-  output_sections: string[];
 }
 
 export interface OrganisationProfile {
@@ -80,17 +97,21 @@ export interface OrganisationProfile {
 
 export interface DomainAssessment {
   domain_id: string;
-  maturity_score: number;
+  question_answers: Record<string, number>; // question_id -> selected option index (0-4)
+  calculated_maturity: number; // derived from weighted question scores
+  assessor_override: number | null; // optional manual override, preserved alongside calculated
+  effective_maturity: number; // assessor_override if set, else calculated_maturity
   impact_score: number;
   confidence_score: number;
   target_maturity: number;
   priority: 'High' | 'Medium' | 'Low' | '';
   rationale: string;
   evidence: string;
-  question_answers: Record<string, number>; // question_id -> selected option index
   decision_support_status: string;
   supported_decisions: string[];
   unsupported_decisions: string[];
+  dimension_scores: Record<string, number>; // dimension -> weighted score for that dimension
+  weakness_flags: string[]; // flags from override rules
 }
 
 export interface AssessmentState {

@@ -1,92 +1,201 @@
 import { Domain, DomainAssessment, MaturityModel } from '../types';
 
 /**
- * Infer a maturity score from question answers.
- * Uses the median of mapped levels, rounded down.
+ * Calculate weighted average maturity from question answers.
+ * Uses the v2 model: weighted average of selected option scores,
+ * rounded to nearest band with .75 upward threshold.
  */
-export function inferMaturityFromAnswers(
+export function calculateWeightedMaturity(
+  domain: Domain,
+  answers: Record<string, number>
+): { score: number; dimensionScores: Record<string, number>; weightedAvg: number } {
+  let totalWeight = 0;
+  let totalWeightedScore = 0;
+  const dimensionTotals: Record<string, { weight: number; score: number }> = {};
+
+  for (const q of domain.questions) {
+    const idx = answers[q.id];
+    if (idx === undefined || idx < 0 || idx >= q.options.length) continue;
+
+    const optionScore = q.options[idx].score;
+    totalWeight += q.weight;
+    totalWeightedScore += q.weight * optionScore;
+
+    if (!dimensionTotals[q.dimension]) {
+      dimensionTotals[q.dimension] = { weight: 0, score: 0 };
+    }
+    dimensionTotals[q.dimension].weight += q.weight;
+    dimensionTotals[q.dimension].score += q.weight * optionScore;
+  }
+
+  if (totalWeight === 0) return { score: 1, dimensionScores: {}, weightedAvg: 1 };
+
+  const weightedAvg = totalWeightedScore / totalWeight;
+
+  // Round to nearest band with .75 upward threshold
+  const floor = Math.floor(weightedAvg);
+  const score = (weightedAvg - floor) >= 0.75 ? Math.min(floor + 1, 5) : Math.max(floor, 1);
+
+  const dimensionScores: Record<string, number> = {};
+  for (const [dim, totals] of Object.entries(dimensionTotals)) {
+    dimensionScores[dim] = Math.round((totals.score / totals.weight) * 10) / 10;
+  }
+
+  return { score, dimensionScores, weightedAvg };
+}
+
+/**
+ * Apply override rules from the model to cap or flag scores.
+ */
+export function applyOverrideRules(
+  domain: Domain,
+  answers: Record<string, number>,
+  calculatedScore: number
+): { cappedScore: number; flags: string[] } {
+  const flags: string[] = [];
+  let cappedScore = calculatedScore;
+
+  // Count level-1 answers
+  const answered = domain.questions.filter(q => answers[q.id] !== undefined);
+  const level1Count = answered.filter(q => {
+    const idx = answers[q.id];
+    return idx !== undefined && q.options[idx]?.score === 1;
+  }).length;
+
+  // Rule: If >30% answers are level 1, cap at 3
+  if (answered.length > 0 && (level1Count / answered.length) > 0.3) {
+    if (cappedScore > 3) {
+      cappedScore = 3;
+      flags.push('Maturity capped at 3: more than 30% of answers are at level 1');
+    }
+  }
+
+  // Rule: Check assurance/lineage dimension
+  const lineageQuestions = domain.questions.filter(q => q.dimension === 'assurance_lineage');
+  const lineageScores = lineageQuestions
+    .filter(q => answers[q.id] !== undefined)
+    .map(q => q.options[answers[q.id]]?.score || 0);
+
+  if (lineageScores.length > 0 && lineageScores.every(s => s <= 2)) {
+    flags.push('Weak assurance/lineage: decision-readiness may be capped at directional support');
+  }
+
+  return { cappedScore, flags };
+}
+
+/**
+ * Derive confidence level from answer patterns.
+ */
+export function deriveConfidence(
   domain: Domain,
   answers: Record<string, number>
 ): number {
-  const levels: number[] = [];
-  for (const q of domain.questions) {
-    const idx = answers[q.id];
-    if (idx !== undefined && idx >= 0 && idx < q.maps_to_levels.length) {
-      levels.push(q.maps_to_levels[idx]);
-    }
-  }
-  if (levels.length === 0) return 1;
-  levels.sort((a, b) => a - b);
-  const mid = Math.floor(levels.length / 2);
-  return levels.length % 2 === 0
-    ? Math.floor((levels[mid - 1] + levels[mid]) / 2)
-    : levels[mid];
+  const answered = domain.questions.filter(q => answers[q.id] !== undefined);
+  const total = domain.questions.length;
+
+  if (answered.length === 0) return 1;
+
+  const completeness = answered.length / total;
+  const scores = answered.map(q => q.options[answers[q.id]]?.score || 1);
+
+  // Check consistency: standard deviation of scores
+  const avg = scores.reduce((a, b) => a + b, 0) / scores.length;
+  const variance = scores.reduce((a, s) => a + (s - avg) ** 2, 0) / scores.length;
+  const stdDev = Math.sqrt(variance);
+
+  // High consistency + high completeness = high confidence
+  if (completeness >= 0.875 && stdDev <= 1.0) return 4;
+  if (completeness >= 0.75 && stdDev <= 1.5) return 3;
+  if (completeness >= 0.5) return 2;
+  return 1;
 }
 
 /**
- * Determine decision support status from maturity score.
+ * Get decision support status from maturity score using domain mapping.
  */
-export function getDecisionSupportStatus(maturityScore: number): string {
-  if (maturityScore <= 1) return 'reporting_only';
-  if (maturityScore <= 2) return 'directional';
-  if (maturityScore <= 3) return 'decision_grade';
-  if (maturityScore <= 4) return 'decision_grade';
-  return 'optimisation_grade';
+export function getDecisionSupportStatus(domain: Domain, maturityScore: number): string {
+  const mapping = domain.scoring.decision_support_mapping;
+  return mapping[String(Math.min(Math.max(maturityScore, 1), 5))] || 'Reporting only';
 }
 
 /**
- * Get decision support label from status id.
- */
-export function getDecisionSupportLabel(
-  model: MaturityModel,
-  statusId: string
-): string {
-  const status = model.decision_support_statuses.find((s) => s.id === statusId);
-  return status ? status.label : statusId;
-}
-
-/**
- * Get supported and unsupported decisions for a domain at a given maturity level.
+ * Get decision support detail from domain at a given maturity level.
  */
 export function getDecisionSupport(
   domain: Domain,
   maturityScore: number
-): { supports: string[]; does_not_support: string[] } {
+): { status: string; supports: string[]; does_not_support: string[] } {
   const level = String(Math.min(Math.max(maturityScore, 1), 5));
-  const entry = domain.decision_support_by_level[level];
-  if (!entry) return { supports: [], does_not_support: [] };
+  const entry = domain.decision_support_by_score[level];
+  if (!entry) return { status: 'Reporting only', supports: [], does_not_support: [] };
   return entry;
 }
 
 /**
- * Get recommendations for a domain based on maturity score.
+ * Create a blank domain assessment from a domain definition.
  */
-export function getRecommendations(
+export function createBlankAssessment(domain: Domain): DomainAssessment {
+  return {
+    domain_id: domain.id,
+    question_answers: {},
+    calculated_maturity: 1,
+    assessor_override: null,
+    effective_maturity: 1,
+    impact_score: domain.default_impact_score,
+    confidence_score: 1,
+    target_maturity: Math.min(domain.default_impact_score, 5),
+    priority: '',
+    rationale: '',
+    evidence: '',
+    decision_support_status: 'Reporting only',
+    supported_decisions: [],
+    unsupported_decisions: [],
+    dimension_scores: {},
+    weakness_flags: [],
+  };
+}
+
+/**
+ * Fully score a domain assessment from its answers.
+ * Called after assessment completion, not during.
+ */
+export function scoreDomainAssessment(
   domain: Domain,
-  maturityScore: number
-): string[] {
-  const themes = domain.recommendation_themes;
-  if (maturityScore <= 2) return [...themes.low, ...themes.mid.slice(0, 1)];
-  if (maturityScore <= 3) return [...themes.mid, ...themes.high.slice(0, 1)];
-  return themes.high;
+  assessment: DomainAssessment
+): DomainAssessment {
+  const { score, dimensionScores, weightedAvg } = calculateWeightedMaturity(domain, assessment.question_answers);
+  const { cappedScore, flags } = applyOverrideRules(domain, assessment.question_answers, score);
+  const confidence = deriveConfidence(domain, assessment.question_answers);
+  const effectiveMaturity = assessment.assessor_override !== null ? assessment.assessor_override : cappedScore;
+  const ds = getDecisionSupport(domain, effectiveMaturity);
+  const priority = suggestPriority(effectiveMaturity, assessment.impact_score);
+
+  return {
+    ...assessment,
+    calculated_maturity: cappedScore,
+    effective_maturity: effectiveMaturity,
+    confidence_score: confidence,
+    dimension_scores: dimensionScores,
+    weakness_flags: flags,
+    decision_support_status: ds.status,
+    supported_decisions: ds.supports,
+    unsupported_decisions: ds.does_not_support,
+    priority: assessment.priority || priority,
+  };
 }
 
 /**
  * Calculate overall maturity statistics.
  */
 export function calculateOverallStats(results: DomainAssessment[]) {
-  const scores = results.map((r) => r.maturity_score);
-  const impacts = results.map((r) => r.impact_score);
+  const scores = results.map(r => r.effective_maturity);
+  const impacts = results.map(r => r.impact_score);
   const avgMaturity = scores.reduce((a, b) => a + b, 0) / scores.length;
   const avgImpact = impacts.reduce((a, b) => a + b, 0) / impacts.length;
   const minMaturity = Math.min(...scores);
   const maxMaturity = Math.max(...scores);
 
-  // Weighted average: maturity weighted by impact
-  const weightedSum = results.reduce(
-    (acc, r) => acc + r.maturity_score * r.impact_score,
-    0
-  );
+  const weightedSum = results.reduce((acc, r) => acc + r.effective_maturity * r.impact_score, 0);
   const weightTotal = results.reduce((acc, r) => acc + r.impact_score, 0);
   const weightedMaturity = weightTotal > 0 ? weightedSum / weightTotal : 0;
 
@@ -101,32 +210,9 @@ export function calculateOverallStats(results: DomainAssessment[]) {
 }
 
 /**
- * Create a blank domain assessment from a domain definition.
- */
-export function createBlankAssessment(domain: Domain): DomainAssessment {
-  return {
-    domain_id: domain.id,
-    maturity_score: 1,
-    impact_score: domain.default_impact_score,
-    confidence_score: 3,
-    target_maturity: Math.min(domain.default_impact_score, 5),
-    priority: '',
-    rationale: '',
-    evidence: '',
-    question_answers: {},
-    decision_support_status: 'reporting_only',
-    supported_decisions: [],
-    unsupported_decisions: [],
-  };
-}
-
-/**
  * Suggest priority based on maturity and impact gap.
  */
-export function suggestPriority(
-  maturity: number,
-  impact: number
-): 'High' | 'Medium' | 'Low' {
+export function suggestPriority(maturity: number, impact: number): 'High' | 'Medium' | 'Low' {
   const gap = impact - maturity;
   if (gap >= 3 || (impact >= 4 && maturity <= 2)) return 'High';
   if (gap >= 2 || (impact >= 4 && maturity <= 3)) return 'Medium';
@@ -136,14 +222,46 @@ export function suggestPriority(
 /**
  * Get quadrant label for priority matrix.
  */
-export function getQuadrant(
-  maturity: number,
-  impact: number
-): string {
+export function getQuadrant(maturity: number, impact: number): string {
   const lowMat = maturity <= 2.5;
   const highImp = impact >= 3.5;
   if (lowMat && highImp) return 'Transform now';
   if (!lowMat && highImp) return 'Exploit and extend';
   if (lowMat && !highImp) return 'Stabilise';
   return 'Maintain';
+}
+
+/**
+ * Identify weakest dimensions driving a low score.
+ */
+export function getWeakestDimensions(dimensionScores: Record<string, number>, threshold: number = 2.5): string[] {
+  return Object.entries(dimensionScores)
+    .filter(([, score]) => score <= threshold)
+    .sort((a, b) => a[1] - b[1])
+    .map(([dim]) => dim);
+}
+
+/**
+ * Get answer pattern summary for a domain.
+ */
+export function getAnswerPatternSummary(
+  domain: Domain,
+  answers: Record<string, number>
+): { strongAreas: string[]; weakAreas: string[]; unanswered: number } {
+  const strongAreas: string[] = [];
+  const weakAreas: string[] = [];
+  let unanswered = 0;
+
+  for (const q of domain.questions) {
+    const idx = answers[q.id];
+    if (idx === undefined) {
+      unanswered++;
+      continue;
+    }
+    const score = q.options[idx]?.score || 1;
+    if (score >= 4) strongAreas.push(q.dimension);
+    if (score <= 2) weakAreas.push(q.dimension);
+  }
+
+  return { strongAreas: [...new Set(strongAreas)], weakAreas: [...new Set(weakAreas)], unanswered };
 }

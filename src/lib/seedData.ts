@@ -1,42 +1,65 @@
-import demoSeed from '../data/demo_assessment_seed.json';
 import { AssessmentState, DomainAssessment, OrganisationProfile } from '../types';
+import model from '../data/greenops_maturity_model.json';
+import { MaturityModel } from '../types';
+
+const typedModel = model as unknown as MaturityModel;
+
+// Predefined demo answer patterns per domain (option indices 0-4)
+// Creates uneven maturity across domains for realistic demo
+const demoAnswerPatterns: Record<string, number[]> = {
+  asset_inventory_configuration: [2, 2, 1, 2, 1, 2, 1, 2],       // ~2
+  operational_power_energy: [2, 1, 2, 1, 1, 2, 1, 1],             // ~1.7
+  water_data: [0, 0, 1, 0, 0, 1, 0, 0],                           // ~1
+  infrastructure_efficiency_metrics: [2, 2, 2, 1, 2, 1, 1, 2],     // ~2
+  embodied_emissions: [1, 0, 1, 0, 0, 1, 0, 0],                    // ~1
+  carbon_factors: [2, 2, 1, 2, 2, 1, 1, 2],                        // ~2
+  utilisation_and_service_usage: [3, 2, 2, 2, 1, 2, 1, 2],         // ~2.5
+  allocation_attribution: [1, 1, 1, 0, 0, 1, 0, 1],                // ~1.2
+  cloud_telemetry: [3, 3, 2, 2, 2, 2, 1, 2],                       // ~2.5
+  colo_provider_data: [1, 1, 1, 0, 1, 0, 0, 1],                    // ~1.2
+  temporal_timeliness: [2, 1, 1, 2, 1, 1, 1, 1],                    // ~1.5
+  lineage_assurance: [1, 1, 0, 1, 0, 0, 1, 0],                     // ~1
+  decision_integration: [1, 1, 1, 0, 1, 0, 0, 1],                   // ~1.2
+};
 
 export function loadDemoData(): AssessmentState {
-  const seed = demoSeed as {
-    organisation_profile: Record<string, string>;
-    assessment_results: Array<Record<string, unknown>>;
-  };
-
   const profile: OrganisationProfile = {
-    organisation_name: seed.organisation_profile.organisation_name || '',
-    sector: seed.organisation_profile.sector || '',
-    sub_sector: seed.organisation_profile.sub_sector || '',
-    organisation_size: seed.organisation_profile.organisation_size || '',
-    hosting_profile: seed.organisation_profile.hosting_profile || '',
-    assessment_date: seed.organisation_profile.assessment_date || '',
-    assessor_name: seed.organisation_profile.assessor_name || '',
-    notes: seed.organisation_profile.notes || '',
+    organisation_name: 'Example Enterprise Bank plc',
+    sector: 'Financial Services',
+    sub_sector: 'Retail Banking',
+    organisation_size: 'Large (5,000+)',
+    hosting_profile: 'Hybrid (on-premise, colocation and cloud)',
+    assessment_date: new Date().toISOString().split('T')[0],
+    assessor_name: 'Demo Assessment',
+    notes: 'Demonstration data showing a typical enterprise with uneven maturity across GreenOps data domains.',
   };
 
-  const results: DomainAssessment[] = seed.assessment_results.map((r) => ({
-    domain_id: r.domain_id as string,
-    maturity_score: r.maturity_score as number,
-    impact_score: r.impact_score as number,
-    confidence_score: (r.confidence_score as number) || 3,
-    target_maturity: (r.target_maturity as number) || 4,
-    priority: (r.priority as DomainAssessment['priority']) || '',
-    rationale: (r.rationale as string) || '',
-    evidence: (r.evidence as string) || '',
-    question_answers: {},
-    decision_support_status: (r.decision_support_status as string) || 'directional',
-    supported_decisions: (r.supported_decisions as string[]) || [],
-    unsupported_decisions: (r.unsupported_decisions as string[]) || [],
-  }));
+  const results: DomainAssessment[] = typedModel.domains.map((domain) => {
+    const pattern = demoAnswerPatterns[domain.id] || [1, 1, 1, 1, 1, 1, 1, 1];
+    const answers: Record<string, number> = {};
+    domain.questions.forEach((q, i) => {
+      answers[q.id] = pattern[i] !== undefined ? pattern[i] : 1;
+    });
 
-  return {
-    profile,
-    results,
-    mode: 'self',
-    completed: true,
-  };
+    return {
+      domain_id: domain.id,
+      question_answers: answers,
+      calculated_maturity: 1,
+      assessor_override: null,
+      effective_maturity: 1,
+      impact_score: domain.default_impact_score,
+      confidence_score: 1,
+      target_maturity: Math.min(domain.default_impact_score, 5),
+      priority: '' as const,
+      rationale: '',
+      evidence: '',
+      decision_support_status: 'Reporting only',
+      supported_decisions: [],
+      unsupported_decisions: [],
+      dimension_scores: {},
+      weakness_flags: [],
+    };
+  });
+
+  return { profile, results, mode: 'facilitated', completed: true };
 }

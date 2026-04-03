@@ -1,75 +1,64 @@
 import { OrganisationProfile, DomainAssessment, MaturityModel } from '../types';
-import { getDecisionSupportLabel } from './scoring';
 
 export function generateCSV(
   profile: OrganisationProfile,
   results: DomainAssessment[],
   model: MaturityModel
 ): string {
-  const domainMap = new Map(model.domains.map((d) => [d.id, d]));
-  const rows: string[][] = [];
-
-  // Header
-  rows.push([
-    'Organisation',
-    'Sector',
-    'Sub-sector',
-    'Size',
-    'Hosting Profile',
-    'Assessment Date',
-    'Assessor',
+  const headers = [
     'Domain ID',
     'Domain Name',
-    'Maturity Score',
+    'Calculated Maturity',
+    'Assessor Override',
+    'Effective Maturity',
     'Impact Score',
     'Confidence Score',
     'Target Maturity',
     'Priority',
     'Decision Support Status',
-    'Rationale',
+    'Weakness Flags',
     'Evidence',
-    'Supported Decisions',
-    'Unsupported Decisions',
-  ]);
+    'Rationale',
+  ];
 
-  for (const r of results) {
-    const domain = domainMap.get(r.domain_id);
-    rows.push([
-      profile.organisation_name,
-      profile.sector,
-      profile.sub_sector,
-      profile.organisation_size,
-      profile.hosting_profile,
-      profile.assessment_date,
-      profile.assessor_name,
+  const rows = results.map((r) => {
+    const domain = model.domains.find((d) => d.id === r.domain_id);
+    return [
       r.domain_id,
       domain?.name || r.domain_id,
-      String(r.maturity_score),
+      String(r.calculated_maturity),
+      r.assessor_override !== null ? String(r.assessor_override) : '',
+      String(r.effective_maturity),
       String(r.impact_score),
       String(r.confidence_score),
       String(r.target_maturity),
       r.priority,
-      getDecisionSupportLabel(model, r.decision_support_status),
-      r.rationale,
-      r.evidence,
-      r.supported_decisions.join('; '),
-      r.unsupported_decisions.join('; '),
-    ]);
-  }
+      r.decision_support_status,
+      r.weakness_flags.join('; '),
+      `"${(r.evidence || '').replace(/"/g, '""')}"`,
+      `"${(r.rationale || '').replace(/"/g, '""')}"`,
+    ].join(',');
+  });
 
-  return rows
-    .map((row) =>
-      row.map((cell) => `"${(cell || '').replace(/"/g, '""')}"`).join(',')
-    )
-    .join('\n');
+  const meta = [
+    `# GreenOps Data Input Maturity Assessment`,
+    `# Organisation: ${profile.organisation_name}`,
+    `# Sector: ${profile.sector}`,
+    `# Date: ${profile.assessment_date}`,
+    `# Assessor: ${profile.assessor_name}`,
+    `# Model Version: ${model.version}`,
+    '',
+  ];
+
+  return [...meta, headers.join(','), ...rows].join('\n');
 }
 
-export function downloadCSV(csv: string, filename: string) {
+export function downloadCSV(csv: string, filename: string): void {
   const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
   const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = filename;
-  a.click();
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = filename;
+  link.click();
   URL.revokeObjectURL(url);
 }

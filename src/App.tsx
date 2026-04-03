@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react';
 import model from './data/greenops_maturity_model.json';
 import { MaturityModel, OrganisationProfile, DomainAssessment, AppView } from './types';
-import { createBlankAssessment, getDecisionSupport, getDecisionSupportStatus, suggestPriority } from './lib/scoring';
+import { createBlankAssessment, scoreDomainAssessment } from './lib/scoring';
 import { loadDemoData } from './lib/seedData';
 import { generateRecommendations, generateExecutiveSummary } from './lib/recommendations';
 import { generateDomainNarratives } from './lib/narrativeAnalysis';
@@ -52,7 +52,12 @@ function App() {
   const handleLoadDemo = useCallback(() => {
     const demo = loadDemoData();
     setProfile(demo.profile);
-    setDomainResults(demo.results);
+    // Score all demo results
+    const scored = demo.results.map((r) => {
+      const domain = typedModel.domains.find((d) => d.id === r.domain_id)!;
+      return scoreDomainAssessment(domain, r);
+    });
+    setDomainResults(scored);
     setAssessmentMode(demo.mode);
     setView('results');
   }, []);
@@ -63,20 +68,12 @@ function App() {
   }, []);
 
   const handleAssessmentComplete = useCallback((results: DomainAssessment[]) => {
-    const enriched = results.map((r) => {
+    // Score all domains after assessment completion
+    const scored = results.map((r) => {
       const domain = typedModel.domains.find((d) => d.id === r.domain_id)!;
-      const ds = getDecisionSupport(domain, r.maturity_score);
-      const status = getDecisionSupportStatus(r.maturity_score);
-      const priority = r.priority || suggestPriority(r.maturity_score, r.impact_score);
-      return {
-        ...r,
-        decision_support_status: status,
-        supported_decisions: ds.supports,
-        unsupported_decisions: ds.does_not_support,
-        priority,
-      };
+      return scoreDomainAssessment(domain, r);
     });
-    setDomainResults(enriched);
+    setDomainResults(scored);
     setView('results');
   }, []);
 

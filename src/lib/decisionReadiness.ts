@@ -1,135 +1,77 @@
-import { DomainAssessment, DecisionAreaReadiness, MaturityModel } from '../types';
+import { DomainAssessment, MaturityModel, DecisionAreaReadiness, DecisionReadinessLevel } from '../types';
 
-/**
- * Overall GreenOps decision areas and which domains they depend on.
- */
-const DECISION_AREA_MAPPINGS: {
-  area: string;
-  dependencies: string[];
-  minMaturityForGrade: number;
-}[] = [
-  {
-    area: 'Footprint reporting',
-    dependencies: ['operational_power', 'carbon_factors', 'asset_inventory', 'lineage_assurance'],
-    minMaturityForGrade: 3,
-  },
-  {
-    area: 'Hotspot identification',
-    dependencies: ['asset_inventory', 'operational_power', 'embodied_emissions', 'allocation_logic'],
-    minMaturityForGrade: 3,
-  },
-  {
-    area: 'Refresh and lifecycle decisions',
-    dependencies: ['asset_inventory', 'embodied_emissions', 'usage_maturity'],
-    minMaturityForGrade: 3,
-  },
-  {
-    area: 'Rightsizing and decommissioning',
-    dependencies: ['usage_maturity', 'allocation_logic', 'cloud_telemetry'],
-    minMaturityForGrade: 3,
-  },
-  {
-    area: 'Supplier challenge',
-    dependencies: ['embodied_emissions', 'colo_provider_data', 'infra_efficiency_metrics'],
-    minMaturityForGrade: 3,
-  },
-  {
-    area: 'Workload placement',
-    dependencies: ['cloud_telemetry', 'operational_power', 'carbon_factors', 'usage_maturity'],
-    minMaturityForGrade: 4,
-  },
-  {
-    area: 'Cloud optimisation',
-    dependencies: ['cloud_telemetry', 'usage_maturity', 'allocation_logic'],
-    minMaturityForGrade: 3,
-  },
-  {
-    area: 'Non-IT load allocation',
-    dependencies: ['infra_efficiency_metrics', 'operational_power', 'colo_provider_data'],
-    minMaturityForGrade: 3,
-  },
-  {
-    area: 'Service-level optimisation',
-    dependencies: ['usage_maturity', 'allocation_logic', 'cloud_telemetry', 'operational_power'],
-    minMaturityForGrade: 4,
-  },
-  {
-    area: 'AI demand governance and optimisation',
-    dependencies: ['usage_maturity', 'cloud_telemetry', 'allocation_logic', 'decision_integration'],
-    minMaturityForGrade: 4,
-  },
-  {
-    area: 'Operational improvement tracking',
-    dependencies: ['decision_integration', 'lineage_assurance', 'temporal_timeliness'],
-    minMaturityForGrade: 3,
-  },
-  {
-    area: 'Target setting and governance',
-    dependencies: ['lineage_assurance', 'decision_integration', 'temporal_timeliness', 'carbon_factors'],
-    minMaturityForGrade: 3,
-  },
-];
+function maturityToReadiness(score: number): DecisionReadinessLevel {
+  if (score <= 1) return 'reporting_only';
+  if (score <= 2) return 'directional';
+  if (score <= 3) return 'directional';
+  if (score <= 4) return 'decision_grade';
+  return 'optimisation_grade';
+}
 
-function getReadinessLevel(
-  avgMaturity: number,
-  minMaturity: number,
-  requiredMin: number
-): { level: string; label: string } {
-  if (minMaturity <= 1 || avgMaturity < 2) {
-    return { level: 'reporting_only', label: 'Reporting only' };
-  }
-  if (avgMaturity < requiredMin - 0.5) {
-    return { level: 'directional', label: 'Directional decision support' };
-  }
-  if (avgMaturity >= requiredMin + 1 && minMaturity >= requiredMin) {
-    return { level: 'optimisation_grade', label: 'Optimisation-grade' };
-  }
-  if (avgMaturity >= requiredMin && minMaturity >= requiredMin - 1) {
-    return { level: 'decision_grade', label: 'Decision-grade' };
-  }
-  return { level: 'directional', label: 'Directional decision support' };
+function readinessLabel(level: DecisionReadinessLevel): string {
+  const labels: Record<DecisionReadinessLevel, string> = {
+    reporting_only: 'Reporting only',
+    directional: 'Directional',
+    decision_grade: 'Decision-grade',
+    optimisation_grade: 'Optimisation-grade',
+  };
+  return labels[level];
 }
 
 export function generateDecisionReadiness(
   results: DomainAssessment[],
-  _model: MaturityModel
+  model: MaturityModel
 ): DecisionAreaReadiness[] {
-  const scoreMap = new Map<string, number>();
-  results.forEach((r) => scoreMap.set(r.domain_id, r.maturity_score));
-
-  return DECISION_AREA_MAPPINGS.map((mapping) => {
-    const depScores = mapping.dependencies
-      .map((d) => scoreMap.get(d) || 1);
-    const avg = depScores.reduce((a, b) => a + b, 0) / depScores.length;
-    const min = Math.min(...depScores);
-
-    const { level, label } = getReadinessLevel(avg, min, mapping.minMaturityForGrade);
-
-    const supporting = mapping.dependencies.filter(
-      (d) => (scoreMap.get(d) || 1) >= mapping.minMaturityForGrade
-    );
-    const limiting = mapping.dependencies.filter(
-      (d) => (scoreMap.get(d) || 1) < mapping.minMaturityForGrade
+  return model.decision_readiness_categories.map((area) => {
+    // Find domains that list this area (or a close match) in their decision_areas
+    const relevantDomains = model.domains.filter((d) =>
+      d.decision_areas.some(
+        (da) =>
+          da.toLowerCase().includes(area.toLowerCase().split(' ')[0]) ||
+          area.toLowerCase().includes(da.toLowerCase().split(' ')[0])
+      )
     );
 
-    let summary: string;
-    if (level === 'reporting_only') {
-      summary = `Current data is not yet sufficient for confident ${mapping.area.toLowerCase()}. Significant gaps remain in underpinning domains.`;
-    } else if (level === 'directional') {
-      summary = `Data supports directional ${mapping.area.toLowerCase()} but should not yet be treated as decision-grade. Key dependencies remain below the threshold needed for confident action.`;
-    } else if (level === 'decision_grade') {
-      summary = `Data is approaching decision-grade for ${mapping.area.toLowerCase()}. Core dependencies are sufficiently mature, though some areas could be strengthened further.`;
-    } else {
-      summary = `Strong data foundations support optimisation-grade ${mapping.area.toLowerCase()} across the relevant domains.`;
+    const domainScores = relevantDomains.map((d) => {
+      const result = results.find((r) => r.domain_id === d.id);
+      return { domain: d, score: result?.effective_maturity || 1 };
+    });
+
+    const minScore =
+      domainScores.length > 0 ? Math.min(...domainScores.map((ds) => ds.score)) : 1;
+    const avgScore =
+      domainScores.length > 0
+        ? domainScores.reduce((a, ds) => a + ds.score, 0) / domainScores.length
+        : 1;
+
+    // Use minimum as the readiness determinant (weakest link)
+    const readiness = maturityToReadiness(minScore);
+
+    const supporting = domainScores
+      .filter((ds) => ds.score >= 3)
+      .map((ds) => ds.domain.name);
+    const limiting = domainScores
+      .filter((ds) => ds.score <= 2)
+      .map((ds) => ds.domain.name);
+
+    const summaryParts: string[] = [];
+    if (limiting.length > 0) {
+      summaryParts.push(`Limited by weak maturity in: ${limiting.join(', ')}`);
+    }
+    if (supporting.length > 0) {
+      summaryParts.push(`Supported by: ${supporting.join(', ')}`);
+    }
+    if (domainScores.length === 0) {
+      summaryParts.push('No directly mapped domains');
     }
 
     return {
-      area: mapping.area,
-      readiness: level as DecisionAreaReadiness['readiness'],
-      label,
+      area,
+      readiness,
+      label: readinessLabel(readiness),
       supporting_domains: supporting,
       limiting_domains: limiting,
-      summary,
+      summary: (summaryParts.join('. ') || 'No data available') + '.',
     };
   });
 }

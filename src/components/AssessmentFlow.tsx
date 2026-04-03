@@ -1,6 +1,5 @@
 import { useState, useCallback } from 'react';
 import { MaturityModel, DomainAssessment } from '../types';
-import { inferMaturityFromAnswers } from '../lib/scoring';
 
 interface AssessmentFlowProps {
   model: MaturityModel;
@@ -22,6 +21,7 @@ export default function AssessmentFlow({
   const domain = model.domains[currentIndex];
   const result = results[currentIndex];
   const total = model.domains.length;
+  const [showIncomplete, setShowIncomplete] = useState(false);
 
   const updateResult = useCallback(
     (updates: Partial<DomainAssessment>) => {
@@ -37,13 +37,21 @@ export default function AssessmentFlow({
   const handleQuestionAnswer = useCallback(
     (questionId: string, optionIndex: number) => {
       const newAnswers = { ...result.question_answers, [questionId]: optionIndex };
-      const inferred = inferMaturityFromAnswers(domain, newAnswers);
-      updateResult({ question_answers: newAnswers, maturity_score: inferred });
+      updateResult({ question_answers: newAnswers });
     },
-    [result, domain, updateResult]
+    [result, updateResult]
   );
 
+  const answeredCount = Object.keys(result.question_answers).length;
+  const totalQuestions = domain.questions.length;
+  const allAnswered = answeredCount === totalQuestions;
+
   const goNext = () => {
+    if (!allAnswered) {
+      setShowIncomplete(true);
+      return;
+    }
+    setShowIncomplete(false);
     if (currentIndex < total - 1) {
       setCurrentIndex((i) => i + 1);
       window.scrollTo(0, 0);
@@ -51,6 +59,7 @@ export default function AssessmentFlow({
   };
 
   const goPrev = () => {
+    setShowIncomplete(false);
     if (currentIndex > 0) {
       setCurrentIndex((i) => i - 1);
       window.scrollTo(0, 0);
@@ -58,203 +67,153 @@ export default function AssessmentFlow({
   };
 
   const handleComplete = () => {
+    // Check all domains have all questions answered
+    const incomplete = results.filter((r, i) => {
+      const d = model.domains[i];
+      return Object.keys(r.question_answers).length < d.questions.length;
+    });
+    if (incomplete.length > 0) {
+      setShowIncomplete(true);
+      return;
+    }
     onComplete(results);
+  };
+
+  // Jump to domain
+  const jumpToDomain = (index: number) => {
+    setShowIncomplete(false);
+    setCurrentIndex(index);
+    window.scrollTo(0, 0);
   };
 
   return (
     <div className="assessment-page">
-      <div className="container-narrow">
-        {/* Progress */}
-        <div className="assessment-progress">
-          <span className="progress-text">
-            {currentIndex + 1} of {total}
-          </span>
-          <div className="progress-bar">
-            <div
-              className="progress-fill"
-              style={{ width: `${((currentIndex + 1) / total) * 100}%` }}
-            />
-          </div>
-          <span className="progress-text" style={{ fontSize: '0.75rem' }}>
-            {mode === 'facilitated' ? 'Workshop' : 'Self-assessment'}
-          </span>
-        </div>
-
-        {/* Domain header */}
-        <div className="domain-header">
-          <p className="label">Domain {currentIndex + 1}</p>
-          <h2>{domain.name}</h2>
-          <p className="domain-definition">{domain.definition}</p>
-          <p className="domain-why">Why it matters: {domain.why_it_matters}</p>
-        </div>
-
-        {/* Maturity guidance */}
-        <div className="assessment-section">
-          <div className="section-title">Maturity level guidance</div>
-          <div className="maturity-guidance">
-            {Object.entries(domain.maturity_levels).map(([level, desc]) => (
+      <div className="container-wide">
+        {/* Top bar: progress + domain navigator */}
+        <div className="assessment-topbar">
+          <div className="assessment-progress-bar">
+            <div className="progress-label">
+              <span className="progress-text-bold">Domain {currentIndex + 1}</span>
+              <span className="progress-text-light"> of {total}</span>
+              <span className="progress-mode">{mode === 'facilitated' ? 'Workshop' : 'Self-assessment'}</span>
+            </div>
+            <div className="progress-bar">
               <div
-                key={level}
-                className={`maturity-level-row ${
-                  result.maturity_score === Number(level) ? 'active' : ''
-                }`}
+                className="progress-fill"
+                style={{ width: `${((currentIndex + 1) / total) * 100}%` }}
+              />
+            </div>
+          </div>
+          <div className="domain-nav-pills">
+            {model.domains.map((d, i) => {
+              const r = results[i];
+              const answered = Object.keys(r.question_answers).length;
+              const total_q = d.questions.length;
+              const complete = answered === total_q;
+              const partial = answered > 0 && !complete;
+              return (
+                <button
+                  key={d.id}
+                  className={`domain-pill ${i === currentIndex ? 'active' : ''} ${complete ? 'complete' : ''} ${partial ? 'partial' : ''}`}
+                  onClick={() => jumpToDomain(i)}
+                  title={d.name}
+                >
+                  {i + 1}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Domain context intro */}
+        <div className="domain-intro">
+          <h2 className="domain-title">{domain.name}</h2>
+          <p className="domain-definition">{domain.definition}</p>
+          <p className="domain-why"><strong>Why it matters:</strong> {domain.why_it_matters}</p>
+        </div>
+
+        {/* Questions — dense two-column layout */}
+        <div className="questions-grid">
+          {domain.questions.map((q, qIdx) => {
+            const selectedIdx = result.question_answers[q.id];
+            const isUnanswered = selectedIdx === undefined;
+            return (
+              <div
+                key={q.id}
+                className={`question-row ${isUnanswered && showIncomplete ? 'unanswered' : ''}`}
               >
-                <span className={`level-badge l${level}`}>Level {level}</span>
-                <span className="level-desc">{desc}</span>
+                <div className="question-left">
+                  <div className="question-number">Q{qIdx + 1}</div>
+                  <div className="question-text">{q.text}</div>
+                  {q.evidence_hint && (
+                    <div className="question-hint">Evidence: {q.evidence_hint}</div>
+                  )}
+                </div>
+                <div className="question-right">
+                  {q.options.map((opt, optIdx) => (
+                    <label
+                      key={optIdx}
+                      className={`option-row ${selectedIdx === optIdx ? 'selected' : ''}`}
+                      tabIndex={0}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault();
+                          handleQuestionAnswer(q.id, optIdx);
+                        }
+                      }}
+                    >
+                      <input
+                        type="radio"
+                        name={q.id}
+                        checked={selectedIdx === optIdx}
+                        onChange={() => handleQuestionAnswer(q.id, optIdx)}
+                        tabIndex={-1}
+                      />
+                      <span className="option-indicator" />
+                      <span className="option-label">{opt.label}</span>
+                    </label>
+                  ))}
+                </div>
               </div>
-            ))}
-          </div>
+            );
+          })}
         </div>
 
-        {/* Questions */}
-        <div className="assessment-section">
-          <div className="section-title">Assessment questions</div>
-          {domain.questions.map((q) => (
-            <div key={q.id} className="question-block">
-              <div className="question-text">{q.text}</div>
-              <div className="option-list">
-                {q.options.map((opt, idx) => (
-                  <div
-                    key={idx}
-                    className={`option-item ${
-                      result.question_answers[q.id] === idx ? 'selected' : ''
-                    }`}
-                    onClick={() => handleQuestionAnswer(q.id, idx)}
-                  >
-                    <div className="option-radio" />
-                    <span>{opt}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          ))}
+        {/* Completion status */}
+        <div className="domain-status">
+          <span className={`status-count ${allAnswered ? 'complete' : ''}`}>
+            {answeredCount} of {totalQuestions} questions answered
+          </span>
+          {showIncomplete && !allAnswered && (
+            <span className="status-warning">Please answer all questions before proceeding</span>
+          )}
         </div>
 
-        {/* Inferred maturity score */}
-        <div className="assessment-section">
-          <div className="section-title">Assessed maturity</div>
-          <div className="inferred-score-display">
-            <div className="inferred-score-badge">
-              <span className={`level-badge l${result.maturity_score}`}>
-                Level {result.maturity_score}
-              </span>
-              <span className="inferred-score-label">
-                {Object.entries(domain.maturity_levels).find(
-                  ([level]) => Number(level) === result.maturity_score
-                )?.[1] || ''}
-              </span>
-            </div>
-            {Object.keys(result.question_answers).length === 0 && (
-              <p className="inferred-score-hint">
-                Answer the questions above to determine the maturity score for this domain.
-              </p>
-            )}
-            {Object.keys(result.question_answers).length > 0 &&
-              Object.keys(result.question_answers).length < domain.questions.length && (
-              <p className="inferred-score-hint">
-                {domain.questions.length - Object.keys(result.question_answers).length} question{domain.questions.length - Object.keys(result.question_answers).length > 1 ? 's' : ''} remaining — score will refine as you answer.
-              </p>
-            )}
-          </div>
-        </div>
-
-        {/* Supplementary scores */}
-        <div className="assessment-section">
-          <div className="section-title">Supplementary scoring</div>
-          <div className="score-controls">
-            <div className="score-group">
-              <label>Impact score</label>
-              <div className="score-slider">
-                <input
-                  type="range"
-                  min={1}
-                  max={5}
-                  step={1}
-                  value={result.impact_score}
-                  onChange={(e) =>
-                    updateResult({ impact_score: Number(e.target.value) })
-                  }
-                />
-                <span className="score-value">{result.impact_score}</span>
-              </div>
-            </div>
-            <div className="score-group">
-              <label>Confidence score</label>
-              <div className="score-slider">
-                <input
-                  type="range"
-                  min={1}
-                  max={5}
-                  step={1}
-                  value={result.confidence_score}
-                  onChange={(e) =>
-                    updateResult({ confidence_score: Number(e.target.value) })
-                  }
-                />
-                <span className="score-value">{result.confidence_score}</span>
-              </div>
-            </div>
-            <div className="score-group">
-              <label>Target maturity</label>
-              <div className="score-slider">
-                <input
-                  type="range"
-                  min={1}
-                  max={5}
-                  step={1}
-                  value={result.target_maturity}
-                  onChange={(e) =>
-                    updateResult({ target_maturity: Number(e.target.value) })
-                  }
-                />
-                <span className="score-value">{result.target_maturity}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Priority */}
-        <div className="assessment-section">
-          <div className="section-title">Priority</div>
-          <div className="priority-select">
-            {(['High', 'Medium', 'Low'] as const).map((p) => (
-              <button
-                key={p}
-                className={`priority-btn ${
-                  result.priority === p ? `active-${p.toLowerCase()}` : ''
-                }`}
-                onClick={() => updateResult({ priority: p })}
-              >
-                {p}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Evidence */}
-        <div className="assessment-section">
-          <div className="section-title">Evidence and rationale</div>
-          <div className="form-group">
-            <label className="form-label">Evidence</label>
+        {/* Evidence and notes — compact */}
+        <div className="evidence-row">
+          <div className="evidence-col">
+            <label className="field-label">Evidence and sources</label>
             <textarea
-              className="form-textarea"
+              className="field-textarea"
               value={result.evidence}
               onChange={(e) => updateResult({ evidence: e.target.value })}
-              placeholder="What evidence supports this score?"
-              rows={3}
+              placeholder="What evidence supports the answers given?"
+              rows={2}
             />
-            <div className="evidence-examples">
-              Examples: {domain.evidence_examples.join(', ')}
-            </div>
+            {domain.common_evidence_examples.length > 0 && (
+              <div className="evidence-examples">
+                e.g. {domain.common_evidence_examples.slice(0, 4).join(', ')}
+              </div>
+            )}
           </div>
-          <div className="form-group">
-            <label className="form-label">Rationale / notes</label>
+          <div className="evidence-col">
+            <label className="field-label">Rationale and notes</label>
             <textarea
-              className="form-textarea"
+              className="field-textarea"
               value={result.rationale}
               onChange={(e) => updateResult({ rationale: e.target.value })}
-              placeholder="Key rationale or observations for this domain"
-              rows={3}
+              placeholder="Key observations or caveats for this domain"
+              rows={2}
             />
           </div>
         </div>
@@ -267,7 +226,7 @@ export default function AssessmentFlow({
           >
             {currentIndex === 0 ? 'Back to profile' : 'Previous domain'}
           </button>
-          <div className="flex gap-sm">
+          <div className="nav-right">
             {currentIndex < total - 1 ? (
               <button className="btn btn-primary" onClick={goNext}>
                 Next domain

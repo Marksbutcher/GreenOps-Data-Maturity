@@ -1,28 +1,16 @@
-import { useState, useMemo, Fragment } from 'react';
+import { Fragment, useState, useMemo } from 'react';
 import {
-  ScatterChart,
-  Scatter,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-  RadarChart,
-  PolarGrid,
-  PolarAngleAxis,
-  PolarRadiusAxis,
-  Radar,
-  Legend,
+  ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip,
+  ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, Radar,
   ReferenceLine,
-  Label,
 } from 'recharts';
-import { MaturityModel, OrganisationProfile, DomainAssessment } from '../types';
-import { calculateOverallStats, getDecisionSupportLabel } from '../lib/scoring';
-import { generateRecommendations, generateExecutiveSummary } from '../lib/recommendations';
+import { MaturityModel, DomainAssessment, OrganisationProfile } from '../types';
+import { calculateOverallStats, getQuadrant, getAnswerPatternSummary } from '../lib/scoring';
 import { generateDomainNarratives, DomainNarrative } from '../lib/narrativeAnalysis';
+import { generateRecommendations, generateExecutiveSummary } from '../lib/recommendations';
 import { generateDecisionReadiness } from '../lib/decisionReadiness';
 
-interface ResultsDashboardProps {
+interface Props {
   model: MaturityModel;
   profile: OrganisationProfile;
   results: DomainAssessment[];
@@ -32,670 +20,383 @@ interface ResultsDashboardProps {
   onStartOver: () => void;
 }
 
-type Tab = 'summary' | 'domains' | 'detail' | 'visuals' | 'readiness' | 'roadmap';
+type Tab = 'summary' | 'scores' | 'analysis' | 'visualizations' | 'readiness' | 'roadmap';
+
+const TAB_LABELS: Record<Tab, string> = {
+  summary: 'Executive Summary',
+  scores: 'Domain Scores',
+  analysis: 'Detailed Analysis',
+  visualizations: 'Visualisations',
+  readiness: 'Decision Readiness',
+  roadmap: 'Improvement Roadmap',
+};
 
 export default function ResultsDashboard({
-  model,
-  profile,
-  results,
-  onExportPDF,
-  onExportCSV,
-  onBack,
-  onStartOver,
-}: ResultsDashboardProps) {
+  model, profile, results, onExportPDF, onExportCSV, onBack, onStartOver,
+}: Props) {
   const [activeTab, setActiveTab] = useState<Tab>('summary');
 
-  const domainMap = useMemo(
-    () => new Map(model.domains.map((d) => [d.id, d])),
-    [model]
-  );
-
   const stats = useMemo(() => calculateOverallStats(results), [results]);
-  const execSummary = useMemo(
-    () => generateExecutiveSummary(results, model),
-    [results, model]
-  );
-  const narratives = useMemo(
-    () => generateDomainNarratives(results, model),
-    [results, model]
-  );
-  const recommendations = useMemo(
-    () => generateRecommendations(results, model),
-    [results, model]
-  );
-  const decisionReadiness = useMemo(
-    () => generateDecisionReadiness(results, model),
-    [results, model]
-  );
+  const narratives = useMemo(() => generateDomainNarratives(results, model), [results, model]);
+  const recommendations = useMemo(() => generateRecommendations(results, model), [results, model]);
+  const decisionReadiness = useMemo(() => generateDecisionReadiness(results, model), [results, model]);
+  const execSummary = useMemo(() => generateExecutiveSummary(results, model), [results, model]);
 
-  const tabs: { id: Tab; label: string }[] = [
-    { id: 'summary', label: 'Executive summary' },
-    { id: 'domains', label: 'Domain scores' },
-    { id: 'detail', label: 'Detailed analysis' },
-    { id: 'visuals', label: 'Visualisations' },
-    { id: 'readiness', label: 'Decision readiness' },
-    { id: 'roadmap', label: 'Improvement roadmap' },
-  ];
+  // Scatter data
+  const scatterData = results.map((r) => {
+    const d = model.domains.find((dd) => dd.id === r.domain_id);
+    return {
+      name: d?.name || r.domain_id,
+      x: r.effective_maturity,
+      y: r.impact_score,
+      confidence: r.confidence_score,
+      quadrant: getQuadrant(r.effective_maturity, r.impact_score),
+    };
+  });
+
+  // Radar data
+  const radarData = results.map((r) => {
+    const d = model.domains.find((dd) => dd.id === r.domain_id);
+    const label = d?.name || r.domain_id;
+    return {
+      domain: label.length > 20 ? label.slice(0, 18) + '…' : label,
+      maturity: r.effective_maturity,
+      impact: r.impact_score,
+      target: r.target_maturity,
+    };
+  });
+
+  // Heatmap data
+  const heatmapData = results.map((r) => {
+    const d = model.domains.find((dd) => dd.id === r.domain_id);
+    return {
+      domain_id: r.domain_id,
+      name: d?.name || r.domain_id,
+      maturity: r.effective_maturity,
+      impact: r.impact_score,
+      confidence: r.confidence_score,
+      gap: r.target_maturity - r.effective_maturity,
+    };
+  });
 
   return (
     <div className="results-page">
-      <div className="container">
+      <div className="container-wide">
+        {/* Header */}
         <div className="results-header">
           <div>
-            <p className="label" style={{ marginBottom: 4 }}>Assessment results</p>
-            <h1>{profile.organisation_name}</h1>
-            <p className="text-secondary text-small">
-              {profile.sector}
-              {profile.sub_sector ? ` — ${profile.sub_sector}` : ''}
-              {profile.assessment_date ? ` — ${profile.assessment_date}` : ''}
-            </p>
+            <h1 className="results-title">Assessment Results</h1>
+            <p className="results-org">{profile.organisation_name}</p>
           </div>
           <div className="results-actions">
-            <button className="btn btn-outline btn-sm" onClick={onBack}>
-              Edit assessment
-            </button>
-            <button className="btn btn-outline btn-sm" onClick={onExportCSV}>
-              Export CSV
-            </button>
-            <button className="btn btn-primary btn-sm" onClick={onExportPDF}>
-              Export PDF
-            </button>
-            <button className="btn btn-ghost btn-sm" onClick={onStartOver}>
-              New assessment
-            </button>
+            <button className="btn btn-ghost" onClick={onBack}>Back to assessment</button>
+            <button className="btn btn-ghost" onClick={onStartOver}>Start over</button>
+            <button className="btn btn-primary" onClick={onExportCSV}>Export CSV</button>
+            <button className="btn btn-accent" onClick={onExportPDF}>Export PDF</button>
           </div>
         </div>
 
-        <div className="results-tabs">
-          {tabs.map((tab) => (
+        {/* Tabs */}
+        <div className="tabs">
+          {(Object.keys(TAB_LABELS) as Tab[]).map((tab) => (
             <button
-              key={tab.id}
-              className={`results-tab ${activeTab === tab.id ? 'active' : ''}`}
-              onClick={() => setActiveTab(tab.id)}
+              key={tab}
+              className={`tab ${activeTab === tab ? 'active' : ''}`}
+              onClick={() => setActiveTab(tab)}
             >
-              {tab.label}
+              {TAB_LABELS[tab]}
             </button>
           ))}
         </div>
 
-        {activeTab === 'summary' && (
-          <SummaryTab stats={stats} summary={execSummary} />
-        )}
-        {activeTab === 'domains' && (
-          <DomainsTab results={results} model={model} domainMap={domainMap} />
-        )}
-        {activeTab === 'detail' && (
-          <DetailTab narratives={narratives} />
-        )}
-        {activeTab === 'visuals' && (
-          <VisualsTab results={results} model={model} domainMap={domainMap} />
-        )}
-        {activeTab === 'readiness' && (
-          <ReadinessTab readiness={decisionReadiness} domainMap={domainMap} />
-        )}
-        {activeTab === 'roadmap' && (
-          <RoadmapTab recommendations={recommendations} />
-        )}
-      </div>
-    </div>
-  );
-}
-
-// ===== Summary tab =====
-function SummaryTab({
-  stats,
-  summary,
-}: {
-  stats: ReturnType<typeof calculateOverallStats>;
-  summary: ReturnType<typeof generateExecutiveSummary>;
-}) {
-  return (
-    <div className="exec-summary">
-      <div className="exec-metric-row">
-        <div className="exec-metric">
-          <div className="metric-value">{stats.weightedMaturity}</div>
-          <div className="metric-label">Weighted maturity</div>
-        </div>
-        <div className="exec-metric">
-          <div className="metric-value">{stats.avgMaturity}</div>
-          <div className="metric-label">Average maturity</div>
-        </div>
-        <div className="exec-metric">
-          <div className="metric-value">
-            {stats.minMaturity}–{stats.maxMaturity}
-          </div>
-          <div className="metric-label">Maturity range</div>
-        </div>
-        <div className="exec-metric">
-          <div className="metric-value">{stats.domainCount}</div>
-          <div className="metric-label">Domains assessed</div>
-        </div>
-      </div>
-
-      <div className="card">
-        <h3 style={{ marginBottom: 12 }}>Overall assessment</h3>
-        <p className="summary-narrative">{summary.overallSummary}</p>
-      </div>
-
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-lg)' }}>
-        <div className="card">
-          <h3 style={{ marginBottom: 12, fontSize: '1rem' }}>Strongest domains</h3>
-          <div className="summary-list">
-            {summary.strongestDomains.map((d, i) => (
-              <div key={i} className="summary-list-item">{d}</div>
-            ))}
-          </div>
-        </div>
-        <div className="card">
-          <h3 style={{ marginBottom: 12, fontSize: '1rem' }}>Weakest domains</h3>
-          <div className="summary-list">
-            {summary.weakestDomains.map((d, i) => (
-              <div key={i} className="summary-list-item">{d}</div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {summary.topGaps.length > 0 && (
-        <div className="card">
-          <h3 style={{ marginBottom: 12, fontSize: '1rem' }}>
-            Critical gaps — high impact, low maturity
-          </h3>
-          <div className="summary-list">
-            {summary.topGaps.map((g, i) => (
-              <div key={i} className="summary-list-item">{g}</div>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {summary.keyRisks.length > 0 && (
-        <div className="card">
-          <h3 style={{ marginBottom: 12, fontSize: '1rem' }}>Key risks if unchanged</h3>
-          <div className="summary-list">
-            {summary.keyRisks.map((r, i) => (
-              <div key={i} className="summary-list-item">{r}</div>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {summary.headlineRecommendations.length > 0 && (
-        <div className="card">
-          <h3 style={{ marginBottom: 12, fontSize: '1rem' }}>Headline recommendations</h3>
-          <div className="summary-list">
-            {summary.headlineRecommendations.map((r, i) => (
-              <div key={i} className="summary-list-item">{r}</div>
-            ))}
-          </div>
-        </div>
-      )}
-    </div>
-  );
-}
-
-// ===== Domains table tab =====
-function DomainsTab({
-  results,
-  model,
-  domainMap,
-}: {
-  results: DomainAssessment[];
-  model: MaturityModel;
-  domainMap: Map<string, (typeof model.domains)[0]>;
-}) {
-  return (
-    <div className="domain-table-wrapper">
-      <table className="domain-table">
-        <thead>
-          <tr>
-            <th>Domain</th>
-            <th style={{ textAlign: 'center' }}>Maturity</th>
-            <th style={{ textAlign: 'center' }}>Impact</th>
-            <th style={{ textAlign: 'center' }}>Confidence</th>
-            <th>Decision support</th>
-            <th style={{ textAlign: 'center' }}>Target</th>
-            <th style={{ textAlign: 'center' }}>Gap</th>
-            <th>Priority</th>
-            <th>Rationale</th>
-          </tr>
-        </thead>
-        <tbody>
-          {results.map((r) => {
-            const domain = domainMap.get(r.domain_id);
-            const gap = r.target_maturity - r.maturity_score;
-            return (
-              <tr key={r.domain_id}>
-                <td style={{ fontWeight: 500, minWidth: 200 }}>
-                  {domain?.name || r.domain_id}
-                </td>
-                <td className="score-cell">
-                  <span className={`score-pill s${r.maturity_score}`}>
-                    {r.maturity_score}
-                  </span>
-                </td>
-                <td className="score-cell">
-                  <span className={`score-pill s${r.impact_score}`}>
-                    {r.impact_score}
-                  </span>
-                </td>
-                <td className="score-cell" style={{ color: 'var(--color-text-secondary)' }}>
-                  {r.confidence_score}
-                </td>
-                <td>
-                  <span className={`status-tag ${r.decision_support_status}`}>
-                    {getDecisionSupportLabel(model, r.decision_support_status)}
-                  </span>
-                </td>
-                <td style={{ textAlign: 'center', color: 'var(--color-text-secondary)' }}>
-                  {r.target_maturity}
-                </td>
-                <td style={{ textAlign: 'center', fontWeight: gap > 0 ? 600 : 400, color: gap >= 2 ? 'var(--color-high)' : 'var(--color-text-secondary)' }}>
-                  {gap > 0 ? `+${gap}` : '—'}
-                </td>
-                <td>
-                  {r.priority && (
-                    <span className={`priority-tag ${r.priority.toLowerCase()}`}>
-                      {r.priority}
-                    </span>
-                  )}
-                </td>
-                <td style={{ maxWidth: 240, color: 'var(--color-text-secondary)', fontSize: '0.8rem' }}>
-                  {r.rationale || '—'}
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
-    </div>
-  );
-}
-
-// ===== Detail tab =====
-function DetailTab({ narratives }: { narratives: DomainNarrative[] }) {
-  return (
-    <div>
-      {narratives.map((n) => (
-        <div key={n.domain_id} className="domain-detail">
-          <div className="domain-detail-header">
-            <h3>{n.domain_name}</h3>
-            <div className="domain-detail-scores">
-              <div className="detail-score-badge">
-                <span className="badge-label">Maturity</span>
-                <span className={`score-pill s${n.maturityScore}`}>
-                  {n.maturityScore}
-                </span>
+        {/* Tab content */}
+        <div className="tab-content">
+          {/* EXECUTIVE SUMMARY */}
+          {activeTab === 'summary' && (
+            <div className="summary-panel">
+              <div className="stat-cards">
+                <div className="stat-card">
+                  <div className="stat-value">{stats.weightedMaturity}</div>
+                  <div className="stat-label">Weighted maturity</div>
+                </div>
+                <div className="stat-card">
+                  <div className="stat-value">{stats.minMaturity} — {stats.maxMaturity}</div>
+                  <div className="stat-label">Range</div>
+                </div>
+                <div className="stat-card">
+                  <div className="stat-value">{results.filter(r => r.priority === 'High').length}</div>
+                  <div className="stat-label">High priority domains</div>
+                </div>
+                <div className="stat-card">
+                  <div className="stat-value">{results.filter(r => r.effective_maturity < 3).length}</div>
+                  <div className="stat-label">Below decision-grade</div>
+                </div>
               </div>
-              <div className="detail-score-badge">
-                <span className="badge-label">Impact</span>
-                <span className={`score-pill s${n.impactScore}`}>
-                  {n.impactScore}
-                </span>
-              </div>
-              <div className="detail-score-badge">
-                <span className="badge-label">Confidence</span>
-                <span style={{ fontWeight: 600, color: 'var(--color-text-secondary)' }}>
-                  {n.confidenceScore}
-                </span>
-              </div>
-              {n.priority && (
-                <span className={`priority-tag ${n.priority.toLowerCase()}`}>
-                  {n.priority}
-                </span>
-              )}
-            </div>
-          </div>
-
-          <div className="detail-section">
-            <h4>Current maturity</h4>
-            <p>
-              <strong>{n.currentLevel}.</strong> {n.currentLevelDescription}
-            </p>
-          </div>
-
-          <div className="detail-section">
-            <h4>Evidence and rationale</h4>
-            <p>{n.evidenceSummary}</p>
-          </div>
-
-          <div className="detail-section">
-            <h4>Operational consequences</h4>
-            <p>{n.consequences}</p>
-          </div>
-
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-lg)' }}>
-            <div className="detail-section">
-              <h4>Currently supports</h4>
-              <ul>
-                {n.supportedDecisions.map((d, i) => (
-                  <li key={i}>{d}</li>
+              <div className="summary-text">
+                {execSummary.split('\n\n').map((para, i) => (
+                  <p key={i}>{para}</p>
                 ))}
-              </ul>
+              </div>
             </div>
-            <div className="detail-section">
-              <h4>Does not yet support</h4>
-              <ul>
-                {n.unsupportedDecisions.length > 0 ? (
-                  n.unsupportedDecisions.map((d, i) => (
-                    <li key={i}>{d}</li>
-                  ))
-                ) : (
-                  <li>No significant limitations at this level</li>
-                )}
-              </ul>
+          )}
+
+          {/* DOMAIN SCORES TABLE */}
+          {activeTab === 'scores' && (
+            <div className="domain-table-wrapper">
+              <table className="domain-table">
+                <thead>
+                  <tr>
+                    <th>Domain</th>
+                    <th>Calculated</th>
+                    <th>Override</th>
+                    <th>Effective</th>
+                    <th>Impact</th>
+                    <th>Confidence</th>
+                    <th>Priority</th>
+                    <th>Decision Support</th>
+                    <th>Flags</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {results.map((r) => {
+                    const d = model.domains.find((dd) => dd.id === r.domain_id);
+                    return (
+                      <tr key={r.domain_id}>
+                        <td className="domain-name-cell">{d?.name || r.domain_id}</td>
+                        <td><span className={`level-badge l${r.calculated_maturity}`}>{r.calculated_maturity}</span></td>
+                        <td>{r.assessor_override !== null ? <span className={`level-badge l${r.assessor_override}`}>{r.assessor_override}</span> : '—'}</td>
+                        <td><span className={`level-badge l${r.effective_maturity}`}>{r.effective_maturity}</span></td>
+                        <td>{r.impact_score}</td>
+                        <td>{r.confidence_score}</td>
+                        <td><span className={`priority-tag ${r.priority.toLowerCase()}`}>{r.priority}</span></td>
+                        <td className="ds-cell">{r.decision_support_status}</td>
+                        <td className="flags-cell">{r.weakness_flags.length > 0 ? r.weakness_flags.join('; ') : '—'}</td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
             </div>
-          </div>
+          )}
 
-          <div className="detail-section">
-            <h4>What better maturity would unlock</h4>
-            <p>{n.whatBetterUnlocks}</p>
-          </div>
+          {/* DETAILED ANALYSIS */}
+          {activeTab === 'analysis' && (
+            <div className="analysis-list">
+              {narratives.map((n) => {
+                const result = results.find((r) => r.domain_id === n.domain_id);
+                const domain = model.domains.find((d) => d.id === n.domain_id);
+                const patterns = result && domain ? getAnswerPatternSummary(domain, result.question_answers) : null;
+                return (
+                  <div key={n.domain_id} className="analysis-card">
+                    <div className="analysis-header">
+                      <h3>{n.domain_name}</h3>
+                      <span className={`level-badge l${n.maturity_level}`}>Level {n.maturity_level} — {n.maturity_label}</span>
+                    </div>
+                    <div className="analysis-body">
+                      <div className="analysis-section">
+                        <h4>Score Explanation</h4>
+                        <p>{n.score_explanation}</p>
+                      </div>
+                      {n.dimension_analysis && (
+                        <div className="analysis-section">
+                          <h4>Dimension Analysis</h4>
+                          <p>{n.dimension_analysis}</p>
+                          {result && Object.keys(result.dimension_scores).length > 0 && (
+                            <div className="dimension-bars">
+                              {Object.entries(result.dimension_scores).map(([dim, score]) => (
+                                <div key={dim} className="dimension-bar-row">
+                                  <span className="dim-label">{dim.replace(/_/g, ' ')}</span>
+                                  <div className="dim-bar-track">
+                                    <div className={`dim-bar-fill ${score <= 2 ? 'weak' : score >= 4 ? 'strong' : 'mid'}`} style={{ width: `${(score / 5) * 100}%` }} />
+                                  </div>
+                                  <span className="dim-score">{score}</span>
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      )}
+                      {patterns && (patterns.weakAreas.length > 0 || patterns.strongAreas.length > 0) && (
+                        <div className="analysis-section">
+                          <h4>Answer Patterns</h4>
+                          {patterns.strongAreas.length > 0 && <p><strong>Strong:</strong> {patterns.strongAreas.map(a => a.replace(/_/g, ' ')).join(', ')}</p>}
+                          {patterns.weakAreas.length > 0 && <p><strong>Weak:</strong> {patterns.weakAreas.map(a => a.replace(/_/g, ' ')).join(', ')}</p>}
+                        </div>
+                      )}
+                      {n.decision_support_summary && (
+                        <div className="analysis-section">
+                          <h4>Decision Support</h4>
+                          <p>{n.decision_support_summary}</p>
+                        </div>
+                      )}
+                      {n.improvement_guidance && (
+                        <div className="analysis-section">
+                          <h4>Improvement Guidance</h4>
+                          <p>{n.improvement_guidance}</p>
+                        </div>
+                      )}
+                      {n.weakness_flags.length > 0 && (
+                        <div className="analysis-section caveats">
+                          <h4>Caveats</h4>
+                          {n.weakness_flags.map((f, i) => <p key={i} className="caveat-flag">{f}</p>)}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
 
-          <div className="detail-section">
-            <h4>Improvement actions</h4>
-            <ul>
-              {n.improvementActions.map((a, i) => (
-                <li key={i}>{a}</li>
-              ))}
-            </ul>
-          </div>
+          {/* VISUALIZATIONS */}
+          {activeTab === 'visualizations' && (
+            <div className="viz-grid">
+              {/* Priority Matrix */}
+              <div className="viz-panel">
+                <h3>Priority Matrix</h3>
+                <ResponsiveContainer width="100%" height={400}>
+                  <ScatterChart margin={{ top: 20, right: 30, bottom: 20, left: 20 }}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+                    <XAxis type="number" dataKey="x" name="Maturity" domain={[0.5, 5.5]} label={{ value: 'Maturity', position: 'bottom' }} />
+                    <YAxis type="number" dataKey="y" name="Impact" domain={[0.5, 5.5]} label={{ value: 'Impact', angle: -90, position: 'left' }} />
+                    <ReferenceLine x={2.75} stroke="#94a3b8" strokeDasharray="4 4" />
+                    <ReferenceLine y={3.25} stroke="#94a3b8" strokeDasharray="4 4" />
+                    <Tooltip
+                      cursor={{ strokeDasharray: '3 3' }}
+                      content={({ active, payload }) => {
+                        if (!active || !payload?.length) return null;
+                        const d = payload[0].payload;
+                        return (
+                          <div className="chart-tooltip">
+                            <strong>{d.name}</strong><br />
+                            Maturity: {d.x} — Impact: {d.y}<br />
+                            Quadrant: {d.quadrant}
+                          </div>
+                        );
+                      }}
+                    />
+                    <Scatter
+                      data={scatterData}
+                      fill="#267878"
+                      shape={(props: any) => {
+                        const { cx, cy, payload } = props as { cx: number; cy: number; payload: typeof scatterData[0] };
+                        const r = Math.max((payload.confidence || 3) * 4, 12);
+                        const label = payload.name.length > 22 ? payload.name.slice(0, 20) + '…' : payload.name;
+                        return (
+                          <g>
+                            <circle cx={cx} cy={cy} r={r} fill="#267878" fillOpacity={0.6} stroke="#1a5c5c" strokeWidth={1.5} />
+                            <text x={cx} y={cy - r - 4} textAnchor="middle" fontSize={9} fill="#334155">{label}</text>
+                          </g>
+                        );
+                      }}
+                    />
+                  </ScatterChart>
+                </ResponsiveContainer>
+              </div>
 
-          {n.targetGap !== null && n.targetGap > 0 && (
-            <div className="detail-section">
-              <h4>Gap to target</h4>
-              <p>
-                Current: Level {n.maturityScore} — Target: Level{' '}
-                {n.maturityScore + n.targetGap} — Gap: {n.targetGap}{' '}
-                {n.targetGap === 1 ? 'level' : 'levels'}
+              {/* Radar */}
+              <div className="viz-panel">
+                <h3>Maturity Radar</h3>
+                <ResponsiveContainer width="100%" height={400}>
+                  <RadarChart data={radarData} outerRadius="75%">
+                    <PolarGrid stroke="#e2e8f0" />
+                    <PolarAngleAxis dataKey="domain" tick={{ fontSize: 9 }} />
+                    <Radar name="Maturity" dataKey="maturity" stroke="#267878" fill="#267878" fillOpacity={0.3} />
+                    <Radar name="Impact" dataKey="impact" stroke="#f59e0b" fill="#f59e0b" fillOpacity={0.1} />
+                    <Radar name="Target" dataKey="target" stroke="#94a3b8" fill="none" strokeDasharray="4 4" />
+                    <Tooltip />
+                  </RadarChart>
+                </ResponsiveContainer>
+              </div>
+
+              {/* Heatmap */}
+              <div className="viz-panel full-width">
+                <h3>Domain Heatmap</h3>
+                <div className="heatmap-grid">
+                  <div className="heatmap-header">
+                    <div className="heatmap-label">Domain</div>
+                    <div className="heatmap-cell-header">Maturity</div>
+                    <div className="heatmap-cell-header">Impact</div>
+                    <div className="heatmap-cell-header">Confidence</div>
+                    <div className="heatmap-cell-header">Gap to target</div>
+                  </div>
+                  {heatmapData.map((r) => (
+                    <Fragment key={r.domain_id}>
+                      <div className="heatmap-label">{r.name}</div>
+                      <div className={`heatmap-cell hl${r.maturity}`}>{r.maturity}</div>
+                      <div className={`heatmap-cell hl${r.impact}`}>{r.impact}</div>
+                      <div className={`heatmap-cell hl${r.confidence}`}>{r.confidence}</div>
+                      <div className={`heatmap-cell ${r.gap >= 3 ? 'hl1' : r.gap >= 2 ? 'hl2' : r.gap >= 1 ? 'hl3' : 'hl5'}`}>{r.gap > 0 ? `+${r.gap}` : '0'}</div>
+                    </Fragment>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* DECISION READINESS */}
+          {activeTab === 'readiness' && (
+            <div className="readiness-panel">
+              <p className="readiness-intro">
+                Decision readiness is determined by the weakest supporting domain for each GreenOps decision area.
               </p>
+              <div className="domain-table-wrapper">
+                <table className="domain-table">
+                  <thead>
+                    <tr>
+                      <th>Decision Area</th>
+                      <th>Readiness</th>
+                      <th>Supporting Domains</th>
+                      <th>Limiting Domains</th>
+                      <th>Summary</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {decisionReadiness.map((dr) => (
+                      <tr key={dr.area}>
+                        <td className="domain-name-cell">{dr.area}</td>
+                        <td><span className={`readiness-badge ${dr.readiness}`}>{dr.label}</span></td>
+                        <td>{dr.supporting_domains.join(', ') || '—'}</td>
+                        <td>{dr.limiting_domains.join(', ') || '—'}</td>
+                        <td className="summary-cell">{dr.summary}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+
+          {/* IMPROVEMENT ROADMAP */}
+          {activeTab === 'roadmap' && (
+            <div className="roadmap-panel">
+              <div className="domain-table-wrapper">
+                <table className="domain-table">
+                  <thead>
+                    <tr>
+                      <th>Priority</th>
+                      <th>Domain</th>
+                      <th>Action</th>
+                      <th>Phase</th>
+                      <th>Reason</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {recommendations.map((rec, i) => (
+                      <tr key={i}>
+                        <td><span className={`priority-tag ${rec.priority.toLowerCase()}`}>{rec.priority}</span></td>
+                        <td className="domain-name-cell">{rec.domain_name}</td>
+                        <td>{rec.action}</td>
+                        <td><span className="phase-tag">{rec.phase}</span></td>
+                        <td className="summary-cell">{rec.reason}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
           )}
         </div>
-      ))}
-    </div>
-  );
-}
-
-// ===== Visuals tab =====
-function VisualsTab({
-  results,
-  model,
-  domainMap,
-}: {
-  results: DomainAssessment[];
-  model: MaturityModel;
-  domainMap: Map<string, (typeof model.domains)[0]>;
-}) {
-  const scatterData = results.map((r) => ({
-    x: r.maturity_score,
-    y: r.impact_score,
-    name: domainMap.get(r.domain_id)?.name || r.domain_id,
-    confidence: r.confidence_score,
-  }));
-
-  const radarData = results.map((r) => ({
-    domain: (domainMap.get(r.domain_id)?.name || r.domain_id).split(' ').slice(0, 3).join(' '),
-    maturity: r.maturity_score,
-    impact: r.impact_score,
-    target: r.target_maturity,
-  }));
-
-  const matColors: Record<number, string> = {
-    1: '#c83a2a',
-    2: '#d67830',
-    3: '#c09c30',
-    4: '#3a9c6a',
-    5: '#267848',
-  };
-
-  return (
-    <div>
-      {/* Priority matrix */}
-      <div className="chart-container">
-        <div className="chart-title">Priority matrix — maturity vs impact</div>
-        <div className="chart-subtitle">
-          Domains in the upper-left (high impact, low maturity) should be addressed first.
-          Quadrants: Transform now (upper-left), Exploit and extend (upper-right),
-          Stabilise (lower-left), Maintain (lower-right).
-        </div>
-        <ResponsiveContainer width="100%" height={420}>
-          <ScatterChart margin={{ top: 20, right: 40, bottom: 40, left: 20 }}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#eaecf0" />
-            <XAxis
-              type="number"
-              dataKey="x"
-              domain={[0.5, 5.5]}
-              ticks={[1, 2, 3, 4, 5]}
-              name="Maturity"
-              label={{ value: 'Maturity score', position: 'bottom', offset: 20, style: { fill: '#8a9199', fontSize: 12 } }}
-            />
-            <YAxis
-              type="number"
-              dataKey="y"
-              domain={[0.5, 5.5]}
-              ticks={[1, 2, 3, 4, 5]}
-              name="Impact"
-              label={{ value: 'Impact score', angle: -90, position: 'insideLeft', offset: -5, style: { fill: '#8a9199', fontSize: 12 } }}
-            />
-            <ReferenceLine x={3} stroke="#dfe3e8" strokeDasharray="6 4" />
-            <ReferenceLine y={3.5} stroke="#dfe3e8" strokeDasharray="6 4" />
-            <Tooltip
-              content={({ payload }) => {
-                if (!payload?.length) return null;
-                const d = payload[0].payload;
-                return (
-                  <div style={{ background: 'white', padding: '8px 12px', border: '1px solid #dfe3e8', borderRadius: 6, fontSize: 13 }}>
-                    <strong>{d.name}</strong>
-                    <br />
-                    Maturity: {d.x} — Impact: {d.y}
-                  </div>
-                );
-              }}
-            />
-            <Scatter
-              data={scatterData}
-              fill="#267878"
-              shape={(props: any) => {
-                const { cx, cy, payload } = props as { cx: number; cy: number; payload: typeof scatterData[0] };
-                const r = Math.max((payload.confidence || 3) * 4, 12);
-                const label = payload.name.length > 22
-                  ? payload.name.slice(0, 20) + '…'
-                  : payload.name;
-                return (
-                  <g>
-                    <circle
-                      cx={cx}
-                      cy={cy}
-                      r={r}
-                      fill={matColors[payload.x] || '#267878'}
-                      opacity={0.75}
-                      stroke="white"
-                      strokeWidth={2}
-                    />
-                    <text
-                      x={cx}
-                      y={cy + r + 13}
-                      textAnchor="middle"
-                      fontSize={9}
-                      fill="#5a6270"
-                    >
-                      {label}
-                    </text>
-                  </g>
-                );
-              }}
-            />
-          </ScatterChart>
-        </ResponsiveContainer>
-      </div>
-
-      {/* Heatmap */}
-      <div className="chart-container">
-        <div className="chart-title">Maturity heatmap</div>
-        <div className="chart-subtitle">
-          Each row shows a domain. The highlighted cell indicates the current maturity level.
-        </div>
-        <div className="heatmap-grid">
-          <div className="heatmap-header" />
-          {[1, 2, 3, 4, 5].map((l) => (
-            <div key={l} className="heatmap-header">
-              Level {l}
-            </div>
-          ))}
-          {results.map((r) => {
-            const domain = domainMap.get(r.domain_id);
-            return (
-              <Fragment key={r.domain_id}>
-                <div className="heatmap-label">
-                  {domain?.name || r.domain_id}
-                </div>
-                {[1, 2, 3, 4, 5].map((l) => (
-                  <div
-                    key={`${r.domain_id}-${l}`}
-                    className={`heatmap-cell ${
-                      r.maturity_score === l ? 'active' : 'inactive'
-                    }`}
-                    style={
-                      r.maturity_score === l
-                        ? { background: matColors[l] }
-                        : undefined
-                    }
-                  >
-                    {r.maturity_score === l ? l : ''}
-                  </div>
-                ))}
-              </Fragment>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* Radar chart */}
-      <div className="chart-container">
-        <div className="chart-title">Radar — maturity, impact and target</div>
-        <ResponsiveContainer width="100%" height={480}>
-          <RadarChart data={radarData} cx="50%" cy="50%" outerRadius="70%">
-            <PolarGrid stroke="#eaecf0" />
-            <PolarAngleAxis dataKey="domain" tick={{ fontSize: 10, fill: '#5a6270' }} />
-            <PolarRadiusAxis angle={90} domain={[0, 5]} tick={{ fontSize: 10 }} />
-            <Radar
-              name="Maturity"
-              dataKey="maturity"
-              stroke="#267878"
-              fill="#267878"
-              fillOpacity={0.15}
-              strokeWidth={2}
-            />
-            <Radar
-              name="Impact"
-              dataKey="impact"
-              stroke="#c09c30"
-              fill="#c09c30"
-              fillOpacity={0.05}
-              strokeWidth={1.5}
-              strokeDasharray="4 4"
-            />
-            <Radar
-              name="Target"
-              dataKey="target"
-              stroke="#3a9c6a"
-              fill="none"
-              strokeWidth={1.5}
-              strokeDasharray="6 3"
-            />
-            <Legend wrapperStyle={{ fontSize: 12 }} />
-          </RadarChart>
-        </ResponsiveContainer>
-      </div>
-    </div>
-  );
-}
-
-// ===== Decision readiness tab =====
-function ReadinessTab({
-  readiness,
-  domainMap,
-}: {
-  readiness: ReturnType<typeof generateDecisionReadiness>;
-  domainMap: Map<string, any>;
-}) {
-  return (
-    <div>
-      <div className="card" style={{ marginBottom: 'var(--space-lg)' }}>
-        <h3 style={{ marginBottom: 8, fontSize: '1rem' }}>
-          GreenOps decision readiness summary
-        </h3>
-        <p className="text-secondary text-small" style={{ lineHeight: 1.7 }}>
-          This summary assesses whether the organisation's current data inputs are sufficient
-          to support specific GreenOps decisions with confidence. Where data is weak, the
-          assessment is explicit that certain decisions should not yet be treated as decision-grade.
-        </p>
-      </div>
-
-      <div className="readiness-grid">
-        {readiness.map((dr) => (
-          <div key={dr.area} className="readiness-card">
-            <div className="readiness-area">{dr.area}</div>
-            <div>
-              <span className={`status-tag ${dr.readiness}`}>{dr.label}</span>
-              {dr.limiting_domains.length > 0 && (
-                <div style={{ marginTop: 6, fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>
-                  Limited by:{' '}
-                  {dr.limiting_domains
-                    .map((d) => domainMap.get(d)?.name || d)
-                    .join(', ')}
-                </div>
-              )}
-            </div>
-            <div className="readiness-summary">{dr.summary}</div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-// ===== Roadmap tab =====
-function RoadmapTab({
-  recommendations,
-}: {
-  recommendations: ReturnType<typeof generateRecommendations>;
-}) {
-  return (
-    <div>
-      <div className="card" style={{ marginBottom: 'var(--space-lg)' }}>
-        <h3 style={{ marginBottom: 8, fontSize: '1rem' }}>
-          Improvement roadmap
-        </h3>
-        <p className="text-secondary text-small" style={{ lineHeight: 1.7 }}>
-          Prioritised improvement actions based on the assessment results.
-          Recommendations are domain-specific and linked to the decisions they would
-          unlock or strengthen.
-        </p>
-      </div>
-
-      <div className="roadmap-list">
-        {recommendations.map((r, i) => (
-          <div key={i} className="roadmap-item">
-            <div>
-              <div className="roadmap-domain">{r.domain_name}</div>
-              <span className="phase-tag">{r.phase}</span>
-            </div>
-            <div>
-              <div className="roadmap-action">{r.action}</div>
-              <div className="roadmap-benefit">{r.benefit}</div>
-            </div>
-            <div>
-              <span className={`priority-tag ${r.priority.toLowerCase()}`}>
-                {r.priority}
-              </span>
-            </div>
-            <div style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>
-              {r.reason.length > 80 ? r.reason.slice(0, 78) + '…' : r.reason}
-            </div>
-          </div>
-        ))}
       </div>
     </div>
   );
