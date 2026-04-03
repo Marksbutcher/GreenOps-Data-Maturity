@@ -133,23 +133,23 @@
           "tags": [],
           "options": [
             {
-              "label": "No meaningful coverage or not tracked. Visibility is fragmented and unreliable.",
+              "label": "No reliable inventory. Fragmented spreadsheets, outdated records, or no central view of IT assets.",
               "score": 1
             },
             {
-              "label": "Covers 20-40% of scope. Limited to main or core areas. Significant gaps remain.",
+              "label": "Basic CMDB or spreadsheet covers main platforms but is incomplete, manually maintained and often out of date.",
               "score": 2
             },
             {
-              "label": "Covers 50-75% of scope with documented standard coverage. Gaps remain in secondary areas or edge cases.",
+              "label": "CMDB covers most on-premise and cloud assets with periodic discovery scans. Some environments still missing.",
               "score": 3
             },
             {
-              "label": "Covers 75-90% of scope with consistent methods. Gaps are known and actively managed.",
+              "label": "Integrated CMDB with automated discovery across on-premise, cloud and edge. Coverage gaps are known and tracked.",
               "score": 4
             },
             {
-              "label": "Covers >90% of scope with continuous discovery and automated updates.",
+              "label": "Real-time, continuously validated asset inventory across all environments with automated reconciliation and drift detection.",
               "score": 5
             }
           ]
@@ -164,23 +164,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Only basic attributes collected. Critical fields (model, SKU, lifecycle, location) missing for most assets.",
+              "label": "Asset records are minimal \u2014 maybe hostname, location and rough category. No configuration detail.",
               "score": 1
             },
             {
-              "label": "Partial data for some assets. Inconsistent fields across platforms. Model and SKU data missing or unreliable for 40-60% of assets.",
+              "label": "Core fields like make, model, CPU, memory for major assets. Gaps in storage, networking and end-user devices.",
               "score": 2
             },
             {
-              "label": "Standard schema applied to core assets. Model, SKU, and lifecycle data available for 50-75% of estate. Gaps in secondary environments.",
+              "label": "Good configuration detail for servers and storage. Networking and end-user device data improving.",
               "score": 3
             },
             {
-              "label": "Rich asset records (model, SKU, owner, location, lifecycle state, warranty) for 75-90% of the estate. Data quality actively managed with regular audits.",
+              "label": "Detailed configuration, firmware, warranty and support data for most asset classes. Linked to vendor product catalogues.",
               "score": 4
             },
             {
-              "label": "Comprehensive, validated asset records (model, SKU, location, owner, lifecycle, warranty, power, heat) for >90% of estate with continuous validation.",
+              "label": "Comprehensive, validated configuration data across all asset classes. Automatically enriched from vendor APIs and discovery tools.",
               "score": 5
             }
           ]
@@ -195,23 +195,23 @@
           "tags": [],
           "options": [
             {
-              "label": "No meaningful link. Energy, emissions, or costs cannot be attributed to services, teams, or workloads.",
+              "label": "No meaningful link between assets and the services, applications or teams that use them.",
               "score": 1
             },
             {
-              "label": "Attribution possible for 20-40% of IT load, mainly limited to major platforms or data halls. Service-level attribution is rare.",
+              "label": "Some assets linked to major applications or platforms. Mostly manual and incomplete.",
               "score": 2
             },
             {
-              "label": "Attribution covers 50-75% of IT load across main platforms and environments. Some major services identified. Workload-level gaps remain.",
+              "label": "Most server and storage assets mapped to services or applications. Cloud resources tagged to teams for main accounts.",
               "score": 3
             },
             {
-              "label": "Energy can be attributed to specific services or teams for 75-90% of IT load. Allocation rules are documented and applied consistently.",
+              "label": "Strong asset-to-service mapping across most platforms. Ownership, cost centre and application links maintained.",
               "score": 4
             },
             {
-              "label": "Energy, emissions, and costs can be attributed at service/workload level for >90% of IT load with continuous validation and fine-grained traceability.",
+              "label": "Full traceability from asset through to service, application, business owner and cost centre. Continuously validated.",
               "score": 5
             }
           ]
@@ -226,23 +226,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Updates are sporadic or absent. Data often 30+ days out of date.",
+              "label": "Inventory is rarely updated. Changes accumulate and are caught in periodic audits or not at all.",
               "score": 1
             },
             {
-              "label": "Updates happen monthly or quarterly, with lags of 2-4 weeks for major changes.",
+              "label": "Updates happen during scheduled refresh cycles or when problems arise. Lag of weeks to months.",
               "score": 2
             },
             {
-              "label": "Updates occur monthly or bi-monthly for most scope. Reflects changes within 2-4 week cycle.",
+              "label": "Main environments updated within days of changes. Some environments still lag.",
               "score": 3
             },
             {
-              "label": "Updates occur weekly or bi-weekly across main scope. Most changes reflected within 1-2 weeks.",
+              "label": "Most changes reflected within 24-48 hours through automated discovery and integration with change management.",
               "score": 4
             },
             {
-              "label": "Updates are automated and near-continuous. Changes reflected within days or as part of operational workflows.",
+              "label": "Near-real-time. Deployments, moves and removals reflected automatically through CI/CD, ITSM and discovery integration.",
               "score": 5
             }
           ]
@@ -257,23 +257,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Location data missing or unreliable for most assets.",
+              "label": "Location data is unreliable or missing for most assets.",
               "score": 1
             },
             {
-              "label": "Location known at broad level (data centre region, building) for 20-40% of assets. Specific detail unknown.",
+              "label": "Broad location known (site, building) for major assets. Specific rack, room or cloud region often unknown.",
               "score": 2
             },
             {
-              "label": "Location known at zone/rack level for 50-75% of assets. Cloud regions and main facilities identified.",
+              "label": "Site and room or zone-level location for most on-premise assets. Cloud region known for main accounts.",
               "score": 3
             },
             {
-              "label": "Location known at zone/rack/room level for 75-90% of assets. Cloud regions, AZs clearly identified.",
+              "label": "Rack-level location for on-premise, availability zone for cloud. Accurate across most of the estate.",
               "score": 4
             },
             {
-              "label": "Precise location (zone, rack, row, container) known for >90% of assets with automated tracking.",
+              "label": "Precise location (site, room, rack, position) for physical assets and region/zone for cloud. Automatically maintained.",
               "score": 5
             }
           ]
@@ -288,23 +288,23 @@
           "tags": [],
           "options": [
             {
-              "label": "No formal process. Data collection is manual, error-prone, or not attempted.",
+              "label": "Cannot match inventory to vendor product data for GreenOps calculations.",
               "score": 1
             },
             {
-              "label": "Ad-hoc process with high manual effort. Inconsistent results. 20-40% of scope covered with confidence.",
+              "label": "Can match a few major product families manually. Most assets lack the detail needed for emissions lookups.",
               "score": 2
             },
             {
-              "label": "Documented process with partial automation. 50-75% of scope covered reliably. Some gaps remain.",
+              "label": "Can match most servers and storage to vendor product data. Gaps in networking, peripherals and end-user devices.",
               "score": 3
             },
             {
-              "label": "Established process with strong tooling. 75-90% of scope covered with documented confidence levels.",
+              "label": "Strong match rates across main asset classes. Product-specific data available for embodied carbon and power modelling.",
               "score": 4
             },
             {
-              "label": "Fully automated process with continuous validation. >90% of scope covered with high confidence. Continuous improvement active.",
+              "label": "Automated matching to vendor product catalogues. Embodied carbon, rated power and lifecycle data linked at asset level.",
               "score": 5
             }
           ]
@@ -319,23 +319,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Lineage not clear or tracked. Data sources and confidence levels not understood.",
+              "label": "Data sources unclear. No documented provenance or quality assessment.",
               "score": 1
             },
             {
-              "label": "Main sources documented but with variable quality. Confidence tracking exists for <50% of data.",
+              "label": "Main sources known (e.g. CMDB, procurement) but data quality and freshness vary and are not tracked.",
               "score": 2
             },
             {
-              "label": "Sources documented with confidence assigned for 50-75% of data. Some trust gaps in secondary areas.",
+              "label": "Sources documented for main asset classes. Some quality metrics tracked. Known gaps acknowledged.",
               "score": 3
             },
             {
-              "label": "Data lineage documented with clear confidence levels for 75-90% of inputs. Regular audits of source quality.",
+              "label": "Clear data lineage from source through to reporting. Quality metrics tracked with regular audit.",
               "score": 4
             },
             {
-              "label": "Complete lineage with confidence scoring for >90% of inputs. Continuous monitoring of source quality.",
+              "label": "Full provenance with confidence scoring. Automated quality monitoring, exception tracking and source validation.",
               "score": 5
             }
           ]
@@ -350,23 +350,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Lifecycle status not tracked or tracked for <20% of assets.",
+              "label": "Lifecycle status not tracked. Cannot distinguish in-use from spare, retired or awaiting disposal.",
               "score": 1
             },
             {
-              "label": "Lifecycle states tracked for 20-40% of assets. Inconsistent definitions or gaps in spare/retired inventory.",
+              "label": "Some lifecycle tracking for major assets \u2014 mainly procurement and disposal dates. Status often out of date.",
               "score": 2
             },
             {
-              "label": "Standard lifecycle states tracked for 50-75% of assets. Documented definitions.",
+              "label": "Lifecycle status maintained for most assets. Refresh planning data available but not always current.",
               "score": 3
             },
             {
-              "label": "Lifecycle tracking covers 75-90% of assets with regular updates. Supports refresh planning and retirement workflows.",
+              "label": "Active lifecycle management with status, age, refresh eligibility and disposal tracking across most asset classes.",
               "score": 4
             },
             {
-              "label": "Comprehensive lifecycle tracking for >90% of assets, fully automated, integrated with disposal processes.",
+              "label": "Full lifecycle governance: status, age, warranty, refresh plan, reuse potential and disposal route tracked and actively managed.",
               "score": 5
             }
           ]
@@ -535,23 +535,23 @@
           "tags": [],
           "options": [
             {
-              "label": "No formal process. Data collection is manual, error-prone, or not attempted.",
+              "label": "Mostly estimates based on utility bills, contract values, floor space or broad assumptions.",
               "score": 1
             },
             {
-              "label": "Ad-hoc process with high manual effort. Inconsistent results. 20-40% of scope covered with confidence.",
+              "label": "Site-level utility meter data for main facilities. Estimates or provider invoices for others.",
               "score": 2
             },
             {
-              "label": "Documented process with partial automation. 50-75% of scope covered reliably. Some gaps remain.",
+              "label": "Measured site-level energy data for most key environments. Sub-metering available in some facilities.",
               "score": 3
             },
             {
-              "label": "Established process with strong tooling. 75-90% of scope covered with documented confidence levels.",
+              "label": "Sub-metered data at hall, floor or cluster level for main sites. Smart meter telemetry where available.",
               "score": 4
             },
             {
-              "label": "Fully automated process with continuous validation. >90% of scope covered with high confidence. Continuous improvement active.",
+              "label": "Granular, metered energy data linked to IT load at rack, PDU or circuit level across the estate.",
               "score": 5
             }
           ]
@@ -566,23 +566,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Only aggregate total consumption available. No sub-metering or breakdown by zone, facility, or service.",
+              "label": "Only total site or building-level figures. No breakdown by area, function or IT load.",
               "score": 1
             },
             {
-              "label": "Basic breakdown available (e.g., by building or data centre). Coverage 20-40%. Hourly or daily data inconsistently collected.",
+              "label": "Site totals with a rough split between IT and facilities. No detailed breakdown within IT.",
               "score": 2
             },
             {
-              "label": "Facility-level metering available for 50-75% of operations. Daily or weekly granularity. Some gaps in sub-facility or service-level detail.",
+              "label": "IT load separated from cooling and facilities for main sites. Some hall-level or floor-level breakdown.",
               "score": 3
             },
             {
-              "label": "Hourly metering for 75-90% of facilities. Breakdown by zone, circuit, or major platform available. Data collection consistent and documented.",
+              "label": "Detailed breakdown: IT load, cooling, lighting, UPS losses separately metered for main facilities.",
               "score": 4
             },
             {
-              "label": "Real-time or near-continuous metering for >90% of operations. Granular data (sub-facility, circuit, service level) with high confidence and automated aggregation.",
+              "label": "Granular breakdown to rack row, PDU or circuit level. IT load, cooling, losses and renewables all separately visible.",
               "score": 5
             }
           ]
@@ -597,23 +597,23 @@
           "tags": [],
           "options": [
             {
-              "label": "No meaningful coverage or not tracked. Visibility is fragmented and unreliable.",
+              "label": "Very little of the estate has measured energy data. Mostly estimates or absent.",
               "score": 1
             },
             {
-              "label": "Covers 20-40% of scope. Limited to main or core areas. Significant gaps remain.",
+              "label": "Measured data for the largest sites only. Smaller sites, edge and cloud rely on estimates.",
               "score": 2
             },
             {
-              "label": "Covers 50-75% of scope with documented standard coverage. Gaps remain in secondary areas or edge cases.",
+              "label": "Measured data for most major on-premise sites. Cloud energy estimated from provider tools or usage data.",
               "score": 3
             },
             {
-              "label": "Covers 75-90% of scope with consistent methods. Gaps are known and actively managed.",
+              "label": "Strong measured coverage across on-premise. Cloud energy derived from credible provider telemetry.",
               "score": 4
             },
             {
-              "label": "Covers >90% of scope with continuous discovery and automated updates.",
+              "label": "Comprehensive measured or provider-verified energy data across on-premise, colo, cloud and edge environments.",
               "score": 5
             }
           ]
@@ -628,23 +628,23 @@
           "tags": [],
           "options": [
             {
-              "label": "No meaningful link. Energy, emissions, or costs cannot be attributed to services, teams, or workloads.",
+              "label": "Cannot link energy to services, platforms, teams or business demand.",
               "score": 1
             },
             {
-              "label": "Attribution possible for 20-40% of IT load, mainly limited to major platforms or data halls. Service-level attribution is rare.",
+              "label": "Only broad allocation \u2014 e.g. total IT energy divided by headcount or floor area.",
               "score": 2
             },
             {
-              "label": "Attribution covers 50-75% of IT load across main platforms and environments. Some major services identified. Workload-level gaps remain.",
+              "label": "Can attribute energy to major platforms or environments (e.g. per data hall, per cluster).",
               "score": 3
             },
             {
-              "label": "Energy can be attributed to specific services or teams for 75-90% of IT load. Allocation rules are documented and applied consistently.",
+              "label": "Energy attributable to services or teams for most of the on-premise estate. Cloud attribution via provider tools.",
               "score": 4
             },
             {
-              "label": "Energy, emissions, and costs can be attributed at service/workload level for >90% of IT load with continuous validation and fine-grained traceability.",
+              "label": "Service-level or workload-level energy attribution across on-premise and cloud. Validated allocation rules documented.",
               "score": 5
             }
           ]
@@ -659,23 +659,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Data available less than quarterly. Long delays between collection and availability.",
+              "label": "Annual or less. Energy data only available for reporting exercises.",
               "score": 1
             },
             {
-              "label": "Data available quarterly or monthly, but with 2-4 week lags. Sufficient for periodic reviews only.",
+              "label": "Quarterly or monthly site totals. Not frequent enough for operational use.",
               "score": 2
             },
             {
-              "label": "Data available monthly or bi-monthly with 1-2 week currency. Supports monthly management cycles.",
+              "label": "Monthly data for most sites. Some facilities have weekly or near-real-time smart meter feeds.",
               "score": 3
             },
             {
-              "label": "Data available weekly or bi-weekly with near-current information. Supports ongoing operational management.",
+              "label": "Weekly or better for main sites. Monthly for smaller environments. Sufficient for regular management use.",
               "score": 4
             },
             {
-              "label": "Data available daily or near-real-time. Supports continuous monitoring and immediate decision-making.",
+              "label": "Near-real-time or daily for key sites. Continuous feeds integrated into dashboards and operational workflows.",
               "score": 5
             }
           ]
@@ -690,23 +690,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Updates are sporadic or absent. Data often 30+ days out of date.",
+              "label": "Significant lag \u2014 weeks or months before energy data is available.",
               "score": 1
             },
             {
-              "label": "Updates happen monthly or quarterly, with lags of 2-4 weeks for major changes.",
+              "label": "Data typically 2-4 weeks behind. Depends on utility billing cycles.",
               "score": 2
             },
             {
-              "label": "Updates occur monthly or bi-monthly for most scope. Reflects changes within 2-4 week cycle.",
+              "label": "Main sites within 1-2 weeks. Smart-metered sites faster. Some lag for provider-reported data.",
               "score": 3
             },
             {
-              "label": "Updates occur weekly or bi-weekly across main scope. Most changes reflected within 1-2 weeks.",
+              "label": "Most data available within days. Smart meter and BMS data near-real-time for key sites.",
               "score": 4
             },
             {
-              "label": "Updates are automated and near-continuous. Changes reflected within days or as part of operational workflows.",
+              "label": "Operational data available within hours or continuously. Billing data reconciled within days.",
               "score": 5
             }
           ]
@@ -721,23 +721,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Location data missing or unreliable for most assets.",
+              "label": "Cannot tell where energy was consumed \u2014 only total site or contract figures.",
               "score": 1
             },
             {
-              "label": "Location known at broad level (data centre region, building) for 20-40% of assets. Specific detail unknown.",
+              "label": "Broad site or provider level only. Cannot distinguish between halls, environments or IT functions.",
               "score": 2
             },
             {
-              "label": "Location known at zone/rack level for 50-75% of assets. Cloud regions and main facilities identified.",
+              "label": "Location clear for main on-premise facilities. Cloud region-level for major providers.",
               "score": 3
             },
             {
-              "label": "Location known at zone/rack/room level for 75-90% of assets. Cloud regions, AZs clearly identified.",
+              "label": "Hall or environment-level for on-premise. Cloud availability zone level. Location-specific for most of the estate.",
               "score": 4
             },
             {
-              "label": "Precise location (zone, rack, row, container) known for >90% of assets with automated tracking.",
+              "label": "Precise: rack row, zone, AZ-level attribution. Location accuracy supports real allocation and optimisation decisions.",
               "score": 5
             }
           ]
@@ -752,23 +752,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Lineage not clear or tracked. Data sources and confidence levels not understood.",
+              "label": "Source and calculation method unclear or undocumented.",
               "score": 1
             },
             {
-              "label": "Main sources documented but with variable quality. Confidence tracking exists for <50% of data.",
+              "label": "Main sources known (meters, invoices, provider reports) but calculation method not well documented.",
               "score": 2
             },
             {
-              "label": "Sources documented with confidence assigned for 50-75% of data. Some trust gaps in secondary areas.",
+              "label": "Sources documented. Calculation approach (measured vs modelled vs estimated) identified for main data streams.",
               "score": 3
             },
             {
-              "label": "Data lineage documented with clear confidence levels for 75-90% of inputs. Regular audits of source quality.",
+              "label": "Clear lineage from source to output. Measured vs modelled clearly flagged. Confidence levels assigned.",
               "score": 4
             },
             {
-              "label": "Complete lineage with confidence scoring for >90% of inputs. Continuous monitoring of source quality.",
+              "label": "Full data provenance with audit trail. Source, method, confidence and limitations all transparent and verifiable.",
               "score": 5
             }
           ]
@@ -787,7 +787,7 @@
           ],
           "options": [
             {
-              "label": "We have no visibility into meter quality or calibration status.",
+              "label": "No visibility into meter quality or calibration status.",
               "score": 1
             },
             {
@@ -795,15 +795,15 @@
               "score": 2
             },
             {
-              "label": "Major meters are identified and periodically calibrated. We can identify data gaps but remediation is ad-hoc.",
+              "label": "Major meters identified and periodically calibrated. Data gaps detected but remediation is slow.",
               "score": 3
             },
             {
-              "label": "Meter infrastructure is documented, calibrated on schedule, and data gaps are tracked and escalated. Sub-metering covers key zones.",
+              "label": "Meter infrastructure documented and calibrated on schedule. Data gaps tracked and escalated.",
               "score": 4
             },
             {
-              "label": "Full measurement assurance programme with documented calibration, automated gap detection, sub-metering at equipment or rack level, and regular data quality audits.",
+              "label": "Full measurement assurance: documented calibration, automated gap detection, sub-metering strategy and continuous quality monitoring.",
               "score": 5
             }
           ]
@@ -970,23 +970,23 @@
           "tags": [],
           "options": [
             {
-              "label": "No meaningful coverage or not tracked. Visibility is fragmented and unreliable.",
+              "label": "No water consumption data available for any facility or provider.",
               "score": 1
             },
             {
-              "label": "Covers 20-40% of scope. Limited to main or core areas. Significant gaps remain.",
+              "label": "Broad water totals from invoices or provider sustainability reports for largest sites only.",
               "score": 2
             },
             {
-              "label": "Covers 50-75% of scope with documented standard coverage. Gaps remain in secondary areas or edge cases.",
+              "label": "Site-level water data for main facilities. Provider-reported figures for colo. Some sites still missing.",
               "score": 3
             },
             {
-              "label": "Covers 75-90% of scope with consistent methods. Gaps are known and actively managed.",
+              "label": "Measured water data for most owned and operated facilities. Colo providers reporting per contract.",
               "score": 4
             },
             {
-              "label": "Covers >90% of scope with continuous discovery and automated updates.",
+              "label": "Comprehensive water data across owned, leased and colo environments. Metered where practical, provider-verified elsewhere.",
               "score": 5
             }
           ]
@@ -1001,23 +1001,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Only aggregate total consumption available. No sub-metering or breakdown by zone, facility, or service.",
+              "label": "No detail \u2014 just total consumption figures if anything.",
               "score": 1
             },
             {
-              "label": "Basic breakdown available (e.g., by building or data centre). Coverage 20-40%. Hourly or daily data inconsistently collected.",
+              "label": "Total site consumption only. No split between cooling, process and domestic water use.",
               "score": 2
             },
             {
-              "label": "Facility-level metering available for 50-75% of operations. Daily or weekly granularity. Some gaps in sub-facility or service-level detail.",
+              "label": "Cooling water separated from domestic for main sites. WUE calculable for key facilities.",
               "score": 3
             },
             {
-              "label": "Hourly metering for 75-90% of facilities. Breakdown by zone, circuit, or major platform available. Data collection consistent and documented.",
+              "label": "Detailed: cooling tower, chiller loop, adiabatic and domestic water separately tracked for main sites.",
               "score": 4
             },
             {
-              "label": "Real-time or near-continuous metering for >90% of operations. Granular data (sub-facility, circuit, service level) with high confidence and automated aggregation.",
+              "label": "Granular water data per cooling system, per hall or zone. Full water balance with losses, recycling and blowdown tracked.",
               "score": 5
             }
           ]
@@ -1032,23 +1032,23 @@
           "tags": [],
           "options": [
             {
-              "label": "No meaningful link. Energy, emissions, or costs cannot be attributed to services, teams, or workloads.",
+              "label": "No link between water use and IT or cooling activity.",
               "score": 1
             },
             {
-              "label": "Attribution possible for 20-40% of IT load, mainly limited to major platforms or data halls. Service-level attribution is rare.",
+              "label": "Very broad \u2014 total water divided by IT load to derive a rough WUE.",
               "score": 2
             },
             {
-              "label": "Attribution covers 50-75% of IT load across main platforms and environments. Some major services identified. Workload-level gaps remain.",
+              "label": "Can link water use to cooling systems at site level. WUE derived from measured data for main sites.",
               "score": 3
             },
             {
-              "label": "Energy can be attributed to specific services or teams for 75-90% of IT load. Allocation rules are documented and applied consistently.",
+              "label": "Water linked to specific cooling systems and correlated with IT load per hall or zone.",
               "score": 4
             },
             {
-              "label": "Energy, emissions, and costs can be attributed at service/workload level for >90% of IT load with continuous validation and fine-grained traceability.",
+              "label": "Water use attributable to cooling systems per zone or hall. Correlation with IT load, weather and cooling mode validated.",
               "score": 5
             }
           ]
@@ -1063,23 +1063,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Data available less than quarterly. Long delays between collection and availability.",
+              "label": "Annually or less. Water data only appears for sustainability reports.",
               "score": 1
             },
             {
-              "label": "Data available quarterly or monthly, but with 2-4 week lags. Sufficient for periodic reviews only.",
+              "label": "Quarterly or when invoices arrive. Not operationally useful.",
               "score": 2
             },
             {
-              "label": "Data available monthly or bi-monthly with 1-2 week currency. Supports monthly management cycles.",
+              "label": "Monthly for main sites. Sufficient for trend reporting but not operational management.",
               "score": 3
             },
             {
-              "label": "Data available weekly or bi-weekly with near-current information. Supports ongoing operational management.",
+              "label": "Weekly or better for main facilities. Monthly for colo-provided data.",
               "score": 4
             },
             {
-              "label": "Data available daily or near-real-time. Supports continuous monitoring and immediate decision-making.",
+              "label": "Daily or near-real-time for owned sites. Integrated into cooling management and capacity dashboards.",
               "score": 5
             }
           ]
@@ -1094,23 +1094,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Location data missing or unreliable for most assets.",
+              "label": "No awareness of where water is being consumed or the local water stress context.",
               "score": 1
             },
             {
-              "label": "Location known at broad level (data centre region, building) for 20-40% of assets. Specific detail unknown.",
+              "label": "Broad site-level only. No local water stress or scarcity context applied.",
               "score": 2
             },
             {
-              "label": "Location known at zone/rack level for 50-75% of assets. Cloud regions and main facilities identified.",
+              "label": "Site-level with some awareness of water stress classification for major locations.",
               "score": 3
             },
             {
-              "label": "Location known at zone/rack/room level for 75-90% of assets. Cloud regions, AZs clearly identified.",
+              "label": "Location-specific water data with water stress risk classification applied per site.",
               "score": 4
             },
             {
-              "label": "Precise location (zone, rack, row, container) known for >90% of assets with automated tracking.",
+              "label": "Detailed per-facility water data with local water stress, scarcity and regulatory context integrated into decision-making.",
               "score": 5
             }
           ]
@@ -1125,23 +1125,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Updates are sporadic or absent. Data often 30+ days out of date.",
+              "label": "Months of lag \u2014 water data arrives with utility bills or annual reports.",
               "score": 1
             },
             {
-              "label": "Updates happen monthly or quarterly, with lags of 2-4 weeks for major changes.",
+              "label": "Weeks of lag. Depends on invoicing or provider reporting cycles.",
               "score": 2
             },
             {
-              "label": "Updates occur monthly or bi-monthly for most scope. Reflects changes within 2-4 week cycle.",
+              "label": "Main sites within 1-2 weeks. Colo data monthly or quarterly.",
               "score": 3
             },
             {
-              "label": "Updates occur weekly or bi-weekly across main scope. Most changes reflected within 1-2 weeks.",
+              "label": "Most data within days for owned sites. Provider data within weeks.",
               "score": 4
             },
             {
-              "label": "Updates are automated and near-continuous. Changes reflected within days or as part of operational workflows.",
+              "label": "Near-real-time for metered sites. Provider data within days via automated feeds.",
               "score": 5
             }
           ]
@@ -1156,23 +1156,23 @@
           "tags": [],
           "options": [
             {
-              "label": "No formal process. Data collection is manual, error-prone, or not attempted.",
+              "label": "No clear method. Numbers used without understanding how they were derived.",
               "score": 1
             },
             {
-              "label": "Ad-hoc process with high manual effort. Inconsistent results. 20-40% of scope covered with confidence.",
+              "label": "Relies on invoiced totals or provider estimates. No independent validation.",
               "score": 2
             },
             {
-              "label": "Documented process with partial automation. 50-75% of scope covered reliably. Some gaps remain.",
+              "label": "Metered data for main sites. Provider-reported data accepted without audit.",
               "score": 3
             },
             {
-              "label": "Established process with strong tooling. 75-90% of scope covered with documented confidence levels.",
+              "label": "Metered data validated against invoices. Provider data checked against contractual commitments.",
               "score": 4
             },
             {
-              "label": "Fully automated process with continuous validation. >90% of scope covered with high confidence. Continuous improvement active.",
+              "label": "Full water accounting: metered, reconciled, audited. Provider data verified with documented confidence levels.",
               "score": 5
             }
           ]
@@ -1187,23 +1187,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Lineage not clear or tracked. Data sources and confidence levels not understood.",
+              "label": "Source of water data unclear. Cannot explain provenance if challenged.",
               "score": 1
             },
             {
-              "label": "Main sources documented but with variable quality. Confidence tracking exists for <50% of data.",
+              "label": "Know the broad source (invoices, meters, provider reports) but detail and confidence not documented.",
               "score": 2
             },
             {
-              "label": "Sources documented with confidence assigned for 50-75% of data. Some trust gaps in secondary areas.",
+              "label": "Sources documented for main sites. Confidence levels estimated but not formally tracked.",
               "score": 3
             },
             {
-              "label": "Data lineage documented with clear confidence levels for 75-90% of inputs. Regular audits of source quality.",
+              "label": "Clear provenance with confidence levels for most data streams. Known gaps documented.",
               "score": 4
             },
             {
-              "label": "Complete lineage with confidence scoring for >90% of inputs. Continuous monitoring of source quality.",
+              "label": "Full data lineage with confidence scoring, source validation and audit trail for all water data.",
               "score": 5
             }
           ]
@@ -1370,23 +1370,23 @@
           "tags": [],
           "options": [
             {
-              "label": "No formal process. Data collection is manual, error-prone, or not attempted.",
+              "label": "No measured PUE, WUE or similar metrics. Using published averages or guesses.",
               "score": 1
             },
             {
-              "label": "Ad-hoc process with high manual effort. Inconsistent results. 20-40% of scope covered with confidence.",
+              "label": "PUE derived from broad energy totals (total facility energy / estimated IT load). Other metrics not calculated.",
               "score": 2
             },
             {
-              "label": "Documented process with partial automation. 50-75% of scope covered reliably. Some gaps remain.",
+              "label": "PUE calculated from metered IT and facility energy for main sites. WUE or CUE attempted for some.",
               "score": 3
             },
             {
-              "label": "Established process with strong tooling. 75-90% of scope covered with documented confidence levels.",
+              "label": "PUE, WUE calculated from metered data across most sites. CLF or CUE where relevant. Methods align with ISO 30134.",
               "score": 4
             },
             {
-              "label": "Fully automated process with continuous validation. >90% of scope covered with high confidence. Continuous improvement active.",
+              "label": "Full suite of efficiency metrics (PUE, WUE, CUE, REF, CLF) from metered data. ISO 30134 compliant. Independently verifiable.",
               "score": 5
             }
           ]
@@ -1401,23 +1401,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Lineage not clear or tracked. Data sources and confidence levels not understood.",
+              "label": "No defined boundaries. Metrics calculated inconsistently or not at all.",
               "score": 1
             },
             {
-              "label": "Main sources documented but with variable quality. Confidence tracking exists for <50% of data.",
+              "label": "Boundaries loosely defined. Inconsistent inclusion of UPS, cooling, lighting across sites.",
               "score": 2
             },
             {
-              "label": "Sources documented with confidence assigned for 50-75% of data. Some trust gaps in secondary areas.",
+              "label": "Boundaries documented for main sites following EU CoC or ISO guidance. Some inconsistency remains.",
               "score": 3
             },
             {
-              "label": "Data lineage documented with clear confidence levels for 75-90% of inputs. Regular audits of source quality.",
+              "label": "Consistent boundary definitions applied across the portfolio. Aligned to ISO 30134 or equivalent.",
               "score": 4
             },
             {
-              "label": "Complete lineage with confidence scoring for >90% of inputs. Continuous monitoring of source quality.",
+              "label": "Rigorous, documented boundaries per site. Independently auditable. Consistent across all reporting.",
               "score": 5
             }
           ]
@@ -1432,23 +1432,23 @@
           "tags": [],
           "options": [
             {
-              "label": "No formal process. Data collection is manual, error-prone, or not attempted.",
+              "label": "Metrics are nameplate, design or published values \u2014 not measured under real conditions.",
               "score": 1
             },
             {
-              "label": "Ad-hoc process with high manual effort. Inconsistent results. 20-40% of scope covered with confidence.",
+              "label": "Broadly reflect average conditions but not adjusted for load, season or operating mode.",
               "score": 2
             },
             {
-              "label": "Documented process with partial automation. 50-75% of scope covered reliably. Some gaps remain.",
+              "label": "Reflect real conditions for main sites under typical load. Seasonal variation acknowledged but not fully captured.",
               "score": 3
             },
             {
-              "label": "Established process with strong tooling. 75-90% of scope covered with documented confidence levels.",
+              "label": "Measured under real operating conditions. Seasonal, load-dependent and partial-load effects captured.",
               "score": 4
             },
             {
-              "label": "Fully automated process with continuous validation. >90% of scope covered with high confidence. Continuous improvement active.",
+              "label": "Real-time or near-real-time metrics reflecting actual operating conditions. Partial-load, seasonal and mode effects all visible.",
               "score": 5
             }
           ]
@@ -1463,23 +1463,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Metrics collected at high level only (e.g., PUE for entire data centre). No breakdown by zone, system, or service.",
+              "label": "Only portfolio-level or single-site averages. No detail below site level.",
               "score": 1
             },
             {
-              "label": "Metrics available for 20-40% of infrastructure scope. Some breakdown by zone or system. Gaps in secondary areas.",
+              "label": "Site-level metrics for largest facilities. No hall, zone or system-level breakdown.",
               "score": 2
             },
             {
-              "label": "Standard metrics collected across 50-75% of infrastructure. Zone-level or system-level detail available. Some edge cases uncovered.",
+              "label": "Site-level for most facilities. Some hall-level PUE for largest sites.",
               "score": 3
             },
             {
-              "label": "Detailed metrics for 75-90% of infrastructure scope. Sub-zone or component-level breakdown available. Regular quality reviews.",
+              "label": "Hall or zone-level metrics for main facilities. System-level (cooling, UPS) efficiency visible where metered.",
               "score": 4
             },
             {
-              "label": "Comprehensive metrics for >90% of infrastructure with fine-grained detail (equipment, zone, system level) and continuous validation.",
+              "label": "Zone, hall and system-level efficiency metrics. Granular enough to identify specific improvement opportunities.",
               "score": 5
             }
           ]
@@ -1494,23 +1494,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Location data missing or unreliable for most assets.",
+              "label": "Metrics are portfolio averages or generic values \u2014 not site-specific.",
               "score": 1
             },
             {
-              "label": "Location known at broad level (data centre region, building) for 20-40% of assets. Specific detail unknown.",
+              "label": "Site-specific for one or two main locations. Others use portfolio averages.",
               "score": 2
             },
             {
-              "label": "Location known at zone/rack level for 50-75% of assets. Cloud regions and main facilities identified.",
+              "label": "Site-specific for most owned or operated facilities. Colo uses provider-reported values.",
               "score": 3
             },
             {
-              "label": "Location known at zone/rack/room level for 75-90% of assets. Cloud regions, AZs clearly identified.",
+              "label": "Site-specific across the portfolio. Colo data received and validated per site.",
               "score": 4
             },
             {
-              "label": "Precise location (zone, rack, row, container) known for >90% of assets with automated tracking.",
+              "label": "Per-site, per-hall metrics consistently derived. Provider data verified. No portfolio averaging masks site performance.",
               "score": 5
             }
           ]
@@ -1525,23 +1525,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Updates are sporadic or absent. Data often 30+ days out of date.",
+              "label": "Calculated annually or only for sustainability reports.",
               "score": 1
             },
             {
-              "label": "Updates happen monthly or quarterly, with lags of 2-4 weeks for major changes.",
+              "label": "Quarterly recalculation for main sites. Annual for others.",
               "score": 2
             },
             {
-              "label": "Updates occur monthly or bi-monthly for most scope. Reflects changes within 2-4 week cycle.",
+              "label": "Monthly recalculation for main facilities. Quarterly for smaller or provider-reported sites.",
               "score": 3
             },
             {
-              "label": "Updates occur weekly or bi-weekly across main scope. Most changes reflected within 1-2 weeks.",
+              "label": "Monthly or more frequent across the portfolio. Trend analysis active.",
               "score": 4
             },
             {
-              "label": "Updates are automated and near-continuous. Changes reflected within days or as part of operational workflows.",
+              "label": "Continuous or near-real-time where metered. Automated alerts for efficiency degradation.",
               "score": 5
             }
           ]
@@ -1556,23 +1556,23 @@
           "tags": [],
           "options": [
             {
-              "label": "No meaningful link. Energy, emissions, or costs cannot be attributed to services, teams, or workloads.",
+              "label": "Cannot use these metrics to allocate overhead costs or environmental impact credibly.",
               "score": 1
             },
             {
-              "label": "Attribution possible for 20-40% of IT load, mainly limited to major platforms or data halls. Service-level attribution is rare.",
+              "label": "Metrics used for rough allocation (e.g. flat PUE multiplier) but not validated for accuracy.",
               "score": 2
             },
             {
-              "label": "Attribution covers 50-75% of IT load across main platforms and environments. Some major services identified. Workload-level gaps remain.",
+              "label": "Metrics support credible site-level allocation of cooling and infrastructure overhead to IT load.",
               "score": 3
             },
             {
-              "label": "Energy can be attributed to specific services or teams for 75-90% of IT load. Allocation rules are documented and applied consistently.",
+              "label": "Validated metrics used for overhead allocation at site and hall level. Method documented and defensible.",
               "score": 4
             },
             {
-              "label": "Energy, emissions, and costs can be attributed at service/workload level for >90% of IT load with continuous validation and fine-grained traceability.",
+              "label": "Metrics embedded in cost and carbon allocation models. Allocation rules auditable and aligned with reporting frameworks.",
               "score": 5
             }
           ]
@@ -1587,23 +1587,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Lineage not clear or tracked. Data sources and confidence levels not understood.",
+              "label": "Cannot explain how metrics were derived. No documentation.",
               "score": 1
             },
             {
-              "label": "Main sources documented but with variable quality. Confidence tracking exists for <50% of data.",
+              "label": "Broad method known but not documented. Would be difficult to reproduce or audit.",
               "score": 2
             },
             {
-              "label": "Sources documented with confidence assigned for 50-75% of data. Some trust gaps in secondary areas.",
+              "label": "Method documented for main sites. Inputs, boundaries and calculation approach available.",
               "score": 3
             },
             {
-              "label": "Data lineage documented with clear confidence levels for 75-90% of inputs. Regular audits of source quality.",
+              "label": "Full method documentation with data sources, measurement points, boundary definitions and assumptions.",
               "score": 4
             },
             {
-              "label": "Complete lineage with confidence scoring for >90% of inputs. Continuous monitoring of source quality.",
+              "label": "Auditable methodology with full provenance. Aligned to standards (ISO 30134, EU CoC). Independently verifiable.",
               "score": 5
             }
           ]
@@ -1772,23 +1772,23 @@
           "tags": [],
           "options": [
             {
-              "label": "No formal process. Data collection is manual, error-prone, or not attempted.",
+              "label": "No process for estimating embodied emissions. Not attempted or purely guesswork.",
               "score": 1
             },
             {
-              "label": "Ad-hoc process with high manual effort. Inconsistent results. 20-40% of scope covered with confidence.",
+              "label": "Spend-based proxies using procurement value and generic spend-to-carbon conversion factors.",
               "score": 2
             },
             {
-              "label": "Documented process with partial automation. 50-75% of scope covered reliably. Some gaps remain.",
+              "label": "Category-average emission factors applied by asset class (e.g. kgCO2e per server, per laptop).",
               "score": 3
             },
             {
-              "label": "Established process with strong tooling. 75-90% of scope covered with documented confidence levels.",
+              "label": "Vendor-specific LCAs or EPDs used for major product families, but not matched to actual configurations.",
               "score": 4
             },
             {
-              "label": "Fully automated process with continuous validation. >90% of scope covered with high confidence. Continuous improvement active.",
+              "label": "Product-configuration-specific LCAs or EPDs matched to actual assets deployed. Updated with each procurement cycle.",
               "score": 5
             }
           ]
@@ -1803,23 +1803,23 @@
           "tags": [],
           "options": [
             {
-              "label": "No specific data. Using generic factors not matched to actual products or assets.",
+              "label": "No product-specific data. Generic factors or no factors at all.",
               "score": 1
             },
             {
-              "label": "Some product-specific factors used for 20-40% of assets. Mostly generic or average factors for remainder.",
+              "label": "Spend-based factors only \u2014 no link to actual product type or specification.",
               "score": 2
             },
             {
-              "label": "Product-specific or model-specific factors used for 50-75% of asset portfolio. Gaps in edge devices or lesser-used product lines.",
+              "label": "Category averages by asset type (e.g. 'rack server', '14-inch laptop') but not product-specific.",
               "score": 3
             },
             {
-              "label": "Matched, product-specific embodied factors for 75-90% of assets. Documented data sources with confidence scoring.",
+              "label": "Vendor-specific EPDs or LCAs for main product lines. Not matched to the exact model or configuration deployed.",
               "score": 4
             },
             {
-              "label": "Comprehensive, validated embodied data matched to >90% of assets. Regular updates and continuous validation against manufacturer data.",
+              "label": "Configuration-specific: matched to actual model, spec and options. Vendor EPDs linked to asset records.",
               "score": 5
             }
           ]
@@ -1834,23 +1834,23 @@
           "tags": [],
           "options": [
             {
-              "label": "No meaningful coverage or not tracked. Visibility is fragmented and unreliable.",
+              "label": "Cannot match any assets to embodied emissions data.",
               "score": 1
             },
             {
-              "label": "Covers 20-40% of scope. Limited to main or core areas. Significant gaps remain.",
+              "label": "Can apply spend-based proxies to procurement data. Covers broad totals but not asset-level.",
               "score": 2
             },
             {
-              "label": "Covers 50-75% of scope with documented standard coverage. Gaps remain in secondary areas or edge cases.",
+              "label": "Category factors applied to most servers, storage and networking. End-user devices partially covered.",
               "score": 3
             },
             {
-              "label": "Covers 75-90% of scope with consistent methods. Gaps are known and actively managed.",
+              "label": "Vendor or product-specific data for most asset classes. Coverage gaps limited to minor or legacy categories.",
               "score": 4
             },
             {
-              "label": "Covers >90% of scope with continuous discovery and automated updates.",
+              "label": "Comprehensive: >90% of assets matched to product-specific or configuration-specific embodied data.",
               "score": 5
             }
           ]
@@ -1865,23 +1865,23 @@
           "tags": [],
           "options": [
             {
-              "label": "No meaningful link. Energy, emissions, or costs cannot be attributed to services, teams, or workloads.",
+              "label": "No link between embodied data and asset lifecycle context.",
               "score": 1
             },
             {
-              "label": "Attribution possible for 20-40% of IT load, mainly limited to major platforms or data halls. Service-level attribution is rare.",
+              "label": "Procurement date recorded. No link to refresh plans, reuse potential or end-of-life routing.",
               "score": 2
             },
             {
-              "label": "Attribution covers 50-75% of IT load across main platforms and environments. Some major services identified. Workload-level gaps remain.",
+              "label": "Age and basic refresh eligibility tracked. Embodied impact considered at aggregate level for refresh planning.",
               "score": 3
             },
             {
-              "label": "Energy can be attributed to specific services or teams for 75-90% of IT load. Allocation rules are documented and applied consistently.",
+              "label": "Embodied data linked to lifecycle status: age, warranty, refresh schedule, reuse potential. Informs refresh business cases.",
               "score": 4
             },
             {
-              "label": "Energy, emissions, and costs can be attributed at service/workload level for >90% of IT load with continuous validation and fine-grained traceability.",
+              "label": "Full lifecycle integration: embodied carbon amortised over useful life, refresh trade-offs quantified, circularity options costed.",
               "score": 5
             }
           ]
@@ -1896,23 +1896,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Location data missing or unreliable for most assets.",
+              "label": "No ability to reflect supplier or product differences in embodied data.",
               "score": 1
             },
             {
-              "label": "Location known at broad level (data centre region, building) for 20-40% of assets. Specific detail unknown.",
+              "label": "All products within a category treated the same. No supplier differentiation.",
               "score": 2
             },
             {
-              "label": "Location known at zone/rack level for 50-75% of assets. Cloud regions and main facilities identified.",
+              "label": "Some awareness of supplier differences (e.g. Dell vs HPE) but not systematically applied.",
               "score": 3
             },
             {
-              "label": "Location known at zone/rack/room level for 75-90% of assets. Cloud regions, AZs clearly identified.",
+              "label": "Vendor-specific embodied data used for major suppliers. Product-line differences reflected.",
               "score": 4
             },
             {
-              "label": "Precise location (zone, rack, row, container) known for >90% of assets with automated tracking.",
+              "label": "Supplier and product-specific differences actively used in procurement. Carbon intensity comparison between suppliers standard practice.",
               "score": 5
             }
           ]
@@ -1927,23 +1927,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Updates are sporadic or absent. Data often 30+ days out of date.",
+              "label": "Embodied data is static, outdated or nonexistent. Cannot support procurement decisions.",
               "score": 1
             },
             {
-              "label": "Updates happen monthly or quarterly, with lags of 2-4 weeks for major changes.",
+              "label": "Data refreshed annually at most. Too stale for active procurement use.",
               "score": 2
             },
             {
-              "label": "Updates occur monthly or bi-monthly for most scope. Reflects changes within 2-4 week cycle.",
+              "label": "Updated when new product ranges are introduced. Reasonably current for major categories.",
               "score": 3
             },
             {
-              "label": "Updates occur weekly or bi-weekly across main scope. Most changes reflected within 1-2 weeks.",
+              "label": "Refreshed quarterly or with each procurement cycle. Current enough for refresh and procurement decisions.",
               "score": 4
             },
             {
-              "label": "Updates are automated and near-continuous. Changes reflected within days or as part of operational workflows.",
+              "label": "Continuously maintained. New products added as they enter the catalogue. Embedded in procurement workflows.",
               "score": 5
             }
           ]
@@ -1958,23 +1958,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Lineage not clear or tracked. Data sources and confidence levels not understood.",
+              "label": "Cannot explain where embodied values come from. No documented sources.",
               "score": 1
             },
             {
-              "label": "Main sources documented but with variable quality. Confidence tracking exists for <50% of data.",
+              "label": "Broad source known (e.g. 'Defra factors', 'vendor website') but detail and reliability not assessed.",
               "score": 2
             },
             {
-              "label": "Sources documented with confidence assigned for 50-75% of data. Some trust gaps in secondary areas.",
+              "label": "Sources documented: which EPDs, LCA databases or factor sets are used. Some confidence assessment.",
               "score": 3
             },
             {
-              "label": "Data lineage documented with clear confidence levels for 75-90% of inputs. Regular audits of source quality.",
+              "label": "Clear provenance for all embodied data. Source, methodology, age and confidence level documented per factor.",
               "score": 4
             },
             {
-              "label": "Complete lineage with confidence scoring for >90% of inputs. Continuous monitoring of source quality.",
+              "label": "Full evidence chain: EPD/LCA source, publication date, scope, methodology, validation status. Audit-ready.",
               "score": 5
             }
           ]
@@ -1989,23 +1989,23 @@
           "tags": [],
           "options": [
             {
-              "label": "No meaningful link. Energy, emissions, or costs cannot be attributed to services, teams, or workloads.",
+              "label": "Data is not usable for decisions. Only broad reporting at best.",
               "score": 1
             },
             {
-              "label": "Attribution possible for 20-40% of IT load, mainly limited to major platforms or data halls. Service-level attribution is rare.",
+              "label": "Supports rough portfolio-level estimates for sustainability reports. Not decision-grade.",
               "score": 2
             },
             {
-              "label": "Attribution covers 50-75% of IT load across main platforms and environments. Some major services identified. Workload-level gaps remain.",
+              "label": "Supports comparison between product categories and informs refresh timing at aggregate level.",
               "score": 3
             },
             {
-              "label": "Energy can be attributed to specific services or teams for 75-90% of IT load. Allocation rules are documented and applied consistently.",
+              "label": "Supports procurement decisions: vendor comparison, refresh vs extend analysis, circularity trade-offs.",
               "score": 4
             },
             {
-              "label": "Energy, emissions, and costs can be attributed at service/workload level for >90% of IT load with continuous validation and fine-grained traceability.",
+              "label": "Decision-grade: embedded in procurement governance, supplier scorecards and lifecycle investment cases.",
               "score": 5
             }
           ]
@@ -2024,23 +2024,23 @@
           ],
           "options": [
             {
-              "label": "No visibility. We select suppliers on cost and specification only.",
+              "label": "No visibility into supplier manufacturing carbon intensity.",
               "score": 1
             },
             {
-              "label": "Some suppliers publish data but we do not use it in procurement decisions.",
+              "label": "Some suppliers publish sustainability reports but we do not extract or use manufacturing-specific data.",
               "score": 2
             },
             {
-              "label": "We have carbon intensity data for major suppliers. Sometimes considered in selection.",
+              "label": "Manufacturing carbon data available for major suppliers. Reviewed but not formally used in selection.",
               "score": 3
             },
             {
-              "label": "Supplier carbon intensity is part of formal procurement criteria and actively incorporated into decisions.",
+              "label": "Supplier carbon intensity is a formal procurement criterion. Compared across shortlisted vendors.",
               "score": 4
             },
             {
-              "label": "Supplier carbon data is integrated into embodied carbon calculations. Cost versus carbon intensity trade-offs are explicit in procurement.",
+              "label": "Supplier manufacturing carbon data integrated into embodied calculations. Trade-offs between cost and carbon explicit in procurement.",
               "score": 5
             }
           ]
@@ -2059,23 +2059,23 @@
           ],
           "options": [
             {
-              "label": "No. We procure new hardware only.",
+              "label": "No consideration of circular options. Always procure new.",
               "score": 1
             },
             {
-              "label": "Rarely. Refurbished options considered only if cost-justified and vendor-proposed.",
+              "label": "Refurbished considered only if vendor-proposed and significantly cheaper. No embodied carbon comparison.",
               "score": 2
             },
             {
-              "label": "Sometimes. For some asset classes we evaluate refurbished options and can estimate the embodied savings.",
+              "label": "Circular options (refurbished, extended-life) evaluated for some asset classes. Embodied savings estimated.",
               "score": 3
             },
             {
-              "label": "Systematically. Refurbished versus new is part of standard procurement decision with embodied trade-offs analysed.",
+              "label": "Refurbished vs new is standard in procurement evaluation. Embodied carbon trade-offs quantified.",
               "score": 4
             },
             {
-              "label": "Circular is default consideration. Refurbished, extended-life, and resale options are actively managed with embodied carbon comparison as standard practice.",
+              "label": "Circular is the default consideration. Refurbished, extended-life and resale options actively managed with embodied carbon comparison as standard.",
               "score": 5
             }
           ]
@@ -2242,23 +2242,23 @@
           "tags": [],
           "options": [
             {
-              "label": "No formal process. Data collection is manual, error-prone, or not attempted.",
+              "label": "No emissions factors applied. Carbon not calculated or based on rough guesses.",
               "score": 1
             },
             {
-              "label": "Ad-hoc process with high manual effort. Inconsistent results. 20-40% of scope covered with confidence.",
+              "label": "Generic national or regional grid average factors (e.g. single UK grid factor for all electricity).",
               "score": 2
             },
             {
-              "label": "Documented process with partial automation. 50-75% of scope covered reliably. Some gaps remain.",
+              "label": "Location-based factors using published grid intensity data (e.g. DEFRA, IEA, AIB residual mix).",
               "score": 3
             },
             {
-              "label": "Established process with strong tooling. 75-90% of scope covered with documented confidence levels.",
+              "label": "Location-based and market-based factors applied correctly. Supplier tariff and RE procurement reflected.",
               "score": 4
             },
             {
-              "label": "Fully automated process with continuous validation. >90% of scope covered with high confidence. Continuous improvement active.",
+              "label": "Full factor hierarchy: location-based, market-based, supplier-specific, time-of-use. REGOs, PPAs and green tariffs handled correctly.",
               "score": 5
             }
           ]
@@ -2273,23 +2273,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Location data missing or unreliable for most assets.",
+              "label": "Single factor applied regardless of location or supplier.",
               "score": 1
             },
             {
-              "label": "Location known at broad level (data centre region, building) for 20-40% of assets. Specific detail unknown.",
+              "label": "Country-level factors applied. No regional, grid-zone or provider-level differentiation.",
               "score": 2
             },
             {
-              "label": "Location known at zone/rack level for 50-75% of assets. Cloud regions and main facilities identified.",
+              "label": "Regional or grid-zone factors for main locations. Provider-specific where contractual data available.",
               "score": 3
             },
             {
-              "label": "Location known at zone/rack/room level for 75-90% of assets. Cloud regions, AZs clearly identified.",
+              "label": "Location-specific factors at grid zone or site level. Provider and tariff differences reflected.",
               "score": 4
             },
             {
-              "label": "Precise location (zone, rack, row, container) known for >90% of assets with automated tracking.",
+              "label": "Precise: site-specific factors reflecting local grid, supplier tariff, RE procurement and time-of-use where available.",
               "score": 5
             }
           ]
@@ -2304,23 +2304,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Data available less than quarterly. Long delays between collection and availability.",
+              "label": "Using factors from unknown or outdated sources. Possibly years old.",
               "score": 1
             },
             {
-              "label": "Data available quarterly or monthly, but with 2-4 week lags. Sufficient for periodic reviews only.",
+              "label": "Annual factors applied. Same factor used for all periods within a year.",
               "score": 2
             },
             {
-              "label": "Data available monthly or bi-monthly with 1-2 week currency. Supports monthly management cycles.",
+              "label": "Annual factors updated yearly from credible sources. Monthly granularity for some locations.",
               "score": 3
             },
             {
-              "label": "Data available weekly or bi-weekly with near-current information. Supports ongoing operational management.",
+              "label": "Monthly or quarterly factors for main locations. Annual factors refreshed promptly when published.",
               "score": 4
             },
             {
-              "label": "Data available daily or near-real-time. Supports continuous monitoring and immediate decision-making.",
+              "label": "Time-of-use or half-hourly marginal factors where available. Annual and monthly factors updated automatically.",
               "score": 5
             }
           ]
@@ -2335,23 +2335,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Lineage not clear or tracked. Data sources and confidence levels not understood.",
+              "label": "No distinction between location-based and market-based accounting.",
               "score": 1
             },
             {
-              "label": "Main sources documented but with variable quality. Confidence tracking exists for <50% of data.",
+              "label": "Aware of the distinction but only one method applied (usually location-based).",
               "score": 2
             },
             {
-              "label": "Sources documented with confidence assigned for 50-75% of data. Some trust gaps in secondary areas.",
+              "label": "Both methods calculated for main scope. Market-based includes green tariff claims but not fully validated.",
               "score": 3
             },
             {
-              "label": "Data lineage documented with clear confidence levels for 75-90% of inputs. Regular audits of source quality.",
+              "label": "Clear separation with documented methodology. Market-based reflects REGOs, PPAs and supplier contracts.",
               "score": 4
             },
             {
-              "label": "Complete lineage with confidence scoring for >90% of inputs. Continuous monitoring of source quality.",
+              "label": "Dual reporting standard. Market-based fully validated against contractual evidence. Additionality assessed where claimed.",
               "score": 5
             }
           ]
@@ -2366,23 +2366,23 @@
           "tags": [],
           "options": [
             {
-              "label": "No meaningful coverage or not tracked. Visibility is fragmented and unreliable.",
+              "label": "One factor applied everywhere regardless of location, provider or energy source.",
               "score": 1
             },
             {
-              "label": "Covers 20-40% of scope. Limited to main or core areas. Significant gaps remain.",
+              "label": "Broad factors by country or region. No differentiation by provider, tariff or contract.",
               "score": 2
             },
             {
-              "label": "Covers 50-75% of scope with documented standard coverage. Gaps remain in secondary areas or edge cases.",
+              "label": "Different factors for different locations and main providers. Some estate still on generic defaults.",
               "score": 3
             },
             {
-              "label": "Covers 75-90% of scope with consistent methods. Gaps are known and actively managed.",
+              "label": "Fit-for-purpose factors across most of the estate. Provider, tariff and location differences reflected.",
               "score": 4
             },
             {
-              "label": "Covers >90% of scope with continuous discovery and automated updates.",
+              "label": "Granular factor logic across the full estate. Automated factor selection based on site, provider, tariff and time period.",
               "score": 5
             }
           ]
@@ -2397,23 +2397,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Updates are sporadic or absent. Data often 30+ days out of date.",
+              "label": "Factors rarely updated. May be using data from several years ago.",
               "score": 1
             },
             {
-              "label": "Updates happen monthly or quarterly, with lags of 2-4 weeks for major changes.",
+              "label": "Updated annually when someone remembers or when reports are due.",
               "score": 2
             },
             {
-              "label": "Updates occur monthly or bi-monthly for most scope. Reflects changes within 2-4 week cycle.",
+              "label": "Updated annually from published sources. Process documented but manual.",
               "score": 3
             },
             {
-              "label": "Updates occur weekly or bi-weekly across main scope. Most changes reflected within 1-2 weeks.",
+              "label": "Updated within weeks of new data publication. Process owned and scheduled.",
               "score": 4
             },
             {
-              "label": "Updates are automated and near-continuous. Changes reflected within days or as part of operational workflows.",
+              "label": "Automated updates from authoritative sources. Factor changes flagged and validated before application.",
               "score": 5
             }
           ]
@@ -2428,23 +2428,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Lineage not clear or tracked. Data sources and confidence levels not understood.",
+              "label": "Cannot explain which factors are used or where they came from.",
               "score": 1
             },
             {
-              "label": "Main sources documented but with variable quality. Confidence tracking exists for <50% of data.",
+              "label": "Broad source known (e.g. 'DEFRA', 'IEA') but specific factor selection rationale not documented.",
               "score": 2
             },
             {
-              "label": "Sources documented with confidence assigned for 50-75% of data. Some trust gaps in secondary areas.",
+              "label": "Factor sources documented. Selection rationale recorded for main scope areas.",
               "score": 3
             },
             {
-              "label": "Data lineage documented with clear confidence levels for 75-90% of inputs. Regular audits of source quality.",
+              "label": "Full factor provenance: source, version, publication date, applicability and selection rationale documented.",
               "score": 4
             },
             {
-              "label": "Complete lineage with confidence scoring for >90% of inputs. Continuous monitoring of source quality.",
+              "label": "Audit-ready: factor register with provenance, methodology notes, update history and rationale. Aligned to reporting standards.",
               "score": 5
             }
           ]
@@ -2459,23 +2459,23 @@
           "tags": [],
           "options": [
             {
-              "label": "No meaningful link. Energy, emissions, or costs cannot be attributed to services, teams, or workloads.",
+              "label": "Factors are too crude for any meaningful GreenOps decision beyond rough estimates.",
               "score": 1
             },
             {
-              "label": "Attribution possible for 20-40% of IT load, mainly limited to major platforms or data halls. Service-level attribution is rare.",
+              "label": "Support broad portfolio-level carbon reporting. Not reliable enough for site or service-level decisions.",
               "score": 2
             },
             {
-              "label": "Attribution covers 50-75% of IT load across main platforms and environments. Some major services identified. Workload-level gaps remain.",
+              "label": "Support credible site-level footprint reporting and high-level procurement comparisons.",
               "score": 3
             },
             {
-              "label": "Energy can be attributed to specific services or teams for 75-90% of IT load. Allocation rules are documented and applied consistently.",
+              "label": "Support operational decisions: site comparison, supplier evaluation, RE procurement impact assessment.",
               "score": 4
             },
             {
-              "label": "Energy, emissions, and costs can be attributed at service/workload level for >90% of IT load with continuous validation and fine-grained traceability.",
+              "label": "Decision-grade: support investment cases, migration planning, supplier scorecards and governance reporting.",
               "score": 5
             }
           ]
@@ -2494,23 +2494,23 @@
           ],
           "options": [
             {
-              "label": "We do not distinguish between location-based and market-based accounting.",
+              "label": "No ability to distinguish between location-based and market-based accounting.",
               "score": 1
             },
             {
-              "label": "We are aware of the distinction but use only one method without rigorous governance.",
+              "label": "Aware of the difference but do not track or report separately.",
               "score": 2
             },
             {
-              "label": "We report both location-based and market-based figures. PPA and REC data is collected but governance is informal.",
+              "label": "Both methods applied for main scope. Market-based reflects tariff claims but limited contractual evidence.",
               "score": 3
             },
             {
-              "label": "Both methods are applied with clear governance. RECs are tracked, validated, and matched to consumption periods.",
+              "label": "Dual reporting with documented RE instruments (REGOs, GoOs, PPAs). Procurement impact clearly shown.",
               "score": 4
             },
             {
-              "label": "Full renewable energy governance including additionality assessment, temporal matching, and auditable PPA/REC documentation integrated into carbon reporting.",
+              "label": "Full RE accounting: instruments validated, additionality assessed, temporal matching applied where feasible. Supports RE procurement strategy.",
               "score": 5
             }
           ]
@@ -2682,23 +2682,23 @@
           "tags": [],
           "options": [
             {
-              "label": "No meaningful coverage or not tracked. Visibility is fragmented and unreliable.",
+              "label": "No visibility into infrastructure utilisation. Provisioned capacity assumed to be used.",
               "score": 1
             },
             {
-              "label": "Covers 20-40% of scope. Limited to main or core areas. Significant gaps remain.",
+              "label": "Periodic manual checks on major platforms. Utilisation sampled rather than continuously measured.",
               "score": 2
             },
             {
-              "label": "Covers 50-75% of scope with documented standard coverage. Gaps remain in secondary areas or edge cases.",
+              "label": "Monitoring tools deployed on main compute platforms. CPU, memory, storage utilisation visible for key environments.",
               "score": 3
             },
             {
-              "label": "Covers 75-90% of scope with consistent methods. Gaps are known and actively managed.",
+              "label": "Comprehensive utilisation monitoring across compute, storage and networking for most environments.",
               "score": 4
             },
             {
-              "label": "Covers >90% of scope with continuous discovery and automated updates.",
+              "label": "Real-time utilisation telemetry across the estate. Integrated into capacity management, rightsizing and efficiency workflows.",
               "score": 5
             }
           ]
@@ -2713,23 +2713,23 @@
           "tags": [],
           "options": [
             {
-              "label": "No real usage data. Capacity or deployment assumptions used instead. No measurement of actual workload or demand.",
+              "label": "No measurement of application or service-level usage.",
               "score": 1
             },
             {
-              "label": "Limited usage measurement for 20-40% of applications. Manual surveys or infrequent snapshots. Gaps for background or non-critical services.",
+              "label": "Basic availability monitoring (up/down) but no usage or consumption metrics.",
               "score": 2
             },
             {
-              "label": "Regular usage measurement for 50-75% of applications. Available at application or component level. Some services measured indirectly.",
+              "label": "Transaction volumes, active users or request rates tracked for major applications.",
               "score": 3
             },
             {
-              "label": "Detailed usage data for 75-90% of applications with consistent metrics (CPU, memory, storage). Regular collection and documentation.",
+              "label": "Service-level usage metrics (transactions, sessions, API calls, data volumes) for most business-facing services.",
               "score": 4
             },
             {
-              "label": "Continuous usage measurement for >90% of applications with granular metrics (CPU, memory, I/O, network) and automated data collection.",
+              "label": "Comprehensive service usage telemetry linked to business outcomes. Demand patterns analysed and forecast.",
               "score": 5
             }
           ]
@@ -2744,23 +2744,23 @@
           "tags": [],
           "options": [
             {
-              "label": "No meaningful link. Energy, emissions, or costs cannot be attributed to services, teams, or workloads.",
+              "label": "Cannot link resource usage to any named service, team or business owner.",
               "score": 1
             },
             {
-              "label": "Attribution possible for 20-40% of IT load, mainly limited to major platforms or data halls. Service-level attribution is rare.",
+              "label": "Some major platforms or applications identifiable but most usage is unattributed.",
               "score": 2
             },
             {
-              "label": "Attribution covers 50-75% of IT load across main platforms and environments. Some major services identified. Workload-level gaps remain.",
+              "label": "Usage attributable to named services or teams for main compute environments. Storage and networking less clear.",
               "score": 3
             },
             {
-              "label": "Energy can be attributed to specific services or teams for 75-90% of IT load. Allocation rules are documented and applied consistently.",
+              "label": "Strong service-level attribution across most platforms. Cloud tagging enforced. Ownership and cost centre linked.",
               "score": 4
             },
             {
-              "label": "Energy, emissions, and costs can be attributed at service/workload level for >90% of IT load with continuous validation and fine-grained traceability.",
+              "label": "Full attribution: every workload, service and resource linked to owner, cost centre and business function. Validated continuously.",
               "score": 5
             }
           ]
@@ -2775,23 +2775,23 @@
           "tags": [],
           "options": [
             {
-              "label": "No formal process. Data collection is manual, error-prone, or not attempted.",
+              "label": "No ability to identify idle, oversized or dormant resources.",
               "score": 1
             },
             {
-              "label": "Ad-hoc process with high manual effort. Inconsistent results. 20-40% of scope covered with confidence.",
+              "label": "Occasional manual review identifies obvious waste. No systematic process.",
               "score": 2
             },
             {
-              "label": "Documented process with partial automation. 50-75% of scope covered reliably. Some gaps remain.",
+              "label": "Rightsizing recommendations generated for major cloud and virtualised platforms. On-premise waste less visible.",
               "score": 3
             },
             {
-              "label": "Established process with strong tooling. 75-90% of scope covered with documented confidence levels.",
+              "label": "Systematic identification of idle, oversized and dormant resources across cloud and on-premise. Remediation tracked.",
               "score": 4
             },
             {
-              "label": "Fully automated process with continuous validation. >90% of scope covered with high confidence. Continuous improvement active.",
+              "label": "Automated detection with remediation workflows. Rightsizing, decommission and consolidation actions tracked to completion.",
               "score": 5
             }
           ]
@@ -2806,23 +2806,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Data available less than quarterly. Long delays between collection and availability.",
+              "label": "No regular view of usage patterns. Snapshots only if someone investigates.",
               "score": 1
             },
             {
-              "label": "Data available quarterly or monthly, but with 2-4 week lags. Sufficient for periodic reviews only.",
+              "label": "Monthly or quarterly utilisation reports for major platforms.",
               "score": 2
             },
             {
-              "label": "Data available monthly or bi-monthly with 1-2 week currency. Supports monthly management cycles.",
+              "label": "Weekly or bi-weekly utilisation data for main environments. Trends visible over months.",
               "score": 3
             },
             {
-              "label": "Data available weekly or bi-weekly with near-current information. Supports ongoing operational management.",
+              "label": "Daily or real-time utilisation data for most environments. Pattern changes detected promptly.",
               "score": 4
             },
             {
-              "label": "Data available daily or near-real-time. Supports continuous monitoring and immediate decision-making.",
+              "label": "Continuous telemetry with anomaly detection. Usage pattern changes trigger automated alerts and actions.",
               "score": 5
             }
           ]
@@ -2837,23 +2837,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Location data missing or unreliable for most assets.",
+              "label": "Cannot compare usage across different environments, regions or hosting types.",
               "score": 1
             },
             {
-              "label": "Location known at broad level (data centre region, building) for 20-40% of assets. Specific detail unknown.",
+              "label": "Can compare at a very broad level (e.g. total cloud vs on-premise) but not like-for-like.",
               "score": 2
             },
             {
-              "label": "Location known at zone/rack level for 50-75% of assets. Cloud regions and main facilities identified.",
+              "label": "Comparable utilisation metrics for similar platform types. Cross-environment comparison possible for major workloads.",
               "score": 3
             },
             {
-              "label": "Location known at zone/rack/room level for 75-90% of assets. Cloud regions, AZs clearly identified.",
+              "label": "Normalised utilisation metrics across environments. Migration and placement decisions supported by usage data.",
               "score": 4
             },
             {
-              "label": "Precise location (zone, rack, row, container) known for >90% of assets with automated tracking.",
+              "label": "Full cross-estate comparability. Workload efficiency compared across cloud, on-premise and colo with normalised metrics.",
               "score": 5
             }
           ]
@@ -2868,23 +2868,23 @@
           "tags": [],
           "options": [
             {
-              "label": "No formal process. Data collection is manual, error-prone, or not attempted.",
+              "label": "No measurement of AI/ML resource consumption.",
               "score": 1
             },
             {
-              "label": "Ad-hoc process with high manual effort. Inconsistent results. 20-40% of scope covered with confidence.",
+              "label": "Aware of AI workloads but no specific usage telemetry (tokens, GPU hours, inference volumes).",
               "score": 2
             },
             {
-              "label": "Documented process with partial automation. 50-75% of scope covered reliably. Some gaps remain.",
+              "label": "Basic GPU utilisation and job run-time tracked for main AI/ML platforms.",
               "score": 3
             },
             {
-              "label": "Established process with strong tooling. 75-90% of scope covered with documented confidence levels.",
+              "label": "Detailed: GPU utilisation, training vs inference split, token volumes, model serving costs tracked for most AI workloads.",
               "score": 4
             },
             {
-              "label": "Fully automated process with continuous validation. >90% of scope covered with high confidence. Continuous improvement active.",
+              "label": "Comprehensive AI observability: GPU efficiency, token economics, training cost per model, inference per request. Integrated into FinOps.",
               "score": 5
             }
           ]
@@ -2899,23 +2899,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Lineage not clear or tracked. Data sources and confidence levels not understood.",
+              "label": "Cannot explain where usage data comes from or how reliable it is.",
               "score": 1
             },
             {
-              "label": "Main sources documented but with variable quality. Confidence tracking exists for <50% of data.",
+              "label": "Main tools known (e.g. vCenter, CloudWatch) but data quality and coverage not assessed.",
               "score": 2
             },
             {
-              "label": "Sources documented with confidence assigned for 50-75% of data. Some trust gaps in secondary areas.",
+              "label": "Sources documented. Coverage and confidence understood for main platforms.",
               "score": 3
             },
             {
-              "label": "Data lineage documented with clear confidence levels for 75-90% of inputs. Regular audits of source quality.",
+              "label": "Clear data lineage from monitoring tools through to reporting. Confidence levels assigned per data stream.",
               "score": 4
             },
             {
-              "label": "Complete lineage with confidence scoring for >90% of inputs. Continuous monitoring of source quality.",
+              "label": "Full provenance with automated quality checks. Data gaps detected and flagged. Source reliability continuously validated.",
               "score": 5
             }
           ]
@@ -2933,23 +2933,23 @@
           ],
           "options": [
             {
-              "label": "No governance. Training jobs run ad-hoc without tracking or approval.",
+              "label": "No governance of AI/ML resource consumption.",
               "score": 1
             },
             {
-              "label": "We can see some training jobs in logs but no centralised tracking or approval process.",
+              "label": "AI workloads run without resource budgets or consumption tracking.",
               "score": 2
             },
             {
-              "label": "We track major training jobs (team, dataset size, GPU hours, date). Informally reviewed by ML lead.",
+              "label": "Training and inference resource consumption tracked for major AI projects. No formal governance.",
               "score": 3
             },
             {
-              "label": "Formal tracking system with approval gate for jobs above a cost threshold. Most training jobs are logged and reviewed.",
+              "label": "AI resource governance in place: budgets, approvals, consumption tracking for training and inference.",
               "score": 4
             },
             {
-              "label": "Full governance: approval gate covering cost and carbon, job tracking dashboard with resource and outcome analysis, post-mortem reviews on expensive jobs.",
+              "label": "Full AI resource governance: training budgets, inference cost controls, model efficiency targets. Embedded in ML platform policies.",
               "score": 5
             }
           ]
@@ -2968,23 +2968,23 @@
           ],
           "options": [
             {
-              "label": "We use cloud AI services but do not track usage or cost at service level.",
+              "label": "No visibility into cloud-hosted AI service usage or costs.",
               "score": 1
             },
             {
-              "label": "We can see aggregate AI spend in cloud bills but no usage-level granularity.",
+              "label": "Total spend on AI API services known at account level. No breakdown by model, use case or team.",
               "score": 2
             },
             {
-              "label": "We measure usage (tokens, requests) for the main AI services. Not yet integrated into carbon accounting.",
+              "label": "Usage volumes (API calls, tokens) tracked for major AI services. Cost allocated to projects.",
               "score": 3
             },
             {
-              "label": "We track AI usage by service and team with estimated carbon per service based on provider data.",
+              "label": "Detailed tracking: tokens, model choice, latency, cost per request. Attributed to teams and use cases.",
               "score": 4
             },
             {
-              "label": "Granular AI usage tracking linked to carbon estimates from vendor data, integrated into service-level carbon dashboards.",
+              "label": "Full AI service observability: usage, cost, performance and carbon per request. Optimisation recommendations active.",
               "score": 5
             }
           ]
@@ -3002,23 +3002,23 @@
           ],
           "options": [
             {
-              "label": "No. We optimise for accuracy and capability, not efficiency.",
+              "label": "No optimisation of AI workloads for computational efficiency.",
               "score": 1
             },
             {
-              "label": "Occasionally. Individual engineers optimise prompts or select smaller models.",
+              "label": "Aware of efficiency differences (e.g. model size, quantisation) but no systematic action.",
               "score": 2
             },
             {
-              "label": "Yes for some critical services. Cost and efficiency are considered in AI system design.",
+              "label": "Some optimisation: model selection considers efficiency. Batch vs real-time inference considered.",
               "score": 3
             },
             {
-              "label": "Systematically. Prompt engineering, model sizing, and quantisation choices are part of standard practice.",
+              "label": "Systematic optimisation: model distillation, quantisation, efficient architectures, scheduling. Tracked against targets.",
               "score": 4
             },
             {
-              "label": "Efficiency is a first-class requirement. Automated testing for efficiency, with carbon and cost per inference tracked and optimised.",
+              "label": "Continuous AI efficiency programme: workload scheduling, hardware matching, model optimisation, carbon-aware inference. Embedded in ML platform.",
               "score": 5
             }
           ]
@@ -3186,23 +3186,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Attribution rules not defined or documented. No consistent methodology for apportioning environmental impact.",
+              "label": "No attribution. Environmental impact reported at total estate or site level only.",
               "score": 1
             },
             {
-              "label": "Basic rules exist (e.g., divide equally by count). Applied to 20-40% of IT load. Significant gaps in service-level attribution.",
+              "label": "Broad allocation by headcount, floor space or equal split. Not reflective of actual consumption.",
               "score": 2
             },
             {
-              "label": "Documented rules for 50-75% of IT load (e.g., proportional by utilisation, cost-based). Some areas use proxy methods.",
+              "label": "IT load-based allocation for main data centres. Cloud cost allocation used as a proxy for cloud emissions.",
               "score": 3
             },
             {
-              "label": "Clear, validated attribution rules for 75-90% of IT load, documented and applied consistently. Mix of measured and evidence-based allocation.",
+              "label": "Measured IT load attribution to services or teams for most of the on-premise estate. Cloud tagged and attributed.",
               "score": 4
             },
             {
-              "label": "Comprehensive, audited attribution rules for >90% of IT load with continuous validation. Service-level attribution supported by measured data.",
+              "label": "Workload-level attribution across on-premise and cloud. Measured, validated and granular enough for service-level accountability.",
               "score": 5
             }
           ]
@@ -3217,23 +3217,23 @@
           "tags": [],
           "options": [
             {
-              "label": "No formal process. Data collection is manual, error-prone, or not attempted.",
+              "label": "No attribution method in place.",
               "score": 1
             },
             {
-              "label": "Ad-hoc process with high manual effort. Inconsistent results. 20-40% of scope covered with confidence.",
+              "label": "Simple equal-split or headcount-based allocation. Not reflective of actual resource consumption.",
               "score": 2
             },
             {
-              "label": "Documented process with partial automation. 50-75% of scope covered reliably. Some gaps remain.",
+              "label": "Proportional allocation based on IT load (e.g. kW per rack, VM count). Documented but with known limitations.",
               "score": 3
             },
             {
-              "label": "Established process with strong tooling. 75-90% of scope covered with documented confidence levels.",
+              "label": "Measured attribution using actual resource consumption data. Allocation rules documented and reviewed.",
               "score": 4
             },
             {
-              "label": "Fully automated process with continuous validation. >90% of scope covered with high confidence. Continuous improvement active.",
+              "label": "Validated, auditable attribution methodology. Rules peer-reviewed, aligned with FinOps/TBM and independently defensible.",
               "score": 5
             }
           ]
@@ -3248,23 +3248,23 @@
           "tags": [],
           "options": [
             {
-              "label": "No meaningful coverage or not tracked. Visibility is fragmented and unreliable.",
+              "label": "All impact sits at estate or site level. Nothing meaningfully attributed.",
               "score": 1
             },
             {
-              "label": "Covers 20-40% of scope. Limited to main or core areas. Significant gaps remain.",
+              "label": "Major platforms or data halls attributed. Most impact still at aggregate level.",
               "score": 2
             },
             {
-              "label": "Covers 50-75% of scope with documented standard coverage. Gaps remain in secondary areas or edge cases.",
+              "label": "Most on-premise IT load attributed to teams or services. Cloud emissions attributed via spend or usage.",
               "score": 3
             },
             {
-              "label": "Covers 75-90% of scope with consistent methods. Gaps are known and actively managed.",
+              "label": "Strong coverage: >75% of footprint attributed to named services or owners.",
               "score": 4
             },
             {
-              "label": "Covers >90% of scope with continuous discovery and automated updates.",
+              "label": "Comprehensive: >90% attributed at service or workload level. Unattributed residual tracked and managed.",
               "score": 5
             }
           ]
@@ -3279,23 +3279,23 @@
           "tags": [],
           "options": [
             {
-              "label": "No meaningful link. Energy, emissions, or costs cannot be attributed to services, teams, or workloads.",
+              "label": "No link between attributed impact and accountable owners.",
               "score": 1
             },
             {
-              "label": "Attribution possible for 20-40% of IT load, mainly limited to major platforms or data halls. Service-level attribution is rare.",
+              "label": "Some major platforms linked to a team or cost centre. Most attribution stops at infrastructure level.",
               "score": 2
             },
             {
-              "label": "Attribution covers 50-75% of IT load across main platforms and environments. Some major services identified. Workload-level gaps remain.",
+              "label": "Most attributed impact linked to a named service or team. Business owner identified for major areas.",
               "score": 3
             },
             {
-              "label": "Energy can be attributed to specific services or teams for 75-90% of IT load. Allocation rules are documented and applied consistently.",
+              "label": "Clear ownership chain: impact attributed to service, team, cost centre and business owner for most scope.",
               "score": 4
             },
             {
-              "label": "Energy, emissions, and costs can be attributed at service/workload level for >90% of IT load with continuous validation and fine-grained traceability.",
+              "label": "Full accountability: every attributed unit of impact has a named owner. Linked to performance management and governance.",
               "score": 5
             }
           ]
@@ -3310,23 +3310,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Static allocation rules used throughout. No time-based variation for demand or utilisation.",
+              "label": "No measurement of actual usage. Any allocation is static.",
               "score": 1
             },
             {
-              "label": "Some usage input for 20-40% of assets. Allocation updated quarterly or less frequently.",
+              "label": "Mostly static allocation (e.g. provisioned capacity, fixed shares). Does not reflect actual demand.",
               "score": 2
             },
             {
-              "label": "Allocation reflects actual usage patterns for 50-75% of assets. Updated monthly with documented refresh cycles.",
+              "label": "Mix of measured and static. Main compute platforms use actual load; storage and networking often static.",
               "score": 3
             },
             {
-              "label": "Allocation reflects actual demand for 75-90% of assets. Updated weekly or bi-weekly, supporting operational decisions.",
+              "label": "Mostly measured. Attribution reflects actual resource consumption for compute, storage and major cloud services.",
               "score": 4
             },
             {
-              "label": "Real-time or near-real-time attribution reflecting current demand across >90% of assets. Continuous update with automated workflows.",
+              "label": "Fully dynamic. Attribution updates with actual usage. Reflects demand patterns, scaling and workload migration.",
               "score": 5
             }
           ]
@@ -3341,23 +3341,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Location data missing or unreliable for most assets.",
+              "label": "Location not considered in attribution.",
               "score": 1
             },
             {
-              "label": "Location known at broad level (data centre region, building) for 20-40% of assets. Specific detail unknown.",
+              "label": "Same attribution rules applied regardless of location. No adjustment for local carbon intensity or efficiency.",
               "score": 2
             },
             {
-              "label": "Location known at zone/rack level for 50-75% of assets. Cloud regions and main facilities identified.",
+              "label": "Location factored in for major sites (e.g. different PUE applied per site).",
               "score": 3
             },
             {
-              "label": "Location known at zone/rack/room level for 75-90% of assets. Cloud regions, AZs clearly identified.",
+              "label": "Site-specific PUE, WUE and carbon factors applied. Location-sensitive attribution for most scope.",
               "score": 4
             },
             {
-              "label": "Precise location (zone, rack, row, container) known for >90% of assets with automated tracking.",
+              "label": "Full location-aware attribution: site, zone, provider and grid-specific factors applied automatically.",
               "score": 5
             }
           ]
@@ -3372,23 +3372,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Lineage not clear or tracked. Data sources and confidence levels not understood.",
+              "label": "Cannot explain how attribution works. No documentation.",
               "score": 1
             },
             {
-              "label": "Main sources documented but with variable quality. Confidence tracking exists for <50% of data.",
+              "label": "Broad approach understood by a few people but not documented or explained to stakeholders.",
               "score": 2
             },
             {
-              "label": "Sources documented with confidence assigned for 50-75% of data. Some trust gaps in secondary areas.",
+              "label": "Method documented and can be explained at a high level. Limitations acknowledged.",
               "score": 3
             },
             {
-              "label": "Data lineage documented with clear confidence levels for 75-90% of inputs. Regular audits of source quality.",
+              "label": "Clear methodology documentation shared with stakeholders. Assumptions and limitations transparent.",
               "score": 4
             },
             {
-              "label": "Complete lineage with confidence scoring for >90% of inputs. Continuous monitoring of source quality.",
+              "label": "Auditable methodology with stakeholder-facing documentation. Regularly reviewed and updated with governance oversight.",
               "score": 5
             }
           ]
@@ -3403,23 +3403,23 @@
           "tags": [],
           "options": [
             {
-              "label": "No meaningful link. Energy, emissions, or costs cannot be attributed to services, teams, or workloads.",
+              "label": "Attribution is not trusted or used for decisions.",
               "score": 1
             },
             {
-              "label": "Attribution possible for 20-40% of IT load, mainly limited to major platforms or data halls. Service-level attribution is rare.",
+              "label": "Used for broad sustainability reporting only. Not trusted for operational or financial decisions.",
               "score": 2
             },
             {
-              "label": "Attribution covers 50-75% of IT load across main platforms and environments. Some major services identified. Workload-level gaps remain.",
+              "label": "Supports directional decisions: identifying high-impact areas, prioritising improvement efforts.",
               "score": 3
             },
             {
-              "label": "Energy can be attributed to specific services or teams for 75-90% of IT load. Allocation rules are documented and applied consistently.",
+              "label": "Trusted enough for chargeback, showback and investment prioritisation. Used in business cases.",
               "score": 4
             },
             {
-              "label": "Energy, emissions, and costs can be attributed at service/workload level for >90% of IT load with continuous validation and fine-grained traceability.",
+              "label": "Decision-grade: embedded in financial governance, procurement, capacity planning and performance management.",
               "score": 5
             }
           ]
@@ -3438,23 +3438,23 @@
           ],
           "options": [
             {
-              "label": "Carbon and cost use entirely different allocation methods with no alignment.",
+              "label": "Carbon attribution and cost allocation are completely separate with no alignment.",
               "score": 1
             },
             {
-              "label": "Only loosely aligned. Some cost drivers map to carbon drivers but many do not.",
+              "label": "Aware that alignment would be valuable but methods, boundaries and data sources differ.",
               "score": 2
             },
             {
-              "label": "Mostly aligned. Main cost drivers (compute, storage, bandwidth) map to carbon allocation drivers.",
+              "label": "Some alignment for major areas (e.g. cloud spend maps roughly to cloud carbon). Not systematic.",
               "score": 3
             },
             {
-              "label": "Fully aligned. Carbon and cost use identical allocation drivers. FinOps and GreenOps teams coordinate.",
+              "label": "Aligned for most scope: same boundaries, similar allocation keys, consistent ownership mapping.",
               "score": 4
             },
             {
-              "label": "Integrated dashboards where carbon and cost per service are co-reported. Cost-carbon trade-offs are explicit in decisions.",
+              "label": "Fully integrated: carbon and cost use the same allocation model. FinOps and GreenOps operate from a shared data foundation.",
               "score": 5
             }
           ]
@@ -3622,23 +3622,23 @@
           "tags": [],
           "options": [
             {
-              "label": "No meaningful coverage or not tracked. Visibility is fragmented and unreliable.",
+              "label": "No cloud telemetry collected for GreenOps purposes.",
               "score": 1
             },
             {
-              "label": "Covers 20-40% of scope. Limited to main or core areas. Significant gaps remain.",
+              "label": "Basic console or billing data for major cloud accounts. No structured telemetry pipeline.",
               "score": 2
             },
             {
-              "label": "Covers 50-75% of scope with documented standard coverage. Gaps remain in secondary areas or edge cases.",
+              "label": "Usage and cost data extracted from cloud provider consoles or APIs for main accounts.",
               "score": 3
             },
             {
-              "label": "Covers 75-90% of scope with consistent methods. Gaps are known and actively managed.",
+              "label": "Structured telemetry pipeline covering most cloud accounts. FinOps tooling integrated.",
               "score": 4
             },
             {
-              "label": "Covers >90% of scope with continuous discovery and automated updates.",
+              "label": "Comprehensive multi-cloud observability: cost, usage, carbon and efficiency data across all accounts and providers.",
               "score": 5
             }
           ]
@@ -3653,23 +3653,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Limited telemetry available. Unable to break down consumption or performance by workload, service, or tenant.",
+              "label": "No meaningful detail. Only total cloud spend or high-level account summaries.",
               "score": 1
             },
             {
-              "label": "Basic telemetry available for 20-40% of cloud resources. VM-level or instance-level data. Limited service or application mapping.",
+              "label": "Account or subscription-level cost and basic usage data. No resource-level visibility.",
               "score": 2
             },
             {
-              "label": "Detailed telemetry for 50-75% of cloud resources. Application-level metrics available. Some service-level attribution possible.",
+              "label": "Resource-level cost and usage for main services (compute, storage, database). Some tagging gaps.",
               "score": 3
             },
             {
-              "label": "Comprehensive telemetry for 75-90% of cloud resources with consistent tagging. Service and workload-level data clearly available.",
+              "label": "Detailed resource-level telemetry with service-specific metrics. Tag coverage enforced for most accounts.",
               "score": 4
             },
             {
-              "label": "Rich telemetry for >90% of cloud resources with standardised tagging, cost allocation codes, and fine-grained workload-level attribution.",
+              "label": "Granular: per-resource, per-hour cost and usage. Carbon intensity per service. Comprehensive tagging with governance.",
               "score": 5
             }
           ]
@@ -3684,23 +3684,23 @@
           "tags": [],
           "options": [
             {
-              "label": "No meaningful link. Energy, emissions, or costs cannot be attributed to services, teams, or workloads.",
+              "label": "Cannot link cloud telemetry to business owners, products or services.",
               "score": 1
             },
             {
-              "label": "Attribution possible for 20-40% of IT load, mainly limited to major platforms or data halls. Service-level attribution is rare.",
+              "label": "Cloud accounts or subscriptions loosely mapped to teams. No resource-level attribution.",
               "score": 2
             },
             {
-              "label": "Attribution covers 50-75% of IT load across main platforms and environments. Some major services identified. Workload-level gaps remain.",
+              "label": "Tag-based attribution for main accounts. Most compute and storage attributed. Some untagged spend remains.",
               "score": 3
             },
             {
-              "label": "Energy can be attributed to specific services or teams for 75-90% of IT load. Allocation rules are documented and applied consistently.",
+              "label": "Strong tagging governance. Most cloud spend and usage attributed to services, teams and cost centres.",
               "score": 4
             },
             {
-              "label": "Energy, emissions, and costs can be attributed at service/workload level for >90% of IT load with continuous validation and fine-grained traceability.",
+              "label": "Full attribution: every cloud resource tagged and attributed. Untagged spend governed and remediated. Linked to business services.",
               "score": 5
             }
           ]
@@ -3715,23 +3715,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Data available less than quarterly. Long delays between collection and availability.",
+              "label": "Cloud data reviewed annually or only for budget exercises.",
               "score": 1
             },
             {
-              "label": "Data available quarterly or monthly, but with 2-4 week lags. Sufficient for periodic reviews only.",
+              "label": "Monthly cost reports reviewed. No real-time or weekly telemetry available.",
               "score": 2
             },
             {
-              "label": "Data available monthly or bi-monthly with 1-2 week currency. Supports monthly management cycles.",
+              "label": "Weekly or daily cost and usage data available for main accounts. Monthly trend analysis.",
               "score": 3
             },
             {
-              "label": "Data available weekly or bi-weekly with near-current information. Supports ongoing operational management.",
+              "label": "Daily telemetry for most accounts. Real-time alerts for anomalies and budget thresholds.",
               "score": 4
             },
             {
-              "label": "Data available daily or near-real-time. Supports continuous monitoring and immediate decision-making.",
+              "label": "Continuous real-time telemetry. Integrated into operational dashboards with automated anomaly detection.",
               "score": 5
             }
           ]
@@ -3746,23 +3746,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Location data missing or unreliable for most assets.",
+              "label": "Cloud region or location not tracked in telemetry.",
               "score": 1
             },
             {
-              "label": "Location known at broad level (data centre region, building) for 20-40% of assets. Specific detail unknown.",
+              "label": "Region known at account level. No zone or environment-level detail.",
               "score": 2
             },
             {
-              "label": "Location known at zone/rack level for 50-75% of assets. Cloud regions and main facilities identified.",
+              "label": "Region and service-level location tracked for main workloads. Availability zone where relevant.",
               "score": 3
             },
             {
-              "label": "Location known at zone/rack/room level for 75-90% of assets. Cloud regions, AZs clearly identified.",
+              "label": "Detailed: region, availability zone and environment tracked. Location-specific carbon factors applicable.",
               "score": 4
             },
             {
-              "label": "Precise location (zone, rack, row, container) known for >90% of assets with automated tracking.",
+              "label": "Full location awareness: region, zone, environment. Carbon-aware placement recommendations based on real-time grid data.",
               "score": 5
             }
           ]
@@ -3777,23 +3777,23 @@
           "tags": [],
           "options": [
             {
-              "label": "No formal process. Data collection is manual, error-prone, or not attempted.",
+              "label": "No method for converting cloud telemetry into environmental insight.",
               "score": 1
             },
             {
-              "label": "Ad-hoc process with high manual effort. Inconsistent results. 20-40% of scope covered with confidence.",
+              "label": "Basic: total cloud spend multiplied by a generic emission factor.",
               "score": 2
             },
             {
-              "label": "Documented process with partial automation. 50-75% of scope covered reliably. Some gaps remain.",
+              "label": "Provider carbon dashboards used (e.g. AWS Customer Carbon Footprint, Azure Emissions Impact). Accepted at face value.",
               "score": 3
             },
             {
-              "label": "Established process with strong tooling. 75-90% of scope covered with documented confidence levels.",
+              "label": "Provider data supplemented with independent calculations. Methodology documented. Limitations understood.",
               "score": 4
             },
             {
-              "label": "Fully automated process with continuous validation. >90% of scope covered with high confidence. Continuous improvement active.",
+              "label": "Robust multi-source method: provider data validated, supplemented with independent modelling and usage-based calculations.",
               "score": 5
             }
           ]
@@ -3808,23 +3808,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Updates are sporadic or absent. Data often 30+ days out of date.",
+              "label": "Cloud data significantly lagged \u2014 weeks or months behind.",
               "score": 1
             },
             {
-              "label": "Updates happen monthly or quarterly, with lags of 2-4 weeks for major changes.",
+              "label": "Monthly billing data available. Usage data lagged by days to weeks.",
               "score": 2
             },
             {
-              "label": "Updates occur monthly or bi-monthly for most scope. Reflects changes within 2-4 week cycle.",
+              "label": "Daily data available for main accounts. Some lag on carbon-specific data from providers.",
               "score": 3
             },
             {
-              "label": "Updates occur weekly or bi-weekly across main scope. Most changes reflected within 1-2 weeks.",
+              "label": "Near-real-time cost and usage. Provider carbon data within days or weeks of activity.",
               "score": 4
             },
             {
-              "label": "Updates are automated and near-continuous. Changes reflected within days or as part of operational workflows.",
+              "label": "Real-time cost and usage telemetry. Carbon data available within hours where provider APIs support it.",
               "score": 5
             }
           ]
@@ -3839,23 +3839,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Lineage not clear or tracked. Data sources and confidence levels not understood.",
+              "label": "Cannot explain where cloud data comes from or how reliable it is.",
               "score": 1
             },
             {
-              "label": "Main sources documented but with variable quality. Confidence tracking exists for <50% of data.",
+              "label": "Data comes from cloud console or billing. Reliability and completeness not assessed.",
               "score": 2
             },
             {
-              "label": "Sources documented with confidence assigned for 50-75% of data. Some trust gaps in secondary areas.",
+              "label": "Sources documented (APIs, billing exports, FinOps tools). Known gaps and limitations recorded.",
               "score": 3
             },
             {
-              "label": "Data lineage documented with clear confidence levels for 75-90% of inputs. Regular audits of source quality.",
+              "label": "Clear data lineage from provider APIs through to reporting. Confidence levels assigned per data stream.",
               "score": 4
             },
             {
-              "label": "Complete lineage with confidence scoring for >90% of inputs. Continuous monitoring of source quality.",
+              "label": "Full provenance: API sources, extraction methods, transformation logic and confidence all documented and auditable.",
               "score": 5
             }
           ]
@@ -3874,23 +3874,23 @@
           ],
           "options": [
             {
-              "label": "We do not consider carbon intensity in workload placement decisions.",
+              "label": "Not aware of cloud provider carbon intensity data or its relevance to workload placement.",
               "score": 1
             },
             {
-              "label": "We are aware that regions differ in carbon intensity but it does not influence placement.",
+              "label": "Aware that providers publish carbon data but not using it operationally.",
               "score": 2
             },
             {
-              "label": "We consider carbon intensity for some new deployments but existing workloads are not reviewed.",
+              "label": "Provider carbon data reviewed when making major migration or placement decisions.",
               "score": 3
             },
             {
-              "label": "Carbon intensity is a factor in workload placement policy. Major workloads are reviewed for region optimisation.",
+              "label": "Carbon intensity factored into workload placement. Low-carbon regions preferred where operationally feasible.",
               "score": 4
             },
             {
-              "label": "Carbon-aware placement is standard. Flexible workloads are scheduled to lower-carbon regions and times. Real-time carbon signals inform dynamic placement.",
+              "label": "Carbon-aware scheduling and placement standard practice. Real-time grid carbon data used to optimise workload timing and location.",
               "score": 5
             }
           ]
@@ -4058,23 +4058,23 @@
           "tags": [],
           "options": [
             {
-              "label": "No meaningful coverage or not tracked. Visibility is fragmented and unreliable.",
+              "label": "Providers give no useful sustainability or operational data.",
               "score": 1
             },
             {
-              "label": "Covers 20-40% of scope. Limited to main or core areas. Significant gaps remain.",
+              "label": "Annual sustainability reports or high-level PUE claims. Nothing site or customer-specific.",
               "score": 2
             },
             {
-              "label": "Covers 50-75% of scope with documented standard coverage. Gaps remain in secondary areas or edge cases.",
+              "label": "Some providers share site-level PUE and energy source data. Quality and format vary widely.",
               "score": 3
             },
             {
-              "label": "Covers 75-90% of scope with consistent methods. Gaps are known and actively managed.",
+              "label": "Main providers share customer-specific energy, PUE and RE data per site. Contractual reporting obligations in place.",
               "score": 4
             },
             {
-              "label": "Covers >90% of scope with continuous discovery and automated updates.",
+              "label": "Comprehensive: all providers share customer-specific energy, water, carbon, PUE and RE data. Verified and contractually required.",
               "score": 5
             }
           ]
@@ -4089,23 +4089,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Minimal data provided by colocation or cloud provider. Only aggregate facility-level consumption available.",
+              "label": "No detail beyond marketing claims or published averages.",
               "score": 1
             },
             {
-              "label": "Basic breakdown available (e.g., by cage, cabinet, or region). Coverage 20-40%. Infrequent updates (quarterly or less).",
+              "label": "Site-level PUE and total energy reported. No customer-specific or hall-level detail.",
               "score": 2
             },
             {
-              "label": "Detailed breakdown available for 50-75% of colocation footprint (e.g., per-cabinet or per-circuit). Monthly updates.",
+              "label": "Customer-allocated energy and site PUE for main providers. Some provider-level carbon factors.",
               "score": 3
             },
             {
-              "label": "Granular data for 75-90% of colocation footprint with documented data quality. Weekly or bi-weekly updates with confidence levels.",
+              "label": "Per-cage or per-suite energy data from main providers. PUE, WUE and RE% per site. Carbon factors documented.",
               "score": 4
             },
             {
-              "label": "Near real-time telemetry for >90% of colocation footprint with high granularity (circuit, power distribution). Continuous validation agreements in place.",
+              "label": "Granular: per-cage or per-kW metered energy, site-specific PUE, WUE, RE%, carbon factors with full methodology disclosure.",
               "score": 5
             }
           ]
@@ -4120,23 +4120,23 @@
           "tags": [],
           "options": [
             {
-              "label": "No meaningful link. Energy, emissions, or costs cannot be attributed to services, teams, or workloads.",
+              "label": "Cannot link provider data to our own racks, services or consumers.",
               "score": 1
             },
             {
-              "label": "Attribution possible for 20-40% of IT load, mainly limited to major platforms or data halls. Service-level attribution is rare.",
+              "label": "Provider data received at account level. Manual effort needed to map to our infrastructure.",
               "score": 2
             },
             {
-              "label": "Attribution covers 50-75% of IT load across main platforms and environments. Some major services identified. Workload-level gaps remain.",
+              "label": "Can map provider energy data to our cages or suites. Attribution to services requires manual work.",
               "score": 3
             },
             {
-              "label": "Energy can be attributed to specific services or teams for 75-90% of IT load. Allocation rules are documented and applied consistently.",
+              "label": "Provider data linked to our racks or cages. Attribution to internal services and teams possible for most scope.",
               "score": 4
             },
             {
-              "label": "Energy, emissions, and costs can be attributed at service/workload level for >90% of IT load with continuous validation and fine-grained traceability.",
+              "label": "Full traceability: provider data mapped to our racks, through to services, teams and business owners automatically.",
               "score": 5
             }
           ]
@@ -4151,23 +4151,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Location data missing or unreliable for most assets.",
+              "label": "Provider data is generic or portfolio-averaged. Not site-specific.",
               "score": 1
             },
             {
-              "label": "Location known at broad level (data centre region, building) for 20-40% of assets. Specific detail unknown.",
+              "label": "Data labelled as site-specific but may use portfolio averages or design-day values.",
               "score": 2
             },
             {
-              "label": "Location known at zone/rack level for 50-75% of assets. Cloud regions and main facilities identified.",
+              "label": "Site-specific metrics for main provider locations. Some smaller sites still on provider averages.",
               "score": 3
             },
             {
-              "label": "Location known at zone/rack/room level for 75-90% of assets. Cloud regions, AZs clearly identified.",
+              "label": "Site-specific, operationally measured data for most colo locations. Design vs operating values distinguished.",
               "score": 4
             },
             {
-              "label": "Precise location (zone, rack, row, container) known for >90% of assets with automated tracking.",
+              "label": "All provider data site-specific and operationally measured. Independently verifiable against contractual SLAs.",
               "score": 5
             }
           ]
@@ -4182,23 +4182,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Updates are sporadic or absent. Data often 30+ days out of date.",
+              "label": "Provider data received annually at best, often only in sustainability reports.",
               "score": 1
             },
             {
-              "label": "Updates happen monthly or quarterly, with lags of 2-4 weeks for major changes.",
+              "label": "Quarterly reporting from main providers. Annual from others.",
               "score": 2
             },
             {
-              "label": "Updates occur monthly or bi-monthly for most scope. Reflects changes within 2-4 week cycle.",
+              "label": "Monthly data from main providers. Quarterly from smaller ones. Sufficient for reporting.",
               "score": 3
             },
             {
-              "label": "Updates occur weekly or bi-weekly across main scope. Most changes reflected within 1-2 weeks.",
+              "label": "Monthly from most providers. Main providers offer near-real-time portal access.",
               "score": 4
             },
             {
-              "label": "Updates are automated and near-continuous. Changes reflected within days or as part of operational workflows.",
+              "label": "Near-real-time or daily data via API or portal. Automated ingestion into our GreenOps data pipeline.",
               "score": 5
             }
           ]
@@ -4213,23 +4213,23 @@
           "tags": [],
           "options": [
             {
-              "label": "No formal process. Data collection is manual, error-prone, or not attempted.",
+              "label": "No understanding of how provider metrics were calculated.",
               "score": 1
             },
             {
-              "label": "Ad-hoc process with high manual effort. Inconsistent results. 20-40% of scope covered with confidence.",
+              "label": "Provider publishes PUE but method, boundary and measurement approach unclear.",
               "score": 2
             },
             {
-              "label": "Documented process with partial automation. 50-75% of scope covered reliably. Some gaps remain.",
+              "label": "Main providers document methodology. PUE boundary and measurement approach understood.",
               "score": 3
             },
             {
-              "label": "Established process with strong tooling. 75-90% of scope covered with documented confidence levels.",
+              "label": "Provider methodology assessed and compared to standards (ISO 30134, EU CoC). Gaps and limitations documented.",
               "score": 4
             },
             {
-              "label": "Fully automated process with continuous validation. >90% of scope covered with high confidence. Continuous improvement active.",
+              "label": "Provider methodology independently validated. Measurement, boundary and methodology aligned with our standards. Audit rights exercised.",
               "score": 5
             }
           ]
@@ -4244,23 +4244,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Lineage not clear or tracked. Data sources and confidence levels not understood.",
+              "label": "Provider cannot or will not explain the source and evidence behind reported numbers.",
               "score": 1
             },
             {
-              "label": "Main sources documented but with variable quality. Confidence tracking exists for <50% of data.",
+              "label": "Provider references industry averages or design values. Actual measurement evidence not available.",
               "score": 2
             },
             {
-              "label": "Sources documented with confidence assigned for 50-75% of data. Some trust gaps in secondary areas.",
+              "label": "Main providers can explain sources. Metered vs modelled distinguished for key metrics.",
               "score": 3
             },
             {
-              "label": "Data lineage documented with clear confidence levels for 75-90% of inputs. Regular audits of source quality.",
+              "label": "Providers share measurement methodology, data sources and confidence assessment. Evidence available on request.",
               "score": 4
             },
             {
-              "label": "Complete lineage with confidence scoring for >90% of inputs. Continuous monitoring of source quality.",
+              "label": "Full transparency: providers share raw data, methodology, calibration records and audit trails. Contractually required.",
               "score": 5
             }
           ]
@@ -4275,23 +4275,23 @@
           "tags": [],
           "options": [
             {
-              "label": "No meaningful link. Energy, emissions, or costs cannot be attributed to services, teams, or workloads.",
+              "label": "Provider data not usable for any GreenOps decisions.",
               "score": 1
             },
             {
-              "label": "Attribution possible for 20-40% of IT load, mainly limited to major platforms or data halls. Service-level attribution is rare.",
+              "label": "Supports broad portfolio-level reporting only. Not reliable for site or service-level decisions.",
               "score": 2
             },
             {
-              "label": "Attribution covers 50-75% of IT load across main platforms and environments. Some major services identified. Workload-level gaps remain.",
+              "label": "Supports site-level footprint reporting and high-level provider comparison.",
               "score": 3
             },
             {
-              "label": "Energy can be attributed to specific services or teams for 75-90% of IT load. Allocation rules are documented and applied consistently.",
+              "label": "Supports operational decisions: provider comparison, contract negotiation, allocation to services.",
               "score": 4
             },
             {
-              "label": "Energy, emissions, and costs can be attributed at service/workload level for >90% of IT load with continuous validation and fine-grained traceability.",
+              "label": "Decision-grade: supports provider selection, SLA enforcement, customer allocation and regulatory reporting.",
               "score": 5
             }
           ]
@@ -4458,23 +4458,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Data available less than quarterly. Long delays between collection and availability.",
+              "label": "Annual snapshots or point-in-time data only. No time-series view.",
               "score": 1
             },
             {
-              "label": "Data available quarterly or monthly, but with 2-4 week lags. Sufficient for periodic reviews only.",
+              "label": "Quarterly aggregates for most domains. Monthly for one or two areas.",
               "score": 2
             },
             {
-              "label": "Data available monthly or bi-monthly with 1-2 week currency. Supports monthly management cycles.",
+              "label": "Monthly data for most domains. Weekly for some energy or utilisation metrics.",
               "score": 3
             },
             {
-              "label": "Data available weekly or bi-weekly with near-current information. Supports ongoing operational management.",
+              "label": "Weekly or better for most operational domains. Monthly for slower-moving areas like embodied data.",
               "score": 4
             },
             {
-              "label": "Data available daily or near-real-time. Supports continuous monitoring and immediate decision-making.",
+              "label": "Near-real-time or daily for operational domains. Appropriate cadence matched to each domain's decision cycle.",
               "score": 5
             }
           ]
@@ -4489,23 +4489,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Updates are sporadic or absent. Data often 30+ days out of date.",
+              "label": "Weeks to months of lag. Data arrives with billing cycles or annual reports.",
               "score": 1
             },
             {
-              "label": "Updates happen monthly or quarterly, with lags of 2-4 weeks for major changes.",
+              "label": "2-4 weeks lag for most domains. Depends on manual collection or billing cycles.",
               "score": 2
             },
             {
-              "label": "Updates occur monthly or bi-monthly for most scope. Reflects changes within 2-4 week cycle.",
+              "label": "1-2 weeks for main domains. Some operational data (energy, utilisation) faster.",
               "score": 3
             },
             {
-              "label": "Updates occur weekly or bi-weekly across main scope. Most changes reflected within 1-2 weeks.",
+              "label": "Days for most domains. Operational data within hours. Billing data within a week.",
               "score": 4
             },
             {
-              "label": "Updates are automated and near-continuous. Changes reflected within days or as part of operational workflows.",
+              "label": "Hours or near-real-time for operational domains. All data within days of underlying activity.",
               "score": 5
             }
           ]
@@ -4520,23 +4520,23 @@
           "tags": [],
           "options": [
             {
-              "label": "No formal process. Data collection is manual, error-prone, or not attempted.",
+              "label": "No defined refresh cycles. Data updated when someone asks for it.",
               "score": 1
             },
             {
-              "label": "Ad-hoc process with high manual effort. Inconsistent results. 20-40% of scope covered with confidence.",
+              "label": "Some domains have scheduled updates but cycles vary and are not documented.",
               "score": 2
             },
             {
-              "label": "Documented process with partial automation. 50-75% of scope covered reliably. Some gaps remain.",
+              "label": "Refresh cycles documented for main domains. Most data updated on a predictable schedule.",
               "score": 3
             },
             {
-              "label": "Established process with strong tooling. 75-90% of scope covered with documented confidence levels.",
+              "label": "Consistent, documented refresh cycles across all domains. Schedule owned and monitored.",
               "score": 4
             },
             {
-              "label": "Fully automated process with continuous validation. >90% of scope covered with high confidence. Continuous improvement active.",
+              "label": "Automated refresh with monitoring. SLAs defined for data freshness. Deviations flagged and escalated.",
               "score": 5
             }
           ]
@@ -4551,23 +4551,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Lineage not clear or tracked. Data sources and confidence levels not understood.",
+              "label": "No awareness of data staleness. Old data used without flagging.",
               "score": 1
             },
             {
-              "label": "Main sources documented but with variable quality. Confidence tracking exists for <50% of data.",
+              "label": "Staleness sometimes noticed manually but no systematic detection.",
               "score": 2
             },
             {
-              "label": "Sources documented with confidence assigned for 50-75% of data. Some trust gaps in secondary areas.",
+              "label": "Age of data visible in reporting. Stale data flagged for major domains.",
               "score": 3
             },
             {
-              "label": "Data lineage documented with clear confidence levels for 75-90% of inputs. Regular audits of source quality.",
+              "label": "Automated staleness detection for most domains. Stale data flagged in dashboards and reports.",
               "score": 4
             },
             {
-              "label": "Complete lineage with confidence scoring for >90% of inputs. Continuous monitoring of source quality.",
+              "label": "Real-time freshness monitoring with automated alerts. Stale data quarantined or flagged before it reaches decisions.",
               "score": 5
             }
           ]
@@ -4582,23 +4582,23 @@
           "tags": [],
           "options": [
             {
-              "label": "No meaningful link. Energy, emissions, or costs cannot be attributed to services, teams, or workloads.",
+              "label": "Time resolution too coarse for any operational decision. Annual or less.",
               "score": 1
             },
             {
-              "label": "Attribution possible for 20-40% of IT load, mainly limited to major platforms or data halls. Service-level attribution is rare.",
+              "label": "Sufficient for annual reporting but not for operational management.",
               "score": 2
             },
             {
-              "label": "Attribution covers 50-75% of IT load across main platforms and environments. Some major services identified. Workload-level gaps remain.",
+              "label": "Monthly resolution supports trend analysis and quarterly planning.",
               "score": 3
             },
             {
-              "label": "Energy can be attributed to specific services or teams for 75-90% of IT load. Allocation rules are documented and applied consistently.",
+              "label": "Weekly or better supports operational management and improvement tracking.",
               "score": 4
             },
             {
-              "label": "Energy, emissions, and costs can be attributed at service/workload level for >90% of IT load with continuous validation and fine-grained traceability.",
+              "label": "Time resolution matched to decision cadence: real-time for operations, monthly for planning, quarterly for governance.",
               "score": 5
             }
           ]
@@ -4613,23 +4613,23 @@
           "tags": [],
           "options": [
             {
-              "label": "No meaningful coverage or not tracked. Visibility is fragmented and unreliable.",
+              "label": "Very little of the estate benefits from useful time resolution.",
               "score": 1
             },
             {
-              "label": "Covers 20-40% of scope. Limited to main or core areas. Significant gaps remain.",
+              "label": "Main data centre sites have reasonable timeliness. Rest of estate lagging.",
               "score": 2
             },
             {
-              "label": "Covers 50-75% of scope with documented standard coverage. Gaps remain in secondary areas or edge cases.",
+              "label": "Most on-premise and major cloud environments have useful time resolution.",
               "score": 3
             },
             {
-              "label": "Covers 75-90% of scope with consistent methods. Gaps are known and actively managed.",
+              "label": "Strong coverage across on-premise, cloud and colo. Only minor gaps.",
               "score": 4
             },
             {
-              "label": "Covers >90% of scope with continuous discovery and automated updates.",
+              "label": "Comprehensive: all environments have time resolution appropriate to their decision-support role.",
               "score": 5
             }
           ]
@@ -4644,23 +4644,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Location data missing or unreliable for most assets.",
+              "label": "Location and environment differences not reflected in timing logic.",
               "score": 1
             },
             {
-              "label": "Location known at broad level (data centre region, building) for 20-40% of assets. Specific detail unknown.",
+              "label": "Same timing assumptions applied everywhere regardless of location or context.",
               "score": 2
             },
             {
-              "label": "Location known at zone/rack level for 50-75% of assets. Cloud regions and main facilities identified.",
+              "label": "Some adjustment for different environments (e.g. cloud data faster than colo provider data).",
               "score": 3
             },
             {
-              "label": "Location known at zone/rack/room level for 75-90% of assets. Cloud regions, AZs clearly identified.",
+              "label": "Timing logic reflects operational reality per environment type. Provider data handled on its own cycle.",
               "score": 4
             },
             {
-              "label": "Precise location (zone, rack, row, container) known for >90% of assets with automated tracking.",
+              "label": "Fully adaptive: timing logic accounts for location, provider, data source and regulatory reporting requirements.",
               "score": 5
             }
           ]
@@ -4675,23 +4675,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Lineage not clear or tracked. Data sources and confidence levels not understood.",
+              "label": "Users have no idea how old the data is or when it was last updated.",
               "score": 1
             },
             {
-              "label": "Main sources documented but with variable quality. Confidence tracking exists for <50% of data.",
+              "label": "Some awareness but not consistently communicated. Users sometimes ask and get inconsistent answers.",
               "score": 2
             },
             {
-              "label": "Sources documented with confidence assigned for 50-75% of data. Some trust gaps in secondary areas.",
+              "label": "Data age and refresh dates visible in main reports and dashboards.",
               "score": 3
             },
             {
-              "label": "Data lineage documented with clear confidence levels for 75-90% of inputs. Regular audits of source quality.",
+              "label": "Timing metadata (collection date, refresh date, next update) available for all major data streams.",
               "score": 4
             },
             {
-              "label": "Complete lineage with confidence scoring for >90% of inputs. Continuous monitoring of source quality.",
+              "label": "Full timing transparency: users see data age, refresh cycle, confidence and any staleness warnings inline.",
               "score": 5
             }
           ]
@@ -4859,23 +4859,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Lineage not clear or tracked. Data sources and confidence levels not understood.",
+              "label": "Cannot identify source systems or datasets behind GreenOps outputs.",
               "score": 1
             },
             {
-              "label": "Main sources documented but with variable quality. Confidence tracking exists for <50% of data.",
+              "label": "Main sources known (e.g. 'comes from the CMDB' or 'from the energy provider') but not formally documented.",
               "score": 2
             },
             {
-              "label": "Sources documented with confidence assigned for 50-75% of data. Some trust gaps in secondary areas.",
+              "label": "Source systems documented for main data domains. Data flow understood at a high level.",
               "score": 3
             },
             {
-              "label": "Data lineage documented with clear confidence levels for 75-90% of inputs. Regular audits of source quality.",
+              "label": "Clear source identification across all domains. Data flow diagrams and integration points documented.",
               "score": 4
             },
             {
-              "label": "Complete lineage with confidence scoring for >90% of inputs. Continuous monitoring of source quality.",
+              "label": "Full source registry with automated lineage tracking. Every output traceable to source system, dataset and extraction method.",
               "score": 5
             }
           ]
@@ -4890,23 +4890,23 @@
           "tags": [],
           "options": [
             {
-              "label": "No formal process. Data collection is manual, error-prone, or not attempted.",
+              "label": "No documentation of calculations, assumptions or transformations.",
               "score": 1
             },
             {
-              "label": "Ad-hoc process with high manual effort. Inconsistent results. 20-40% of scope covered with confidence.",
+              "label": "Key people know the method but it is not written down. Knowledge is in heads not documents.",
               "score": 2
             },
             {
-              "label": "Documented process with partial automation. 50-75% of scope covered reliably. Some gaps remain.",
+              "label": "Main calculations documented. Key assumptions recorded. Some transformation logic still undocumented.",
               "score": 3
             },
             {
-              "label": "Established process with strong tooling. 75-90% of scope covered with documented confidence levels.",
+              "label": "Comprehensive documentation of methodology, assumptions, transformations and allocation rules.",
               "score": 4
             },
             {
-              "label": "Fully automated process with continuous validation. >90% of scope covered with high confidence. Continuous improvement active.",
+              "label": "Fully documented and version-controlled. Calculation logic independently reviewable. Assumption register maintained.",
               "score": 5
             }
           ]
@@ -4921,23 +4921,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Lineage not clear or tracked. Data sources and confidence levels not understood.",
+              "label": "No. Outputs depend entirely on specific individuals. Not reproducible.",
               "score": 1
             },
             {
-              "label": "Main sources documented but with variable quality. Confidence tracking exists for <50% of data.",
+              "label": "Partially \u2014 with significant effort and tacit knowledge from the original author.",
               "score": 2
             },
             {
-              "label": "Sources documented with confidence assigned for 50-75% of data. Some trust gaps in secondary areas.",
+              "label": "Mostly reproducible for main outputs. Some secondary calculations depend on individual knowledge.",
               "score": 3
             },
             {
-              "label": "Data lineage documented with clear confidence levels for 75-90% of inputs. Regular audits of source quality.",
+              "label": "Reproducible by any competent analyst. Methods documented, data sources accessible, tools available.",
               "score": 4
             },
             {
-              "label": "Complete lineage with confidence scoring for >90% of inputs. Continuous monitoring of source quality.",
+              "label": "Fully reproducible and automated. Any competent person can regenerate outputs from documented sources and methods.",
               "score": 5
             }
           ]
@@ -4952,23 +4952,23 @@
           "tags": [],
           "options": [
             {
-              "label": "No meaningful coverage or not tracked. Visibility is fragmented and unreliable.",
+              "label": "Data quality issues not tracked. Exceptions and estimation boundaries unknown.",
               "score": 1
             },
             {
-              "label": "Covers 20-40% of scope. Limited to main or core areas. Significant gaps remain.",
+              "label": "Major issues known informally. No systematic tracking of exceptions or data quality.",
               "score": 2
             },
             {
-              "label": "Covers 50-75% of scope with documented standard coverage. Gaps remain in secondary areas or edge cases.",
+              "label": "Quality issues logged for main data streams. Estimation boundaries identified for key areas.",
               "score": 3
             },
             {
-              "label": "Covers 75-90% of scope with consistent methods. Gaps are known and actively managed.",
+              "label": "Systematic quality tracking: exceptions logged, estimation boundaries documented, remediation tracked.",
               "score": 4
             },
             {
-              "label": "Covers >90% of scope with continuous discovery and automated updates.",
+              "label": "Automated quality monitoring with exception management. Data quality KPIs tracked and reported to governance.",
               "score": 5
             }
           ]
@@ -4983,23 +4983,23 @@
           "tags": [],
           "options": [
             {
-              "label": "No meaningful link. Energy, emissions, or costs cannot be attributed to services, teams, or workloads.",
+              "label": "Users have no understanding of data confidence or limitations.",
               "score": 1
             },
             {
-              "label": "Attribution possible for 20-40% of IT load, mainly limited to major platforms or data halls. Service-level attribution is rare.",
+              "label": "Some users aware of broad limitations but confidence not formally communicated.",
               "score": 2
             },
             {
-              "label": "Attribution covers 50-75% of IT load across main platforms and environments. Some major services identified. Workload-level gaps remain.",
+              "label": "Confidence levels communicated for main outputs. Caveats included in reporting.",
               "score": 3
             },
             {
-              "label": "Energy can be attributed to specific services or teams for 75-90% of IT load. Allocation rules are documented and applied consistently.",
+              "label": "Confidence scoring applied to outputs. Users understand where data is measured vs estimated vs modelled.",
               "score": 4
             },
             {
-              "label": "Energy, emissions, and costs can be attributed at service/workload level for >90% of IT load with continuous validation and fine-grained traceability.",
+              "label": "Transparent confidence framework: every output carries a confidence rating with explanation. Users trained on interpretation.",
               "score": 5
             }
           ]
@@ -5014,23 +5014,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Updates are sporadic or absent. Data often 30+ days out of date.",
+              "label": "No change control for GreenOps methodology.",
               "score": 1
             },
             {
-              "label": "Updates happen monthly or quarterly, with lags of 2-4 weeks for major changes.",
+              "label": "Changes happen ad-hoc. Sometimes recognised retrospectively when numbers shift unexpectedly.",
               "score": 2
             },
             {
-              "label": "Updates occur monthly or bi-monthly for most scope. Reflects changes within 2-4 week cycle.",
+              "label": "Major methodology changes documented and communicated. Minor changes less well controlled.",
               "score": 3
             },
             {
-              "label": "Updates occur weekly or bi-weekly across main scope. Most changes reflected within 1-2 weeks.",
+              "label": "Formal change control for methodology. Impact assessed, stakeholders notified, historical comparisons maintained.",
               "score": 4
             },
             {
-              "label": "Updates are automated and near-continuous. Changes reflected within days or as part of operational workflows.",
+              "label": "Full governance: change control board, impact assessment, version control, restatement policy and stakeholder communication.",
               "score": 5
             }
           ]
@@ -5045,23 +5045,23 @@
           "tags": [],
           "options": [
             {
-              "label": "No formal process. Data collection is manual, error-prone, or not attempted.",
+              "label": "No distinction between measured, modelled and estimated values.",
               "score": 1
             },
             {
-              "label": "Ad-hoc process with high manual effort. Inconsistent results. 20-40% of scope covered with confidence.",
+              "label": "Some awareness but not systematically flagged in data or reporting.",
               "score": 2
             },
             {
-              "label": "Documented process with partial automation. 50-75% of scope covered reliably. Some gaps remain.",
+              "label": "Main outputs flagged as measured, modelled or estimated. Users can see the broad basis.",
               "score": 3
             },
             {
-              "label": "Established process with strong tooling. 75-90% of scope covered with documented confidence levels.",
+              "label": "All data streams categorised. Measured vs modelled vs estimated clearly shown in all reporting.",
               "score": 4
             },
             {
-              "label": "Fully automated process with continuous validation. >90% of scope covered with high confidence. Continuous improvement active.",
+              "label": "Full data quality taxonomy: measured, modelled, estimated, proxy. Each with documented confidence and methodology.",
               "score": 5
             }
           ]
@@ -5076,23 +5076,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Lineage not clear or tracked. Data sources and confidence levels not understood.",
+              "label": "Assurance level insufficient for any external or governance use.",
               "score": 1
             },
             {
-              "label": "Main sources documented but with variable quality. Confidence tracking exists for <50% of data.",
+              "label": "Sufficient for internal awareness but would not withstand external scrutiny.",
               "score": 2
             },
             {
-              "label": "Sources documented with confidence assigned for 50-75% of data. Some trust gaps in secondary areas.",
+              "label": "Sufficient for internal reporting and management information. Some gaps for external assurance.",
               "score": 3
             },
             {
-              "label": "Data lineage documented with clear confidence levels for 75-90% of inputs. Regular audits of source quality.",
+              "label": "Sufficient for regulatory reporting and external disclosure. Methodology defensible under review.",
               "score": 4
             },
             {
-              "label": "Complete lineage with confidence scoring for >90% of inputs. Continuous monitoring of source quality.",
+              "label": "Audit-ready: sufficient for independent third-party assurance. Methodology, data and controls all documented.",
               "score": 5
             }
           ]
@@ -5260,23 +5260,23 @@
           "tags": [],
           "options": [
             {
-              "label": "No meaningful link. Energy, emissions, or costs cannot be attributed to services, teams, or workloads.",
+              "label": "GreenOps data not used in any real decisions. Reporting only, if that.",
               "score": 1
             },
             {
-              "label": "Attribution possible for 20-40% of IT load, mainly limited to major platforms or data halls. Service-level attribution is rare.",
+              "label": "Occasionally referenced in sustainability reports or board packs. Not part of operational decisions.",
               "score": 2
             },
             {
-              "label": "Attribution covers 50-75% of IT load across main platforms and environments. Some major services identified. Workload-level gaps remain.",
+              "label": "Used in some planning and investment discussions. Influences direction but not formally embedded.",
               "score": 3
             },
             {
-              "label": "Energy can be attributed to specific services or teams for 75-90% of IT load. Allocation rules are documented and applied consistently.",
+              "label": "Routinely used in procurement, capacity planning and operational decisions. Part of business cases.",
               "score": 4
             },
             {
-              "label": "Energy, emissions, and costs can be attributed at service/workload level for >90% of IT load with continuous validation and fine-grained traceability.",
+              "label": "Embedded in governance: investment approval, procurement criteria, capacity planning, supplier management and operational review.",
               "score": 5
             }
           ]
@@ -5291,23 +5291,23 @@
           "tags": [],
           "options": [
             {
-              "label": "No meaningful link. Energy, emissions, or costs cannot be attributed to services, teams, or workloads.",
+              "label": "No link between GreenOps insights and named decision-makers or actions.",
               "score": 1
             },
             {
-              "label": "Attribution possible for 20-40% of IT load, mainly limited to major platforms or data halls. Service-level attribution is rare.",
+              "label": "Insights shared with sustainability team but not linked to operational owners.",
               "score": 2
             },
             {
-              "label": "Attribution covers 50-75% of IT load across main platforms and environments. Some major services identified. Workload-level gaps remain.",
+              "label": "Main insights linked to infrastructure or operations leads. Actions sometimes follow.",
               "score": 3
             },
             {
-              "label": "Energy can be attributed to specific services or teams for 75-90% of IT load. Allocation rules are documented and applied consistently.",
+              "label": "Insights linked to named owners with expected actions. Progress tracked for major items.",
               "score": 4
             },
             {
-              "label": "Energy, emissions, and costs can be attributed at service/workload level for >90% of IT load with continuous validation and fine-grained traceability.",
+              "label": "Full accountability: every insight has a named owner, expected action, timeline and tracked outcome.",
               "score": 5
             }
           ]
@@ -5322,23 +5322,23 @@
           "tags": [],
           "options": [
             {
-              "label": "No formal process. Data collection is manual, error-prone, or not attempted.",
+              "label": "No workflow. Insight exists in reports that nobody acts on.",
               "score": 1
             },
             {
-              "label": "Ad-hoc process with high manual effort. Inconsistent results. 20-40% of scope covered with confidence.",
+              "label": "Ad-hoc: someone spots an issue and raises it informally.",
               "score": 2
             },
             {
-              "label": "Documented process with partial automation. 50-75% of scope covered reliably. Some gaps remain.",
+              "label": "Defined process for major optimisation actions (e.g. rightsizing, decommission). Not consistent.",
               "score": 3
             },
             {
-              "label": "Established process with strong tooling. 75-90% of scope covered with documented confidence levels.",
+              "label": "Structured workflow: identify, assess, approve, implement, verify. Active for most optimisation types.",
               "score": 4
             },
             {
-              "label": "Fully automated process with continuous validation. >90% of scope covered with high confidence. Continuous improvement active.",
+              "label": "Automated workflow embedded in operational processes. Actions triggered, tracked and verified against expected outcomes.",
               "score": 5
             }
           ]
@@ -5353,23 +5353,23 @@
           "tags": [],
           "options": [
             {
-              "label": "No meaningful coverage or not tracked. Visibility is fragmented and unreliable.",
+              "label": "Decision process covers none of the estate.",
               "score": 1
             },
             {
-              "label": "Covers 20-40% of scope. Limited to main or core areas. Significant gaps remain.",
+              "label": "Covers one or two areas (e.g. main data centre, largest cloud account).",
               "score": 2
             },
             {
-              "label": "Covers 50-75% of scope with documented standard coverage. Gaps remain in secondary areas or edge cases.",
+              "label": "Covers main on-premise and cloud environments. Colo and edge less integrated.",
               "score": 3
             },
             {
-              "label": "Covers 75-90% of scope with consistent methods. Gaps are known and actively managed.",
+              "label": "Covers most of the estate including on-premise, cloud and major colo.",
               "score": 4
             },
             {
-              "label": "Covers >90% of scope with continuous discovery and automated updates.",
+              "label": "Comprehensive coverage across all environments. No material scope excluded from decision processes.",
               "score": 5
             }
           ]
@@ -5384,23 +5384,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Updates are sporadic or absent. Data often 30+ days out of date.",
+              "label": "Teams cannot act on GreenOps signals \u2014 data is too old, too broad or not trusted.",
               "score": 1
             },
             {
-              "label": "Updates happen monthly or quarterly, with lags of 2-4 weeks for major changes.",
+              "label": "Actions possible but slow. Weeks or months between insight and response.",
               "score": 2
             },
             {
-              "label": "Updates occur monthly or bi-monthly for most scope. Reflects changes within 2-4 week cycle.",
+              "label": "Main teams can act within days or weeks for major issues.",
               "score": 3
             },
             {
-              "label": "Updates occur weekly or bi-weekly across main scope. Most changes reflected within 1-2 weeks.",
+              "label": "Most teams can act within days. Operational alerts trigger prompt response.",
               "score": 4
             },
             {
-              "label": "Updates are automated and near-continuous. Changes reflected within days or as part of operational workflows.",
+              "label": "Near-real-time response capability. Automated alerts, pre-approved actions and rapid escalation paths.",
               "score": 5
             }
           ]
@@ -5415,23 +5415,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Location data missing or unreliable for most assets.",
+              "label": "Cannot support time or location-sensitive decisions.",
               "score": 1
             },
             {
-              "label": "Location known at broad level (data centre region, building) for 20-40% of assets. Specific detail unknown.",
+              "label": "Aware that timing and location matter but workflows don't support it.",
               "score": 2
             },
             {
-              "label": "Location known at zone/rack level for 50-75% of assets. Cloud regions and main facilities identified.",
+              "label": "Some time or location sensitivity in major decisions (e.g. region selection, timing of batch jobs).",
               "score": 3
             },
             {
-              "label": "Location known at zone/rack/room level for 75-90% of assets. Cloud regions, AZs clearly identified.",
+              "label": "Time and location factors built into decision workflows for main scope.",
               "score": 4
             },
             {
-              "label": "Precise location (zone, rack, row, container) known for >90% of assets with automated tracking.",
+              "label": "Full temporal and location awareness: carbon-aware scheduling, region-optimised placement, time-of-use decisions standard practice.",
               "score": 5
             }
           ]
@@ -5446,23 +5446,23 @@
           "tags": [],
           "options": [
             {
-              "label": "No systematic measurement of actual outcomes. Actions assumed to have worked.",
+              "label": "No measurement of whether actions delivered expected outcomes.",
               "score": 1
             },
             {
-              "label": "Outcomes measured for 20-40% of optimisation actions. Mostly retrospective or one-off assessments.",
+              "label": "Outcomes occasionally reviewed but not systematically tracked.",
               "score": 2
             },
             {
-              "label": "Regular outcome tracking for 50-75% of key actions. Monthly or quarterly measurement cycles documented.",
+              "label": "Outcomes tracked for major actions (e.g. did the decommission reduce energy as expected?).",
               "score": 3
             },
             {
-              "label": "Systematic outcome measurement for 75-90% of actions. Weekly or monthly assessment with confidence scoring.",
+              "label": "Systematic outcome tracking for most actions. Variance analysis performed. Lessons captured.",
               "score": 4
             },
             {
-              "label": "Continuous outcome measurement for >90% of actions with automated tracking and feedback loops.",
+              "label": "Closed-loop verification: every action tracked against expected outcome. Variance triggers investigation. Continuous improvement embedded.",
               "score": 5
             }
           ]
@@ -5477,23 +5477,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Lineage not clear or tracked. Data sources and confidence levels not understood.",
+              "label": "No \u2014 data is not trusted for decisions.",
               "score": 1
             },
             {
-              "label": "Main sources documented but with variable quality. Confidence tracking exists for <50% of data.",
+              "label": "Partially \u2014 data supports directional awareness but not confident decisions.",
               "score": 2
             },
             {
-              "label": "Sources documented with confidence assigned for 50-75% of data. Some trust gaps in secondary areas.",
+              "label": "For some domains \u2014 data supports planning and prioritisation. Not yet operational for all areas.",
               "score": 3
             },
             {
-              "label": "Data lineage documented with clear confidence levels for 75-90% of inputs. Regular audits of source quality.",
+              "label": "For most domains \u2014 data supports procurement, operational and investment decisions with reasonable confidence.",
               "score": 4
             },
             {
-              "label": "Complete lineage with confidence scoring for >90% of inputs. Continuous monitoring of source quality.",
+              "label": "Yes \u2014 data is decision-grade across the board. Trusted, timely, granular and embedded in governance.",
               "score": 5
             }
           ]

@@ -158,7 +158,7 @@ h3 { font-size: 1.125rem; }
   overflow-wrap: break-word;
   word-wrap: break-word;
   text-align: center;
-  padding: 10px 22px;
+  padding: 11px 24px;
   border: none;
   border-radius: var(--radius-md);
   font-family: var(--font-body);
@@ -168,6 +168,7 @@ h3 { font-size: 1.125rem; }
   transition: all 0.2s ease;
   text-decoration: none;
   line-height: 1.4;
+  min-height: 42px;
 }
 
 .btn-primary {
@@ -192,6 +193,7 @@ h3 { font-size: 1.125rem; }
   background: transparent;
   color: var(--color-primary);
   border: 1.5px solid var(--color-border);
+  padding: 9.5px 22.5px;
 }
 .btn-outline:hover {
   border-color: var(--color-brand-green);
@@ -212,11 +214,13 @@ h3 { font-size: 1.125rem; }
   padding: 14px 32px;
   font-size: 0.9375rem;
   border-radius: var(--radius-md);
+  min-height: 48px;
 }
 
 .btn-sm {
-  padding: 6px 14px;
+  padding: 7px 16px;
   font-size: 0.8125rem;
+  min-height: 34px;
 }
 
 /* ===== Form elements ===== */
@@ -567,10 +571,10 @@ h3 { font-size: 1.125rem; }
 
 .sidebar-domain-item {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: var(--space-sm);
   width: 100%;
-  padding: 9px var(--space-md);
+  padding: 8px var(--space-md);
   border: none;
   background: transparent;
   font-family: var(--font-body);
@@ -580,6 +584,7 @@ h3 { font-size: 1.125rem; }
   text-align: left;
   transition: background 0.15s, color 0.15s;
   border-left: 3px solid transparent;
+  min-height: 36px;
 }
 
 .sidebar-domain-item:hover {
@@ -598,6 +603,7 @@ h3 { font-size: 1.125rem; }
   height: 8px;
   border-radius: 50%;
   flex-shrink: 0;
+  margin-top: 5px;
 }
 
 .sidebar-status-dot.not_started {
@@ -852,7 +858,7 @@ h3 { font-size: 1.125rem; }
 /* Dropdown answer selects */
 .question-select {
   width: 100%;
-  padding: var(--space-sm) var(--space-md);
+  padding: 10px var(--space-md);
   padding-right: 36px;
   border: 1.5px solid var(--color-border);
   white-space: normal;
@@ -871,6 +877,7 @@ h3 { font-size: 1.125rem; }
   cursor: pointer;
   transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s;
   line-height: 1.5;
+  min-height: 42px;
 }
 
 .question-select:focus {
@@ -1277,6 +1284,9 @@ h3 { font-size: 1.125rem; }
 
 .domain-table td {
   padding: var(--space-sm) var(--space-md);
+  white-space: normal;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
   border-bottom: 1px solid var(--color-border-light);
   vertical-align: top;
 }
@@ -1373,15 +1383,17 @@ h3 { font-size: 1.125rem; }
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2px;
+  gap: 3px;
+  min-width: 56px;
 }
 
 .detail-score-badge .badge-label {
-  font-size: 0.5625rem;
+  font-size: 0.625rem;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.04em;
   color: var(--color-text-muted);
   font-weight: 600;
+  white-space: nowrap;
 }
 
 .detail-section {
@@ -1475,6 +1487,10 @@ h3 { font-size: 1.125rem; }
   display: flex;
   align-items: center;
   font-size: 0.8125rem;
+  white-space: normal;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  line-height: 1.35;
 }
 
 .heatmap-cell {
@@ -1523,6 +1539,10 @@ h3 { font-size: 1.125rem; }
   font-weight: 600;
   font-size: 0.875rem;
   color: var(--color-text);
+  white-space: normal;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  line-height: 1.4;
 }
 
 .readiness-summary {
@@ -1562,11 +1582,18 @@ h3 { font-size: 1.125rem; }
   font-weight: 600;
   color: var(--color-text);
   font-size: 0.8125rem;
+  white-space: normal;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  line-height: 1.4;
 }
 
 .roadmap-action {
   color: var(--color-text-secondary);
   line-height: 1.5;
+  white-space: normal;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
 }
 
 .roadmap-benefit {
@@ -1787,7 +1814,7 @@ h3 { font-size: 1.125rem; }
 
 .dimension-bar-row {
   display: grid;
-  grid-template-columns: 120px 1fr 36px;
+  grid-template-columns: 160px 1fr 36px;
   gap: var(--space-sm);
   align-items: center;
   font-size: 0.75rem;
