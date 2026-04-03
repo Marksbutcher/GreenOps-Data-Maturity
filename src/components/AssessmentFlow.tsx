@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import { MaturityModel, DomainAssessment } from '../types';
 
 interface AssessmentFlowProps {
@@ -9,6 +9,8 @@ interface AssessmentFlowProps {
   onBack: () => void;
 }
 
+type DomainStatus = 'not_started' | 'in_progress' | 'complete';
+
 export default function AssessmentFlow({
   model,
   mode,
@@ -18,10 +20,26 @@ export default function AssessmentFlow({
 }: AssessmentFlowProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [results, setResults] = useState<DomainAssessment[]>(initialResults);
+  const [showIncomplete, setShowIncomplete] = useState(false);
+
   const domain = model.domains[currentIndex];
   const result = results[currentIndex];
   const total = model.domains.length;
-  const [showIncomplete, setShowIncomplete] = useState(false);
+
+  // Compute domain statuses for sidebar
+  const domainStatuses = useMemo((): { status: DomainStatus; answered: number; total: number }[] => {
+    return model.domains.map((d, i) => {
+      const r = results[i];
+      const answered = Object.keys(r.question_answers).length;
+      const totalQ = d.questions.length;
+      let status: DomainStatus = 'not_started';
+      if (answered === totalQ) status = 'complete';
+      else if (answered > 0) status = 'in_progress';
+      return { status, answered, total: totalQ };
+    });
+  }, [model.domains, results]);
+
+  const completedCount = domainStatuses.filter((s) => s.status === 'complete').length;
 
   const updateResult = useCallback(
     (updates: Partial<DomainAssessment>) => {
@@ -67,7 +85,6 @@ export default function AssessmentFlow({
   };
 
   const handleComplete = () => {
-    // Check all domains have all questions answered
     const incomplete = results.filter((r, i) => {
       const d = model.domains[i];
       return Object.keys(r.question_answers).length < d.questions.length;
@@ -79,7 +96,6 @@ export default function AssessmentFlow({
     onComplete(results);
   };
 
-  // Jump to domain
   const jumpToDomain = (index: number) => {
     setShowIncomplete(false);
     setCurrentIndex(index);
@@ -87,47 +103,51 @@ export default function AssessmentFlow({
   };
 
   return (
-    <div className="assessment-page">
-      <div className="container-wide">
-        {/* Top bar: progress + domain navigator */}
-        <div className="assessment-topbar">
-          <div className="assessment-progress-bar">
-            <div className="progress-label">
-              <span className="progress-text-bold">Domain {currentIndex + 1}</span>
-              <span className="progress-text-light"> of {total}</span>
-              <span className="progress-mode">{mode === 'facilitated' ? 'Workshop' : 'Self-assessment'}</span>
-            </div>
-            <div className="progress-bar">
-              <div
-                className="progress-fill"
-                style={{ width: `${((currentIndex + 1) / total) * 100}%` }}
-              />
-            </div>
+    <div className="assessment-layout">
+      {/* Left sidebar — domain progress panel */}
+      <aside className="assessment-sidebar">
+        <div className="sidebar-header">
+          <div className="sidebar-title">Assessment progress</div>
+          <div className="sidebar-summary">
+            {completedCount} of {total} domains complete
           </div>
-          <div className="domain-nav-pills">
-            {model.domains.map((d, i) => {
-              const r = results[i];
-              const answered = Object.keys(r.question_answers).length;
-              const total_q = d.questions.length;
-              const complete = answered === total_q;
-              const partial = answered > 0 && !complete;
-              return (
-                <button
-                  key={d.id}
-                  className={`domain-pill ${i === currentIndex ? 'active' : ''} ${complete ? 'complete' : ''} ${partial ? 'partial' : ''}`}
-                  onClick={() => jumpToDomain(i)}
-                  title={d.name}
-                >
-                  {i + 1}
-                </button>
-              );
-            })}
+          <div className="sidebar-progress-bar">
+            <div
+              className="sidebar-progress-fill"
+              style={{ width: `${(completedCount / total) * 100}%` }}
+            />
           </div>
         </div>
+        <nav className="sidebar-domain-list">
+          {model.domains.map((d, i) => {
+            const ds = domainStatuses[i];
+            const isCurrent = i === currentIndex;
+            return (
+              <button
+                key={d.id}
+                className={`sidebar-domain-item ${isCurrent ? 'current' : ''} status-${ds.status}`}
+                onClick={() => jumpToDomain(i)}
+              >
+                <span className={`sidebar-status-dot ${ds.status}`} />
+                <span className="sidebar-domain-name">{d.name}</span>
+                <span className="sidebar-domain-count">{ds.answered}/{ds.total}</span>
+              </button>
+            );
+          })}
+        </nav>
+        <div className="sidebar-footer">
+          <span className="sidebar-mode">{mode === 'facilitated' ? 'Workshop mode' : 'Self-assessment'}</span>
+        </div>
+      </aside>
 
+      {/* Main content area */}
+      <main className="assessment-main">
         {/* Domain context intro */}
         <div className="domain-intro">
-          <h2 className="domain-title">{domain.name}</h2>
+          <div className="domain-intro-header">
+            <span className="domain-number">Domain {currentIndex + 1} of {total}</span>
+            <h2 className="domain-title">{domain.name}</h2>
+          </div>
           <p className="domain-definition">{domain.definition}</p>
           <p className="domain-why"><strong>Why it matters:</strong> {domain.why_it_matters}</p>
         </div>
@@ -230,7 +250,7 @@ export default function AssessmentFlow({
             )}
           </div>
         </div>
-      </div>
+      </main>
     </div>
   );
 }

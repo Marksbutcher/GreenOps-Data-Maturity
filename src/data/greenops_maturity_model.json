@@ -125,7 +125,7 @@
       "questions": [
         {
           "id": "ai1",
-          "text": "How complete is the organisation\u2019s inventory coverage across relevant estate domains?",
+          "text": "Do you have a reliable inventory of IT assets across all your environments?",
           "dimension": "coverage",
           "weight": 5,
           "guidance": "",
@@ -133,30 +133,30 @@
           "tags": [],
           "options": [
             {
-              "label": "Coverage is fragmented and many estate domains are missing or unknown",
+              "label": "Major gaps. We do not have a reliable view across the full estate.",
               "score": 1
             },
             {
-              "label": "Core domains are partially covered but major gaps remain",
+              "label": "We cover some key areas, but there are clear gaps or inconsistencies.",
               "score": 2
             },
             {
-              "label": "Most key domains are covered using standard inventory sources",
+              "label": "We have a usable inventory across most main environments.",
               "score": 3
             },
             {
-              "label": "Coverage is measured and monitored across most relevant domains",
+              "label": "We have good coverage and actively check data quality.",
               "score": 4
             },
             {
-              "label": "Coverage is comprehensive, actively governed and continuously improved",
+              "label": "We have strong, trusted coverage across the estate and keep it up to date.",
               "score": 5
             }
           ]
         },
         {
           "id": "ai2",
-          "text": "How specific is the asset data held for physical and virtual assets?",
+          "text": "How detailed is the asset data you hold?",
           "dimension": "granularity",
           "weight": 4,
           "guidance": "",
@@ -164,30 +164,30 @@
           "tags": [],
           "options": [
             {
-              "label": "Only broad counts, categories or cost centres are known",
+              "label": "Very limited. We often only know the basics, if that.",
               "score": 1
             },
             {
-              "label": "Basic asset records exist but model/vendor/location detail is inconsistent",
+              "label": "Some useful fields exist, but data is patchy and inconsistent.",
               "score": 2
             },
             {
-              "label": "Key fields such as type, model, owner and location are generally available",
+              "label": "We hold the main fields needed for most assets.",
               "score": 3
             },
             {
-              "label": "Detailed product, configuration and service-link data is available across much of the estate",
+              "label": "We have good-quality detailed data across most of the estate.",
               "score": 4
             },
             {
-              "label": "High-specificity records exist and are maintained at scale, including model/SKU and service dependency",
+              "label": "We have rich, trusted asset data that supports operational and GreenOps decisions.",
               "score": 5
             }
           ]
         },
         {
           "id": "ai3",
-          "text": "How well are assets linked to business services, applications, owners or platforms?",
+          "text": "Can you link assets to the services, applications, platforms or teams that use them?",
           "dimension": "attribution",
           "weight": 5,
           "guidance": "",
@@ -195,30 +195,30 @@
           "tags": [],
           "options": [
             {
-              "label": "Assets are largely unlinked to services or owners",
+              "label": "Rarely. Most assets are not meaningfully linked.",
               "score": 1
             },
             {
-              "label": "Some manual service or owner mapping exists for priority areas",
+              "label": "Some links exist, but only for certain platforms or teams.",
               "score": 2
             },
             {
-              "label": "Standard service/owner mapping exists for key environments",
+              "label": "We can link many key assets to known owners or services.",
               "score": 3
             },
             {
-              "label": "Service and ownership linkage is measured and maintained across most environments",
+              "label": "We can link most relevant assets to services, platforms or teams.",
               "score": 4
             },
             {
-              "label": "Assets are consistently linked to services, owners, platforms and lifecycle context",
+              "label": "We have strong service and ownership mapping across the estate.",
               "score": 5
             }
           ]
         },
         {
           "id": "ai4",
-          "text": "How current is the inventory relative to real changes in the estate?",
+          "text": "How quickly does the inventory reflect changes such as deployments, moves or removals?",
           "dimension": "timeliness",
           "weight": 3,
           "guidance": "",
@@ -226,30 +226,30 @@
           "tags": [],
           "options": [
             {
-              "label": "Updated sporadically and often out of date",
+              "label": "It is often out of date.",
               "score": 1
             },
             {
-              "label": "Updated periodically but with noticeable lag",
+              "label": "Updates happen, but not reliably or quickly.",
               "score": 2
             },
             {
-              "label": "Updated on a defined cycle with acceptable lag for most purposes",
+              "label": "It is usually updated in a reasonable timeframe.",
               "score": 3
             },
             {
-              "label": "Updated frequently enough for operational decision support",
+              "label": "It is kept up to date across most key environments.",
               "score": 4
             },
             {
-              "label": "Near real-time or highly frequent sync for material asset domains",
+              "label": "Changes are reflected quickly and consistently as part of normal operations.",
               "score": 5
             }
           ]
         },
         {
           "id": "ai5",
-          "text": "How well does the inventory support location-specific analysis?",
+          "text": "Can you tell where assets are actually deployed?",
           "dimension": "locational_resolution",
           "weight": 3,
           "guidance": "",
@@ -257,30 +257,30 @@
           "tags": [],
           "options": [
             {
-              "label": "Location is unknown or only broad geography is available",
+              "label": "Not reliably.",
               "score": 1
             },
             {
-              "label": "Site-level location is partly known",
+              "label": "Only at a broad level for some areas.",
               "score": 2
             },
             {
-              "label": "Site/region is consistently available for key assets and services",
+              "label": "We can usually place assets by key environment or location.",
               "score": 3
             },
             {
-              "label": "Facility, room, rack or cloud region detail is available where relevant",
+              "label": "We can locate assets well across most of the estate.",
               "score": 4
             },
             {
-              "label": "Location is precise and decision-grade across relevant hosting and device domains",
+              "label": "We can pinpoint assets at the level needed for real operational and GreenOps use.",
               "score": 5
             }
           ]
         },
         {
           "id": "ai6",
-          "text": "How mature is the method used to match inventory records to calculation-ready product data?",
+          "text": "How easy is it to match your inventory to product data needed for GreenOps calculations?",
           "dimension": "method_quality",
           "weight": 4,
           "guidance": "",
@@ -288,30 +288,30 @@
           "tags": [],
           "options": [
             {
-              "label": "Manual, ad hoc matching with weak consistency",
+              "label": "Very difficult. Matching is mostly manual or guesswork.",
               "score": 1
             },
             {
-              "label": "Basic matching rules exist using broad categories or heuristics",
+              "label": "We can match some assets, but with lots of effort and inconsistency.",
               "score": 2
             },
             {
-              "label": "Defined matching logic exists for key product families and environments",
+              "label": "We can match many core assets reasonably well.",
               "score": 3
             },
             {
-              "label": "Match rates are measured and exceptions are actively managed",
+              "label": "Matching works well across most of the relevant estate.",
               "score": 4
             },
             {
-              "label": "Matching is highly repeatable, quality-controlled and supports product-specific calculations",
+              "label": "Matching is strong, efficient and reliable across the main asset base.",
               "score": 5
             }
           ]
         },
         {
           "id": "ai7",
-          "text": "How transparent and auditable is the inventory lineage?",
+          "text": "Can you explain where your inventory data comes from and how trustworthy it is?",
           "dimension": "assurance_lineage",
           "weight": 4,
           "guidance": "",
@@ -319,30 +319,30 @@
           "tags": [],
           "options": [
             {
-              "label": "Source systems and transformations are unclear",
+              "label": "Not clearly.",
               "score": 1
             },
             {
-              "label": "Basic source awareness exists but lineage is weak",
+              "label": "We know some main sources, but trust varies a lot.",
               "score": 2
             },
             {
-              "label": "Sources, transformations and assumptions are documented",
+              "label": "We can explain the main sources and trust them reasonably well.",
               "score": 3
             },
             {
-              "label": "Lineage, quality and exception handling are reviewed and measurable",
+              "label": "Source systems and trust levels are clear across most key areas.",
               "score": 4
             },
             {
-              "label": "Inventory lineage is transparent, reproducible and audit-ready",
+              "label": "Lineage and confidence are clear, understood and actively managed.",
               "score": 5
             }
           ]
         },
         {
           "id": "ai8",
-          "text": "How well is lifecycle status captured for assets and services?",
+          "text": "Do you track lifecycle status properly, for example in use, spare, due for refresh, retired or awaiting disposal?",
           "dimension": "method_quality",
           "weight": 3,
           "guidance": "",
@@ -350,23 +350,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Lifecycle stage is mostly unknown",
+              "label": "Hardly at all.",
               "score": 1
             },
             {
-              "label": "Broad lifecycle states are known for some assets",
+              "label": "We track some lifecycle states, but not consistently.",
               "score": 2
             },
             {
-              "label": "Lifecycle stage is standardised for key asset classes",
+              "label": "We have a workable lifecycle view for most main assets.",
               "score": 3
             },
             {
-              "label": "Lifecycle states support refresh, redeployment and extension decisions",
+              "label": "Lifecycle tracking is strong across most of the estate.",
               "score": 4
             },
             {
-              "label": "Lifecycle data is rich enough to drive circularity and refresh optimisation at scale",
+              "label": "Lifecycle status is clear, trusted and supports refresh and circularity decisions.",
               "score": 5
             }
           ]
@@ -527,7 +527,7 @@
       "questions": [
         {
           "id": "op1",
-          "text": "What is the primary basis for operational energy inputs across on-premise and colocation environments?",
+          "text": "What do you mainly use today to work out operational energy use for on-premise and colocation environments?",
           "dimension": "method_quality",
           "weight": 5,
           "guidance": "",
@@ -535,30 +535,30 @@
           "tags": [],
           "options": [
             {
-              "label": "Estimated from spend, floor area, contracted capacity or broad averages",
+              "label": "Mostly estimates based on spend, contracts, floor space or broad assumptions.",
               "score": 1
             },
             {
-              "label": "Total site or provider totals allocated using repeatable averages",
+              "label": "Site or provider totals with simple allocation rules.",
               "score": 2
             },
             {
-              "label": "Measured site-level energy used with documented allocation methods",
+              "label": "Measured site-level energy data for most key environments.",
               "score": 3
             },
             {
-              "label": "Measured site, hall or rack-level energy with monitored coverage and validation",
+              "label": "Measured data at a more detailed level, such as hall, rack or cluster.",
               "score": 4
             },
             {
-              "label": "Granular, timely energy data linked to services, hosts or workloads",
+              "label": "Granular, trusted energy data linked to actual platforms, services or workloads.",
               "score": 5
             }
           ]
         },
         {
           "id": "op2",
-          "text": "How granular is operational energy data in practice?",
+          "text": "How detailed is your energy data in practice?",
           "dimension": "granularity",
           "weight": 5,
           "guidance": "",
@@ -566,30 +566,30 @@
           "tags": [],
           "options": [
             {
-              "label": "Portfolio or site total only",
+              "label": "Very broad only.",
               "score": 1
             },
             {
-              "label": "Site-level data for some locations",
+              "label": "Broad totals with limited breakdown.",
               "score": 2
             },
             {
-              "label": "Site-level measured data across key environments",
+              "label": "Good enough for major sites or environments.",
               "score": 3
             },
             {
-              "label": "Hall, room, rack or cluster-level granularity in major environments",
+              "label": "Detailed across most operationally important areas.",
               "score": 4
             },
             {
-              "label": "Host, device or workload-linked granularity where materially useful",
+              "label": "Detailed enough to support targeted optimisation and attribution.",
               "score": 5
             }
           ]
         },
         {
           "id": "op3",
-          "text": "How much of the relevant estate is covered by measured or modelled energy inputs?",
+          "text": "How much of the estate is covered by measured or modelled energy data?",
           "dimension": "coverage",
           "weight": 4,
           "guidance": "",
@@ -597,30 +597,30 @@
           "tags": [],
           "options": [
             {
-              "label": "A small minority of estate is covered",
+              "label": "Very little.",
               "score": 1
             },
             {
-              "label": "Coverage exists for some priority sites or platforms only",
+              "label": "Some important areas only.",
               "score": 2
             },
             {
-              "label": "Most material environments are covered",
+              "label": "Most main environments are covered.",
               "score": 3
             },
             {
-              "label": "Coverage is high and measured by environment or provider",
+              "label": "Coverage is strong across most of the relevant estate.",
               "score": 4
             },
             {
-              "label": "Coverage is comprehensive with clear treatment of exceptions",
+              "label": "Coverage is broad, trusted and actively monitored.",
               "score": 5
             }
           ]
         },
         {
           "id": "op4",
-          "text": "How well can energy data be attributed to workloads, services, teams or business consumers?",
+          "text": "Can you link energy use back to services, platforms, teams or business demand?",
           "dimension": "attribution",
           "weight": 5,
           "guidance": "",
@@ -628,30 +628,30 @@
           "tags": [],
           "options": [
             {
-              "label": "Little or no credible attribution is possible",
+              "label": "Not really.",
               "score": 1
             },
             {
-              "label": "Basic attribution exists using broad averages or capacity shares",
+              "label": "Only at a very broad level.",
               "score": 2
             },
             {
-              "label": "Defined attribution exists for major environments or service groups",
+              "label": "We can make some useful links for major areas.",
               "score": 3
             },
             {
-              "label": "Energy can be linked to services, platforms or workloads in many areas",
+              "label": "We can link energy to many operational owners or services.",
               "score": 4
             },
             {
-              "label": "Attribution is decision-grade and supports operational intervention",
+              "label": "We can link energy meaningfully to the level where action can be taken.",
               "score": 5
             }
           ]
         },
         {
           "id": "op5",
-          "text": "What temporal resolution does the energy data support?",
+          "text": "How often is energy data available at a useful level?",
           "dimension": "temporal_resolution",
           "weight": 4,
           "guidance": "",
@@ -659,30 +659,30 @@
           "tags": [],
           "options": [
             {
-              "label": "Annual or irregular only",
+              "label": "Irregularly or only for reporting exercises.",
               "score": 1
             },
             {
-              "label": "Quarterly or monthly",
+              "label": "Periodically, but not often enough for much operational use.",
               "score": 2
             },
             {
-              "label": "Monthly and sometimes weekly",
+              "label": "Often enough for baseline tracking and some decisions.",
               "score": 3
             },
             {
-              "label": "Daily or hourly in material environments",
+              "label": "Frequent enough for regular operational use.",
               "score": 4
             },
             {
-              "label": "Near real-time or sufficiently frequent for operational control",
+              "label": "Timely enough for ongoing optimisation where needed.",
               "score": 5
             }
           ]
         },
         {
           "id": "op6",
-          "text": "How quickly is energy data available after the activity occurs?",
+          "text": "How quickly can you get the data after the energy has been used?",
           "dimension": "timeliness",
           "weight": 3,
           "guidance": "",
@@ -690,30 +690,30 @@
           "tags": [],
           "options": [
             {
-              "label": "Often delayed by months",
+              "label": "Very slow.",
               "score": 1
             },
             {
-              "label": "Usually delayed by weeks to months",
+              "label": "Slow enough to limit usefulness.",
               "score": 2
             },
             {
-              "label": "Available on a defined cycle with acceptable lag",
+              "label": "Reasonable for most reporting and planning needs.",
               "score": 3
             },
             {
-              "label": "Available quickly enough for trend and performance management",
+              "label": "Fast enough for regular management use.",
               "score": 4
             },
             {
-              "label": "Available fast enough for meaningful operational optimisation",
+              "label": "Fast enough to support near-operational action where needed.",
               "score": 5
             }
           ]
         },
         {
           "id": "op7",
-          "text": "How location-specific is the energy data?",
+          "text": "Does the data reflect where the energy was actually used?",
           "dimension": "locational_resolution",
           "weight": 3,
           "guidance": "",
@@ -721,30 +721,30 @@
           "tags": [],
           "options": [
             {
-              "label": "Location detail is weak or absent",
+              "label": "Hardly at all.",
               "score": 1
             },
             {
-              "label": "Broad site or region only",
+              "label": "Only at broad site or provider level.",
               "score": 2
             },
             {
-              "label": "Site or cloud-region level is standard for key environments",
+              "label": "Generally yes for major environments.",
               "score": 3
             },
             {
-              "label": "Facility, hall, cage or rack-level locational resolution exists where relevant",
+              "label": "Yes across most of the places that matter.",
               "score": 4
             },
             {
-              "label": "Location resolution is fine enough to support local optimisation and comparison",
+              "label": "Yes, with strong location accuracy for real decision-making.",
               "score": 5
             }
           ]
         },
         {
           "id": "op8",
-          "text": "How strong is the assurance and lineage around operational energy data?",
+          "text": "Can you show clearly where the energy data came from and how it was calculated?",
           "dimension": "assurance_lineage",
           "weight": 4,
           "guidance": "",
@@ -752,23 +752,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Sources and assumptions are opaque",
+              "label": "Not clearly.",
               "score": 1
             },
             {
-              "label": "Basic documentation exists but auditability is weak",
+              "label": "Partly, but there are gaps.",
               "score": 2
             },
             {
-              "label": "Methods, sources and assumptions are documented",
+              "label": "The main source and method are clear.",
               "score": 3
             },
             {
-              "label": "Coverage, exceptions and quality are monitored",
+              "label": "Source and method are clear across most relevant areas.",
               "score": 4
             },
             {
-              "label": "Data lineage is transparent, reproducible and decision-grade",
+              "label": "Source, method and confidence are transparent and trusted.",
               "score": 5
             }
           ]
@@ -927,7 +927,7 @@
       "questions": [
         {
           "id": "wd1",
-          "text": "How available are water consumption inputs for relevant facilities or providers?",
+          "text": "Do you have water consumption data for the facilities or providers that matter to your GreenOps calculations?",
           "dimension": "coverage",
           "weight": 5,
           "guidance": "",
@@ -935,30 +935,30 @@
           "tags": [],
           "options": [
             {
-              "label": "Water data is absent or rarely available",
+              "label": "No, or almost none.",
               "score": 1
             },
             {
-              "label": "Water totals exist for some sites/providers only",
+              "label": "Limited data from some sites or providers.",
               "score": 2
             },
             {
-              "label": "Water data is available for most material sites/providers",
+              "label": "A usable baseline for the main facilities that matter.",
               "score": 3
             },
             {
-              "label": "Water inputs are broadly available and monitored",
+              "label": "Good-quality water data across most relevant environments.",
               "score": 4
             },
             {
-              "label": "Water data is consistently available across material environments with clear exception handling",
+              "label": "Strong, trusted water data that supports real decisions.",
               "score": 5
             }
           ]
         },
         {
           "id": "wd2",
-          "text": "How granular is water data?",
+          "text": "How detailed is the water data you receive or collect?",
           "dimension": "granularity",
           "weight": 4,
           "guidance": "",
@@ -966,30 +966,30 @@
           "tags": [],
           "options": [
             {
-              "label": "No meaningful granularity",
+              "label": "Very broad only.",
               "score": 1
             },
             {
-              "label": "Annual site total only",
+              "label": "Some totals, but little useful breakdown.",
               "score": 2
             },
             {
-              "label": "Periodic site-level totals for key facilities",
+              "label": "Enough detail for baseline reporting and some analysis.",
               "score": 3
             },
             {
-              "label": "Facility/system-level granularity for key cooling environments",
+              "label": "Good detail across most relevant sites or providers.",
               "score": 4
             },
             {
-              "label": "Granularity supports operational decisions by facility, system or mode where justified",
+              "label": "Detailed enough to support operational and location-specific decisions.",
               "score": 5
             }
           ]
         },
         {
           "id": "wd3",
-          "text": "How well is water data linked to IT or cooling-related activity?",
+          "text": "Can you link water use meaningfully to cooling or IT activity?",
           "dimension": "attribution",
           "weight": 4,
           "guidance": "",
@@ -997,30 +997,30 @@
           "tags": [],
           "options": [
             {
-              "label": "No credible attribution to IT or cooling",
+              "label": "Not really.",
               "score": 1
             },
             {
-              "label": "Broad allocation assumptions only",
+              "label": "Only with broad assumptions.",
               "score": 2
             },
             {
-              "label": "Defined allocation methods for major facilities",
+              "label": "We can make a reasonable link for key environments.",
               "score": 3
             },
             {
-              "label": "Attribution is reasonably aligned to cooling systems or IT-related demand",
+              "label": "We can link water use well across most relevant areas.",
               "score": 4
             },
             {
-              "label": "Attribution is decision-grade and supports site/workload trade-off decisions",
+              "label": "We can link it credibly enough to support decisions and trade-offs.",
               "score": 5
             }
           ]
         },
         {
           "id": "wd4",
-          "text": "How much temporal resolution exists in water data?",
+          "text": "How often is water data available at a useful level?",
           "dimension": "temporal_resolution",
           "weight": 3,
           "guidance": "",
@@ -1028,30 +1028,30 @@
           "tags": [],
           "options": [
             {
-              "label": "Irregular or annual only",
+              "label": "Rarely.",
               "score": 1
             },
             {
-              "label": "Annual or quarterly",
+              "label": "Periodically, but quite limited.",
               "score": 2
             },
             {
-              "label": "Monthly as standard",
+              "label": "Regular enough for baseline tracking.",
               "score": 3
             },
             {
-              "label": "Weekly, daily or event-based in key environments",
+              "label": "Frequent enough for regular review.",
               "score": 4
             },
             {
-              "label": "Timely enough to analyse seasonal or operational changes properly",
+              "label": "Timely enough to support active management where needed.",
               "score": 5
             }
           ]
         },
         {
           "id": "wd5",
-          "text": "How location-specific and context-aware is the water data?",
+          "text": "Does the water data reflect where it is being used and the local context?",
           "dimension": "locational_resolution",
           "weight": 4,
           "guidance": "",
@@ -1059,30 +1059,30 @@
           "tags": [],
           "options": [
             {
-              "label": "Little location context beyond broad site name",
+              "label": "No meaningful location context.",
               "score": 1
             },
             {
-              "label": "Site-level only with no wider water context",
+              "label": "Limited location context only.",
               "score": 2
             },
             {
-              "label": "Site or region is standardised for key facilities",
+              "label": "Some useful location context for main sites.",
               "score": 3
             },
             {
-              "label": "Water data is assessed alongside local climate or water stress context",
+              "label": "Good location context across most relevant environments.",
               "score": 4
             },
             {
-              "label": "Locational context is strong enough to influence siting, cooling and workload decisions",
+              "label": "Strong location context, including where local conditions materially matter.",
               "score": 5
             }
           ]
         },
         {
           "id": "wd6",
-          "text": "How quickly is water data available?",
+          "text": "How quickly can you access water data after the usage happens?",
           "dimension": "timeliness",
           "weight": 2,
           "guidance": "",
@@ -1090,30 +1090,30 @@
           "tags": [],
           "options": [
             {
-              "label": "Months late or only after annual reporting cycles",
+              "label": "Very slowly.",
               "score": 1
             },
             {
-              "label": "Delayed enough to limit action",
+              "label": "Slow enough to reduce usefulness.",
               "score": 2
             },
             {
-              "label": "Available on a predictable management cycle",
+              "label": "Reasonable for most reporting needs.",
               "score": 3
             },
             {
-              "label": "Fast enough for trend management and escalation",
+              "label": "Good enough for regular management.",
               "score": 4
             },
             {
-              "label": "Fast enough to support active operational and planning decisions",
+              "label": "Fast enough for practical decision support.",
               "score": 5
             }
           ]
         },
         {
           "id": "wd7",
-          "text": "How mature is the method quality for water calculations?",
+          "text": "How strong is the method behind your water calculations?",
           "dimension": "method_quality",
           "weight": 4,
           "guidance": "",
@@ -1121,30 +1121,30 @@
           "tags": [],
           "options": [
             {
-              "label": "Narrative assumptions or weak proxies dominate",
+              "label": "Weak or unclear.",
               "score": 1
             },
             {
-              "label": "Repeatable but broad assumptions are used",
+              "label": "Basic and heavily assumption-led.",
               "score": 2
             },
             {
-              "label": "Defined method exists for water treatment in calculations",
+              "label": "Reasonable and repeatable for the main use cases.",
               "score": 3
             },
             {
-              "label": "Methods are validated against facility realities and cooling design",
+              "label": "Strong and consistent across most relevant areas.",
               "score": 4
             },
             {
-              "label": "Method quality is robust, reviewed and fit for decision-grade use",
+              "label": "Robust enough for credible decision-making.",
               "score": 5
             }
           ]
         },
         {
           "id": "wd8",
-          "text": "How transparent is the lineage and assurance around water data?",
+          "text": "Can you explain clearly where the water data came from and how much confidence you have in it?",
           "dimension": "assurance_lineage",
           "weight": 3,
           "guidance": "",
@@ -1152,23 +1152,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Sources and assumptions are unclear",
+              "label": "Not clearly.",
               "score": 1
             },
             {
-              "label": "Basic documentation exists only",
+              "label": "Only partly.",
               "score": 2
             },
             {
-              "label": "Sources and methods are documented",
+              "label": "The main source and confidence level are reasonably clear.",
               "score": 3
             },
             {
-              "label": "Quality and exceptions are monitored",
+              "label": "Source and confidence are clear across most relevant areas.",
               "score": 4
             },
             {
-              "label": "Water data and methods are transparent and defensible",
+              "label": "Source, method and confidence are transparent and trusted.",
               "score": 5
             }
           ]
@@ -1327,7 +1327,7 @@
       "questions": [
         {
           "id": "im1",
-          "text": "What is the primary basis for infrastructure efficiency metrics such as PUE, WUE and CUE?",
+          "text": "What is the main basis for metrics like PUE, WUE, CUE and similar measures used in your calculations?",
           "dimension": "method_quality",
           "weight": 5,
           "guidance": "",
@@ -1335,30 +1335,30 @@
           "tags": [],
           "options": [
             {
-              "label": "Assumed, design or marketing values",
+              "label": "Assumed values, design figures or provider marketing claims.",
               "score": 1
             },
             {
-              "label": "Broad provider or site values used repeatably",
+              "label": "Broad site or provider values that are repeatable but generic.",
               "score": 2
             },
             {
-              "label": "Documented operational values for key facilities",
+              "label": "Documented values with reasonably clear boundaries.",
               "score": 3
             },
             {
-              "label": "Measured operational values monitored over time",
+              "label": "Measured operational values reviewed over time.",
               "score": 4
             },
             {
-              "label": "Decision-grade measured values with boundary discipline and context",
+              "label": "Well-defined, trusted metrics fit for real decision-making.",
               "score": 5
             }
           ]
         },
         {
           "id": "im2",
-          "text": "How well are metric boundaries defined and applied?",
+          "text": "Are the boundaries for these metrics clearly defined and used consistently?",
           "dimension": "assurance_lineage",
           "weight": 5,
           "guidance": "",
@@ -1366,30 +1366,30 @@
           "tags": [],
           "options": [
             {
-              "label": "Boundaries are unclear or inconsistent",
+              "label": "No.",
               "score": 1
             },
             {
-              "label": "Basic boundary definitions exist but are weakly applied",
+              "label": "Only partly.",
               "score": 2
             },
             {
-              "label": "Boundaries are documented and used consistently",
+              "label": "Yes for the main areas, with some gaps.",
               "score": 3
             },
             {
-              "label": "Boundary application is reviewed and exceptions are managed",
+              "label": "Yes across most relevant environments.",
               "score": 4
             },
             {
-              "label": "Boundaries are robust enough to support comparison, allocation and challenge",
+              "label": "Yes, very clearly and consistently.",
               "score": 5
             }
           ]
         },
         {
           "id": "im3",
-          "text": "How representative are the metric values of real operating conditions?",
+          "text": "Do the values reflect real operating conditions?",
           "dimension": "method_quality",
           "weight": 4,
           "guidance": "",
@@ -1397,30 +1397,30 @@
           "tags": [],
           "options": [
             {
-              "label": "Metrics do not clearly reflect real operations",
+              "label": "Not really.",
               "score": 1
             },
             {
-              "label": "Values are repeatable but may mask operating variation",
+              "label": "Only loosely.",
               "score": 2
             },
             {
-              "label": "Values broadly reflect operating conditions in key facilities",
+              "label": "Broadly yes for the main areas.",
               "score": 3
             },
             {
-              "label": "Seasonal or operating-mode variation is understood and measured",
+              "label": "Yes across most operationally important areas.",
               "score": 4
             },
             {
-              "label": "Metrics are operationally representative and used with explicit limitations",
+              "label": "Yes, including changing conditions where that matters.",
               "score": 5
             }
           ]
         },
         {
           "id": "im4",
-          "text": "How granular are the infrastructure metrics relative to where they are applied?",
+          "text": "Are these metrics detailed enough for where you are applying them?",
           "dimension": "granularity",
           "weight": 4,
           "guidance": "",
@@ -1428,30 +1428,30 @@
           "tags": [],
           "options": [
             {
-              "label": "Portfolio or whole-site only",
+              "label": "No, they are too broad.",
               "score": 1
             },
             {
-              "label": "Site-level only for most uses",
+              "label": "Only for high-level reporting.",
               "score": 2
             },
             {
-              "label": "Site-level with some facility-level nuance",
+              "label": "Good enough for some practical use.",
               "score": 3
             },
             {
-              "label": "Facility, hall or customer-relevant granularity where needed",
+              "label": "Good enough for most intended uses.",
               "score": 4
             },
             {
-              "label": "Granularity is appropriate to the allocation or comparison being made",
+              "label": "Detailed enough for targeted and credible allocation.",
               "score": 5
             }
           ]
         },
         {
           "id": "im5",
-          "text": "How location-specific are the metrics and their interpretation?",
+          "text": "Do they reflect the actual site, facility, hall or environment they relate to?",
           "dimension": "locational_resolution",
           "weight": 3,
           "guidance": "",
@@ -1459,30 +1459,30 @@
           "tags": [],
           "options": [
             {
-              "label": "Metrics are treated as generic across environments",
+              "label": "Rarely.",
               "score": 1
             },
             {
-              "label": "Site-specific values exist for some facilities",
+              "label": "Only at a broad level.",
               "score": 2
             },
             {
-              "label": "Site-specific values are standard across key environments",
+              "label": "Usually for the main sites or environments.",
               "score": 3
             },
             {
-              "label": "Metrics reflect facility differences and local infrastructure context",
+              "label": "Yes across most relevant cases.",
               "score": 4
             },
             {
-              "label": "Location-specific interpretation materially informs decisions and comparisons",
+              "label": "Yes, with strong location and boundary accuracy.",
               "score": 5
             }
           ]
         },
         {
           "id": "im6",
-          "text": "How often are these metrics refreshed or revalidated?",
+          "text": "How often are these metrics refreshed or checked?",
           "dimension": "timeliness",
           "weight": 3,
           "guidance": "",
@@ -1490,30 +1490,30 @@
           "tags": [],
           "options": [
             {
-              "label": "Rarely or only for external reporting",
+              "label": "Hardly ever.",
               "score": 1
             },
             {
-              "label": "Periodically but not enough for management use",
+              "label": "Infrequently.",
               "score": 2
             },
             {
-              "label": "Refreshed on a defined management cycle",
+              "label": "Periodically and reasonably consistently.",
               "score": 3
             },
             {
-              "label": "Reviewed regularly enough to influence operations",
+              "label": "Regularly enough for management and review.",
               "score": 4
             },
             {
-              "label": "Refreshed and revalidated often enough for active management",
+              "label": "Frequently enough to stay decision-relevant.",
               "score": 5
             }
           ]
         },
         {
           "id": "im7",
-          "text": "How much confidence is there that these metrics support credible non-IT allocation?",
+          "text": "How confident are you that these metrics support credible allocation of non-IT overhead?",
           "dimension": "attribution",
           "weight": 4,
           "guidance": "",
@@ -1521,30 +1521,30 @@
           "tags": [],
           "options": [
             {
-              "label": "Allocation use is weak and largely assumptive",
+              "label": "Low confidence.",
               "score": 1
             },
             {
-              "label": "Metrics support broad allocation only",
+              "label": "Some confidence, but major caveats.",
               "score": 2
             },
             {
-              "label": "Metrics support standard site-level overhead allocation",
+              "label": "Reasonable confidence for broad use.",
               "score": 3
             },
             {
-              "label": "Metrics support more credible customer, hall or platform-level allocation",
+              "label": "Good confidence for most intended decisions.",
               "score": 4
             },
             {
-              "label": "Metrics are strong enough for decision-grade overhead allocation in defined contexts",
+              "label": "Strong confidence for real operational and GreenOps use.",
               "score": 5
             }
           ]
         },
         {
           "id": "im8",
-          "text": "How transparent is the evidence and lineage for these metrics?",
+          "text": "Can you show where these metrics came from and how they were derived?",
           "dimension": "assurance_lineage",
           "weight": 4,
           "guidance": "",
@@ -1552,23 +1552,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Opaque or provider-asserted only",
+              "label": "Not clearly.",
               "score": 1
             },
             {
-              "label": "Some documentation exists but challenge is difficult",
+              "label": "Only partly.",
               "score": 2
             },
             {
-              "label": "Methods and evidence are documented",
+              "label": "The main source and logic are clear.",
               "score": 3
             },
             {
-              "label": "Evidence can be reviewed and challenged with reasonable confidence",
+              "label": "The derivation is clear across most relevant cases.",
               "score": 4
             },
             {
-              "label": "Metrics are transparent, evidence-backed and defensible",
+              "label": "The metrics are transparent, traceable and well evidenced.",
               "score": 5
             }
           ]
@@ -1729,7 +1729,7 @@
       "questions": [
         {
           "id": "ee1",
-          "text": "What is the dominant basis used for embodied emissions calculations?",
+          "text": "What do you mainly use today to estimate embodied emissions?",
           "dimension": "method_quality",
           "weight": 5,
           "guidance": "",
@@ -1737,30 +1737,30 @@
           "tags": [],
           "options": [
             {
-              "label": "Spend-based factors only or largely absent",
+              "label": "We do not really have embodied data, or we use spend-based factors only.",
               "score": 1
             },
             {
-              "label": "Generic category or sub-category averages",
+              "label": "Broad category averages.",
               "score": 2
             },
             {
-              "label": "Structured vendor averages or product-family proxies",
+              "label": "Product-family or supplier-level averages for most key areas.",
               "score": 3
             },
             {
-              "label": "Product- or vendor-specific totals from LCAs/EPDs for much of the estate",
+              "label": "Product- or supplier-specific data in many cases.",
               "score": 4
             },
             {
-              "label": "Product-specific lifecycle breakdowns with strong primary data coverage",
+              "label": "High-quality product-level lifecycle data that supports real decisions.",
               "score": 5
             }
           ]
         },
         {
           "id": "ee2",
-          "text": "How specific is the embodied data to the actual assets or products in use?",
+          "text": "How specific is that embodied data to the actual products and assets you use?",
           "dimension": "granularity",
           "weight": 5,
           "guidance": "",
@@ -1768,30 +1768,30 @@
           "tags": [],
           "options": [
             {
-              "label": "Very low specificity",
+              "label": "Not very specific at all.",
               "score": 1
             },
             {
-              "label": "Broad category-level specificity only",
+              "label": "Only loosely matched.",
               "score": 2
             },
             {
-              "label": "Product family or vendor-level specificity",
+              "label": "Reasonably specific for many key assets.",
               "score": 3
             },
             {
-              "label": "Product-specific totals are often available",
+              "label": "Specific across most of the relevant estate.",
               "score": 4
             },
             {
-              "label": "Product-specific lifecycle-stage detail is routinely available",
+              "label": "Highly specific and trusted at product level.",
               "score": 5
             }
           ]
         },
         {
           "id": "ee3",
-          "text": "How much of the relevant estate can be matched to embodied emissions inputs?",
+          "text": "How much of your estate can you match to embodied emissions data with reasonable confidence?",
           "dimension": "coverage",
           "weight": 4,
           "guidance": "",
@@ -1799,30 +1799,30 @@
           "tags": [],
           "options": [
             {
-              "label": "Only a small fraction can be matched",
+              "label": "Very little.",
               "score": 1
             },
             {
-              "label": "Partial matching for priority classes only",
+              "label": "Some core areas only.",
               "score": 2
             },
             {
-              "label": "Most key asset groups can be matched",
+              "label": "A usable portion of the main estate.",
               "score": 3
             },
             {
-              "label": "Coverage is high and measured",
+              "label": "Most relevant assets can be matched well.",
               "score": 4
             },
             {
-              "label": "Coverage is comprehensive with active management of exceptions",
+              "label": "Matching coverage is strong and actively managed.",
               "score": 5
             }
           ]
         },
         {
           "id": "ee4",
-          "text": "How well is embodied data linked to lifecycle context such as age, refresh status, reuse or end-of-life?",
+          "text": "Do you link embodied data to real lifecycle context such as age, refresh plans, reuse and end of life?",
           "dimension": "attribution",
           "weight": 4,
           "guidance": "",
@@ -1830,30 +1830,30 @@
           "tags": [],
           "options": [
             {
-              "label": "Lifecycle context is mostly absent",
+              "label": "Not really.",
               "score": 1
             },
             {
-              "label": "Some lifecycle context exists but is weakly used",
+              "label": "Only in limited cases.",
               "score": 2
             },
             {
-              "label": "Lifecycle context supports standard refresh and inventory analysis",
+              "label": "For some important asset groups.",
               "score": 3
             },
             {
-              "label": "Lifecycle context materially supports reuse, extension and disposal decisions",
+              "label": "For most relevant assets and decisions.",
               "score": 4
             },
             {
-              "label": "Lifecycle context is strong enough for sophisticated circularity and refresh optimisation",
+              "label": "Yes, as part of normal lifecycle and circularity management.",
               "score": 5
             }
           ]
         },
         {
           "id": "ee5",
-          "text": "How well does the organisation handle supplier-specific or location-specific embodied differences?",
+          "text": "Can you reflect supplier-specific or product-specific differences where they matter?",
           "dimension": "locational_resolution",
           "weight": 2,
           "guidance": "",
@@ -1861,30 +1861,30 @@
           "tags": [],
           "options": [
             {
-              "label": "Not handled meaningfully",
+              "label": "No.",
               "score": 1
             },
             {
-              "label": "Handled only in limited cases",
+              "label": "Only occasionally.",
               "score": 2
             },
             {
-              "label": "Considered in major procurement categories",
+              "label": "In some key cases.",
               "score": 3
             },
             {
-              "label": "Supplier/product differences are actively incorporated where material",
+              "label": "In most relevant cases.",
               "score": 4
             },
             {
-              "label": "Supplier/product/location differences materially influence procurement and lifecycle choices",
+              "label": "Yes, consistently where it affects decisions.",
               "score": 5
             }
           ]
         },
         {
           "id": "ee6",
-          "text": "How current is the embodied emissions dataset relative to procurement and refresh decisions?",
+          "text": "Is the embodied dataset current enough to support procurement and refresh decisions?",
           "dimension": "timeliness",
           "weight": 3,
           "guidance": "",
@@ -1892,30 +1892,30 @@
           "tags": [],
           "options": [
             {
-              "label": "Stale and rarely refreshed",
+              "label": "No.",
               "score": 1
             },
             {
-              "label": "Updated occasionally",
+              "label": "Only loosely.",
               "score": 2
             },
             {
-              "label": "Refreshed on a defined cycle",
+              "label": "Broadly yes for key decisions.",
               "score": 3
             },
             {
-              "label": "Updated often enough for procurement and refresh planning",
+              "label": "Yes for most relevant decisions.",
               "score": 4
             },
             {
-              "label": "Maintained dynamically enough to support live or near-live decision processes",
+              "label": "Yes, and it is actively maintained for decision use.",
               "score": 5
             }
           ]
         },
         {
           "id": "ee7",
-          "text": "How transparent is the lineage and evidence supporting embodied values?",
+          "text": "Can you explain where the embodied values came from and how strong the evidence is?",
           "dimension": "assurance_lineage",
           "weight": 4,
           "guidance": "",
@@ -1923,30 +1923,30 @@
           "tags": [],
           "options": [
             {
-              "label": "Source quality is unclear",
+              "label": "Not clearly.",
               "score": 1
             },
             {
-              "label": "Sources are partly documented but difficult to verify",
+              "label": "Only at a basic level.",
               "score": 2
             },
             {
-              "label": "Sources and assumptions are documented",
+              "label": "The main basis is reasonably clear.",
               "score": 3
             },
             {
-              "label": "Data quality and provenance are reviewed and measured",
+              "label": "Sources and evidence quality are clear across most cases.",
               "score": 4
             },
             {
-              "label": "Embodied inputs are traceable, defensible and auditable",
+              "label": "The values are well evidenced, transparent and trusted.",
               "score": 5
             }
           ]
         },
         {
           "id": "ee8",
-          "text": "How useful is the embodied data for actual decisions rather than reporting only?",
+          "text": "Is the embodied data good enough to support real decisions, or only broad reporting?",
           "dimension": "attribution",
           "weight": 3,
           "guidance": "",
@@ -1954,23 +1954,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Useful mainly for broad reporting",
+              "label": "Only broad reporting, if that.",
               "score": 1
             },
             {
-              "label": "Useful for rough hotspot identification",
+              "label": "Mostly rough directional insight.",
               "score": 2
             },
             {
-              "label": "Useful for standard refresh and category-level choices",
+              "label": "Good enough for some practical decisions.",
               "score": 3
             },
             {
-              "label": "Useful for supplier challenge and product-level decisions in many cases",
+              "label": "Good enough for most refresh and procurement decisions.",
               "score": 4
             },
             {
-              "label": "Useful for nuanced refresh, reuse, redesign and procurement trade-offs",
+              "label": "Clearly decision-grade for lifecycle, supplier and circularity choices.",
               "score": 5
             }
           ]
@@ -2129,7 +2129,7 @@
       "questions": [
         {
           "id": "cf1",
-          "text": "What is the dominant basis for emissions factors in use?",
+          "text": "What is the main basis for the emissions factors you use today?",
           "dimension": "method_quality",
           "weight": 5,
           "guidance": "",
@@ -2137,30 +2137,30 @@
           "tags": [],
           "options": [
             {
-              "label": "Broad annual averages with weak distinction",
+              "label": "Broad annual average factors.",
               "score": 1
             },
             {
-              "label": "Standard national or provider factors applied repeatably",
+              "label": "Standard factor sets, but still quite coarse.",
               "score": 2
             },
             {
-              "label": "Defined use of location-based and market-based factors",
+              "label": "A defined set of factors with clear rules across the main areas.",
               "score": 3
             },
             {
-              "label": "Region/supplier/time-period specific factors are used where material",
+              "label": "More location- and time-relevant factors where needed.",
               "score": 4
             },
             {
-              "label": "High-quality factors reflect temporal, locational and methodological nuance",
+              "label": "Decision-grade factors matched to the actual use case.",
               "score": 5
             }
           ]
         },
         {
           "id": "cf2",
-          "text": "How locationally precise are the factors relative to decisions being made?",
+          "text": "Do the factors reflect the actual location that matters for the decision?",
           "dimension": "locational_resolution",
           "weight": 5,
           "guidance": "",
@@ -2168,30 +2168,30 @@
           "tags": [],
           "options": [
             {
-              "label": "National or generic only",
+              "label": "Rarely.",
               "score": 1
             },
             {
-              "label": "Country or broad region level",
+              "label": "Only in broad terms.",
               "score": 2
             },
             {
-              "label": "Site, cloud-region or provider-specific where needed",
+              "label": "Usually for the main use cases.",
               "score": 3
             },
             {
-              "label": "Local grid or provider context is reflected in major use cases",
+              "label": "Yes across most relevant decisions.",
               "score": 4
             },
             {
-              "label": "Locational precision is decision-grade for major planning and optimisation use cases",
+              "label": "Yes, with strong location relevance where it matters.",
               "score": 5
             }
           ]
         },
         {
           "id": "cf3",
-          "text": "How much temporal resolution exists in the factor set?",
+          "text": "How time-sensitive are the factors you use?",
           "dimension": "temporal_resolution",
           "weight": 4,
           "guidance": "",
@@ -2199,30 +2199,30 @@
           "tags": [],
           "options": [
             {
-              "label": "Annual only",
+              "label": "Very broad and static.",
               "score": 1
             },
             {
-              "label": "Annual with occasional period adjustments",
+              "label": "Limited time sensitivity.",
               "score": 2
             },
             {
-              "label": "Monthly or reporting-period specific",
+              "label": "Good enough for regular reporting and planning.",
               "score": 3
             },
             {
-              "label": "Daily or hourly for material use cases",
+              "label": "Good time relevance for most important use cases.",
               "score": 4
             },
             {
-              "label": "High-frequency temporal resolution is available where it changes decisions",
+              "label": "Strong enough for time-sensitive operational decisions where needed.",
               "score": 5
             }
           ]
         },
         {
           "id": "cf4",
-          "text": "How clearly are location-based, market-based and supplier-specific methods governed?",
+          "text": "Are location-based, market-based and supplier-specific methods clearly separated and governed?",
           "dimension": "assurance_lineage",
           "weight": 4,
           "guidance": "",
@@ -2230,30 +2230,30 @@
           "tags": [],
           "options": [
             {
-              "label": "Methods are unclear or mixed inconsistently",
+              "label": "No.",
               "score": 1
             },
             {
-              "label": "Broad method exists but with weak governance",
+              "label": "Only partly.",
               "score": 2
             },
             {
-              "label": "Method rules are documented and generally followed",
+              "label": "Yes for the main reporting use cases.",
               "score": 3
             },
             {
-              "label": "Method application is reviewed and controlled",
+              "label": "Yes across most relevant areas.",
               "score": 4
             },
             {
-              "label": "Method governance is strong enough to support transparent external and internal use",
+              "label": "Yes, clearly governed and consistently applied.",
               "score": 5
             }
           ]
         },
         {
           "id": "cf5",
-          "text": "How much of the estate or activity is covered by fit-for-purpose factor logic?",
+          "text": "Do you have fit-for-purpose factor logic across the estate, or do you rely on broad defaults?",
           "dimension": "coverage",
           "weight": 3,
           "guidance": "",
@@ -2261,30 +2261,30 @@
           "tags": [],
           "options": [
             {
-              "label": "Coverage is weak and inconsistent",
+              "label": "Mostly broad defaults.",
               "score": 1
             },
             {
-              "label": "Some key domains are covered only",
+              "label": "Some fit-for-purpose logic, but not much.",
               "score": 2
             },
             {
-              "label": "Most material activity uses defined factor logic",
+              "label": "A workable approach across most key areas.",
               "score": 3
             },
             {
-              "label": "Coverage is high with measured exceptions",
+              "label": "A strong fit-for-purpose approach across the main estate.",
               "score": 4
             },
             {
-              "label": "Coverage is comprehensive and actively maintained",
+              "label": "Factors are well matched to the decisions they support.",
               "score": 5
             }
           ]
         },
         {
           "id": "cf6",
-          "text": "How quickly are factor updates reflected in calculations?",
+          "text": "How quickly are factor changes picked up in your calculations?",
           "dimension": "timeliness",
           "weight": 2,
           "guidance": "",
@@ -2292,30 +2292,30 @@
           "tags": [],
           "options": [
             {
-              "label": "Updated rarely or long after relevance",
+              "label": "Very slowly.",
               "score": 1
             },
             {
-              "label": "Updated periodically with noticeable lag",
+              "label": "With noticeable lag.",
               "score": 2
             },
             {
-              "label": "Updated on a defined cycle",
+              "label": "In a reasonable timeframe.",
               "score": 3
             },
             {
-              "label": "Updated quickly enough for management decisions",
+              "label": "Quickly enough for most needs.",
               "score": 4
             },
             {
-              "label": "Updated quickly enough for location/time-sensitive optimisation",
+              "label": "Fast enough to stay decision-relevant.",
               "score": 5
             }
           ]
         },
         {
           "id": "cf7",
-          "text": "How transparent and defensible are factor sources and assumptions?",
+          "text": "Can you explain where the factors came from and why you chose them?",
           "dimension": "assurance_lineage",
           "weight": 4,
           "guidance": "",
@@ -2323,30 +2323,30 @@
           "tags": [],
           "options": [
             {
-              "label": "Opaque or poorly documented",
+              "label": "Not clearly.",
               "score": 1
             },
             {
-              "label": "Basic source documentation only",
+              "label": "Only partly.",
               "score": 2
             },
             {
-              "label": "Sources and assumptions are documented",
+              "label": "The main logic is clear.",
               "score": 3
             },
             {
-              "label": "Factor quality and exceptions are reviewed",
+              "label": "The source and rationale are clear across most cases.",
               "score": 4
             },
             {
-              "label": "Factor selection is transparent, defensible and easy to explain",
+              "label": "The logic is transparent, defensible and well understood.",
               "score": 5
             }
           ]
         },
         {
           "id": "cf8",
-          "text": "How decision-useful are the factor choices in practice?",
+          "text": "Are the factors good enough for real GreenOps decisions, or just broad reporting?",
           "dimension": "attribution",
           "weight": 3,
           "guidance": "",
@@ -2354,23 +2354,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Useful mostly for broad reporting",
+              "label": "Mostly broad reporting only.",
               "score": 1
             },
             {
-              "label": "Useful for directional comparisons only",
+              "label": "Directional use at best.",
               "score": 2
             },
             {
-              "label": "Useful for standard reporting and some management decisions",
+              "label": "Good enough for some practical decisions.",
               "score": 3
             },
             {
-              "label": "Useful for location, supplier and planning decisions",
+              "label": "Good enough for most key GreenOps decisions.",
               "score": 4
             },
             {
-              "label": "Useful for confident optimisation and policy-level decision-making",
+              "label": "Clearly strong enough for decision-grade use.",
               "score": 5
             }
           ]
@@ -2534,7 +2534,7 @@
       "questions": [
         {
           "id": "us1",
-          "text": "How much visibility exists into infrastructure utilisation such as host, VM, container, storage or GPU usage?",
+          "text": "How much visibility do you have into how infrastructure is actually being used?",
           "dimension": "coverage",
           "weight": 5,
           "guidance": "",
@@ -2542,30 +2542,30 @@
           "tags": [],
           "options": [
             {
-              "label": "Very limited visibility",
+              "label": "Very little.",
               "score": 1
             },
             {
-              "label": "Aggregate platform-level visibility only",
+              "label": "Some broad visibility only.",
               "score": 2
             },
             {
-              "label": "Consistent visibility for hosts/VMs in major environments",
+              "label": "A workable view across the main platforms.",
               "score": 3
             },
             {
-              "label": "Granular visibility across key compute/storage/GPU environments",
+              "label": "Good visibility across most relevant environments.",
               "score": 4
             },
             {
-              "label": "Broad and decision-useful visibility across material usage domains",
+              "label": "Strong, trusted visibility that supports optimisation.",
               "score": 5
             }
           ]
         },
         {
           "id": "us2",
-          "text": "How well are application and service usage metrics captured?",
+          "text": "How well do you measure real application or service usage?",
           "dimension": "granularity",
           "weight": 5,
           "guidance": "",
@@ -2573,30 +2573,30 @@
           "tags": [],
           "options": [
             {
-              "label": "Little or no app/service usage visibility",
+              "label": "Hardly at all.",
               "score": 1
             },
             {
-              "label": "Basic app/service metrics exist for some systems",
+              "label": "Only for some services.",
               "score": 2
             },
             {
-              "label": "Usage metrics are captured consistently for key services",
+              "label": "We can measure usage for many important services.",
               "score": 3
             },
             {
-              "label": "Service-level demand, transaction or feature usage metrics are available for many services",
+              "label": "We have good service usage visibility across most main areas.",
               "score": 4
             },
             {
-              "label": "Usage metrics are rich enough to assess value, demand patterns and optimisation opportunities",
+              "label": "We measure service usage well enough to drive real decisions.",
               "score": 5
             }
           ]
         },
         {
           "id": "us3",
-          "text": "How well are usage metrics linked to services, owners, business context or value?",
+          "text": "Can you link usage back to a named service, owner, product, user group or business purpose?",
           "dimension": "attribution",
           "weight": 5,
           "guidance": "",
@@ -2604,30 +2604,30 @@
           "tags": [],
           "options": [
             {
-              "label": "Weak or no linkage",
+              "label": "Rarely.",
               "score": 1
             },
             {
-              "label": "Some manual linkage exists",
+              "label": "Only in some cases.",
               "score": 2
             },
             {
-              "label": "Key services have owner and usage context",
+              "label": "For many important services or platforms.",
               "score": 3
             },
             {
-              "label": "Usage is linked to service, owner and operational context in many areas",
+              "label": "For most relevant services and workloads.",
               "score": 4
             },
             {
-              "label": "Usage is linked strongly enough to challenge low-value demand and justify interventions",
+              "label": "Yes, clearly and consistently.",
               "score": 5
             }
           ]
         },
         {
           "id": "us4",
-          "text": "How well does the organisation detect idle, oversized, dormant or low-value consumption?",
+          "text": "How well do you spot idle, oversized, dormant or low-value consumption?",
           "dimension": "method_quality",
           "weight": 4,
           "guidance": "",
@@ -2635,30 +2635,30 @@
           "tags": [],
           "options": [
             {
-              "label": "This is mostly anecdotal",
+              "label": "We mostly do not.",
               "score": 1
             },
             {
-              "label": "Basic periodic review exists",
+              "label": "We notice some obvious cases.",
               "score": 2
             },
             {
-              "label": "Defined thresholds and review methods exist",
+              "label": "We can identify many of the main issues.",
               "score": 3
             },
             {
-              "label": "Systematic detection exists across priority environments",
+              "label": "We detect them well across most relevant areas.",
               "score": 4
             },
             {
-              "label": "Detection is embedded into operational management and optimisation",
+              "label": "We identify and challenge them as part of normal operations.",
               "score": 5
             }
           ]
         },
         {
           "id": "us5",
-          "text": "How much temporal resolution exists in usage signals?",
+          "text": "How often can you see changes in usage patterns?",
           "dimension": "temporal_resolution",
           "weight": 3,
           "guidance": "",
@@ -2666,30 +2666,30 @@
           "tags": [],
           "options": [
             {
-              "label": "Irregular snapshots only",
+              "label": "Rarely.",
               "score": 1
             },
             {
-              "label": "Periodic reports only",
+              "label": "Only periodically.",
               "score": 2
             },
             {
-              "label": "Regular trends at weekly or monthly level",
+              "label": "Often enough for baseline management.",
               "score": 3
             },
             {
-              "label": "Daily or near-real-time in key environments",
+              "label": "Frequently enough for regular optimisation.",
               "score": 4
             },
             {
-              "label": "Temporal resolution is good enough for active demand and efficiency management",
+              "label": "Quickly enough to support active demand management.",
               "score": 5
             }
           ]
         },
         {
           "id": "us6",
-          "text": "How location- or environment-specific are usage insights?",
+          "text": "Can you compare usage properly across environments, regions or hosting types?",
           "dimension": "locational_resolution",
           "weight": 2,
           "guidance": "",
@@ -2697,30 +2697,30 @@
           "tags": [],
           "options": [
             {
-              "label": "Weak environment specificity",
+              "label": "Not really.",
               "score": 1
             },
             {
-              "label": "Broad platform or environment split only",
+              "label": "Only in broad terms.",
               "score": 2
             },
             {
-              "label": "Service/platform/environment specificity exists in key areas",
+              "label": "Yes for many major areas.",
               "score": 3
             },
             {
-              "label": "Insights distinguish cloud region, site, cluster or environment where relevant",
+              "label": "Yes across most of the main estate.",
               "score": 4
             },
             {
-              "label": "Location/environment specificity is strong enough to influence placement and design decisions",
+              "label": "Yes, in a way that supports real comparison and decision-making.",
               "score": 5
             }
           ]
         },
         {
           "id": "us7",
-          "text": "How mature are AI-specific usage measures where AI services are relevant?",
+          "text": "If you run AI services, how well do you measure things like prompts, tokens, inference calls, training jobs and model use?",
           "dimension": "method_quality",
           "weight": 4,
           "guidance": "",
@@ -2728,30 +2728,30 @@
           "tags": [],
           "options": [
             {
-              "label": "AI usage is not meaningfully measured",
+              "label": "We do not track this meaningfully.",
               "score": 1
             },
             {
-              "label": "Basic counts such as users or calls exist only",
+              "label": "We have a few basic figures, but they are incomplete.",
               "score": 2
             },
             {
-              "label": "Prompts, inferences, token volumes or job counts are captured for key AI services",
+              "label": "We can see core AI demand measures for the main services.",
               "score": 3
             },
             {
-              "label": "AI usage is analysed by model, route, use case or workload type",
+              "label": "We have good AI usage visibility and can compare services and use cases.",
               "score": 4
             },
             {
-              "label": "AI demand metrics are strong enough to govern routing, optimisation and low-value demand avoidance",
+              "label": "We have strong AI usage data that supports governance and optimisation.",
               "score": 5
             }
           ]
         },
         {
           "id": "us8",
-          "text": "How transparent and defensible are the usage metrics and methods?",
+          "text": "Can you explain where the usage data came from and how much confidence you have in it?",
           "dimension": "assurance_lineage",
           "weight": 3,
           "guidance": "",
@@ -2759,23 +2759,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Weak transparency and little confidence",
+              "label": "Not clearly.",
               "score": 1
             },
             {
-              "label": "Basic documentation exists",
+              "label": "Only partly.",
               "score": 2
             },
             {
-              "label": "Methods and sources are documented",
+              "label": "The main sources are reasonably clear.",
               "score": 3
             },
             {
-              "label": "Quality and exceptions are monitored",
+              "label": "Source and confidence are clear across most relevant areas.",
               "score": 4
             },
             {
-              "label": "Usage metrics are trusted enough to support difficult operational decisions",
+              "label": "The data is transparent, trusted and fit for decision use.",
               "score": 5
             }
           ]
@@ -2935,7 +2935,7 @@
       "questions": [
         {
           "id": "at1",
-          "text": "How granular is current environmental attribution?",
+          "text": "How detailed is your current attribution of environmental impact?",
           "dimension": "granularity",
           "weight": 5,
           "guidance": "",
@@ -2943,30 +2943,30 @@
           "tags": [],
           "options": [
             {
-              "label": "Portfolio totals only",
+              "label": "Most impact is still at total-estate level.",
               "score": 1
             },
             {
-              "label": "Broad environment or business unit split",
+              "label": "We can split some impact, but only in broad terms.",
               "score": 2
             },
             {
-              "label": "Service group, platform or major product-level attribution",
+              "label": "We can attribute most major areas to known services, teams or environments.",
               "score": 3
             },
             {
-              "label": "Service, workload or owner-level attribution in key areas",
+              "label": "We have good operational attribution across much of the estate.",
               "score": 4
             },
             {
-              "label": "Granularity is sufficient for operational action in major use cases",
+              "label": "We have strong, decision-grade attribution that supports accountability and action.",
               "score": 5
             }
           ]
         },
         {
           "id": "at2",
-          "text": "How credible is the attribution method used?",
+          "text": "How credible is the method you use to attribute impact?",
           "dimension": "method_quality",
           "weight": 5,
           "guidance": "",
@@ -2974,30 +2974,30 @@
           "tags": [],
           "options": [
             {
-              "label": "Mostly broad averages or rough proxies",
+              "label": "Low credibility.",
               "score": 1
             },
             {
-              "label": "Repeatable but weak allocation rules",
+              "label": "Basic and assumption-heavy.",
               "score": 2
             },
             {
-              "label": "Documented attribution logic with acceptable consistency",
+              "label": "Reasonable for the main use cases.",
               "score": 3
             },
             {
-              "label": "Measured or usage-aware logic supports many key allocations",
+              "label": "Strong across most relevant decisions.",
               "score": 4
             },
             {
-              "label": "Attribution is robust enough for decision-grade action in defined contexts",
+              "label": "Robust and trusted enough for real accountability.",
               "score": 5
             }
           ]
         },
         {
           "id": "at3",
-          "text": "How much of the estate or footprint can be attributed meaningfully?",
+          "text": "How much of the footprint can you attribute meaningfully rather than leaving at portfolio level?",
           "dimension": "coverage",
           "weight": 4,
           "guidance": "",
@@ -3005,30 +3005,30 @@
           "tags": [],
           "options": [
             {
-              "label": "Very little",
+              "label": "Very little.",
               "score": 1
             },
             {
-              "label": "Partial and uneven coverage",
+              "label": "Some areas only.",
               "score": 2
             },
             {
-              "label": "Most material domains are covered",
+              "label": "A good portion of the main footprint.",
               "score": 3
             },
             {
-              "label": "High coverage with measured exceptions",
+              "label": "Most key areas can be attributed usefully.",
               "score": 4
             },
             {
-              "label": "Comprehensive coverage with active management of gaps",
+              "label": "Attribution coverage is strong and operationally useful.",
               "score": 5
             }
           ]
         },
         {
           "id": "at4",
-          "text": "How well is attribution linked to named owners or accountable teams?",
+          "text": "Can you link attributed impact back to named owners, products or teams?",
           "dimension": "attribution",
           "weight": 4,
           "guidance": "",
@@ -3036,30 +3036,30 @@
           "tags": [],
           "options": [
             {
-              "label": "Weak ownership linkage",
+              "label": "Rarely.",
               "score": 1
             },
             {
-              "label": "Some broad owner mapping exists",
+              "label": "Only in some areas.",
               "score": 2
             },
             {
-              "label": "Key platforms/services have accountable owners",
+              "label": "For many main services or teams.",
               "score": 3
             },
             {
-              "label": "Owner linkage is strong across most major domains",
+              "label": "For most relevant owners and services.",
               "score": 4
             },
             {
-              "label": "Ownership linkage is strong enough to drive formal action and governance",
+              "label": "Yes, clearly and consistently.",
               "score": 5
             }
           ]
         },
         {
           "id": "at5",
-          "text": "How dynamic is the attribution relative to actual usage or demand?",
+          "text": "Does the attribution reflect actual usage and demand, or mostly static allocation rules?",
           "dimension": "temporal_resolution",
           "weight": 3,
           "guidance": "",
@@ -3067,30 +3067,30 @@
           "tags": [],
           "options": [
             {
-              "label": "Static or annual only",
+              "label": "Mostly static rules.",
               "score": 1
             },
             {
-              "label": "Periodic refresh using broad assumptions",
+              "label": "Some usage input, but still mainly broad allocation.",
               "score": 2
             },
             {
-              "label": "Updated on a defined cycle with some usage awareness",
+              "label": "A workable mix of real usage and allocation logic.",
               "score": 3
             },
             {
-              "label": "Refresh reflects changing usage in major domains",
+              "label": "Good use of actual demand across most relevant areas.",
               "score": 4
             },
             {
-              "label": "Attribution responds well enough to changing demand for optimisation and governance",
+              "label": "Strong demand-based attribution where it matters.",
               "score": 5
             }
           ]
         },
         {
           "id": "at6",
-          "text": "How location-aware is the attribution when location materially changes impact?",
+          "text": "Where location changes impact materially, does your attribution reflect that?",
           "dimension": "locational_resolution",
           "weight": 2,
           "guidance": "",
@@ -3098,30 +3098,30 @@
           "tags": [],
           "options": [
             {
-              "label": "Location is largely ignored",
+              "label": "No.",
               "score": 1
             },
             {
-              "label": "Handled only at broad environment level",
+              "label": "Only loosely.",
               "score": 2
             },
             {
-              "label": "Site/cloud region differences are reflected in key calculations",
+              "label": "Broadly yes for main use cases.",
               "score": 3
             },
             {
-              "label": "Location materially informs attribution in major use cases",
+              "label": "Yes across most relevant decisions.",
               "score": 4
             },
             {
-              "label": "Location-aware attribution supports high-quality operational trade-offs",
+              "label": "Yes, with strong locational accuracy where it matters.",
               "score": 5
             }
           ]
         },
         {
           "id": "at7",
-          "text": "How transparent and explainable are attribution methods?",
+          "text": "Can you explain the attribution method clearly to stakeholders?",
           "dimension": "assurance_lineage",
           "weight": 4,
           "guidance": "",
@@ -3129,30 +3129,30 @@
           "tags": [],
           "options": [
             {
-              "label": "Hard to explain or defend",
+              "label": "Not really.",
               "score": 1
             },
             {
-              "label": "Basic explanation exists only",
+              "label": "Only at a high level.",
               "score": 2
             },
             {
-              "label": "Rules and assumptions are documented",
+              "label": "Yes for the main use cases.",
               "score": 3
             },
             {
-              "label": "Methods and exceptions are reviewable and understandable",
+              "label": "Yes, clearly across most relevant areas.",
               "score": 4
             },
             {
-              "label": "Attribution is transparent enough for challenge, governance and external explanation",
+              "label": "Yes, in a transparent and defensible way.",
               "score": 5
             }
           ]
         },
         {
           "id": "at8",
-          "text": "How useful is the attribution in driving real decisions?",
+          "text": "Is the attribution good enough to drive real decisions and accountability?",
           "dimension": "attribution",
           "weight": 4,
           "guidance": "",
@@ -3160,23 +3160,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Useful mainly for broad awareness",
+              "label": "No, not yet.",
               "score": 1
             },
             {
-              "label": "Useful for directional prioritisation only",
+              "label": "Only at a broad directional level.",
               "score": 2
             },
             {
-              "label": "Useful for standard management decisions",
+              "label": "Good enough for some practical decisions.",
               "score": 3
             },
             {
-              "label": "Useful for interventions by service or owner",
+              "label": "Good enough for most key operational and management decisions.",
               "score": 4
             },
             {
-              "label": "Useful for continuous accountability and optimisation",
+              "label": "Clearly strong enough for decision-grade use and accountability.",
               "score": 5
             }
           ]
@@ -3336,7 +3336,7 @@
       "questions": [
         {
           "id": "ct1",
-          "text": "How much of the cloud estate has usable telemetry for GreenOps analysis?",
+          "text": "How much of your cloud estate has usable telemetry for GreenOps analysis?",
           "dimension": "coverage",
           "weight": 5,
           "guidance": "",
@@ -3344,30 +3344,30 @@
           "tags": [],
           "options": [
             {
-              "label": "Limited visibility outside billing totals",
+              "label": "Very little.",
               "score": 1
             },
             {
-              "label": "Basic telemetry for some accounts or services",
+              "label": "Some data, but coverage is patchy or inconsistent.",
               "score": 2
             },
             {
-              "label": "Most material accounts/services have usable telemetry",
+              "label": "A usable baseline across most key cloud environments.",
               "score": 3
             },
             {
-              "label": "Coverage is high across major cloud environments",
+              "label": "Good telemetry coverage and consistent use.",
               "score": 4
             },
             {
-              "label": "Coverage is comprehensive and exceptions are managed actively",
+              "label": "Strong, trusted telemetry that supports operational decisions.",
               "score": 5
             }
           ]
         },
         {
           "id": "ct2",
-          "text": "How granular is the available cloud telemetry?",
+          "text": "How detailed is the cloud telemetry you can access?",
           "dimension": "granularity",
           "weight": 5,
           "guidance": "",
@@ -3375,30 +3375,30 @@
           "tags": [],
           "options": [
             {
-              "label": "Account or invoice level only",
+              "label": "Very limited.",
               "score": 1
             },
             {
-              "label": "Service category or account-level telemetry",
+              "label": "Basic only.",
               "score": 2
             },
             {
-              "label": "Service-level telemetry across key workloads",
+              "label": "Enough detail for baseline analysis and some decisions.",
               "score": 3
             },
             {
-              "label": "Workload/resource-level telemetry in major areas",
+              "label": "Good detail across most key services and environments.",
               "score": 4
             },
             {
-              "label": "Granularity is sufficient for engineering and operational decisions",
+              "label": "Detailed enough to support targeted optimisation and design choices.",
               "score": 5
             }
           ]
         },
         {
           "id": "ct3",
-          "text": "How well is cloud telemetry linked to tags, owners, products or services?",
+          "text": "Can you link cloud telemetry back to tags, owners, products, services or business units?",
           "dimension": "attribution",
           "weight": 5,
           "guidance": "",
@@ -3406,30 +3406,30 @@
           "tags": [],
           "options": [
             {
-              "label": "Weak or inconsistent linkage",
+              "label": "Rarely.",
               "score": 1
             },
             {
-              "label": "Partial linkage using tags or account structures",
+              "label": "Only partly.",
               "score": 2
             },
             {
-              "label": "Standardised linkage exists for key domains",
+              "label": "For many important workloads or accounts.",
               "score": 3
             },
             {
-              "label": "Strong linkage exists across many workloads/services",
+              "label": "For most relevant cloud environments.",
               "score": 4
             },
             {
-              "label": "Linkage is strong enough to drive accountable optimisation",
+              "label": "Yes, clearly and consistently.",
               "score": 5
             }
           ]
         },
         {
           "id": "ct4",
-          "text": "How much temporal resolution does cloud telemetry support?",
+          "text": "How often is cloud telemetry available at a useful level?",
           "dimension": "temporal_resolution",
           "weight": 4,
           "guidance": "",
@@ -3437,30 +3437,30 @@
           "tags": [],
           "options": [
             {
-              "label": "Billing-period level only",
+              "label": "Infrequently.",
               "score": 1
             },
             {
-              "label": "Periodic reports with limited time detail",
+              "label": "Periodically, but not very useful operationally.",
               "score": 2
             },
             {
-              "label": "Daily/weekly trend visibility for key workloads",
+              "label": "Often enough for regular analysis.",
               "score": 3
             },
             {
-              "label": "Hourly or operationally useful time-series in major environments",
+              "label": "Frequent enough for management and optimisation.",
               "score": 4
             },
             {
-              "label": "Temporal resolution supports active optimisation and scheduling decisions",
+              "label": "Timely enough for active operational use.",
               "score": 5
             }
           ]
         },
         {
           "id": "ct5",
-          "text": "How location-specific is cloud telemetry, including region or zone where relevant?",
+          "text": "Does the telemetry reflect the actual cloud region, zone or environment where it matters?",
           "dimension": "locational_resolution",
           "weight": 4,
           "guidance": "",
@@ -3468,30 +3468,30 @@
           "tags": [],
           "options": [
             {
-              "label": "Weak location specificity",
+              "label": "Not really.",
               "score": 1
             },
             {
-              "label": "Cloud provider/account only",
+              "label": "Only at broad level.",
               "score": 2
             },
             {
-              "label": "Cloud region is standard for major workloads",
+              "label": "Usually for main cloud environments.",
               "score": 3
             },
             {
-              "label": "Region and service location are actively used in analysis",
+              "label": "Yes across most relevant workloads.",
               "score": 4
             },
             {
-              "label": "Location resolution is strong enough to inform placement and carbon-aware choices",
+              "label": "Yes, with strong location accuracy for decision-making.",
               "score": 5
             }
           ]
         },
         {
           "id": "ct6",
-          "text": "How mature is method quality for translating telemetry into environmental insight?",
+          "text": "How strong is the method you use to turn telemetry into environmental insight?",
           "dimension": "method_quality",
           "weight": 4,
           "guidance": "",
@@ -3499,30 +3499,30 @@
           "tags": [],
           "options": [
             {
-              "label": "Cloud insight relies mainly on coarse provider outputs",
+              "label": "Weak or unclear.",
               "score": 1
             },
             {
-              "label": "Basic repeatable method exists using available cloud data",
+              "label": "Basic and assumption-heavy.",
               "score": 2
             },
             {
-              "label": "Defined method exists for major service types",
+              "label": "Reasonable for the main use cases.",
               "score": 3
             },
             {
-              "label": "Methods are refined by workload type, storage, runtime or utilisation",
+              "label": "Strong across most relevant areas.",
               "score": 4
             },
             {
-              "label": "Method quality is strong enough for controlled decision-grade optimisation",
+              "label": "Robust enough for real GreenOps decision support.",
               "score": 5
             }
           ]
         },
         {
           "id": "ct7",
-          "text": "How quickly is cloud telemetry available to the assessment process?",
+          "text": "How quickly can you access cloud telemetry after the activity happens?",
           "dimension": "timeliness",
           "weight": 3,
           "guidance": "",
@@ -3530,30 +3530,30 @@
           "tags": [],
           "options": [
             {
-              "label": "Significant lag reduces usefulness",
+              "label": "Very slowly.",
               "score": 1
             },
             {
-              "label": "Lag exists but periodic review is possible",
+              "label": "Slower than we would like.",
               "score": 2
             },
             {
-              "label": "Data is available on a defined cycle",
+              "label": "Reasonable for most needs.",
               "score": 3
             },
             {
-              "label": "Data is timely enough for management and trend response",
+              "label": "Fast enough for regular management.",
               "score": 4
             },
             {
-              "label": "Timeliness supports operational cloud optimisation",
+              "label": "Fast enough for practical operational action.",
               "score": 5
             }
           ]
         },
         {
           "id": "ct8",
-          "text": "How transparent and defensible is the cloud telemetry lineage?",
+          "text": "Can you explain where the telemetry came from and how much confidence you have in it?",
           "dimension": "assurance_lineage",
           "weight": 3,
           "guidance": "",
@@ -3561,23 +3561,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Weakly documented and hard to explain",
+              "label": "Not clearly.",
               "score": 1
             },
             {
-              "label": "Basic source awareness only",
+              "label": "Only partly.",
               "score": 2
             },
             {
-              "label": "Source systems and assumptions are documented",
+              "label": "Main sources and confidence are reasonably clear.",
               "score": 3
             },
             {
-              "label": "Coverage, exceptions and quality are monitored",
+              "label": "Source and confidence are clear across most relevant areas.",
               "score": 4
             },
             {
-              "label": "Lineage is clear enough for challenge and repeatable decision support",
+              "label": "The telemetry is transparent, trusted and fit for decision use.",
               "score": 5
             }
           ]
@@ -3737,7 +3737,7 @@
       "questions": [
         {
           "id": "cp1",
-          "text": "How much useful sustainability and operational data is received from colocation or third-party providers?",
+          "text": "How much useful sustainability and operational data do your providers actually give you?",
           "dimension": "coverage",
           "weight": 5,
           "guidance": "",
@@ -3745,30 +3745,30 @@
           "tags": [],
           "options": [
             {
-              "label": "Very little beyond invoices or contracts",
+              "label": "Very little.",
               "score": 1
             },
             {
-              "label": "Some periodic data is received but gaps are large",
+              "label": "Some data, but it is basic or inconsistent.",
               "score": 2
             },
             {
-              "label": "Most material providers supply defined datasets",
+              "label": "Enough for a usable baseline.",
               "score": 3
             },
             {
-              "label": "Provider data coverage is high and monitored",
+              "label": "Good quality data from most key providers.",
               "score": 4
             },
             {
-              "label": "Provider data coverage is strong enough for management and comparison",
+              "label": "Strong, trusted data that supports real decisions.",
               "score": 5
             }
           ]
         },
         {
           "id": "cp2",
-          "text": "How granular is provider data?",
+          "text": "How detailed is that provider data?",
           "dimension": "granularity",
           "weight": 4,
           "guidance": "",
@@ -3776,30 +3776,30 @@
           "tags": [],
           "options": [
             {
-              "label": "Portfolio or site total only",
+              "label": "Very broad only.",
               "score": 1
             },
             {
-              "label": "Site-level only for most providers",
+              "label": "Limited breakdown.",
               "score": 2
             },
             {
-              "label": "Site plus some customer-relevant granularity",
+              "label": "Enough detail for baseline analysis.",
               "score": 3
             },
             {
-              "label": "Rack, cage, hall or customer-view granularity exists for major providers",
+              "label": "Good detail across most key providers.",
               "score": 4
             },
             {
-              "label": "Granularity is fit for attribution, benchmarking and intervention",
+              "label": "Detailed enough for operational and comparative decisions.",
               "score": 5
             }
           ]
         },
         {
           "id": "cp3",
-          "text": "How well can provider data be attributed to your own services, estate or consumers?",
+          "text": "Can you link provider data back to your own racks, cages, services or consumers?",
           "dimension": "attribution",
           "weight": 4,
           "guidance": "",
@@ -3807,30 +3807,30 @@
           "tags": [],
           "options": [
             {
-              "label": "Attribution is weak or absent",
+              "label": "Hardly at all.",
               "score": 1
             },
             {
-              "label": "Basic attribution using capacity shares or invoices",
+              "label": "Only in broad terms.",
               "score": 2
             },
             {
-              "label": "Defined attribution exists for major providers",
+              "label": "For some key environments.",
               "score": 3
             },
             {
-              "label": "Provider data supports service/platform attribution in many cases",
+              "label": "For most relevant provider-hosted environments.",
               "score": 4
             },
             {
-              "label": "Attribution is strong enough for decision-grade use in third-party environments",
+              "label": "Yes, clearly enough to support attribution and action.",
               "score": 5
             }
           ]
         },
         {
           "id": "cp4",
-          "text": "How location-specific is provider data and interpretation?",
+          "text": "Does the provider data reflect the actual site or environment that matters?",
           "dimension": "locational_resolution",
           "weight": 3,
           "guidance": "",
@@ -3838,30 +3838,30 @@
           "tags": [],
           "options": [
             {
-              "label": "Weak location specificity",
+              "label": "Not reliably.",
               "score": 1
             },
             {
-              "label": "Broad site-level only",
+              "label": "Only at broad provider level.",
               "score": 2
             },
             {
-              "label": "Site-specific interpretation exists",
+              "label": "Usually at site level for the main areas.",
               "score": 3
             },
             {
-              "label": "Facility/customer environment distinctions are used where relevant",
+              "label": "Yes across most relevant provider environments.",
               "score": 4
             },
             {
-              "label": "Location specificity is strong enough for credible comparison and decision-making",
+              "label": "Yes, with strong site/environment accuracy.",
               "score": 5
             }
           ]
         },
         {
           "id": "cp5",
-          "text": "How timely is provider data?",
+          "text": "How timely is the data from providers?",
           "dimension": "timeliness",
           "weight": 3,
           "guidance": "",
@@ -3869,30 +3869,30 @@
           "tags": [],
           "options": [
             {
-              "label": "Too delayed to be very useful",
+              "label": "Very slow.",
               "score": 1
             },
             {
-              "label": "Periodic with significant lag",
+              "label": "Noticeably delayed.",
               "score": 2
             },
             {
-              "label": "Delivered on a defined management cycle",
+              "label": "Reasonable for regular reporting.",
               "score": 3
             },
             {
-              "label": "Timely enough for trend response and review",
+              "label": "Good enough for management use.",
               "score": 4
             },
             {
-              "label": "Timely enough for active provider challenge and operational planning",
+              "label": "Timely enough for practical decision support.",
               "score": 5
             }
           ]
         },
         {
           "id": "cp6",
-          "text": "How strong is the method quality behind provider-supplied metrics and disclosures?",
+          "text": "How strong is the method behind the provider metrics and disclosures?",
           "dimension": "method_quality",
           "weight": 4,
           "guidance": "",
@@ -3900,30 +3900,30 @@
           "tags": [],
           "options": [
             {
-              "label": "Provider methods are weak or opaque",
+              "label": "Weak or unclear.",
               "score": 1
             },
             {
-              "label": "Repeatable but broad and hard to challenge",
+              "label": "Basic and hard to validate.",
               "score": 2
             },
             {
-              "label": "Methods are documented for major providers",
+              "label": "Reasonable for baseline use.",
               "score": 3
             },
             {
-              "label": "Methods can be reviewed and compared with reasonable confidence",
+              "label": "Strong across most relevant metrics.",
               "score": 4
             },
             {
-              "label": "Method quality is strong enough for confident use and contractual challenge",
+              "label": "Clear, robust and credible.",
               "score": 5
             }
           ]
         },
         {
           "id": "cp7",
-          "text": "How transparent is the provider\u2019s data lineage and evidence?",
+          "text": "Can the provider explain the source and evidence behind the numbers?",
           "dimension": "assurance_lineage",
           "weight": 4,
           "guidance": "",
@@ -3931,30 +3931,30 @@
           "tags": [],
           "options": [
             {
-              "label": "Opaque and hard to validate",
+              "label": "No, not clearly.",
               "score": 1
             },
             {
-              "label": "Some documentation but weak confidence",
+              "label": "Only partly.",
               "score": 2
             },
             {
-              "label": "Sources and assumptions are documented",
+              "label": "Broadly yes for the main numbers.",
               "score": 3
             },
             {
-              "label": "Assurance and evidence are available for major datasets",
+              "label": "Yes across most relevant disclosures.",
               "score": 4
             },
             {
-              "label": "Lineage and assurance are strong enough for credible external and internal use",
+              "label": "Yes, with strong transparency and evidence.",
               "score": 5
             }
           ]
         },
         {
           "id": "cp8",
-          "text": "How useful is provider data in driving decisions rather than reporting only?",
+          "text": "Is the provider data good enough to support decisions, or only high-level reporting?",
           "dimension": "attribution",
           "weight": 3,
           "guidance": "",
@@ -3962,23 +3962,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Mostly useful for broad reporting",
+              "label": "Mostly high-level reporting only.",
               "score": 1
             },
             {
-              "label": "Useful for directional comparison only",
+              "label": "Directional use at best.",
               "score": 2
             },
             {
-              "label": "Useful for site/provider management decisions",
+              "label": "Good enough for some practical decisions.",
               "score": 3
             },
             {
-              "label": "Useful for targeted provider challenge and optimisation",
+              "label": "Good enough for most key provider-related decisions.",
               "score": 4
             },
             {
-              "label": "Useful for structured commercial, technical and sustainability decision-making",
+              "label": "Clearly decision-grade for management and challenge.",
               "score": 5
             }
           ]
@@ -4137,7 +4137,7 @@
       "questions": [
         {
           "id": "tt1",
-          "text": "What time resolution is typical across the most important GreenOps input domains?",
+          "text": "Across the main GreenOps inputs, how detailed is the time-based view you actually have?",
           "dimension": "temporal_resolution",
           "weight": 5,
           "guidance": "",
@@ -4145,30 +4145,30 @@
           "tags": [],
           "options": [
             {
-              "label": "Annual or irregular only",
+              "label": "Very coarse.",
               "score": 1
             },
             {
-              "label": "Quarterly or monthly only",
+              "label": "Coarse, with only limited usefulness.",
               "score": 2
             },
             {
-              "label": "Monthly with some higher-frequency exceptions",
+              "label": "Good enough for baseline tracking and planning.",
               "score": 3
             },
             {
-              "label": "Daily or hourly in many key domains",
+              "label": "Good enough for most practical use.",
               "score": 4
             },
             {
-              "label": "Resolution is fit for operational and optimisation use cases where needed",
+              "label": "Strong enough for time-sensitive decisions where needed.",
               "score": 5
             }
           ]
         },
         {
           "id": "tt2",
-          "text": "How quickly is data generally available after the underlying activity occurs?",
+          "text": "How quickly is data usually available after the underlying activity happens?",
           "dimension": "timeliness",
           "weight": 5,
           "guidance": "",
@@ -4176,30 +4176,30 @@
           "tags": [],
           "options": [
             {
-              "label": "Usually too late for action",
+              "label": "Very slow.",
               "score": 1
             },
             {
-              "label": "Late enough to limit usefulness materially",
+              "label": "Slow enough to limit usefulness.",
               "score": 2
             },
             {
-              "label": "Available on a management-acceptable cycle",
+              "label": "Reasonable for most reporting and planning.",
               "score": 3
             },
             {
-              "label": "Available quickly enough for trend response and intervention",
+              "label": "Good enough for regular management.",
               "score": 4
             },
             {
-              "label": "Available fast enough for operational optimisation in key use cases",
+              "label": "Fast enough for ongoing operational use where needed.",
               "score": 5
             }
           ]
         },
         {
           "id": "tt3",
-          "text": "How consistent are refresh cycles and time logic across domains?",
+          "text": "Are refresh cycles consistent and understood across the main domains?",
           "dimension": "method_quality",
           "weight": 3,
           "guidance": "",
@@ -4207,30 +4207,30 @@
           "tags": [],
           "options": [
             {
-              "label": "Inconsistent and poorly understood",
+              "label": "No.",
               "score": 1
             },
             {
-              "label": "Basic periodic cycles exist but vary heavily",
+              "label": "Only loosely.",
               "score": 2
             },
             {
-              "label": "Refresh cycles are defined and mostly understood",
+              "label": "Broadly yes across the main areas.",
               "score": 3
             },
             {
-              "label": "Refresh performance is monitored and exceptions are managed",
+              "label": "Yes across most relevant data domains.",
               "score": 4
             },
             {
-              "label": "Refresh logic is deliberate, well-governed and fit for purpose by domain",
+              "label": "Yes, clearly and consistently.",
               "score": 5
             }
           ]
         },
         {
           "id": "tt4",
-          "text": "How well is stale data identified and communicated?",
+          "text": "Do you clearly identify when data is stale or no longer reliable?",
           "dimension": "assurance_lineage",
           "weight": 3,
           "guidance": "",
@@ -4238,30 +4238,30 @@
           "tags": [],
           "options": [
             {
-              "label": "Staleness is often unclear",
+              "label": "Rarely.",
               "score": 1
             },
             {
-              "label": "Users infer staleness manually",
+              "label": "Only in some areas.",
               "score": 2
             },
             {
-              "label": "Refresh dates/status are visible",
+              "label": "Usually for the main datasets.",
               "score": 3
             },
             {
-              "label": "Staleness is monitored and flagged",
+              "label": "Yes across most relevant data.",
               "score": 4
             },
             {
-              "label": "Staleness is actively managed as part of decision confidence",
+              "label": "Yes, clearly and consistently, with good controls.",
               "score": 5
             }
           ]
         },
         {
           "id": "tt5",
-          "text": "How well does temporal resolution support the decisions the organisation cares about?",
+          "text": "Is the time resolution good enough for the decisions you actually want to make?",
           "dimension": "attribution",
           "weight": 4,
           "guidance": "",
@@ -4269,30 +4269,30 @@
           "tags": [],
           "options": [
             {
-              "label": "Often insufficient for the intended decisions",
+              "label": "No, it is too coarse.",
               "score": 1
             },
             {
-              "label": "Supports reporting but little more",
+              "label": "It supports broad reporting, but little else.",
               "score": 2
             },
             {
-              "label": "Supports standard management decisions",
+              "label": "It is good enough for some operational and planning decisions.",
               "score": 3
             },
             {
-              "label": "Supports many operational and planning decisions",
+              "label": "It supports most of the key decisions we need to make.",
               "score": 4
             },
             {
-              "label": "Supports optimisation-grade use in the most important scenarios",
+              "label": "It is strong enough for near-operational optimisation where needed.",
               "score": 5
             }
           ]
         },
         {
           "id": "tt6",
-          "text": "How much of the estate benefits from fit-for-purpose time resolution?",
+          "text": "How much of the estate benefits from time resolution that is genuinely useful?",
           "dimension": "coverage",
           "weight": 3,
           "guidance": "",
@@ -4300,30 +4300,30 @@
           "tags": [],
           "options": [
             {
-              "label": "Very limited coverage",
+              "label": "Very little.",
               "score": 1
             },
             {
-              "label": "Partial coverage only",
+              "label": "Some important areas only.",
               "score": 2
             },
             {
-              "label": "Most material domains are adequate",
+              "label": "A good portion of the relevant estate.",
               "score": 3
             },
             {
-              "label": "Coverage is high and measured",
+              "label": "Most key areas are covered.",
               "score": 4
             },
             {
-              "label": "Coverage is broad and actively improved where gaps matter",
+              "label": "Coverage is broad and fit for decision use.",
               "score": 5
             }
           ]
         },
         {
           "id": "tt7",
-          "text": "How location/environment-specific is the time logic where needed?",
+          "text": "Where location or environment changes the timing logic, do you handle that properly?",
           "dimension": "locational_resolution",
           "weight": 2,
           "guidance": "",
@@ -4331,30 +4331,30 @@
           "tags": [],
           "options": [
             {
-              "label": "Time treatment ignores environment differences",
+              "label": "No.",
               "score": 1
             },
             {
-              "label": "Some environment-specific timing exists",
+              "label": "Only loosely.",
               "score": 2
             },
             {
-              "label": "Major environments have sensible timing logic",
+              "label": "Broadly yes for key areas.",
               "score": 3
             },
             {
-              "label": "Timing reflects differences by platform/site/provider where relevant",
+              "label": "Yes across most relevant use cases.",
               "score": 4
             },
             {
-              "label": "Temporal logic is well-tailored to environment-specific operational needs",
+              "label": "Yes, with strong fit to the operational reality.",
               "score": 5
             }
           ]
         },
         {
           "id": "tt8",
-          "text": "How easy is it to explain and trust the timing characteristics of the data?",
+          "text": "Can you explain the timing characteristics of the data clearly to users?",
           "dimension": "assurance_lineage",
           "weight": 3,
           "guidance": "",
@@ -4362,23 +4362,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Hard to explain and trust",
+              "label": "Not really.",
               "score": 1
             },
             {
-              "label": "Broad understanding only",
+              "label": "Only partly.",
               "score": 2
             },
             {
-              "label": "Refresh and resolution logic is documented",
+              "label": "Yes for the main datasets.",
               "score": 3
             },
             {
-              "label": "Timing performance and confidence are visible",
+              "label": "Yes across most relevant areas.",
               "score": 4
             },
             {
-              "label": "Timing logic is transparent and explicitly factored into decision confidence",
+              "label": "Yes, clearly enough for users to judge fitness for purpose.",
               "score": 5
             }
           ]
@@ -4538,7 +4538,7 @@
       "questions": [
         {
           "id": "la1",
-          "text": "How clearly are source systems and datasets identified?",
+          "text": "Can you clearly identify the source systems and datasets behind your outputs?",
           "dimension": "assurance_lineage",
           "weight": 4,
           "guidance": "",
@@ -4546,30 +4546,30 @@
           "tags": [],
           "options": [
             {
-              "label": "Weak clarity and informal knowledge only",
+              "label": "No.",
               "score": 1
             },
             {
-              "label": "Basic source awareness exists",
+              "label": "Only partly.",
               "score": 2
             },
             {
-              "label": "Source systems are documented for major domains",
+              "label": "Yes for the main outputs.",
               "score": 3
             },
             {
-              "label": "Source inventory is controlled and reviewed",
+              "label": "Yes across most relevant areas.",
               "score": 4
             },
             {
-              "label": "Source clarity is strong enough for audit and change control",
+              "label": "Yes, clearly and consistently.",
               "score": 5
             }
           ]
         },
         {
           "id": "la2",
-          "text": "How clearly are calculations, transformations and assumptions documented?",
+          "text": "Are the calculations, assumptions and transformations documented clearly enough for others to follow?",
           "dimension": "method_quality",
           "weight": 5,
           "guidance": "",
@@ -4577,30 +4577,30 @@
           "tags": [],
           "options": [
             {
-              "label": "Opaque or mostly implicit",
+              "label": "No.",
               "score": 1
             },
             {
-              "label": "Basic documentation exists for parts of the process",
+              "label": "Only at a basic level.",
               "score": 2
             },
             {
-              "label": "Major methods and assumptions are documented",
+              "label": "Broadly yes for the main calculations.",
               "score": 3
             },
             {
-              "label": "Documentation is controlled and updated consistently",
+              "label": "Yes across most relevant methods.",
               "score": 4
             },
             {
-              "label": "Methods are transparent, versioned and easy to explain",
+              "label": "Yes, clearly and in a way others can use confidently.",
               "score": 5
             }
           ]
         },
         {
           "id": "la3",
-          "text": "How reproducible are the reported outputs?",
+          "text": "Could someone else reproduce the output if they needed to?",
           "dimension": "assurance_lineage",
           "weight": 5,
           "guidance": "",
@@ -4608,30 +4608,30 @@
           "tags": [],
           "options": [
             {
-              "label": "Difficult to reproduce reliably",
+              "label": "Unlikely.",
               "score": 1
             },
             {
-              "label": "Reproducible only with specialist knowledge",
+              "label": "Only with significant effort.",
               "score": 2
             },
             {
-              "label": "Generally reproducible using documented processes",
+              "label": "Probably for the main outputs.",
               "score": 3
             },
             {
-              "label": "Reproducibility is tested or routinely validated",
+              "label": "Yes for most relevant outputs.",
               "score": 4
             },
             {
-              "label": "Outputs are reliably reproducible and governed",
+              "label": "Yes, reproducibly and with confidence.",
               "score": 5
             }
           ]
         },
         {
           "id": "la4",
-          "text": "How well are data quality issues, exceptions and estimation boundaries tracked?",
+          "text": "Do you track data quality issues, exceptions and estimation boundaries properly?",
           "dimension": "coverage",
           "weight": 4,
           "guidance": "",
@@ -4639,30 +4639,30 @@
           "tags": [],
           "options": [
             {
-              "label": "Weakly tracked",
+              "label": "Hardly at all.",
               "score": 1
             },
             {
-              "label": "Noted informally only",
+              "label": "In some places only.",
               "score": 2
             },
             {
-              "label": "Tracked for major domains and reports",
+              "label": "Broadly yes for the main outputs.",
               "score": 3
             },
             {
-              "label": "Measured and reviewed systematically",
+              "label": "Yes across most relevant areas.",
               "score": 4
             },
             {
-              "label": "Actively managed as part of trust and decision-readiness",
+              "label": "Yes, clearly and as part of normal governance.",
               "score": 5
             }
           ]
         },
         {
           "id": "la5",
-          "text": "How well is confidence in outputs communicated to users?",
+          "text": "Do users understand how much confidence to place in the outputs?",
           "dimension": "attribution",
           "weight": 3,
           "guidance": "",
@@ -4670,30 +4670,30 @@
           "tags": [],
           "options": [
             {
-              "label": "Confidence is rarely explicit",
+              "label": "Not really.",
               "score": 1
             },
             {
-              "label": "Users infer confidence informally",
+              "label": "Only vaguely.",
               "score": 2
             },
             {
-              "label": "Confidence caveats are documented in some outputs",
+              "label": "Usually for the main outputs.",
               "score": 3
             },
             {
-              "label": "Confidence or quality signals are visible and usable",
+              "label": "Yes across most important outputs.",
               "score": 4
             },
             {
-              "label": "Confidence is built into decision interpretation and governance",
+              "label": "Yes, confidence and caveats are clear and well understood.",
               "score": 5
             }
           ]
         },
         {
           "id": "la6",
-          "text": "How mature is governance over methodology changes?",
+          "text": "Do you control and govern methodology changes properly?",
           "dimension": "timeliness",
           "weight": 2,
           "guidance": "",
@@ -4701,30 +4701,30 @@
           "tags": [],
           "options": [
             {
-              "label": "Changes happen informally",
+              "label": "No.",
               "score": 1
             },
             {
-              "label": "Some awareness but weak governance",
+              "label": "Only loosely.",
               "score": 2
             },
             {
-              "label": "Method changes are documented and communicated",
+              "label": "Broadly yes for the main methods.",
               "score": 3
             },
             {
-              "label": "Method changes are reviewed and controlled",
+              "label": "Yes across most relevant areas.",
               "score": 4
             },
             {
-              "label": "Method governance is strong enough for sustained trust and comparability",
+              "label": "Yes, in a controlled and auditable way.",
               "score": 5
             }
           ]
         },
         {
           "id": "la7",
-          "text": "How clear is the distinction between measured, modelled and estimated values?",
+          "text": "Is there a clear distinction between measured, modelled and estimated values?",
           "dimension": "method_quality",
           "weight": 4,
           "guidance": "",
@@ -4732,30 +4732,30 @@
           "tags": [],
           "options": [
             {
-              "label": "Usually unclear",
+              "label": "No, or hardly at all.",
               "score": 1
             },
             {
-              "label": "Broadly understood but inconsistently shown",
+              "label": "Only partly.",
               "score": 2
             },
             {
-              "label": "Defined distinction exists in key areas",
+              "label": "Yes in most key areas.",
               "score": 3
             },
             {
-              "label": "Distinction is visible and reviewable in most material outputs",
+              "label": "Yes, clearly and consistently in the main outputs.",
               "score": 4
             },
             {
-              "label": "Distinction is explicit enough to guide decision confidence reliably",
+              "label": "Yes, explicitly and in a way stakeholders can rely on.",
               "score": 5
             }
           ]
         },
         {
           "id": "la8",
-          "text": "How strong is overall assurance relative to stakeholder needs?",
+          "text": "Is the overall assurance level strong enough for the stakeholders using the outputs?",
           "dimension": "assurance_lineage",
           "weight": 4,
           "guidance": "",
@@ -4763,23 +4763,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Weak for most stakeholders",
+              "label": "No.",
               "score": 1
             },
             {
-              "label": "Adequate only for internal directional use",
+              "label": "Only for limited use.",
               "score": 2
             },
             {
-              "label": "Adequate for internal governance and reporting",
+              "label": "Good enough for baseline reporting and some decisions.",
               "score": 3
             },
             {
-              "label": "Strong enough for wider management and challenge",
+              "label": "Good enough for most intended stakeholders and uses.",
               "score": 4
             },
             {
-              "label": "Strong enough for demanding stakeholders and defensible reporting",
+              "label": "Strong enough for decision-grade and governance use.",
               "score": 5
             }
           ]
@@ -4939,7 +4939,7 @@
       "questions": [
         {
           "id": "di1",
-          "text": "How often is GreenOps input used in real decisions rather than reporting only?",
+          "text": "How often is GreenOps input used in real decisions rather than just reporting?",
           "dimension": "attribution",
           "weight": 5,
           "guidance": "",
@@ -4947,30 +4947,30 @@
           "tags": [],
           "options": [
             {
-              "label": "Rarely used beyond reporting",
+              "label": "Mainly for reporting or presentations.",
               "score": 1
             },
             {
-              "label": "Used occasionally for one-off decisions",
+              "label": "It occasionally informs one-off decisions.",
               "score": 2
             },
             {
-              "label": "Used in defined review or governance processes",
+              "label": "It is used in some regular decision processes.",
               "score": 3
             },
             {
-              "label": "Used regularly in operational and planning decisions",
+              "label": "It is used consistently in key operational and planning decisions.",
               "score": 4
             },
             {
-              "label": "Used continuously as part of mainstream decision-making",
+              "label": "It is embedded in normal management, optimisation and governance.",
               "score": 5
             }
           ]
         },
         {
           "id": "di2",
-          "text": "How well are GreenOps insights linked to accountable owners and actions?",
+          "text": "Can you link GreenOps insights to named owners and actions?",
           "dimension": "attribution",
           "weight": 4,
           "guidance": "",
@@ -4978,30 +4978,30 @@
           "tags": [],
           "options": [
             {
-              "label": "Weak link to action or accountability",
+              "label": "Rarely.",
               "score": 1
             },
             {
-              "label": "Some actions arise informally",
+              "label": "Only in some cases.",
               "score": 2
             },
             {
-              "label": "Defined owner/action linkage exists in key processes",
+              "label": "For many important actions.",
               "score": 3
             },
             {
-              "label": "Owners and actions are tracked in many decision flows",
+              "label": "For most relevant actions and decisions.",
               "score": 4
             },
             {
-              "label": "Accountability is strong and outcomes are routinely followed through",
+              "label": "Yes, clearly and consistently.",
               "score": 5
             }
           ]
         },
         {
           "id": "di3",
-          "text": "How mature is the workflow for turning insights into optimisation actions?",
+          "text": "How mature is the workflow for turning insight into optimisation activity?",
           "dimension": "method_quality",
           "weight": 5,
           "guidance": "",
@@ -5009,30 +5009,30 @@
           "tags": [],
           "options": [
             {
-              "label": "Ad hoc and inconsistent",
+              "label": "Very weak or ad hoc.",
               "score": 1
             },
             {
-              "label": "Basic workflow exists but is weakly applied",
+              "label": "Basic and inconsistent.",
               "score": 2
             },
             {
-              "label": "Defined workflow exists for key use cases",
+              "label": "A workable process exists for the main areas.",
               "score": 3
             },
             {
-              "label": "Workflow performance is monitored and improved",
+              "label": "A strong repeatable workflow exists across most relevant areas.",
               "score": 4
             },
             {
-              "label": "Workflow is embedded, repeatable and materially changes outcomes",
+              "label": "Optimisation is part of normal operating practice.",
               "score": 5
             }
           ]
         },
         {
           "id": "di4",
-          "text": "How much of the organisation or estate is covered by decision integration?",
+          "text": "How much of the estate or organisation is covered by this decision process?",
           "dimension": "coverage",
           "weight": 3,
           "guidance": "",
@@ -5040,30 +5040,30 @@
           "tags": [],
           "options": [
             {
-              "label": "Very limited coverage",
+              "label": "Very little.",
               "score": 1
             },
             {
-              "label": "Some pilot or priority areas only",
+              "label": "Some areas only.",
               "score": 2
             },
             {
-              "label": "Most key domains have some integration",
+              "label": "A good portion of the main estate.",
               "score": 3
             },
             {
-              "label": "Coverage is high across major operational domains",
+              "label": "Most relevant areas are covered.",
               "score": 4
             },
             {
-              "label": "Integration is broad and sustained across relevant domains",
+              "label": "Coverage is broad and operationally meaningful.",
               "score": 5
             }
           ]
         },
         {
           "id": "di5",
-          "text": "How quickly can the organisation act on GreenOps signals?",
+          "text": "How quickly can teams act on GreenOps signals?",
           "dimension": "timeliness",
           "weight": 3,
           "guidance": "",
@@ -5071,30 +5071,30 @@
           "tags": [],
           "options": [
             {
-              "label": "Action is slow and often disconnected",
+              "label": "Slowly, if at all.",
               "score": 1
             },
             {
-              "label": "Action happens but with notable lag",
+              "label": "With noticeable delay.",
               "score": 2
             },
             {
-              "label": "Action timing is acceptable for many management decisions",
+              "label": "In a reasonable timeframe.",
               "score": 3
             },
             {
-              "label": "Action is timely enough for active optimisation",
+              "label": "Quickly enough for most operational needs.",
               "score": 4
             },
             {
-              "label": "Action timing supports continuous improvement and controlled automation",
+              "label": "Fast enough to support continuous improvement.",
               "score": 5
             }
           ]
         },
         {
           "id": "di6",
-          "text": "How much do current workflows support location- or time-sensitive decisions?",
+          "text": "Can current workflows support time- or location-sensitive decisions where needed?",
           "dimension": "locational_resolution",
           "weight": 2,
           "guidance": "",
@@ -5102,30 +5102,30 @@
           "tags": [],
           "options": [
             {
-              "label": "Such decisions are rarely supported",
+              "label": "No.",
               "score": 1
             },
             {
-              "label": "Handled only occasionally",
+              "label": "Only in a very limited way.",
               "score": 2
             },
             {
-              "label": "Supported in some key cases",
+              "label": "Broadly yes for some key use cases.",
               "score": 3
             },
             {
-              "label": "Supported in many relevant cases",
+              "label": "Yes for most relevant decisions.",
               "score": 4
             },
             {
-              "label": "Strongly supported where they materially affect efficiency or impact",
+              "label": "Yes, in a way that supports real operational optimisation.",
               "score": 5
             }
           ]
         },
         {
           "id": "di7",
-          "text": "How well are outcomes from actions measured and fed back into the process?",
+          "text": "Do you measure whether actions actually delivered the expected outcome?",
           "dimension": "temporal_resolution",
           "weight": 4,
           "guidance": "",
@@ -5133,30 +5133,30 @@
           "tags": [],
           "options": [
             {
-              "label": "Rarely measured",
+              "label": "Rarely.",
               "score": 1
             },
             {
-              "label": "Measured informally",
+              "label": "Only in some cases.",
               "score": 2
             },
             {
-              "label": "Measured in some defined workflows",
+              "label": "Broadly yes for major actions.",
               "score": 3
             },
             {
-              "label": "Outcomes are tracked and reviewed systematically",
+              "label": "Yes across most important actions.",
               "score": 4
             },
             {
-              "label": "Outcome measurement closes the loop for continuous optimisation",
+              "label": "Yes, consistently and in a way that improves future decisions.",
               "score": 5
             }
           ]
         },
         {
           "id": "di8",
-          "text": "How defensible is the organisation\u2019s claim that GreenOps data is decision-grade?",
+          "text": "Is it fair to say your GreenOps data is truly decision-grade today?",
           "dimension": "assurance_lineage",
           "weight": 4,
           "guidance": "",
@@ -5164,23 +5164,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Hard to defend",
+              "label": "No.",
               "score": 1
             },
             {
-              "label": "Defensible only in limited areas",
+              "label": "Only in a few limited areas.",
               "score": 2
             },
             {
-              "label": "Defensible for standard management use",
+              "label": "In some important areas, yes.",
               "score": 3
             },
             {
-              "label": "Defensible across many material workflows",
+              "label": "Across most key decisions, yes.",
               "score": 4
             },
             {
-              "label": "Defensible as a core management capability",
+              "label": "Yes, clearly and consistently.",
               "score": 5
             }
           ]
