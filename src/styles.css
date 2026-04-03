@@ -553,6 +553,41 @@ h3 { font-size: 1.125rem; }
   background: white;
 }
 
+/* Inferred score display */
+.inferred-score-display {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.inferred-score-badge {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-md) var(--space-lg);
+  background: var(--color-surface-alt);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border-light);
+}
+
+.inferred-score-badge .level-badge {
+  font-size: 0.9375rem;
+  padding: 0.375rem 0.75rem;
+}
+
+.inferred-score-label {
+  font-size: 0.9375rem;
+  color: var(--color-text-secondary);
+  font-weight: 500;
+}
+
+.inferred-score-hint {
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+  margin: 0;
+  padding-left: var(--space-sm);
+}
+
 /* Score controls */
 .score-controls {
   display: grid;

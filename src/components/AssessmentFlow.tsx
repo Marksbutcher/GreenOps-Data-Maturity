@@ -130,26 +130,38 @@ export default function AssessmentFlow({
           ))}
         </div>
 
-        {/* Scores */}
+        {/* Inferred maturity score */}
         <div className="assessment-section">
-          <div className="section-title">Scoring</div>
-          <div className="score-controls">
-            <div className="score-group">
-              <label>Maturity score</label>
-              <div className="score-slider">
-                <input
-                  type="range"
-                  min={1}
-                  max={5}
-                  step={1}
-                  value={result.maturity_score}
-                  onChange={(e) =>
-                    updateResult({ maturity_score: Number(e.target.value) })
-                  }
-                />
-                <span className="score-value">{result.maturity_score}</span>
-              </div>
+          <div className="section-title">Assessed maturity</div>
+          <div className="inferred-score-display">
+            <div className="inferred-score-badge">
+              <span className={`level-badge l${result.maturity_score}`}>
+                Level {result.maturity_score}
+              </span>
+              <span className="inferred-score-label">
+                {Object.entries(domain.maturity_levels).find(
+                  ([level]) => Number(level) === result.maturity_score
+                )?.[1] || ''}
+              </span>
             </div>
+            {Object.keys(result.question_answers).length === 0 && (
+              <p className="inferred-score-hint">
+                Answer the questions above to determine the maturity score for this domain.
+              </p>
+            )}
+            {Object.keys(result.question_answers).length > 0 &&
+              Object.keys(result.question_answers).length < domain.questions.length && (
+              <p className="inferred-score-hint">
+                {domain.questions.length - Object.keys(result.question_answers).length} question{domain.questions.length - Object.keys(result.question_answers).length > 1 ? 's' : ''} remaining — score will refine as you answer.
+              </p>
+            )}
+          </div>
+        </div>
+
+        {/* Supplementary scores */}
+        <div className="assessment-section">
+          <div className="section-title">Supplementary scoring</div>
+          <div className="score-controls">
             <div className="score-group">
               <label>Impact score</label>
               <div className="score-slider">
