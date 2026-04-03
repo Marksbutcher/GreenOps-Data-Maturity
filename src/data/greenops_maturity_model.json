@@ -772,6 +772,41 @@
               "score": 5
             }
           ]
+        },
+        {
+          "id": "op9",
+          "text": "How confident are you in the accuracy and calibration of your energy measurement infrastructure \u2014 meters, sensors, and data collection systems?",
+          "dimension": "assurance_lineage",
+          "weight": 4,
+          "guidance": "Measured energy data is only as good as the measurement infrastructure. Sub-metering quality, calibration frequency, and data collection reliability directly affect the credibility of all downstream calculations.",
+          "evidence_hint": "Meter calibration records, sub-metering architecture documentation, data quality audit results",
+          "tags": [
+            "measurement",
+            "assurance",
+            "data_quality"
+          ],
+          "options": [
+            {
+              "label": "We have no visibility into meter quality or calibration status.",
+              "score": 1
+            },
+            {
+              "label": "We know where meters are but calibration is irregular and data gaps are not tracked.",
+              "score": 2
+            },
+            {
+              "label": "Major meters are identified and periodically calibrated. We can identify data gaps but remediation is ad-hoc.",
+              "score": 3
+            },
+            {
+              "label": "Meter infrastructure is documented, calibrated on schedule, and data gaps are tracked and escalated. Sub-metering covers key zones.",
+              "score": 4
+            },
+            {
+              "label": "Full measurement assurance programme with documented calibration, automated gap detection, sub-metering at equipment or rack level, and regular data quality audits.",
+              "score": 5
+            }
+          ]
         }
       ],
       "maturity_levels": {
@@ -1974,6 +2009,76 @@
               "score": 5
             }
           ]
+        },
+        {
+          "id": "ee9",
+          "text": "For major hardware suppliers, do you have visibility into their manufacturing carbon intensity? Is this factored into supplier selection?",
+          "dimension": "coverage",
+          "weight": 4,
+          "guidance": "Supplier carbon intensity varies dramatically. Many major vendors now publish Scope 1+2 emissions data. Using this in procurement decisions is a material lever for reducing embodied carbon.",
+          "evidence_hint": "Supplier environmental disclosures, procurement evaluation criteria, supplier scorecards",
+          "tags": [
+            "supply_chain",
+            "scope3",
+            "procurement"
+          ],
+          "options": [
+            {
+              "label": "No visibility. We select suppliers on cost and specification only.",
+              "score": 1
+            },
+            {
+              "label": "Some suppliers publish data but we do not use it in procurement decisions.",
+              "score": 2
+            },
+            {
+              "label": "We have carbon intensity data for major suppliers. Sometimes considered in selection.",
+              "score": 3
+            },
+            {
+              "label": "Supplier carbon intensity is part of formal procurement criteria and actively incorporated into decisions.",
+              "score": 4
+            },
+            {
+              "label": "Supplier carbon data is integrated into embodied carbon calculations. Cost versus carbon intensity trade-offs are explicit in procurement.",
+              "score": 5
+            }
+          ]
+        },
+        {
+          "id": "ee10",
+          "text": "In refresh and procurement cycles, do you systematically evaluate circular options such as refurbished, remanufactured, or extended-life alternatives?",
+          "dimension": "method_quality",
+          "weight": 4,
+          "guidance": "Circular alternatives can dramatically reduce embodied carbon. This requires explicit evaluation and quantified trade-off analysis rather than defaulting to new hardware procurement.",
+          "evidence_hint": "Procurement policies on refurbished hardware, embodied carbon comparisons, circular inventory tracking",
+          "tags": [
+            "circularity",
+            "lifecycle",
+            "procurement"
+          ],
+          "options": [
+            {
+              "label": "No. We procure new hardware only.",
+              "score": 1
+            },
+            {
+              "label": "Rarely. Refurbished options considered only if cost-justified and vendor-proposed.",
+              "score": 2
+            },
+            {
+              "label": "Sometimes. For some asset classes we evaluate refurbished options and can estimate the embodied savings.",
+              "score": 3
+            },
+            {
+              "label": "Systematically. Refurbished versus new is part of standard procurement decision with embodied trade-offs analysed.",
+              "score": 4
+            },
+            {
+              "label": "Circular is default consideration. Refurbished, extended-life, and resale options are actively managed with embodied carbon comparison as standard practice.",
+              "score": 5
+            }
+          ]
         }
       ],
       "maturity_levels": {
@@ -2371,6 +2476,41 @@
             },
             {
               "label": "Clearly strong enough for decision-grade use.",
+              "score": 5
+            }
+          ]
+        },
+        {
+          "id": "cf9",
+          "text": "Can you distinguish between location-based and market-based carbon accounting? Do you track renewable energy procurement, PPAs, and REC sourcing with appropriate governance?",
+          "dimension": "method_quality",
+          "weight": 4,
+          "guidance": "Market-based carbon accounting relies on quality of REC sourcing and PPA governance. Location-based versus market-based distinction is essential for credible reporting. Additionality and temporal matching are key quality indicators.",
+          "evidence_hint": "REC certificates, PPA documentation, renewable energy tracking, carbon accounting methodology documentation",
+          "tags": [
+            "renewables",
+            "carbon_accounting",
+            "governance"
+          ],
+          "options": [
+            {
+              "label": "We do not distinguish between location-based and market-based accounting.",
+              "score": 1
+            },
+            {
+              "label": "We are aware of the distinction but use only one method without rigorous governance.",
+              "score": 2
+            },
+            {
+              "label": "We report both location-based and market-based figures. PPA and REC data is collected but governance is informal.",
+              "score": 3
+            },
+            {
+              "label": "Both methods are applied with clear governance. RECs are tracked, validated, and matched to consumption periods.",
+              "score": 4
+            },
+            {
+              "label": "Full renewable energy governance including additionality assessment, temporal matching, and auditable PPA/REC documentation integrated into carbon reporting.",
               "score": 5
             }
           ]
@@ -2779,6 +2919,109 @@
               "score": 5
             }
           ]
+        },
+        {
+          "id": "us9",
+          "text": "Do you track and govern resource consumption for AI/ML workloads including training jobs, fine-tuning, and batch inference?",
+          "dimension": "attribution",
+          "weight": 5,
+          "guidance": "Training jobs and fine-tuning consume significant GPU resources. Governance means tracking who initiates jobs, what they use, expected business value, and cost/carbon approval gates.",
+          "evidence_hint": "ML training job logs, approval system records, cost allocation for GPU infrastructure",
+          "tags": [
+            "ai_governance",
+            "demand_management"
+          ],
+          "options": [
+            {
+              "label": "No governance. Training jobs run ad-hoc without tracking or approval.",
+              "score": 1
+            },
+            {
+              "label": "We can see some training jobs in logs but no centralised tracking or approval process.",
+              "score": 2
+            },
+            {
+              "label": "We track major training jobs (team, dataset size, GPU hours, date). Informally reviewed by ML lead.",
+              "score": 3
+            },
+            {
+              "label": "Formal tracking system with approval gate for jobs above a cost threshold. Most training jobs are logged and reviewed.",
+              "score": 4
+            },
+            {
+              "label": "Full governance: approval gate covering cost and carbon, job tracking dashboard with resource and outcome analysis, post-mortem reviews on expensive jobs.",
+              "score": 5
+            }
+          ]
+        },
+        {
+          "id": "us10",
+          "text": "For cloud-hosted AI services such as LLM APIs, can you track usage volumes and associated carbon impact?",
+          "dimension": "coverage",
+          "weight": 4,
+          "guidance": "Many organisations use cloud AI APIs (GPT-4, Claude, etc). Usage is measurable via tokens and inference calls. Major cloud providers and AI vendors increasingly publish carbon intensity data.",
+          "evidence_hint": "Cloud AI service usage logs, API call tracking, cost allocation by service, carbon intensity estimates",
+          "tags": [
+            "ai_governance",
+            "cloud",
+            "carbon_accounting"
+          ],
+          "options": [
+            {
+              "label": "We use cloud AI services but do not track usage or cost at service level.",
+              "score": 1
+            },
+            {
+              "label": "We can see aggregate AI spend in cloud bills but no usage-level granularity.",
+              "score": 2
+            },
+            {
+              "label": "We measure usage (tokens, requests) for the main AI services. Not yet integrated into carbon accounting.",
+              "score": 3
+            },
+            {
+              "label": "We track AI usage by service and team with estimated carbon per service based on provider data.",
+              "score": 4
+            },
+            {
+              "label": "Granular AI usage tracking linked to carbon estimates from vendor data, integrated into service-level carbon dashboards.",
+              "score": 5
+            }
+          ]
+        },
+        {
+          "id": "us11",
+          "text": "Do you systematically optimise AI workloads for computational efficiency \u2014 for example through prompt engineering, model quantisation, inference caching, or batch processing?",
+          "dimension": "method_quality",
+          "weight": 3,
+          "guidance": "AI workloads can be 10x more efficient with targeted optimisation. Prompt engineering (shorter context), model quantisation (faster/cheaper), inference caching (avoid re-inference), and batch processing all reduce resource consumption.",
+          "evidence_hint": "Prompt design guidelines, model selection criteria, quantisation policies, inference cost tracking",
+          "tags": [
+            "ai_governance",
+            "efficiency"
+          ],
+          "options": [
+            {
+              "label": "No. We optimise for accuracy and capability, not efficiency.",
+              "score": 1
+            },
+            {
+              "label": "Occasionally. Individual engineers optimise prompts or select smaller models.",
+              "score": 2
+            },
+            {
+              "label": "Yes for some critical services. Cost and efficiency are considered in AI system design.",
+              "score": 3
+            },
+            {
+              "label": "Systematically. Prompt engineering, model sizing, and quantisation choices are part of standard practice.",
+              "score": 4
+            },
+            {
+              "label": "Efficiency is a first-class requirement. Automated testing for efficiency, with carbon and cost per inference tracked and optimised.",
+              "score": 5
+            }
+          ]
         }
       ],
       "maturity_levels": {
@@ -3180,6 +3423,41 @@
               "score": 5
             }
           ]
+        },
+        {
+          "id": "at9",
+          "text": "Are your carbon attribution and cost allocation methods aligned \u2014 using the same cost drivers and allocation keys?",
+          "dimension": "attribution",
+          "weight": 5,
+          "guidance": "Carbon and cost should be allocated together using the same drivers (CPU hours, storage GB, etc). Misalignment creates confusion and blocks operational action. This alignment is essential for FinOps-GreenOps integration.",
+          "evidence_hint": "Cost allocation model documentation, carbon allocation model, FinOps and GreenOps governance alignment",
+          "tags": [
+            "finops",
+            "attribution",
+            "governance"
+          ],
+          "options": [
+            {
+              "label": "Carbon and cost use entirely different allocation methods with no alignment.",
+              "score": 1
+            },
+            {
+              "label": "Only loosely aligned. Some cost drivers map to carbon drivers but many do not.",
+              "score": 2
+            },
+            {
+              "label": "Mostly aligned. Main cost drivers (compute, storage, bandwidth) map to carbon allocation drivers.",
+              "score": 3
+            },
+            {
+              "label": "Fully aligned. Carbon and cost use identical allocation drivers. FinOps and GreenOps teams coordinate.",
+              "score": 4
+            },
+            {
+              "label": "Integrated dashboards where carbon and cost per service are co-reported. Cost-carbon trade-offs are explicit in decisions.",
+              "score": 5
+            }
+          ]
         }
       ],
       "maturity_levels": {
@@ -3578,6 +3856,41 @@
             },
             {
               "label": "The telemetry is transparent, trusted and fit for decision use.",
+              "score": 5
+            }
+          ]
+        },
+        {
+          "id": "ct9",
+          "text": "Do you use cloud provider carbon intensity data to inform workload placement decisions \u2014 choosing lower-carbon regions or availability zones where practical?",
+          "dimension": "method_quality",
+          "weight": 4,
+          "guidance": "Major cloud providers publish carbon intensity by region. Using this data in workload placement decisions is a practical lever for reducing operational carbon, particularly for flexible workloads.",
+          "evidence_hint": "Cloud provider sustainability dashboards, region selection criteria, workload placement policies",
+          "tags": [
+            "cloud",
+            "carbon_aware",
+            "workload_placement"
+          ],
+          "options": [
+            {
+              "label": "We do not consider carbon intensity in workload placement decisions.",
+              "score": 1
+            },
+            {
+              "label": "We are aware that regions differ in carbon intensity but it does not influence placement.",
+              "score": 2
+            },
+            {
+              "label": "We consider carbon intensity for some new deployments but existing workloads are not reviewed.",
+              "score": 3
+            },
+            {
+              "label": "Carbon intensity is a factor in workload placement policy. Major workloads are reviewed for region optimisation.",
+              "score": 4
+            },
+            {
+              "label": "Carbon-aware placement is standard. Flexible workloads are scheduled to lower-carbon regions and times. Real-time carbon signals inform dynamic placement.",
               "score": 5
             }
           ]

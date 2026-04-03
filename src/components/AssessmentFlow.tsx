@@ -158,7 +158,7 @@ export default function AssessmentFlow({
             <div className="assessment-intro-details">
               <div className="intro-detail">
                 <strong>How it works</strong>
-                <span>Answer {domain.questions.length} questions per domain using the dropdown selectors. Your maturity scores are calculated automatically from the answers — there is no manual self-scoring.</span>
+                <span>Answer the questions in each domain using the dropdown selectors (typically 8–11 questions per domain). Your maturity scores are calculated automatically from the answers — there is no manual self-scoring.</span>
               </div>
               <div className="intro-detail">
                 <strong>Navigation</strong>

@@ -223,6 +223,18 @@ export default function ResultsDashboard({
                           {patterns.weakAreas.length > 0 && <p><strong>Weak:</strong> {patterns.weakAreas.map(a => a.replace(/_/g, ' ')).join(', ')}</p>}
                         </div>
                       )}
+                      {'operational_impact' in n && (n as any).operational_impact && (
+                        <div className="analysis-section">
+                          <h4>Operational Impact</h4>
+                          <p>{(n as any).operational_impact}</p>
+                        </div>
+                      )}
+                      {'risk_statement' in n && (n as any).risk_statement && (
+                        <div className="analysis-section risk-section">
+                          <h4>Risk Assessment</h4>
+                          <p>{(n as any).risk_statement}</p>
+                        </div>
+                      )}
                       {n.decision_support_summary && (
                         <div className="analysis-section">
                           <h4>Decision Support</h4>

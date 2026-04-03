@@ -18,6 +18,85 @@ function readinessLabel(level: DecisionReadinessLevel): string {
   return labels[level];
 }
 
+/* ─── Build a meaningful summary rather than just listing domain names ─── */
+function buildReadinessSummary(
+  area: string,
+  readiness: DecisionReadinessLevel,
+  domainScores: { domain: { id: string; name: string }; score: number }[],
+  minScore: number,
+  avgScore: number
+): string {
+  if (domainScores.length === 0) {
+    return 'No directly mapped domains for this decision area. Assessment coverage may need to be extended.';
+  }
+
+  const limiting = domainScores
+    .filter((ds) => ds.score <= 2)
+    .sort((a, b) => a.score - b.score);
+  const supporting = domainScores
+    .filter((ds) => ds.score >= 3)
+    .sort((a, b) => b.score - a.score);
+
+  const parts: string[] = [];
+
+  // Readiness interpretation
+  switch (readiness) {
+    case 'reporting_only':
+      parts.push(
+        `Data quality is insufficient for this decision area. Current inputs can support basic disclosure or narrative reporting, but not evidence-based decisions.`
+      );
+      break;
+    case 'directional':
+      parts.push(
+        `Data supports directional analysis — sufficient to identify broad trends and prioritise investigation, but not precise enough for confident investment or governance decisions.`
+      );
+      break;
+    case 'decision_grade':
+      parts.push(
+        `Data is at decision-grade quality. You can make confident operational and investment decisions in this area, supported by measured and attributed evidence.`
+      );
+      break;
+    case 'optimisation_grade':
+      parts.push(
+        `Data supports continuous optimisation. You have the granularity, timeliness, and attribution needed for dynamic management and automated decision-making.`
+      );
+      break;
+  }
+
+  // Limiting factor diagnosis
+  if (limiting.length > 0) {
+    const weakestDomain = limiting[0];
+    parts.push(
+      `Constrained by ${weakestDomain.domain.name.toLowerCase()} (level ${weakestDomain.score}), which is the weakest input.`
+    );
+
+    // Remediation hint: what happens if the weakest link is fixed
+    if (limiting.length === 1 && supporting.length > 0) {
+      const nextMin = domainScores
+        .filter((ds) => ds.domain.id !== weakestDomain.domain.id)
+        .reduce((min, ds) => Math.min(min, ds.score), 5);
+      if (nextMin >= 3) {
+        parts.push(
+          `If ${weakestDomain.domain.name.toLowerCase()} improves to level 3, this decision area reaches decision-grade readiness.`
+        );
+      }
+    } else if (limiting.length > 1) {
+      parts.push(
+        `${limiting.length} domains need improvement: ${limiting.map((l) => `${l.domain.name} (${l.score})`).join(', ')}.`
+      );
+    }
+  }
+
+  // Supporting strength
+  if (supporting.length > 0 && limiting.length > 0) {
+    parts.push(
+      `Supported by ${supporting.map((s) => s.domain.name.toLowerCase()).join(', ')}, which ${supporting.length === 1 ? 'is' : 'are'} at a usable level.`
+    );
+  }
+
+  return parts.join(' ');
+}
+
 export function generateDecisionReadiness(
   results: DomainAssessment[],
   model: MaturityModel
@@ -54,16 +133,7 @@ export function generateDecisionReadiness(
       .filter((ds) => ds.score <= 2)
       .map((ds) => ds.domain.name);
 
-    const summaryParts: string[] = [];
-    if (limiting.length > 0) {
-      summaryParts.push(`Limited by weak maturity in: ${limiting.join(', ')}`);
-    }
-    if (supporting.length > 0) {
-      summaryParts.push(`Supported by: ${supporting.join(', ')}`);
-    }
-    if (domainScores.length === 0) {
-      summaryParts.push('No directly mapped domains');
-    }
+    const summary = buildReadinessSummary(area, readiness, domainScores, minScore, avgScore);
 
     return {
       area,
@@ -71,7 +141,7 @@ export function generateDecisionReadiness(
       label: readinessLabel(readiness),
       supporting_domains: supporting,
       limiting_domains: limiting,
-      summary: (summaryParts.join('. ') || 'No data available') + '.',
+      summary,
     };
   });
 }

@@ -138,6 +138,26 @@ export function downloadPDF(
       y += dimLines.length * 4.5 + 4;
     }
 
+    if ('operational_impact' in narrative && (narrative as any).operational_impact) {
+      doc.setFont(undefined as any, 'bold');
+      doc.text('Operational Impact', 20, y);
+      doc.setFont(undefined as any, 'normal');
+      y += 5;
+      const opLines = doc.splitTextToSize((narrative as any).operational_impact, w - 40);
+      doc.text(opLines, 20, y);
+      y += opLines.length * 4.5 + 4;
+    }
+
+    if ('risk_statement' in narrative && (narrative as any).risk_statement) {
+      doc.setFont(undefined as any, 'bold');
+      doc.text('Risk Assessment', 20, y);
+      doc.setFont(undefined as any, 'normal');
+      y += 5;
+      const riskLines = doc.splitTextToSize((narrative as any).risk_statement, w - 40);
+      doc.text(riskLines, 20, y);
+      y += riskLines.length * 4.5 + 4;
+    }
+
     if (narrative.decision_support_summary) {
       doc.setFont(undefined as any, 'bold');
       doc.text('Decision Support', 20, y);
