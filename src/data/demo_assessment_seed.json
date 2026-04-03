@@ -1,0 +1,255 @@
+{
+  "organisation_profile": {
+    "organisation_name": "Example Enterprise Bank plc",
+    "sector": "Financial services",
+    "sub_sector": "Retail and commercial banking",
+    "organisation_size": "Large enterprise",
+    "hosting_profile": "Hybrid with colocation and significant cloud usage",
+    "assessment_date": "2026-04-03",
+    "assessor_name": "Demo Assessor",
+    "notes": "Seed dataset showing uneven maturity across domains for demo purposes."
+  },
+  "assessment_results": [
+    {
+      "domain_id": "asset_inventory",
+      "maturity_score": 3,
+      "impact_score": 5,
+      "confidence_score": 3,
+      "target_maturity": 4,
+      "priority": "High",
+      "rationale": "Core inventory exists across most estate areas, but service mapping and lifecycle consistency remain uneven.",
+      "evidence": "CMDB extract, asset register, cloud inventory export",
+      "decision_support_status": "directional",
+      "supported_decisions": [
+        "standardised reporting",
+        "broad hotspot analysis",
+        "some lifecycle prioritisation"
+      ],
+      "unsupported_decisions": [
+        "high-confidence product-level embodied decisions across the full estate",
+        "fully reliable service-level allocation"
+      ]
+    },
+    {
+      "domain_id": "operational_power",
+      "maturity_score": 3,
+      "impact_score": 5,
+      "confidence_score": 4,
+      "target_maturity": 4,
+      "priority": "High",
+      "rationale": "Measured site-level energy exists for core facilities, but attribution to workloads and services is limited.",
+      "evidence": "Site metering report, DCIM export, colo invoices",
+      "decision_support_status": "decision_grade",
+      "supported_decisions": [
+        "site-level operational reporting",
+        "broad facility comparison",
+        "initial efficiency tracking"
+      ],
+      "unsupported_decisions": [
+        "workload-level optimisation",
+        "fine-grained service allocation"
+      ]
+    },
+    {
+      "domain_id": "water_data",
+      "maturity_score": 2,
+      "impact_score": 3,
+      "confidence_score": 2,
+      "target_maturity": 3,
+      "priority": "Medium",
+      "rationale": "Some provider and facility totals exist, but water is inconsistently captured and lacks contextual detail.",
+      "evidence": "Provider sustainability report",
+      "decision_support_status": "reporting_only",
+      "supported_decisions": [
+        "high-level water reporting where data exists"
+      ],
+      "unsupported_decisions": [
+        "cooling strategy decisions",
+        "location trade-off decisions involving water stress"
+      ]
+    },
+    {
+      "domain_id": "infra_efficiency_metrics",
+      "maturity_score": 2,
+      "impact_score": 5,
+      "confidence_score": 2,
+      "target_maturity": 4,
+      "priority": "High",
+      "rationale": "PUE-style values are reused consistently but are broad, provider-led and not well validated by season or boundary.",
+      "evidence": "Provider KPI reports, internal methodology note",
+      "decision_support_status": "directional",
+      "supported_decisions": [
+        "repeatable broad overhead allocation"
+      ],
+      "unsupported_decisions": [
+        "credible customer/rack-level non-IT allocation",
+        "strong provider comparison"
+      ]
+    },
+    {
+      "domain_id": "embodied_emissions",
+      "maturity_score": 2,
+      "impact_score": 4,
+      "confidence_score": 2,
+      "target_maturity": 4,
+      "priority": "High",
+      "rationale": "Embodied estimates rely mainly on category and sub-category averages, with limited product specificity.",
+      "evidence": "Spend file, category factors workbook",
+      "decision_support_status": "directional",
+      "supported_decisions": [
+        "rough portfolio hotspot analysis"
+      ],
+      "unsupported_decisions": [
+        "supplier challenge",
+        "product-level refresh and redeployment decisions"
+      ]
+    },
+    {
+      "domain_id": "carbon_factors",
+      "maturity_score": 3,
+      "impact_score": 4,
+      "confidence_score": 3,
+      "target_maturity": 4,
+      "priority": "Medium",
+      "rationale": "Location-based and market-based distinctions exist, but factor resolution remains relatively coarse for optimisation use.",
+      "evidence": "Factor methodology note",
+      "decision_support_status": "decision_grade",
+      "supported_decisions": [
+        "structured reporting",
+        "broad region comparison"
+      ],
+      "unsupported_decisions": [
+        "fine-grained time-sensitive scheduling decisions"
+      ]
+    },
+    {
+      "domain_id": "usage_maturity",
+      "maturity_score": 2,
+      "impact_score": 5,
+      "confidence_score": 2,
+      "target_maturity": 4,
+      "priority": "High",
+      "rationale": "Basic VM utilisation is visible in places, but application, service and AI usage signals are weak and inconsistent.",
+      "evidence": "VMware dashboard screenshots, limited app analytics",
+      "decision_support_status": "directional",
+      "supported_decisions": [
+        "basic rightsizing discussion",
+        "identification of some obvious idle resources"
+      ],
+      "unsupported_decisions": [
+        "credible service optimisation",
+        "AI demand governance",
+        "low-value demand challenge across key services"
+      ]
+    },
+    {
+      "domain_id": "allocation_logic",
+      "maturity_score": 2,
+      "impact_score": 5,
+      "confidence_score": 2,
+      "target_maturity": 4,
+      "priority": "High",
+      "rationale": "Most outputs remain broad environment totals with only limited service or owner attribution.",
+      "evidence": "Allocation workbook",
+      "decision_support_status": "directional",
+      "supported_decisions": [
+        "broad accountability discussion"
+      ],
+      "unsupported_decisions": [
+        "service-level accountability",
+        "workload-level optimisation targeting"
+      ]
+    },
+    {
+      "domain_id": "cloud_telemetry",
+      "maturity_score": 3,
+      "impact_score": 5,
+      "confidence_score": 3,
+      "target_maturity": 4,
+      "priority": "High",
+      "rationale": "Cloud cost and usage exports are available and partly standardised, but service-level activity and optimisation signals are uneven.",
+      "evidence": "Cloudability exports, provider dashboards",
+      "decision_support_status": "decision_grade",
+      "supported_decisions": [
+        "broad cloud optimisation",
+        "region-aware reporting"
+      ],
+      "unsupported_decisions": [
+        "consistent service-level architecture optimisation",
+        "carbon-aware scheduling at scale"
+      ]
+    },
+    {
+      "domain_id": "colo_provider_data",
+      "maturity_score": 2,
+      "impact_score": 4,
+      "confidence_score": 2,
+      "target_maturity": 3,
+      "priority": "High",
+      "rationale": "Colocation data is largely invoice- and provider-report-driven, with limited transparency and weak customer attribution.",
+      "evidence": "Invoices, provider sustainability statement",
+      "decision_support_status": "reporting_only",
+      "supported_decisions": [
+        "basic inclusion of colo environments in reporting"
+      ],
+      "unsupported_decisions": [
+        "strong provider benchmarking",
+        "credible customer/rack-level decisions"
+      ]
+    },
+    {
+      "domain_id": "temporal_timeliness",
+      "maturity_score": 2,
+      "impact_score": 4,
+      "confidence_score": 3,
+      "target_maturity": 4,
+      "priority": "Medium",
+      "rationale": "Most data is monthly or slower, with limited near-operational visibility.",
+      "evidence": "Reporting calendar",
+      "decision_support_status": "directional",
+      "supported_decisions": [
+        "periodic management reporting"
+      ],
+      "unsupported_decisions": [
+        "rapid anomaly detection",
+        "time-sensitive optimisation"
+      ]
+    },
+    {
+      "domain_id": "lineage_assurance",
+      "maturity_score": 3,
+      "impact_score": 5,
+      "confidence_score": 3,
+      "target_maturity": 4,
+      "priority": "Medium",
+      "rationale": "Core methods are documented, but confidence levels and exception handling are not consistently measured.",
+      "evidence": "Methodology pack, calculation workbook",
+      "decision_support_status": "decision_grade",
+      "supported_decisions": [
+        "structured governance and internal reporting"
+      ],
+      "unsupported_decisions": [
+        "high-assurance external scrutiny across all domains"
+      ]
+    },
+    {
+      "domain_id": "decision_integration",
+      "maturity_score": 2,
+      "impact_score": 5,
+      "confidence_score": 2,
+      "target_maturity": 4,
+      "priority": "High",
+      "rationale": "GreenOps inputs inform some one-off decisions, but are not yet embedded in normal governance and optimisation workflows.",
+      "evidence": "Sustainability steering deck",
+      "decision_support_status": "directional",
+      "supported_decisions": [
+        "isolated prioritisation discussions"
+      ],
+      "unsupported_decisions": [
+        "systematic optimisation",
+        "benefits tracking",
+        "continuous improvement"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1797 @@
+{
+  "model_name": "GreenOps Data Input Maturity Assessment",
+  "version": "1.0",
+  "description": "Structured source-of-truth model for a GreenOps data input maturity assessment tool covering scoring, decision-readiness and recommendation themes.",
+  "maturity_scale": {
+    "1": {
+      "label": "Initial / Ad hoc",
+      "description": "Inputs are fragmented, reactive, estimate-heavy and not reliable enough for confident decision-making."
+    },
+    "2": {
+      "label": "Managed / Repeatable",
+      "description": "Inputs can be gathered and reused in a repeatable way, but coverage, precision and attribution remain inconsistent."
+    },
+    "3": {
+      "label": "Defined / Standardised",
+      "description": "Data sources, methods and ownership are documented and standardised across key areas."
+    },
+    "4": {
+      "label": "Quantitatively Managed / Measured",
+      "description": "Data quality, granularity, coverage and confidence are measured and controlled using evidence."
+    },
+    "5": {
+      "label": "Optimising",
+      "description": "Inputs are continuously improved, increasingly automated and embedded into operational and strategic decision-making."
+    }
+  },
+  "decision_support_statuses": [
+    {
+      "id": "reporting_only",
+      "label": "Reporting only",
+      "description": "Suitable mainly for broad reporting, awareness and retrospective analysis."
+    },
+    {
+      "id": "directional",
+      "label": "Directional decision support",
+      "description": "Useful for indicative prioritisation or broad decisions, but not strong enough for high-confidence operational action."
+    },
+    {
+      "id": "decision_grade",
+      "label": "Decision-grade",
+      "description": "Strong enough to support controlled operational, financial or sustainability decisions in relevant areas."
+    },
+    {
+      "id": "optimisation_grade",
+      "label": "Optimisation-grade",
+      "description": "Strong enough to support continuous optimisation, active management and tighter governance loops."
+    }
+  ],
+  "cross_cutting_lenses": [
+    {
+      "id": "granularity",
+      "label": "Granularity",
+      "description": "How specific the data is to an asset, service, workload, rack, site, provider or region."
+    },
+    {
+      "id": "coverage",
+      "label": "Coverage",
+      "description": "How much of the relevant estate is included."
+    },
+    {
+      "id": "attribution",
+      "label": "Attribution",
+      "description": "Whether the data can be tied to owners, services, workloads or demand."
+    },
+    {
+      "id": "temporal_resolution",
+      "label": "Temporal resolution",
+      "description": "Annual, quarterly, monthly, daily, hourly or near-real-time conditions."
+    },
+    {
+      "id": "locational_resolution",
+      "label": "Locational resolution",
+      "description": "National, grid region, cloud region, site, hall, rack, host or workload-specific conditions."
+    },
+    {
+      "id": "timeliness",
+      "label": "Timeliness",
+      "description": "How quickly data becomes available after the underlying activity occurs."
+    },
+    {
+      "id": "method_quality",
+      "label": "Method quality",
+      "description": "Whether the method is measured, modelled, proxy-based or assumed, and how fit-for-purpose it is."
+    },
+    {
+      "id": "assurance_lineage",
+      "label": "Assurance / lineage",
+      "description": "Whether the source, method and assumptions are transparent and auditable."
+    }
+  ],
+  "default_impact_scores": {
+    "asset_inventory": 5,
+    "operational_power": 5,
+    "water_data": 3,
+    "infra_efficiency_metrics": 5,
+    "embodied_emissions": 4,
+    "carbon_factors": 4,
+    "usage_maturity": 5,
+    "allocation_logic": 5,
+    "cloud_telemetry": 5,
+    "colo_provider_data": 4,
+    "temporal_timeliness": 4,
+    "lineage_assurance": 5,
+    "decision_integration": 5
+  },
+  "domains": [
+    {
+      "id": "asset_inventory",
+      "name": "Asset inventory and configuration data",
+      "definition": "Assesses whether the technology estate is known well enough to support GreenOps calculations across cloud, on-premise and colocation environments.",
+      "why_it_matters": "Weak inventory data undermines embodied emissions matching, allocation, lifecycle decisions, service mapping and assurance.",
+      "default_impact_score": 5,
+      "decision_areas": [
+        "footprint reporting",
+        "hotspot identification",
+        "refresh and lifecycle decisions",
+        "allocation and attribution",
+        "service mapping",
+        "supplier challenge"
+      ],
+      "maturity_levels": {
+        "1": "Asset records are incomplete, inconsistent or fragmented. Key fields such as model, owner, location, environment or lifecycle status are often missing.",
+        "2": "Core asset data is captured and reused in a repeatable way, but quality varies by domain and significant manual interpretation is still required.",
+        "3": "Asset standards are documented and used consistently enough to support standardised GreenOps calculations across much of the estate.",
+        "4": "Data quality, completeness, matchability and coverage are measured. The organisation can quantify how much of the estate is calculation-ready.",
+        "5": "Asset data is integrated, actively maintained and continuously improved to support lifecycle, financial and GreenOps decisions with minimal manual effort."
+      },
+      "questions": [
+        {
+          "id": "asset_coverage",
+          "text": "How complete is the asset inventory across cloud, on-premise and colocation environments?",
+          "type": "single_select",
+          "options": [
+            "Highly incomplete or fragmented",
+            "Partially complete across some environments",
+            "Mostly complete across key environments",
+            "Measured completeness and active quality control",
+            "Highly complete, continuously maintained and integrated"
+          ],
+          "maps_to_levels": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        },
+        {
+          "id": "asset_fields",
+          "text": "How well are key GreenOps fields maintained, such as vendor, model, location, owner, service link, lifecycle state and hosting environment?",
+          "type": "single_select",
+          "options": [
+            "Mostly missing or inconsistent",
+            "Partially maintained with frequent gaps",
+            "Defined and usually maintained",
+            "Measured and quality-controlled",
+            "Consistently maintained and integrated across systems"
+          ],
+          "maps_to_levels": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        },
+        {
+          "id": "asset_service_mapping",
+          "text": "To what extent can assets be linked to services, applications or business owners?",
+          "type": "single_select",
+          "options": [
+            "Rarely or not at all",
+            "Limited manual linking only",
+            "Defined linking for major services",
+            "Measured coverage for service mapping",
+            "Strong integrated service/dependency mapping"
+          ],
+          "maps_to_levels": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ],
+      "decision_support_by_level": {
+        "1": {
+          "supports": [
+            "basic portfolio inventory discussion"
+          ],
+          "does_not_support": [
+            "credible embodied emissions analysis",
+            "refresh optimisation",
+            "service-level attribution"
+          ]
+        },
+        "2": {
+          "supports": [
+            "rough reporting and broad hotspot indication"
+          ],
+          "does_not_support": [
+            "product-level embodied decisions",
+            "strong lifecycle optimisation",
+            "reliable service mapping"
+          ]
+        },
+        "3": {
+          "supports": [
+            "standardised reporting and better prioritisation"
+          ],
+          "does_not_support": [
+            "high-confidence allocation everywhere",
+            "fully auditable lifecycle decisioning"
+          ]
+        },
+        "4": {
+          "supports": [
+            "confident analysis, attribution and target setting across most of the estate"
+          ],
+          "does_not_support": [
+            "continuous optimisation everywhere without remaining data gaps"
+          ]
+        },
+        "5": {
+          "supports": [
+            "decision-grade lifecycle, allocation and optimisation decisions"
+          ],
+          "does_not_support": []
+        }
+      },
+      "recommendation_themes": {
+        "low": [
+          "improve core inventory completeness",
+          "standardise mandatory asset fields",
+          "clean vendor/model naming",
+          "link assets to hosting environment and lifecycle stage"
+        ],
+        "mid": [
+          "increase service and owner mapping",
+          "measure data quality and match rates",
+          "reduce manual reconciliation"
+        ],
+        "high": [
+          "integrate inventory into operational, financial and sustainability workflows",
+          "continuously improve asset lineage and lifecycle coverage"
+        ]
+      },
+      "evidence_examples": [
+        "CMDB extract",
+        "asset register",
+        "cloud inventory exports",
+        "colocation rack schedules",
+        "service ownership register"
+      ]
+    },
+    {
+      "id": "operational_power",
+      "name": "Operational power and energy data",
+      "definition": "Assesses the quality and granularity of electricity and energy inputs used in GreenOps calculations.",
+      "why_it_matters": "Energy is a foundational input for operational emissions, efficiency analysis, capacity planning and non-IT load allocation.",
+      "default_impact_score": 5,
+      "decision_areas": [
+        "operational emissions reporting",
+        "efficiency benchmarking",
+        "capacity planning",
+        "workload placement",
+        "facility optimisation",
+        "target tracking"
+      ],
+      "maturity_levels": {
+        "1": "Energy is estimated using spend, contract values, floor area or broad averages.",
+        "2": "Site- or provider-level energy data is collected and reused, but attribution remains broad and proxy-heavy.",
+        "3": "Measured energy data is standardised across key environments, with documented methods for IT and infrastructure overhead treatment.",
+        "4": "Energy is measured at meaningful operational levels and coverage, cadence and confidence are actively monitored.",
+        "5": "Energy inputs are granular, timely and connected to services, workloads or operational demand, enabling optimisation and control."
+      },
+      "questions": [
+        {
+          "id": "power_source",
+          "text": "What is the main basis for operational energy calculations?",
+          "type": "single_select",
+          "options": [
+            "Spend or broad proxy only",
+            "Total site/provider bill allocated",
+            "Measured site-level power",
+            "Measured hall/rack/cluster power",
+            "Host/device/workload-level power or strong near-real-time telemetry"
+          ],
+          "maps_to_levels": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        },
+        {
+          "id": "power_granularity",
+          "text": "What is the best sustained granularity available for energy data?",
+          "type": "single_select",
+          "options": [
+            "Annual or ad hoc totals only",
+            "Periodic site totals",
+            "Regular site-level measured data",
+            "Hall/rack/cluster level",
+            "Host/device/workload level"
+          ],
+          "maps_to_levels": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        },
+        {
+          "id": "power_attribution",
+          "text": "How well can energy data be attributed to services, applications, tenants or business demand?",
+          "type": "single_select",
+          "options": [
+            "Not meaningfully attributable",
+            "Broad proxy allocation only",
+            "Attributable to major environments or sites",
+            "Attributable to platforms/services in key areas",
+            "Strong service/workload attribution"
+          ],
+          "maps_to_levels": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ],
+      "decision_support_by_level": {
+        "1": {
+          "supports": [
+            "very rough footprint estimation"
+          ],
+          "does_not_support": [
+            "credible efficiency analysis",
+            "rightsizing decisions",
+            "service-level optimisation"
+          ]
+        },
+        "2": {
+          "supports": [
+            "site/provider-level reporting",
+            "broad estate trend analysis"
+          ],
+          "does_not_support": [
+            "strong attribution",
+            "workload placement",
+            "fine-grained operational optimisation"
+          ]
+        },
+        "3": {
+          "supports": [
+            "standard operational reporting",
+            "site benchmarking",
+            "better non-IT allocation"
+          ],
+          "does_not_support": [
+            "consistent workload-level decisioning"
+          ]
+        },
+        "4": {
+          "supports": [
+            "measured performance management and stronger optimisation across key environments"
+          ],
+          "does_not_support": [
+            "fully continuous optimisation in areas lacking telemetry"
+          ]
+        },
+        "5": {
+          "supports": [
+            "decision-grade operational optimisation and workload/service-level energy decisions"
+          ],
+          "does_not_support": []
+        }
+      },
+      "recommendation_themes": {
+        "low": [
+          "replace spend proxies with measured energy where possible",
+          "improve metering coverage",
+          "document allocation logic"
+        ],
+        "mid": [
+          "increase operational granularity",
+          "connect energy to service/application views",
+          "validate assumptions regularly"
+        ],
+        "high": [
+          "use timely energy signals for optimisation, scheduling and governance"
+        ]
+      },
+      "evidence_examples": [
+        "utility bills",
+        "PDU/UPS/DCIM exports",
+        "rack metering reports",
+        "cloud provider energy/emissions exports",
+        "capacity monitoring dashboards"
+      ]
+    },
+    {
+      "id": "water_data",
+      "name": "Water data",
+      "definition": "Assesses the quality and applicability of water consumption inputs used in GreenOps calculations, especially for data centres and AI-relevant cooling environments.",
+      "why_it_matters": "Water can be material in data centre and AI contexts, particularly where cooling design, geography or water stress matter.",
+      "default_impact_score": 3,
+      "decision_areas": [
+        "site sustainability reporting",
+        "cooling strategy",
+        "location strategy",
+        "water-risk discussion",
+        "AI hosting considerations"
+      ],
+      "maturity_levels": {
+        "1": "Water is not included or is represented only qualitatively.",
+        "2": "Site or provider water totals are available for some environments, usually with broad allocation assumptions.",
+        "3": "Water collection methods are defined and used consistently where material, especially for data-centre-related calculations.",
+        "4": "Water use is measured over time with stronger distinction between source, cooling context and facility relevance.",
+        "5": "Water data is timely, decision-grade and used to inform operational choices, location strategy and environmental trade-off decisions."
+      },
+      "questions": [
+        {
+          "id": "water_availability",
+          "text": "How available is water consumption data for relevant facilities or providers?",
+          "type": "single_select",
+          "options": [
+            "Not available",
+            "Occasional annual/provider totals",
+            "Regular site/provider totals",
+            "Measured over time with context",
+            "Timely, attributable and operationally useful"
+          ],
+          "maps_to_levels": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        },
+        {
+          "id": "water_context",
+          "text": "How much contextual detail exists for water data, such as potable vs non-potable, cooling mode or local water stress?",
+          "type": "single_select",
+          "options": [
+            "None",
+            "Very limited",
+            "Some defined context",
+            "Measured contextual distinctions",
+            "Strong contextualised decision-grade data"
+          ],
+          "maps_to_levels": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ],
+      "decision_support_by_level": {
+        "1": {
+          "supports": [
+            "qualitative risk discussion only"
+          ],
+          "does_not_support": [
+            "credible water reporting",
+            "site or provider comparison"
+          ]
+        },
+        "2": {
+          "supports": [
+            "high-level reporting where material"
+          ],
+          "does_not_support": [
+            "strong cooling or location decisions"
+          ]
+        },
+        "3": {
+          "supports": [
+            "structured reporting and basic site comparison"
+          ],
+          "does_not_support": [
+            "timely optimisation or strong water-risk decisioning"
+          ]
+        },
+        "4": {
+          "supports": [
+            "measured water performance management and better trade-off analysis"
+          ],
+          "does_not_support": [
+            "continuous optimisation everywhere without remaining data gaps"
+          ]
+        },
+        "5": {
+          "supports": [
+            "decision-grade site, cooling and sustainability choices involving water"
+          ],
+          "does_not_support": []
+        }
+      },
+      "recommendation_themes": {
+        "low": [
+          "establish minimum provider/site water reporting",
+          "identify where water is material",
+          "document assumptions clearly"
+        ],
+        "mid": [
+          "differentiate cooling-related water use",
+          "add geographic context such as water stress",
+          "improve cadence"
+        ],
+        "high": [
+          "use water data in siting, cooling and AI hosting decisions"
+        ]
+      },
+      "evidence_examples": [
+        "facility water reports",
+        "provider sustainability reports",
+        "BMS/DCIM water data",
+        "water stress reference data"
+      ]
+    },
+    {
+      "id": "infra_efficiency_metrics",
+      "name": "Infrastructure efficiency metric quality",
+      "definition": "Assesses the accuracy and appropriateness of PUE, WUE, CUE, CER, CLF and similar metrics used to allocate non-IT load.",
+      "why_it_matters": "These metrics often form the bridge between IT activity and total facility impact. Weak metrics distort GreenOps calculations.",
+      "default_impact_score": 5,
+      "decision_areas": [
+        "non-IT load allocation",
+        "facility comparison",
+        "customer/tenant allocation",
+        "provider challenge",
+        "operational improvement"
+      ],
+      "maturity_levels": {
+        "1": "PUE, WUE, CUE and related metrics are assumed, stale or based on design or marketing values.",
+        "2": "Standard infrastructure metrics are used consistently, but remain broad, infrequently updated and only partly validated.",
+        "3": "Methods and boundaries for using infrastructure metrics are documented and standardised, with clear distinction between measured and estimated values.",
+        "4": "Infrastructure metrics are operationally measured, reviewed and validated over time, including site and seasonal variation.",
+        "5": "Infrastructure metrics are used with clear boundary discipline, known limitations and sufficient granularity to support credible non-IT load allocation and improvement activity."
+      },
+      "questions": [
+        {
+          "id": "metric_basis",
+          "text": "What best describes the basis of PUE/WUE/CUE-style metrics used in calculations?",
+          "type": "single_select",
+          "options": [
+            "Assumed, design or marketing figures",
+            "Repeatable broad provider/site figures",
+            "Documented standard values with boundary rules",
+            "Operationally measured and validated values",
+            "Decision-grade measured values with clear limitations and boundary discipline"
+          ],
+          "maps_to_levels": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        },
+        {
+          "id": "metric_variation",
+          "text": "How well do these metrics reflect real variation such as seasonality, site differences or operating mode?",
+          "type": "single_select",
+          "options": [
+            "Not at all",
+            "Very limited",
+            "Partly reflected",
+            "Measured and reviewed over time",
+            "Strongly reflected with decision-grade use"
+          ],
+          "maps_to_levels": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ],
+      "decision_support_by_level": {
+        "1": {
+          "supports": [
+            "very rough overhead allocation only"
+          ],
+          "does_not_support": [
+            "credible provider comparison",
+            "customer-level allocation",
+            "operational improvement tracking"
+          ]
+        },
+        "2": {
+          "supports": [
+            "repeatable high-level overhead allocation"
+          ],
+          "does_not_support": [
+            "strong site comparison or optimisation"
+          ]
+        },
+        "3": {
+          "supports": [
+            "standardised reporting and better allocation discipline"
+          ],
+          "does_not_support": [
+            "fine-grained decisioning where variation matters"
+          ]
+        },
+        "4": {
+          "supports": [
+            "measured overhead allocation and improvement tracking"
+          ],
+          "does_not_support": [
+            "continuous high-granularity allocation without remaining gaps"
+          ]
+        },
+        "5": {
+          "supports": [
+            "decision-grade non-IT load allocation and provider/facility challenge"
+          ],
+          "does_not_support": []
+        }
+      },
+      "recommendation_themes": {
+        "low": [
+          "separate measured from assumed metrics",
+          "define metric boundaries clearly",
+          "avoid using design values as operational truth"
+        ],
+        "mid": [
+          "validate site and seasonal variation",
+          "align methods to recognised standards",
+          "improve provider transparency"
+        ],
+        "high": [
+          "apply metrics only at appropriate boundaries and use them to drive improvement"
+        ]
+      },
+      "evidence_examples": [
+        "EUCOC/ISO metrics reports",
+        "provider technical reports",
+        "PUE/WUE trend data",
+        "methodology documentation"
+      ]
+    },
+    {
+      "id": "embodied_emissions",
+      "name": "Embodied emissions data",
+      "definition": "Assesses the quality of embodied carbon inputs for hardware, services and products.",
+      "why_it_matters": "Embodied data is essential for lifecycle, procurement, refresh, reuse and circularity decisions.",
+      "default_impact_score": 4,
+      "decision_areas": [
+        "refresh timing",
+        "redeployment",
+        "procurement",
+        "supplier challenge",
+        "circularity",
+        "portfolio hotspot analysis"
+      ],
+      "maturity_levels": {
+        "1": "Embodied impact is absent or estimated using spend-based factors only.",
+        "2": "Category or sub-category averages are used consistently enough for rough portfolio reporting.",
+        "3": "Standard matching methods exist for using vendor averages or product family proxies.",
+        "4": "Product- or vendor-specific totals from LCAs, EPDs or declared data are used increasingly across the estate.",
+        "5": "Product-specific lifecycle breakdowns support refresh, reuse, circularity and supplier challenge decisions."
+      },
+      "questions": [
+        {
+          "id": "embodied_basis",
+          "text": "What is the main basis for embodied emissions calculations?",
+          "type": "single_select",
+          "options": [
+            "Spend-based only",
+            "Generic category averages",
+            "Sub-category or vendor averages",
+            "Product/vendor-specific totals",
+            "Product-specific lifecycle breakdowns"
+          ],
+          "maps_to_levels": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        },
+        {
+          "id": "embodied_match",
+          "text": "How well can assets or services be matched to the correct embodied factor?",
+          "type": "single_select",
+          "options": [
+            "Rarely",
+            "Sometimes via broad categories",
+            "Usually via defined matching rules",
+            "Measured product/vendor match quality",
+            "High-confidence product-level matching with lifecycle detail"
+          ],
+          "maps_to_levels": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ],
+      "decision_support_by_level": {
+        "1": {
+          "supports": [
+            "broad directional reporting only"
+          ],
+          "does_not_support": [
+            "refresh decisions",
+            "supplier comparison",
+            "circularity optimisation"
+          ]
+        },
+        "2": {
+          "supports": [
+            "rough hotspot analysis"
+          ],
+          "does_not_support": [
+            "product-level procurement or lifecycle choices"
+          ]
+        },
+        "3": {
+          "supports": [
+            "structured portfolio analysis and better prioritisation"
+          ],
+          "does_not_support": [
+            "high-confidence supplier or product challenge everywhere"
+          ]
+        },
+        "4": {
+          "supports": [
+            "stronger refresh, procurement and supplier decisions across covered areas"
+          ],
+          "does_not_support": [
+            "full lifecycle optimisation where stage breakdown is absent"
+          ]
+        },
+        "5": {
+          "supports": [
+            "decision-grade lifecycle, procurement and circularity optimisation"
+          ],
+          "does_not_support": []
+        }
+      },
+      "recommendation_themes": {
+        "low": [
+          "move beyond spend factors",
+          "improve asset matching",
+          "use sub-category or vendor data where possible"
+        ],
+        "mid": [
+          "engage suppliers for product-specific data",
+          "distinguish refurbished, redeployed and new assets",
+          "improve lifecycle assumptions"
+        ],
+        "high": [
+          "use lifecycle-stage data to optimise refresh and circularity decisions"
+        ]
+      },
+      "evidence_examples": [
+        "vendor LCAs",
+        "EPDs",
+        "supplier declarations",
+        "asset-to-model mapping files",
+        "procurement data"
+      ]
+    },
+    {
+      "id": "carbon_factors",
+      "name": "Carbon intensity and emissions factors",
+      "definition": "Assesses the quality of factors used to translate energy, activity or service use into carbon impact.",
+      "why_it_matters": "Weak factor selection can distort otherwise solid calculations, especially where time and location matter.",
+      "default_impact_score": 4,
+      "decision_areas": [
+        "operational emissions reporting",
+        "location strategy",
+        "cloud region comparison",
+        "market vs location-based reporting",
+        "target tracking"
+      ],
+      "maturity_levels": {
+        "1": "Emissions rely on broad annual factors with little locational or methodological precision.",
+        "2": "Standard factor sets are used consistently, but remain relatively coarse.",
+        "3": "Clear rules exist for location-based, market-based and supplier-specific factors, and are applied consistently.",
+        "4": "Factor quality is actively managed, with stronger temporal and locational relevance where needed.",
+        "5": "Carbon intensity data is sufficiently granular and well-governed to support location- and time-sensitive operational decisions."
+      },
+      "questions": [
+        {
+          "id": "factor_resolution",
+          "text": "How granular are the emissions factors used?",
+          "type": "single_select",
+          "options": [
+            "Broad annual average only",
+            "Standard country/provider averages",
+            "Defined rules for location vs market-based usage",
+            "More granular temporal or locational factors",
+            "Decision-grade time/location-sensitive factors"
+          ],
+          "maps_to_levels": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        },
+        {
+          "id": "factor_governance",
+          "text": "How well governed is the choice and use of factors?",
+          "type": "single_select",
+          "options": [
+            "Ad hoc",
+            "Repeatable but basic",
+            "Documented and standardised",
+            "Measured and reviewed",
+            "Strongly governed and fit-for-purpose"
+          ],
+          "maps_to_levels": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ],
+      "decision_support_by_level": {
+        "1": {
+          "supports": [
+            "basic emissions estimates"
+          ],
+          "does_not_support": [
+            "credible region or timing-sensitive decisions"
+          ]
+        },
+        "2": {
+          "supports": [
+            "standard operational reporting"
+          ],
+          "does_not_support": [
+            "strong optimisation where time/location matters"
+          ]
+        },
+        "3": {
+          "supports": [
+            "reliable structured reporting including market/location distinctions"
+          ],
+          "does_not_support": [
+            "fine-grained scheduling or siting decisions"
+          ]
+        },
+        "4": {
+          "supports": [
+            "better operational and strategic decisions using improved factor relevance"
+          ],
+          "does_not_support": [
+            "continuous optimisation everywhere without remaining granularity gaps"
+          ]
+        },
+        "5": {
+          "supports": [
+            "decision-grade time- and location-sensitive carbon choices"
+          ],
+          "does_not_support": []
+        }
+      },
+      "recommendation_themes": {
+        "low": [
+          "clarify factor governance",
+          "separate market-based and location-based logic",
+          "avoid over-reliance on coarse annual averages"
+        ],
+        "mid": [
+          "improve locational and temporal relevance where material",
+          "review provider-specific factor quality"
+        ],
+        "high": [
+          "use factor quality to inform siting, scheduling and optimisation choices"
+        ]
+      },
+      "evidence_examples": [
+        "factor methodology",
+        "grid intensity sources",
+        "supplier-specific factor documentation",
+        "market-based residual mix references"
+      ]
+    },
+    {
+      "id": "usage_maturity",
+      "name": "Asset, workload, application and service usage maturity",
+      "definition": "Assesses whether the organisation understands whether infrastructure and services are actually being used efficiently and meaningfully, including AI-relevant service usage patterns.",
+      "why_it_matters": "GreenOps depends on understanding not just what is running, but whether it is justified, efficient and delivering value relative to demand.",
+      "default_impact_score": 5,
+      "decision_areas": [
+        "rightsizing",
+        "decommissioning",
+        "service optimisation",
+        "AI demand governance",
+        "feature rationalisation",
+        "idle demand removal"
+      ],
+      "maturity_levels": {
+        "1": "Utilisation and service usage are poorly understood and not managed systematically.",
+        "2": "Basic infrastructure or service usage data is available and reviewed periodically.",
+        "3": "Utilisation and usage are assessed using agreed methods and thresholds, enabling systematic identification of idle or oversized resources.",
+        "4": "Usage is linked increasingly to applications, services, owners or business context and used for rightsizing, consolidation and optimisation decisions.",
+        "5": "Utilisation and usage signals are embedded into operational control and governance, enabling continuous challenge of low-value or avoidable demand."
+      },
+      "questions": [
+        {
+          "id": "infra_util",
+          "text": "How well is infrastructure utilisation understood at host, VM, cluster or platform level?",
+          "type": "single_select",
+          "options": [
+            "Poorly or not at all",
+            "Basic aggregate visibility only",
+            "Defined and regularly reviewed",
+            "Measured with owner/service context",
+            "Embedded into active optimisation"
+          ],
+          "maps_to_levels": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        },
+        {
+          "id": "app_service_usage",
+          "text": "How well are application or service usage metrics understood, such as transactions, active users, feature use or demand patterns?",
+          "type": "single_select",
+          "options": [
+            "Poorly or not at all",
+            "Basic high-level metrics only",
+            "Regularly tracked for key services",
+            "Linked to ownership and operational decisions",
+            "Used systematically to optimise demand and service design"
+          ],
+          "maps_to_levels": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        },
+        {
+          "id": "ai_usage",
+          "text": "Where AI services are relevant, how well are AI-specific usage metrics understood, such as prompts, tokens, inference calls, model routing or training jobs?",
+          "type": "single_select",
+          "options": [
+            "Not understood",
+            "Very limited visibility",
+            "Tracked for some services or pilots",
+            "Measured and reviewed for key AI services",
+            "Actively used for AI demand governance and optimisation"
+          ],
+          "maps_to_levels": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ],
+      "decision_support_by_level": {
+        "1": {
+          "supports": [
+            "basic anecdotal challenge only"
+          ],
+          "does_not_support": [
+            "credible rightsizing",
+            "service rationalisation",
+            "AI demand governance"
+          ]
+        },
+        "2": {
+          "supports": [
+            "broad rightsizing discussions"
+          ],
+          "does_not_support": [
+            "service-level optimisation or strong low-value demand challenge"
+          ]
+        },
+        "3": {
+          "supports": [
+            "structured identification of underused resources and services"
+          ],
+          "does_not_support": [
+            "consistent optimisation using business context everywhere"
+          ]
+        },
+        "4": {
+          "supports": [
+            "decision-grade rightsizing and service optimisation across key areas"
+          ],
+          "does_not_support": [
+            "continuous optimisation where usage/business signals remain weak"
+          ]
+        },
+        "5": {
+          "supports": [
+            "continuous optimisation of infrastructure, services and AI demand based on real usage"
+          ],
+          "does_not_support": []
+        }
+      },
+      "recommendation_themes": {
+        "low": [
+          "improve VM and host utilisation visibility",
+          "track application and service demand metrics",
+          "identify idle and oversized resources"
+        ],
+        "mid": [
+          "link usage to service owners and business context",
+          "introduce AI-specific usage measures where relevant",
+          "use thresholds and review cycles"
+        ],
+        "high": [
+          "embed usage signals into rightsizing, decommissioning, service design and AI governance"
+        ]
+      },
+      "evidence_examples": [
+        "VMware/Aria dashboards",
+        "cloud utilisation reports",
+        "APM tools",
+        "service analytics",
+        "AI platform usage logs",
+        "token/inference dashboards"
+      ]
+    },
+    {
+      "id": "allocation_logic",
+      "name": "Allocation and attribution logic",
+      "definition": "Assesses whether GreenOps impact can be credibly assigned to teams, services, workloads, tenants or consumers.",
+      "why_it_matters": "Without credible attribution, most GreenOps data remains descriptive rather than actionable.",
+      "default_impact_score": 5,
+      "decision_areas": [
+        "service accountability",
+        "business-unit reporting",
+        "application optimisation",
+        "chargeback/showback",
+        "prioritisation"
+      ],
+      "maturity_levels": {
+        "1": "GreenOps outputs are mostly portfolio totals with little actionable attribution.",
+        "2": "Simple allocation rules exist and can be repeated, but are still broad proxies.",
+        "3": "Allocation methods are documented and standardised, allowing attribution to major business units, environments or service groups.",
+        "4": "Attribution quality is measured and improved, with increasing ability to link impact to defined services, workloads or owners.",
+        "5": "Allocation becomes more dynamic and usage-driven, supporting action at the level where change can actually be made."
+      },
+      "questions": [
+        {
+          "id": "allocation_basis",
+          "text": "What best describes the current basis of allocation?",
+          "type": "single_select",
+          "options": [
+            "Portfolio totals only",
+            "Broad proxy allocation",
+            "Documented standard allocation rules",
+            "Measured attribution quality to services/owners",
+            "Dynamic or strongly usage-driven attribution"
+          ],
+          "maps_to_levels": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        },
+        {
+          "id": "allocation_actionability",
+          "text": "How actionable is the current attribution model?",
+          "type": "single_select",
+          "options": [
+            "Not actionable",
+            "Some broad ownership discussion",
+            "Actionable for major groups or services",
+            "Actionable for many defined owners/workloads",
+            "Actionable at the level where change is made"
+          ],
+          "maps_to_levels": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ],
+      "decision_support_by_level": {
+        "1": {
+          "supports": [
+            "portfolio-level discussion only"
+          ],
+          "does_not_support": [
+            "service accountability",
+            "targeted optimisation",
+            "owner-level action"
+          ]
+        },
+        "2": {
+          "supports": [
+            "basic prioritisation and broad accountability"
+          ],
+          "does_not_support": [
+            "credible service/workload decisions"
+          ]
+        },
+        "3": {
+          "supports": [
+            "structured chargeback/showback-style or accountability decisions"
+          ],
+          "does_not_support": [
+            "fine-grained dynamic optimisation"
+          ]
+        },
+        "4": {
+          "supports": [
+            "stronger operational and ownership decisions across many services"
+          ],
+          "does_not_support": [
+            "fully dynamic action everywhere"
+          ]
+        },
+        "5": {
+          "supports": [
+            "decision-grade attribution aligned to real operational levers"
+          ],
+          "does_not_support": []
+        }
+      },
+      "recommendation_themes": {
+        "low": [
+          "move beyond portfolio totals",
+          "document allocation rules",
+          "improve owner and service mapping"
+        ],
+        "mid": [
+          "measure attribution quality",
+          "reduce proxy dependence",
+          "align attribution to operational levers"
+        ],
+        "high": [
+          "use dynamic and usage-informed attribution where it improves decisions"
+        ]
+      },
+      "evidence_examples": [
+        "allocation methodology",
+        "showback/chargeback models",
+        "service maps",
+        "owner mapping",
+        "cost allocation rules"
+      ]
+    },
+    {
+      "id": "cloud_telemetry",
+      "name": "Cloud service telemetry and workload data",
+      "definition": "Assesses the quality of cloud-native usage, runtime, storage, region and service data used in GreenOps analysis.",
+      "why_it_matters": "Cloud decisions depend on service-level visibility, region awareness, utilisation and architecture-specific usage patterns.",
+      "default_impact_score": 5,
+      "decision_areas": [
+        "cloud optimisation",
+        "region selection",
+        "architecture choice",
+        "service rationalisation",
+        "carbon-aware scheduling"
+      ],
+      "maturity_levels": {
+        "1": "Cloud GreenOps relies mainly on spend or provider dashboard outputs.",
+        "2": "Core cloud usage and cost data is captured and reused in repeatable calculations.",
+        "3": "Standardised cloud data inputs exist across accounts, subscriptions and service categories.",
+        "4": "Telemetry includes stronger use of runtime, storage, region, utilisation and service-level activity signals.",
+        "5": "Cloud inputs are embedded into engineering and operational decision-making, including optimisation of architecture, scheduling and workload placement."
+      },
+      "questions": [
+        {
+          "id": "cloud_inputs",
+          "text": "What best describes the cloud input data available for GreenOps?",
+          "type": "single_select",
+          "options": [
+            "Spend/provider dashboard only",
+            "Core usage and cost data",
+            "Standardised usage fields across accounts/services",
+            "Service/runtime/storage/region utilisation telemetry",
+            "Strong engineering-grade telemetry used in decisions"
+          ],
+          "maps_to_levels": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        },
+        {
+          "id": "cloud_region_usage",
+          "text": "How well are region, service type and workload behaviour captured?",
+          "type": "single_select",
+          "options": [
+            "Poorly",
+            "At a broad account/service level",
+            "Defined and regularly captured",
+            "Measured with stronger workload context",
+            "Strongly captured and used in optimisation"
+          ],
+          "maps_to_levels": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ],
+      "decision_support_by_level": {
+        "1": {
+          "supports": [
+            "rough cloud footprint and trend discussion"
+          ],
+          "does_not_support": [
+            "architecture optimisation",
+            "region comparison",
+            "carbon-aware scheduling"
+          ]
+        },
+        "2": {
+          "supports": [
+            "standard cloud reporting and broad optimisation"
+          ],
+          "does_not_support": [
+            "service-level engineering decisions"
+          ]
+        },
+        "3": {
+          "supports": [
+            "better cloud accountability and prioritisation"
+          ],
+          "does_not_support": [
+            "consistent workload- or service-level optimisation everywhere"
+          ]
+        },
+        "4": {
+          "supports": [
+            "stronger engineering and platform decisions across key services"
+          ],
+          "does_not_support": [
+            "continuous optimisation where telemetry remains thin"
+          ]
+        },
+        "5": {
+          "supports": [
+            "decision-grade cloud engineering and optimisation"
+          ],
+          "does_not_support": []
+        }
+      },
+      "recommendation_themes": {
+        "low": [
+          "capture more than spend and provider dashboards",
+          "standardise cloud telemetry fields",
+          "improve region and service visibility"
+        ],
+        "mid": [
+          "add runtime, storage and service activity context",
+          "link cloud telemetry to owners and workloads"
+        ],
+        "high": [
+          "use telemetry in engineering workflows, scheduling and architecture decisions"
+        ]
+      },
+      "evidence_examples": [
+        "AWS/Azure/GCP exports",
+        "Cloudability/FinOps exports",
+        "cloud asset inventories",
+        "runtime telemetry",
+        "storage usage reports"
+      ]
+    },
+    {
+      "id": "colo_provider_data",
+      "name": "Colocation and third-party provider data quality",
+      "definition": "Assesses the quality, transparency and granularity of external provider data used in GreenOps calculations.",
+      "why_it_matters": "Third-party environments are often the weakest link in enterprise GreenOps because transparency, boundaries and cadence are poor.",
+      "default_impact_score": 4,
+      "decision_areas": [
+        "provider comparison",
+        "customer allocation",
+        "portfolio reporting",
+        "contractual challenge",
+        "siting decisions"
+      ],
+      "maturity_levels": {
+        "1": "Third-party environments are represented mainly by contracts, invoices or generic assumptions.",
+        "2": "Some provider-reported figures are collected and reused, but remain incomplete or weakly attributable.",
+        "3": "Minimum data expectations are defined and consistently applied to external providers.",
+        "4": "Providers supply measurable and attributable data with stronger transparency over methods and coverage.",
+        "5": "Third-party data is sufficiently timely, granular and credible to support operational management, benchmarking and provider challenge."
+      },
+      "questions": [
+        {
+          "id": "provider_data_basis",
+          "text": "What best describes the external provider data available?",
+          "type": "single_select",
+          "options": [
+            "Contracts/invoices/assumptions only",
+            "Some provider figures but incomplete",
+            "Defined minimum data requirements and repeatable reporting",
+            "Measured attributable data with method transparency",
+            "Timely, granular, credible provider data"
+          ],
+          "maps_to_levels": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        },
+        {
+          "id": "provider_challenge",
+          "text": "How well can providers be challenged or compared using the data available?",
+          "type": "single_select",
+          "options": [
+            "Poorly or not at all",
+            "Very limited",
+            "Some structured comparison possible",
+            "Meaningful challenge and comparison across key providers",
+            "Strong decision-grade comparison and challenge"
+          ],
+          "maps_to_levels": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ],
+      "decision_support_by_level": {
+        "1": {
+          "supports": [
+            "rough inclusion of provider environments only"
+          ],
+          "does_not_support": [
+            "credible provider comparison",
+            "customer-level allocation",
+            "operational challenge"
+          ]
+        },
+        "2": {
+          "supports": [
+            "repeatable broad provider reporting"
+          ],
+          "does_not_support": [
+            "strong benchmarking or contract challenge"
+          ]
+        },
+        "3": {
+          "supports": [
+            "minimum viable provider governance and structured reporting"
+          ],
+          "does_not_support": [
+            "fine-grained management where provider transparency remains weak"
+          ]
+        },
+        "4": {
+          "supports": [
+            "stronger provider benchmarking and contract/performance challenge"
+          ],
+          "does_not_support": [
+            "continuous fine-grained optimisation without timely data"
+          ]
+        },
+        "5": {
+          "supports": [
+            "decision-grade provider comparison, challenge and portfolio management"
+          ],
+          "does_not_support": []
+        }
+      },
+      "recommendation_themes": {
+        "low": [
+          "define minimum provider data requirements",
+          "challenge provider opacity",
+          "separate invoice data from operational data"
+        ],
+        "mid": [
+          "improve cadence, granularity and methodology transparency",
+          "seek rack/cage/customer-attributable data where relevant"
+        ],
+        "high": [
+          "use provider data actively in benchmarking, governance and contract decisions"
+        ]
+      },
+      "evidence_examples": [
+        "colo invoices",
+        "provider sustainability reports",
+        "metered rack reports",
+        "contractual schedules",
+        "provider KPI reports"
+      ]
+    },
+    {
+      "id": "temporal_timeliness",
+      "name": "Temporal granularity and timeliness",
+      "definition": "Assesses how current and how time-resolved the data is, and whether that is fit for the decisions being made.",
+      "why_it_matters": "Many GreenOps decisions depend on when data is measured, how quickly it becomes available and whether variation over time is visible.",
+      "default_impact_score": 4,
+      "decision_areas": [
+        "trend tracking",
+        "anomaly detection",
+        "scheduling",
+        "forecasting",
+        "continuous improvement"
+      ],
+      "maturity_levels": {
+        "1": "Data is collected irregularly and retrospectively.",
+        "2": "Data refresh is periodic and repeatable, usually monthly or quarterly at best.",
+        "3": "Standard refresh cycles exist by domain and are understood across the organisation.",
+        "4": "Timeliness and latency are measured, and data is available quickly enough for performance tracking and forecasting.",
+        "5": "Data is sufficiently current and time-resolved to support near-operational optimisation and faster intervention."
+      },
+      "questions": [
+        {
+          "id": "temporal_resolution",
+          "text": "What best describes the temporal resolution of key GreenOps data?",
+          "type": "single_select",
+          "options": [
+            "Irregular or annual only",
+            "Periodic monthly/quarterly",
+            "Defined refresh cycles by domain",
+            "Measured timeliness with stronger operational usefulness",
+            "Near-operational or high-resolution where needed"
+          ],
+          "maps_to_levels": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        },
+        {
+          "id": "data_latency",
+          "text": "How quickly is data available after the activity occurs?",
+          "type": "single_select",
+          "options": [
+            "Very delayed or ad hoc",
+            "Periodic and slow",
+            "Predictable but not especially fast",
+            "Measured and generally timely",
+            "Timely enough for faster operational decisions"
+          ],
+          "maps_to_levels": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ],
+      "decision_support_by_level": {
+        "1": {
+          "supports": [
+            "retrospective reporting only"
+          ],
+          "does_not_support": [
+            "timely optimisation",
+            "forecasting",
+            "anomaly detection"
+          ]
+        },
+        "2": {
+          "supports": [
+            "periodic management reporting"
+          ],
+          "does_not_support": [
+            "fast intervention or time-sensitive decisions"
+          ]
+        },
+        "3": {
+          "supports": [
+            "predictable reporting and structured performance tracking"
+          ],
+          "does_not_support": [
+            "near-operational control"
+          ]
+        },
+        "4": {
+          "supports": [
+            "forecasting and more responsive management"
+          ],
+          "does_not_support": [
+            "continuous optimisation everywhere"
+          ]
+        },
+        "5": {
+          "supports": [
+            "time-sensitive optimisation and rapid intervention where needed"
+          ],
+          "does_not_support": []
+        }
+      },
+      "recommendation_themes": {
+        "low": [
+          "establish standard refresh cycles",
+          "improve cadence where it affects decision quality"
+        ],
+        "mid": [
+          "measure latency explicitly",
+          "align temporal resolution to decision need"
+        ],
+        "high": [
+          "use higher-resolution data where it unlocks operational value"
+        ]
+      },
+      "evidence_examples": [
+        "data refresh schedules",
+        "dashboard timestamps",
+        "batch job logs",
+        "report production cycles"
+      ]
+    },
+    {
+      "id": "lineage_assurance",
+      "name": "Data lineage, transparency and assurance",
+      "definition": "Assesses whether GreenOps numbers can be traced, explained and trusted.",
+      "why_it_matters": "Even detailed data is weak if the source, method and assumptions are opaque or unauditable.",
+      "default_impact_score": 5,
+      "decision_areas": [
+        "governance",
+        "auditability",
+        "regulatory confidence",
+        "stakeholder trust",
+        "board reporting"
+      ],
+      "maturity_levels": {
+        "1": "Sources, assumptions and calculations are opaque or poorly documented.",
+        "2": "Calculation methods are partly documented and repeatable, but hard to audit.",
+        "3": "Sources, methods, assumptions and responsibilities are documented and controlled.",
+        "4": "Lineage, confidence and exception handling are measured and reviewed.",
+        "5": "GreenOps data is transparent, reproducible and audit-ready, with active improvement of assurance quality."
+      },
+      "questions": [
+        {
+          "id": "lineage_visibility",
+          "text": "How visible and documented are data sources, assumptions and calculation steps?",
+          "type": "single_select",
+          "options": [
+            "Poorly visible",
+            "Partly documented",
+            "Documented and controlled",
+            "Measured and reviewed",
+            "Transparent, reproducible and audit-ready"
+          ],
+          "maps_to_levels": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        },
+        {
+          "id": "confidence_management",
+          "text": "How well are exceptions, confidence levels and estimation boundaries handled?",
+          "type": "single_select",
+          "options": [
+            "Poorly or not at all",
+            "Ad hoc",
+            "Defined and documented",
+            "Measured and reviewed",
+            "Strongly controlled and continuously improved"
+          ],
+          "maps_to_levels": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ],
+      "decision_support_by_level": {
+        "1": {
+          "supports": [
+            "basic internal discussion only"
+          ],
+          "does_not_support": [
+            "strong governance or external confidence"
+          ]
+        },
+        "2": {
+          "supports": [
+            "repeatable internal reporting"
+          ],
+          "does_not_support": [
+            "high-confidence audit or regulatory use"
+          ]
+        },
+        "3": {
+          "supports": [
+            "structured governance and clearer stakeholder trust"
+          ],
+          "does_not_support": [
+            "high-assurance external scrutiny in all cases"
+          ]
+        },
+        "4": {
+          "supports": [
+            "stronger assurance, governance and decision confidence"
+          ],
+          "does_not_support": [
+            "full audit-readiness everywhere without remaining gaps"
+          ]
+        },
+        "5": {
+          "supports": [
+            "high-confidence governance, assurance and external scrutiny"
+          ],
+          "does_not_support": []
+        }
+      },
+      "recommendation_themes": {
+        "low": [
+          "document sources and assumptions",
+          "reduce opaque spreadsheet logic",
+          "assign data ownership"
+        ],
+        "mid": [
+          "measure confidence and exceptions",
+          "improve reproducibility",
+          "introduce methodology governance"
+        ],
+        "high": [
+          "prepare for assurance and audit-style scrutiny"
+        ]
+      },
+      "evidence_examples": [
+        "method statements",
+        "data lineage diagrams",
+        "version-controlled calculation logic",
+        "assurance notes",
+        "exception logs"
+      ]
+    },
+    {
+      "id": "decision_integration",
+      "name": "Decision integration and optimisation workflow",
+      "definition": "Assesses whether GreenOps data inputs are actually used to drive operational, architectural, financial and strategic decisions.",
+      "why_it_matters": "The point of GreenOps is not measurement alone. It is better decisions and measurable improvement.",
+      "default_impact_score": 5,
+      "decision_areas": [
+        "governance",
+        "operational optimisation",
+        "investment cases",
+        "architecture decisions",
+        "continuous improvement"
+      ],
+      "maturity_levels": {
+        "1": "Data is used mainly for reporting or reactive requests.",
+        "2": "Data occasionally informs one-off decisions, but not systematically.",
+        "3": "GreenOps inputs are embedded in defined governance and review processes.",
+        "4": "Decisions and outcomes are tracked, allowing the organisation to measure the effect of interventions.",
+        "5": "GreenOps data is part of normal operational and strategic management, supporting continuous optimisation across the estate."
+      },
+      "questions": [
+        {
+          "id": "decision_use",
+          "text": "How is GreenOps data currently used in decision-making?",
+          "type": "single_select",
+          "options": [
+            "Reporting or reactive use only",
+            "Occasional one-off decisions",
+            "Defined governance/review use",
+            "Tracked decisions and outcomes",
+            "Embedded in normal management and optimisation"
+          ],
+          "maps_to_levels": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        },
+        {
+          "id": "improvement_tracking",
+          "text": "How well are the outcomes of GreenOps actions measured and fed back into future decisions?",
+          "type": "single_select",
+          "options": [
+            "Not measured",
+            "Only occasionally",
+            "Defined in some governance processes",
+            "Measured for many interventions",
+            "Strong feedback loops and continuous improvement"
+          ],
+          "maps_to_levels": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ],
+      "decision_support_by_level": {
+        "1": {
+          "supports": [
+            "reporting and awareness raising"
+          ],
+          "does_not_support": [
+            "consistent optimisation or investment prioritisation"
+          ]
+        },
+        "2": {
+          "supports": [
+            "some tactical decisions"
+          ],
+          "does_not_support": [
+            "systematic improvement or strong governance integration"
+          ]
+        },
+        "3": {
+          "supports": [
+            "repeatable governance and prioritisation decisions"
+          ],
+          "does_not_support": [
+            "full closed-loop optimisation"
+          ]
+        },
+        "4": {
+          "supports": [
+            "measured improvement management and better business cases"
+          ],
+          "does_not_support": [
+            "continuous optimisation everywhere"
+          ]
+        },
+        "5": {
+          "supports": [
+            "embedded GreenOps decision-making and continuous improvement"
+          ],
+          "does_not_support": []
+        }
+      },
+      "recommendation_themes": {
+        "low": [
+          "embed GreenOps data into governance forums",
+          "move beyond reporting-only use",
+          "assign ownership for actions"
+        ],
+        "mid": [
+          "track intervention outcomes",
+          "connect data to architecture, lifecycle and optimisation decisions"
+        ],
+        "high": [
+          "build strong feedback loops and continuous improvement routines"
+        ]
+      },
+      "evidence_examples": [
+        "governance packs",
+        "architecture review artefacts",
+        "optimisation backlogs",
+        "decision logs",
+        "benefits tracking"
+      ]
+    }
+  ],
+  "output_sections": [
+    "executive summary",
+    "domain score table",
+    "domain detail analysis",
+    "priority matrix or bubble chart",
+    "heatmap",
+    "improvement roadmap",
+    "decision-readiness summary"
+  ]
+}
