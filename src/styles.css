@@ -1888,6 +1888,60 @@ h3 { font-size: 1.125rem; }
   padding: var(--space-lg) var(--space-xl);
 }
 
+.analysis-body-grid {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: var(--space-xl);
+  padding: var(--space-lg) var(--space-xl);
+}
+
+@media (max-width: 900px) {
+  .analysis-body-grid { grid-template-columns: 1fr; }
+}
+
+.analysis-col-main {}
+.analysis-col-risk {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.analysis-col-risk .analysis-section {
+  margin-left: 0;
+  margin-right: 0;
+  border-radius: var(--radius-sm);
+  padding: var(--space-md);
+  margin-bottom: var(--space-sm);
+}
+
+.analysis-col-risk .analysis-section.risk-section,
+.analysis-col-risk .analysis-section.caveats,
+.analysis-col-risk .analysis-section.misinterpretation-section,
+.analysis-col-risk .analysis-section.cascade-section {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.analysis-section.misinterpretation-section {
+  background: #fff7ed;
+  border-left: 3px solid #f59e0b;
+  border-radius: var(--radius-sm);
+}
+
+.analysis-section.misinterpretation-section h4 {
+  color: #92400e;
+}
+
+.analysis-section.cascade-section {
+  background: #eff6ff;
+  border-left: 3px solid #3b82f6;
+  border-radius: var(--radius-sm);
+}
+
+.analysis-section.cascade-section h4 {
+  color: #1e40af;
+}
+
 .analysis-section {
   margin-bottom: var(--space-lg);
   padding-bottom: var(--space-lg);
@@ -2498,6 +2552,44 @@ h3 { font-size: 1.125rem; }
   border-top: 1px solid var(--color-border-light);
   padding-top: var(--space-sm);
   font-style: italic;
+}
+
+/* ── Decision readiness summary strip ── */
+.readiness-summary-strip {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-lg);
+  padding: var(--space-md) var(--space-lg);
+  margin-bottom: var(--space-lg);
+}
+
+.readiness-summary-counts {
+  display: flex;
+  gap: var(--space-xl);
+  margin-bottom: var(--space-sm);
+}
+
+.readiness-summary-item {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-xs);
+}
+
+.readiness-summary-count {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.readiness-summary-label {
+  font-size: 0.8125rem;
+  color: var(--color-text-secondary);
+}
+
+.readiness-summary-note {
+  font-size: 0.8125rem;
+  color: var(--color-text-secondary);
+  margin: 0;
+  line-height: 1.5;
 }
 
 /* ===== Decision readiness v2 ===== */

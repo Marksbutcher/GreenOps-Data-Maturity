@@ -98,7 +98,8 @@ export default function ResultsDashboard({
       });
   }, [results, model]);
 
-  // Radar data
+  // Radar data — target is now intent-derived (minimum level for stated goal)
+  const intentTarget = profile.assessment_intent ? INTENT_MINIMUM_LEVEL[profile.assessment_intent] : 3;
   const radarData = useMemo(() => {
     return results.map((r) => {
       const d = model.domains.find((dd) => dd.id === r.domain_id);
@@ -106,10 +107,10 @@ export default function ResultsDashboard({
       return {
         domain: label.length > 20 ? label.slice(0, 18) + '…' : label,
         maturity: r.effective_maturity,
-        target: r.target_maturity,
+        target: intentTarget,
       };
     });
-  }, [results, model]);
+  }, [results, model, intentTarget]);
 
   // "What your data enables" data
   const enablesData = useMemo(() => {
@@ -361,7 +362,7 @@ export default function ResultsDashboard({
                       <PolarGrid stroke="#e9ecef" />
                       <PolarAngleAxis dataKey="domain" tick={{ fontSize: 9, fill: '#495057' }} />
                       <Radar name="Current" dataKey="maturity" stroke="#5AA63E" fill="#5AA63E" fillOpacity={0.3} />
-                      <Radar name="Target" dataKey="target" stroke="#94a3b8" fill="none" strokeDasharray="4 4" />
+                      <Radar name="Required for goal" dataKey="target" stroke="#94a3b8" fill="none" strokeDasharray="4 4" />
                       <Legend wrapperStyle={{ fontSize: 11 }} />
                       <Tooltip />
                     </RadarChart>
@@ -503,6 +504,32 @@ export default function ResultsDashboard({
                 Can your data support the decisions you need to make? Readiness is set by the weakest input —
                 one weak link constrains the whole decision area.
               </p>
+
+              {/* Summary strip */}
+              <div className="readiness-summary-strip">
+                <div className="readiness-summary-counts">
+                  {(['optimisation_grade', 'decision_grade', 'directional', 'reporting_only'] as const).map((level) => {
+                    const count = decisionReadiness.filter(dr => dr.readiness === level).length;
+                    if (count === 0) return null;
+                    const labels: Record<string, string> = {
+                      optimisation_grade: 'Optimisation-grade',
+                      decision_grade: 'Decision-grade',
+                      directional: 'Directional only',
+                      reporting_only: 'Reporting only',
+                    };
+                    return (
+                      <div key={level} className="readiness-summary-item">
+                        <span className="readiness-summary-count" style={{ color: READINESS_COLOURS[level] || '#94a3b8' }}>{count}</span>
+                        <span className="readiness-summary-label">{labels[level]}</span>
+                      </div>
+                    );
+                  })}
+                </div>
+                <p className="readiness-summary-note">
+                  {decisionReadiness.filter(dr => dr.readiness === 'reporting_only' || dr.readiness === 'directional').length} of {decisionReadiness.length} decision areas
+                  are below decision-grade — data gaps are limiting what the organisation can confidently act on.
+                </p>
+              </div>
               <div className="readiness-grid-v2">
                 {decisionReadiness.map((dr) => {
                   const colour = READINESS_COLOURS[dr.readiness] || '#94a3b8';
@@ -581,63 +608,81 @@ export default function ResultsDashboard({
               {narratives.map((n) => {
                 const result = results.find((r) => r.domain_id === n.domain_id);
                 const domain = model.domains.find((d) => d.id === n.domain_id);
-                const patterns = result && domain ? getAnswerPatternSummary(domain, result.question_answers) : null;
                 return (
                   <div key={n.domain_id} className="analysis-card">
                     <div className="analysis-header">
                       <h3>{n.domain_name}</h3>
                       <span className={`level-badge l${n.maturity_level}`}>{levelLabel(Number(n.maturity_level))}</span>
                     </div>
-                    <div className="analysis-body">
-                      {n.operational_impact && (
-                        <div className="analysis-section">
-                          <h4>What This Means</h4>
-                          <p>{n.operational_impact}</p>
-                        </div>
-                      )}
-                      {n.dimension_analysis && (
-                        <div className="analysis-section">
-                          <h4>Dimension Breakdown</h4>
-                          <p>{n.dimension_analysis}</p>
-                          {result && Object.keys(result.dimension_scores).length > 0 && (
-                            <div className="dimension-bars">
-                              {Object.entries(result.dimension_scores).map(([dim, score]) => (
-                                <div key={dim} className="dimension-bar-row">
-                                  <span className="dim-label">{dim.replace(/_/g, ' ')}</span>
-                                  <div className="dim-bar-track">
-                                    <div className={`dim-bar-fill ${score <= 2 ? 'weak' : score >= 4 ? 'strong' : 'mid'}`} style={{ width: `${(score / 5) * 100}%` }} />
+                    <div className="analysis-body-grid">
+                      {/* Left column — data quality narrative */}
+                      <div className="analysis-col-main">
+                        {n.operational_impact && (
+                          <div className="analysis-section">
+                            <h4>What This Data Quality Means</h4>
+                            <p>{n.operational_impact}</p>
+                          </div>
+                        )}
+                        {n.dimension_analysis && (
+                          <div className="analysis-section">
+                            <h4>Dimension Breakdown</h4>
+                            <p>{n.dimension_analysis}</p>
+                            {result && Object.keys(result.dimension_scores).length > 0 && (
+                              <div className="dimension-bars">
+                                {Object.entries(result.dimension_scores).map(([dim, score]) => (
+                                  <div key={dim} className="dimension-bar-row">
+                                    <span className="dim-label">{dim.replace(/_/g, ' ')}</span>
+                                    <div className="dim-bar-track">
+                                      <div className={`dim-bar-fill ${score <= 2 ? 'weak' : score >= 4 ? 'strong' : 'mid'}`} style={{ width: `${(score / 5) * 100}%` }} />
+                                    </div>
+                                    <span className="dim-score">{score}</span>
                                   </div>
-                                  <span className="dim-score">{score}</span>
-                                </div>
-                              ))}
-                            </div>
-                          )}
-                        </div>
-                      )}
-                      {n.risk_statement && (
-                        <div className="analysis-section risk-section">
-                          <h4>Risk</h4>
-                          <p>{n.risk_statement}</p>
-                        </div>
-                      )}
-                      {n.decision_support_summary && (
-                        <div className="analysis-section">
-                          <h4>Decision Support</h4>
-                          <p>{n.decision_support_summary}</p>
-                        </div>
-                      )}
-                      {n.improvement_guidance && (
-                        <div className="analysis-section">
-                          <h4>What to Improve</h4>
-                          <p>{n.improvement_guidance}</p>
-                        </div>
-                      )}
-                      {n.weakness_flags.length > 0 && (
-                        <div className="analysis-section caveats">
-                          <h4>Caveats</h4>
-                          {n.weakness_flags.map((f, i) => <p key={i} className="caveat-flag">{f}</p>)}
-                        </div>
-                      )}
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                        )}
+                        {n.decision_support_summary && (
+                          <div className="analysis-section">
+                            <h4>What This Data Supports</h4>
+                            <p>{n.decision_support_summary}</p>
+                          </div>
+                        )}
+                        {n.improvement_guidance && (
+                          <div className="analysis-section">
+                            <h4>Path Forward</h4>
+                            <p>{n.improvement_guidance}</p>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Right column — risks, cascade, warnings */}
+                      <div className="analysis-col-risk">
+                        {n.risk_statement && (
+                          <div className="analysis-section risk-section">
+                            <h4>Data Credibility</h4>
+                            <p>{n.risk_statement}</p>
+                          </div>
+                        )}
+                        {n.misinterpretation_risk && (
+                          <div className="analysis-section misinterpretation-section">
+                            <h4>Misinterpretation Risk</h4>
+                            <p>{n.misinterpretation_risk}</p>
+                          </div>
+                        )}
+                        {n.cascade_note && (
+                          <div className="analysis-section cascade-section">
+                            <h4>Calculation Dependencies</h4>
+                            <p>{n.cascade_note}</p>
+                          </div>
+                        )}
+                        {n.weakness_flags.length > 0 && (
+                          <div className="analysis-section caveats">
+                            <h4>Scoring Caveats</h4>
+                            {n.weakness_flags.map((f, i) => <p key={i} className="caveat-flag">{f}</p>)}
+                          </div>
+                        )}
+                      </div>
                     </div>
                   </div>
                 );
