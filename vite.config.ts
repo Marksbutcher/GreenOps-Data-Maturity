@@ -5,5 +5,5 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   // For GitHub Pages deployment at https://marksbutcher.github.io/GreenOps-Data-Maturity/
-  base: '/GreenOps-Data-Maturity/',
+  base: '/',
 })
