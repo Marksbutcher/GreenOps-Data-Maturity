@@ -41,6 +41,13 @@ const LEVEL_LABELS: Record<number, string> = {
   1: 'Ad hoc', 2: 'Repeatable', 3: 'Defined', 4: 'Managed', 5: 'Optimising',
 };
 
+const READINESS_COLOURS: Record<string, string> = {
+  reporting_only: '#dc2626',
+  directional: '#f59e0b',
+  decision_grade: '#22c55e',
+  optimisation_grade: '#16a34a',
+};
+
 function levelLabel(level: number): string {
   return `Level ${level} — ${LEVEL_LABELS[level] || ''}`;
 }
@@ -82,6 +89,9 @@ export default function ResultsDashboard({
         const d = model.domains.find((dd) => dd.id === r.domain_id);
         return {
           name: d?.name || r.domain_id,
+          shortName: (d?.name || r.domain_id).length > 28
+            ? (d?.name || r.domain_id).slice(0, 26) + '…'
+            : (d?.name || r.domain_id),
           maturity: r.effective_maturity,
           target: r.target_maturity,
           gap: r.target_maturity - r.effective_maturity,
@@ -95,7 +105,7 @@ export default function ResultsDashboard({
       const d = model.domains.find((dd) => dd.id === r.domain_id);
       const label = d?.name || r.domain_id;
       return {
-        domain: label.length > 25 ? label.slice(0, 23) + '…' : label,
+        domain: label.length > 20 ? label.slice(0, 18) + '…' : label,
         maturity: r.effective_maturity,
         target: r.target_maturity,
       };
@@ -125,18 +135,26 @@ export default function ResultsDashboard({
     });
   }, [results, model]);
 
-  // Roadmap grouped by phase
+  // Roadmap grouped by phase, then by domain within each phase
   const groupedRecs = useMemo(() => {
-    const groups: Record<string, typeof recommendations> = {
-      'Foundation': [],
-      'Quick win': [],
-      'Transformation': [],
-    };
-    for (const rec of recommendations) {
-      if (groups[rec.phase]) groups[rec.phase].push(rec);
+    const phases = ['Foundation', 'Quick win', 'Transformation'] as const;
+    const result: Record<string, Map<string, typeof recommendations>> = {};
+    for (const phase of phases) {
+      const phaseRecs = recommendations.filter(r => r.phase === phase);
+      const byDomain = new Map<string, typeof recommendations>();
+      for (const rec of phaseRecs) {
+        if (!byDomain.has(rec.domain_name)) byDomain.set(rec.domain_name, []);
+        byDomain.get(rec.domain_name)!.push(rec);
+      }
+      result[phase] = byDomain;
     }
-    return groups;
+    return result;
   }, [recommendations]);
+
+  // Key stats for summary strip
+  const belowThree = results.filter(r => r.effective_maturity < 3).length;
+  const atFourPlus = results.filter(r => r.effective_maturity >= 4).length;
+  const highPriority = results.filter(r => r.impact_score >= 4 && r.effective_maturity <= 2).length;
 
   const handleSave = useCallback(() => {
     handleSaveAssessment(profile, results);
@@ -179,72 +197,86 @@ export default function ResultsDashboard({
           {/* ═══ OVERVIEW ═══ */}
           {activeTab === 'overview' && (
             <div className="overview-panel">
-              {/* Maturity bar chart — weakest domains first */}
-              <div className="overview-chart-section">
-                <h3 className="section-heading">Data maturity by domain</h3>
-                <p className="section-subtext">
-                  Each bar shows the assessed data maturity level (1–5) for that domain.
-                  Domains are ordered from weakest to strongest. The dashed line shows the target level.
-                </p>
-                <ResponsiveContainer width="100%" height={Math.max(barData.length * 44, 400)}>
-                  <BarChart data={barData} layout="vertical" margin={{ top: 5, right: 40, bottom: 5, left: 10 }}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#e9ecef" horizontal={false} />
-                    <XAxis type="number" domain={[0, 5]} ticks={[1, 2, 3, 4, 5]} />
-                    <YAxis
-                      type="category"
-                      dataKey="name"
-                      width={240}
-                      tick={{ fontSize: 12, fill: '#495057' }}
-                    />
-                    <Tooltip
-                      content={({ active, payload }) => {
-                        if (!active || !payload?.length) return null;
-                        const d = payload[0].payload;
-                        return (
-                          <div className="chart-tooltip">
-                            <strong>{d.name}</strong><br />
-                            Current: {levelLabel(d.maturity)}<br />
-                            Target: Level {d.target}<br />
-                            Gap: {d.gap > 0 ? `${d.gap} levels to close` : 'On target'}
-                          </div>
-                        );
-                      }}
-                    />
-                    <Bar dataKey="maturity" radius={[0, 4, 4, 0]} barSize={24}>
-                      {barData.map((entry, i) => (
-                        <Cell key={i} fill={LEVEL_COLOURS[entry.maturity] || '#94a3b8'} />
-                      ))}
-                    </Bar>
-                  </BarChart>
-                </ResponsiveContainer>
+
+              {/* Summary narrative FIRST */}
+              <div className="overview-summary-strip">
+                <div className="summary-stat-grid">
+                  <div className="summary-stat">
+                    <span className="summary-stat-value">{stats.weightedMaturity}</span>
+                    <span className="summary-stat-label">Overall maturity<br />(out of 5)</span>
+                  </div>
+                  <div className="summary-stat">
+                    <span className="summary-stat-value">{stats.minMaturity}–{stats.maxMaturity}</span>
+                    <span className="summary-stat-label">Maturity range<br />across domains</span>
+                  </div>
+                  <div className="summary-stat">
+                    <span className="summary-stat-value summary-stat-alert">{belowThree}</span>
+                    <span className="summary-stat-label">Domains below<br />decision-grade</span>
+                  </div>
+                  <div className="summary-stat">
+                    <span className="summary-stat-value summary-stat-good">{atFourPlus}</span>
+                    <span className="summary-stat-label">Domains at<br />decision-grade+</span>
+                  </div>
+                </div>
               </div>
 
-              {/* Radar — current vs target */}
-              <div className="overview-chart-section">
-                <h3 className="section-heading">Maturity profile</h3>
-                <p className="section-subtext">
-                  The green area shows your current maturity. The grey outline shows the target maturity for each domain.
-                  The gap between the two shows where improvement is most needed.
-                </p>
-                <ResponsiveContainer width="100%" height={420}>
-                  <RadarChart data={radarData} outerRadius="70%">
-                    <PolarGrid stroke="#e9ecef" />
-                    <PolarAngleAxis dataKey="domain" tick={{ fontSize: 9, fill: '#495057' }} />
-                    <Radar name="Current maturity" dataKey="maturity" stroke="#5AA63E" fill="#5AA63E" fillOpacity={0.3} />
-                    <Radar name="Target" dataKey="target" stroke="#94a3b8" fill="none" strokeDasharray="4 4" />
-                    <Legend />
-                    <Tooltip />
-                  </RadarChart>
-                </ResponsiveContainer>
-              </div>
-
-              {/* Narrative summary */}
               <div className="overview-narrative">
-                <h3 className="section-heading">Summary</h3>
                 <div className="summary-text">
                   {execSummary.split('\n\n').map((para, i) => (
                     <p key={i}>{para}</p>
                   ))}
+                </div>
+              </div>
+
+              {/* Charts side-by-side */}
+              <div className="overview-charts-row">
+                <div className="overview-chart-cell">
+                  <h3 className="section-heading">Maturity by domain</h3>
+                  <ResponsiveContainer width="100%" height={Math.max(barData.length * 38, 380)}>
+                    <BarChart data={barData} layout="vertical" margin={{ top: 5, right: 30, bottom: 5, left: 5 }}>
+                      <CartesianGrid strokeDasharray="3 3" stroke="#e9ecef" horizontal={false} />
+                      <XAxis type="number" domain={[0, 5]} ticks={[1, 2, 3, 4, 5]} fontSize={11} />
+                      <YAxis
+                        type="category"
+                        dataKey="shortName"
+                        width={180}
+                        tick={{ fontSize: 11, fill: '#495057' }}
+                      />
+                      <Tooltip
+                        content={({ active, payload }) => {
+                          if (!active || !payload?.length) return null;
+                          const d = payload[0].payload;
+                          return (
+                            <div className="chart-tooltip">
+                              <strong>{d.name}</strong><br />
+                              Current: {levelLabel(d.maturity)}<br />
+                              Target: Level {d.target}<br />
+                              Gap: {d.gap > 0 ? `${d.gap} levels to close` : 'On target'}
+                            </div>
+                          );
+                        }}
+                      />
+                      <Bar dataKey="maturity" radius={[0, 4, 4, 0]} barSize={20}>
+                        {barData.map((entry, i) => (
+                          <Cell key={i} fill={LEVEL_COLOURS[entry.maturity] || '#94a3b8'} />
+                        ))}
+                      </Bar>
+                    </BarChart>
+                  </ResponsiveContainer>
+                </div>
+
+                <div className="overview-chart-cell">
+                  <h3 className="section-heading">Maturity profile</h3>
+                  <ResponsiveContainer width="100%" height={Math.max(barData.length * 38, 380)}>
+                    <RadarChart data={radarData} outerRadius="65%">
+                      <PolarGrid stroke="#e9ecef" />
+                      <PolarAngleAxis dataKey="domain" tick={{ fontSize: 8, fill: '#495057' }} />
+                      <Radar name="Current" dataKey="maturity" stroke="#5AA63E" fill="#5AA63E" fillOpacity={0.3} />
+                      <Radar name="Target" dataKey="target" stroke="#94a3b8" fill="none" strokeDasharray="4 4" />
+                      <Legend wrapperStyle={{ fontSize: 11 }} />
+                      <Tooltip />
+                    </RadarChart>
+                  </ResponsiveContainer>
                 </div>
               </div>
             </div>
@@ -253,10 +285,9 @@ export default function ResultsDashboard({
           {/* ═══ WHAT YOUR DATA ENABLES ═══ */}
           {activeTab === 'enables' && (
             <div className="enables-panel">
-              <p className="section-subtext" style={{ marginBottom: 'var(--space-lg)' }}>
-                Based on the data quality assessed in each domain, this table shows what decisions your current data
-                can support and what it cannot yet support. Priority reflects the gap between how important the domain
-                is and how mature the data is.
+              <p className="section-subtext">
+                What decisions can your current data credibly support? Priority reflects the gap between
+                domain importance and data quality.
               </p>
               <div className="enables-list">
                 {enablesData
@@ -265,30 +296,36 @@ export default function ResultsDashboard({
                     return (pOrder[a.priority] || 2) - (pOrder[b.priority] || 2);
                   })
                   .map((d) => (
-                    <div key={d.domain_id} className="enables-card">
+                    <div key={d.domain_id} className="enables-card" style={{ borderLeftColor: LEVEL_COLOURS[d.level] }}>
                       <div className="enables-card-header">
-                        <div className="enables-domain-name">{d.name}</div>
-                        <div className="enables-badges">
-                          <span className={`level-badge l${d.level}`}>{levelLabel(d.level)}</span>
-                          <span className={`priority-tag ${d.priority.toLowerCase()}`}>{d.priority} priority</span>
+                        <div className="enables-title-row">
+                          <span className="enables-domain-name">{d.name}</span>
+                          <span className={`priority-tag ${d.priority.toLowerCase()}`}>{d.priority}</span>
                         </div>
+                        <span className="enables-level-text" style={{ color: LEVEL_COLOURS[d.level] }}>
+                          Level {d.level} — {LEVEL_LABELS[d.level]}
+                        </span>
                       </div>
                       <div className="enables-card-body">
                         {d.supports.length > 0 && (
                           <div className="enables-section enables-supports">
-                            <span className="enables-label">Your data supports:</span>
-                            <span className="enables-items">{d.supports.join('; ')}</span>
+                            <span className="enables-label">Supports</span>
+                            <ul className="enables-items-list">
+                              {d.supports.map((s, i) => <li key={i}>{s}</li>)}
+                            </ul>
                           </div>
                         )}
                         {d.does_not_support.length > 0 && !d.does_not_support[0]?.startsWith('None') && (
                           <div className="enables-section enables-gaps">
-                            <span className="enables-label">Not yet sufficient for:</span>
-                            <span className="enables-items">{d.does_not_support.join('; ')}</span>
+                            <span className="enables-label">Not yet sufficient for</span>
+                            <ul className="enables-items-list">
+                              {d.does_not_support.map((s, i) => <li key={i}>{s}</li>)}
+                            </ul>
                           </div>
                         )}
                         {d.flags.length > 0 && (
                           <div className="enables-section enables-flags">
-                            <span className="enables-label">Caveats:</span>
+                            <span className="enables-label">Caveats</span>
                             <span className="enables-items">{d.flags.join('; ')}</span>
                           </div>
                         )}
@@ -302,32 +339,40 @@ export default function ResultsDashboard({
           {/* ═══ WHERE TO FOCUS ═══ */}
           {activeTab === 'focus' && (
             <div className="focus-panel">
-              <p className="section-subtext" style={{ marginBottom: 'var(--space-lg)' }}>
-                Improvement actions are grouped into three phases. <strong>Foundation</strong> actions build
-                basic data capability where it is missing. <strong>Quick wins</strong> are targeted improvements
-                that unlock specific decisions. <strong>Transformation</strong> actions embed data into operational
-                governance and continuous improvement.
+              <p className="section-subtext">
+                Improvement actions grouped into three phases.
+                <strong> Foundation</strong> builds basic capability.
+                <strong> Quick wins</strong> unlock specific decisions.
+                <strong> Transformation</strong> embeds data into governance.
               </p>
               {(['Foundation', 'Quick win', 'Transformation'] as const).map((phase) => {
-                const recs = groupedRecs[phase];
-                if (!recs || recs.length === 0) return null;
+                const domainMap = groupedRecs[phase];
+                if (!domainMap || domainMap.size === 0) return null;
+                const totalActions = Array.from(domainMap.values()).reduce((s, r) => s + r.length, 0);
                 return (
                   <div key={phase} className="focus-phase-group">
-                    <h3 className="focus-phase-heading">
-                      <span className="phase-tag">{phase}</span>
-                      <span className="focus-phase-count">{recs.length} action{recs.length !== 1 ? 's' : ''}</span>
-                    </h3>
-                    <div className="focus-cards">
-                      {recs.map((rec, i) => (
-                        <div key={i} className="focus-card">
-                          <div className="focus-card-top">
-                            <span className={`priority-tag ${rec.priority.toLowerCase()}`}>{rec.priority}</span>
-                            <span className="focus-domain">{rec.domain_name}</span>
+                    <div className="focus-phase-header">
+                      <span className={`phase-tag phase-${phase.toLowerCase().replace(/\s/g, '-')}`}>{phase}</span>
+                      <span className="focus-phase-count">{domainMap.size} domain{domainMap.size !== 1 ? 's' : ''}, {totalActions} action{totalActions !== 1 ? 's' : ''}</span>
+                    </div>
+                    <div className="focus-domain-groups">
+                      {Array.from(domainMap.entries()).map(([domainName, recs]) => (
+                        <div key={domainName} className="focus-domain-group">
+                          <div className="focus-domain-header">
+                            <span className="focus-domain-name">{domainName}</span>
+                            <span className={`priority-tag ${recs[0].priority.toLowerCase()}`}>{recs[0].priority}</span>
                           </div>
-                          <div className="focus-action">{rec.action}</div>
-                          <div className="focus-reason">{rec.reason}</div>
-                          {rec.benefit && (
-                            <div className="focus-benefit">{rec.benefit}</div>
+                          <p className="focus-reason">{recs[0].reason}</p>
+                          <div className="focus-actions-list">
+                            {recs.map((rec, i) => (
+                              <div key={i} className="focus-action-item">
+                                <span className="focus-action-bullet" />
+                                <span className="focus-action-text">{rec.action}</span>
+                              </div>
+                            ))}
+                          </div>
+                          {recs[0].benefit && (
+                            <p className="focus-benefit">{recs[0].benefit}</p>
                           )}
                         </div>
                       ))}
@@ -341,26 +386,72 @@ export default function ResultsDashboard({
           {/* ═══ DECISION READINESS ═══ */}
           {activeTab === 'readiness' && (
             <div className="readiness-panel">
-              <p className="section-subtext" style={{ marginBottom: 'var(--space-lg)' }}>
-                Each row represents a type of decision your organisation might want to make.
-                Readiness is determined by the weakest supporting domain — one weak link constrains what
-                you can do, regardless of how strong other data is.
+              <p className="section-subtext">
+                Can your data support the decisions you need to make? Readiness is set by the weakest input —
+                one weak link constrains the whole decision area.
               </p>
-              <div className="readiness-cards">
-                {decisionReadiness.map((dr) => (
-                  <div key={dr.area} className="readiness-card">
-                    <div className="readiness-card-header">
-                      <span className="readiness-area-name">{dr.area}</span>
-                      <span className={`readiness-badge ${dr.readiness}`}>{dr.label}</span>
-                    </div>
-                    <p className="readiness-summary">{dr.summary}</p>
-                    {dr.limiting_domains.length > 0 && (
-                      <div className="readiness-limiters">
-                        <span className="readiness-limiter-label">Constrained by:</span> {dr.limiting_domains.join(', ')}
+              <div className="readiness-grid-v2">
+                {decisionReadiness.map((dr) => {
+                  const colour = READINESS_COLOURS[dr.readiness] || '#94a3b8';
+                  return (
+                    <div key={dr.area} className="readiness-card-v2" style={{ borderLeftColor: colour }}>
+                      <div className="readiness-header-v2">
+                        <span className="readiness-area-v2">{dr.area}</span>
+                        <span className="readiness-badge-v2" style={{ background: colour }}>
+                          {dr.label}
+                        </span>
                       </div>
-                    )}
-                  </div>
-                ))}
+
+                      {/* Visual bar showing readiness level */}
+                      <div className="readiness-bar-track">
+                        <div
+                          className="readiness-bar-fill"
+                          style={{
+                            width: `${dr.readiness === 'reporting_only' ? 15 : dr.readiness === 'directional' ? 40 : dr.readiness === 'decision_grade' ? 75 : 95}%`,
+                            background: colour,
+                          }}
+                        />
+                        <div className="readiness-bar-labels">
+                          <span>Reporting</span>
+                          <span>Directional</span>
+                          <span>Decision-grade</span>
+                          <span>Optimisation</span>
+                        </div>
+                      </div>
+
+                      {/* Constraining and supporting domains as compact chips */}
+                      <div className="readiness-domains-v2">
+                        {dr.limiting_domains.length > 0 && (
+                          <div className="readiness-domain-row">
+                            <span className="readiness-row-label constraint">Constrained by</span>
+                            <div className="readiness-chips">
+                              {dr.limiting_domains.map((d) => (
+                                <span key={d} className="readiness-chip constraint">{d}</span>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                        {dr.supporting_domains.length > 0 && (
+                          <div className="readiness-domain-row">
+                            <span className="readiness-row-label supporting">Supporting</span>
+                            <div className="readiness-chips">
+                              {dr.supporting_domains.map((d) => (
+                                <span key={d} className="readiness-chip supporting">{d}</span>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* One-line remediation hint only if useful */}
+                      {dr.limiting_domains.length === 1 && dr.summary.includes('improves to level 3') && (
+                        <p className="readiness-hint-v2">
+                          Fixing {dr.limiting_domains[0].toLowerCase()} would unlock decision-grade readiness here.
+                        </p>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
             </div>
           )}

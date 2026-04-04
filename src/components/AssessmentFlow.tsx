@@ -88,11 +88,11 @@ export default function AssessmentFlow({
   };
 
   const handleComplete = () => {
-    const incomplete = results.filter((r, i) => {
-      const d = model.domains[i];
-      return Object.keys(r.question_answers).length < d.questions.length;
-    });
-    if (incomplete.length > 0) {
+    // Allow proceeding even with incomplete domains — results will reflect partial data
+    const answeredDomains = results.filter((r, i) => {
+      return Object.keys(r.question_answers).length > 0;
+    }).length;
+    if (answeredDomains === 0) {
       setShowIncomplete(true);
       return;
     }
@@ -163,6 +163,13 @@ export default function AssessmentFlow({
             }}
           >
             Save progress
+          </button>
+          <button
+            className="btn btn-accent btn-sm sidebar-save-btn"
+            onClick={handleComplete}
+            title={completedCount === 0 ? 'Answer at least one domain first' : 'View results based on answers so far'}
+          >
+            View results
           </button>
           <span className="sidebar-mode">{mode === 'facilitated' ? 'Workshop mode' : 'Self-assessment'}</span>
         </div>
