@@ -197,8 +197,6 @@ export default function ResultsDashboard({
     handleSaveAssessment(profile, results);
   }, [profile, results]);
 
-  const [showMoreMenu, setShowMoreMenu] = useState(false);
-
   return (
     <div className="results-page">
       <div className="container-wide">
@@ -209,20 +207,11 @@ export default function ResultsDashboard({
             <p className="results-org">{profile.organisation_name} — {profile.assessment_date}</p>
           </div>
           <div className="results-actions">
+            <button className="btn btn-ghost" onClick={onBack}>Back to assessment</button>
+            <button className="btn btn-ghost" onClick={onStartOver}>Start over</button>
             <button className="btn btn-outline" onClick={handleSave}>Save progress</button>
+            <button className="btn btn-ghost" onClick={onExportCSV}>Export CSV</button>
             <button className="btn btn-accent" onClick={onExportPDF}>Export PDF report</button>
-            <div className="more-menu-wrapper">
-              <button className="btn btn-ghost" onClick={() => setShowMoreMenu(!showMoreMenu)}>
-                More ▾
-              </button>
-              {showMoreMenu && (
-                <div className="more-menu-dropdown" onMouseLeave={() => setShowMoreMenu(false)}>
-                  <button className="more-menu-item" onClick={() => { onExportCSV(); setShowMoreMenu(false); }}>Export CSV</button>
-                  <button className="more-menu-item" onClick={() => { onBack(); }}>Back to assessment</button>
-                  <button className="more-menu-item" onClick={() => { onStartOver(); }}>Start over</button>
-                </div>
-              )}
-            </div>
           </div>
         </div>
 
@@ -411,151 +400,53 @@ export default function ResultsDashboard({
           {activeTab === 'enables' && (
             <div className="enables-panel">
               <p className="section-subtext">
-                What can your organisation do with its current data quality? Each use case shows
-                whether the supporting domains are strong enough — and where the gaps are.
+                What decisions can your current data credibly support? Priority reflects the gap between
+                domain importance and data quality.
               </p>
-
-              {/* Intent context */}
-              {intentGap && (
-                <div className="enables-intent-context">
-                  <strong>Your goal: {intentGap.label}</strong>
-                  {intentGap.shortfall > 0 ? (
-                    <span className="intent-gap-unmet" style={{ marginLeft: 12 }}>
-                      {intentGap.shortfall} domain{intentGap.shortfall !== 1 ? 's' : ''} below required level {intentGap.requiredLevel}
-                    </span>
-                  ) : (
-                    <span className="intent-gap-met" style={{ marginLeft: 12 }}>All domains meet required level</span>
-                  )}
-                </div>
-              )}
-
-              {/* Use-case view — good enough / not good enough */}
-              <div className="enables-use-cases">
-                {/* Aggregate "supports" and "does_not_support" across domains into use-case buckets */}
-                {(() => {
-                  // Gather all unique supported/unsupported capabilities across domains
-                  const supportedSet = new Map<string, string[]>();
-                  const unsupportedSet = new Map<string, { domains: string[]; minLevel: number }>();
-
-                  for (const d of enablesData) {
-                    for (const s of d.supports) {
-                      if (!supportedSet.has(s)) supportedSet.set(s, []);
-                      supportedSet.get(s)!.push(d.name);
-                    }
-                    for (const s of d.does_not_support) {
-                      if (s.startsWith('None')) continue;
-                      if (!unsupportedSet.has(s)) unsupportedSet.set(s, { domains: [], minLevel: 5 });
-                      const entry = unsupportedSet.get(s)!;
-                      entry.domains.push(d.name);
-                      entry.minLevel = Math.min(entry.minLevel, d.level);
-                    }
-                  }
-
-                  // Remove from "supported" anything that also appears as unsupported (i.e. some domains support it, some don't)
-                  // Keep it in supported but note the caveat
-                  const goodEnough = Array.from(supportedSet.entries())
-                    .filter(([cap]) => !unsupportedSet.has(cap))
-                    .sort((a, b) => b[1].length - a[1].length);
-
-                  const notYet = Array.from(unsupportedSet.entries())
-                    .sort((a, b) => a[1].minLevel - b[1].minLevel);
-
-                  const partial = Array.from(supportedSet.entries())
-                    .filter(([cap]) => unsupportedSet.has(cap));
-
-                  return (
-                    <>
-                      {goodEnough.length > 0 && (
-                        <div className="enables-group">
-                          <h3 className="enables-group-heading enables-good">Good enough for</h3>
-                          <div className="enables-cap-list">
-                            {goodEnough.slice(0, 12).map(([cap, domains]) => (
-                              <div key={cap} className="enables-cap-item enables-cap-good">
-                                <span className="enables-cap-text">{cap}</span>
-                                <span className="enables-cap-domains">{domains.length} domain{domains.length !== 1 ? 's' : ''}</span>
-                              </div>
-                            ))}
-                          </div>
+              <div className="enables-list">
+                {enablesData
+                  .sort((a, b) => {
+                    const pOrder: Record<string, number> = { High: 0, Medium: 1, Low: 2 };
+                    return (pOrder[a.priority] || 2) - (pOrder[b.priority] || 2);
+                  })
+                  .map((d) => (
+                    <div key={d.domain_id} className="enables-card" style={{ borderLeftColor: LEVEL_COLOURS[d.level] }}>
+                      <div className="enables-card-header">
+                        <div className="enables-title-row">
+                          <span className="enables-domain-name">{d.name}</span>
+                          <span className={`priority-tag ${d.priority.toLowerCase()}`}>{d.priority}</span>
                         </div>
-                      )}
-
-                      {partial.length > 0 && (
-                        <div className="enables-group">
-                          <h3 className="enables-group-heading enables-partial">Partially supported — depends on domain</h3>
-                          <div className="enables-cap-list">
-                            {partial.slice(0, 10).map(([cap, supportingDomains]) => {
-                              const blocking = unsupportedSet.get(cap);
-                              return (
-                                <div key={cap} className="enables-cap-item enables-cap-partial">
-                                  <span className="enables-cap-text">{cap}</span>
-                                  <span className="enables-cap-detail">
-                                    Supported by {supportingDomains.length} domain{supportingDomains.length !== 1 ? 's' : ''},
-                                    blocked by {blocking?.domains.length || 0}
-                                  </span>
-                                </div>
-                              );
-                            })}
-                          </div>
-                        </div>
-                      )}
-
-                      {notYet.length > 0 && (
-                        <div className="enables-group">
-                          <h3 className="enables-group-heading enables-blocked">Not yet good enough for</h3>
-                          <div className="enables-cap-list">
-                            {notYet.filter(([cap]) => !supportedSet.has(cap)).slice(0, 12).map(([cap, info]) => (
-                              <div key={cap} className="enables-cap-item enables-cap-blocked">
-                                <span className="enables-cap-text">{cap}</span>
-                                <span className="enables-cap-domains">Blocked by: {info.domains.slice(0, 3).join(', ')}{info.domains.length > 3 ? ` +${info.domains.length - 3} more` : ''}</span>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-                    </>
-                  );
-                })()}
-              </div>
-
-              {/* Per-domain detail below for drill-down */}
-              <details className="enables-domain-detail">
-                <summary className="enables-detail-toggle">View by domain</summary>
-                <div className="enables-list" style={{ marginTop: 16 }}>
-                  {enablesData
-                    .sort((a, b) => a.level - b.level)
-                    .map((d) => (
-                      <div key={d.domain_id} className="enables-card" style={{ borderLeftColor: LEVEL_COLOURS[d.level] }}>
-                        <div className="enables-card-header">
-                          <div className="enables-title-row">
-                            <span className="enables-domain-name">{d.name}</span>
-                            <span className={`priority-tag ${d.priority.toLowerCase()}`}>{d.priority}</span>
-                          </div>
-                          <span className="enables-level-text" style={{ color: LEVEL_COLOURS[d.level] }}>
-                            Level {d.level} — {LEVEL_LABELS[d.level]}
-                          </span>
-                        </div>
-                        <div className="enables-card-body">
-                          {d.supports.length > 0 && (
-                            <div className="enables-section enables-supports">
-                              <span className="enables-label">Good enough for</span>
-                              <ul className="enables-items-list">
-                                {d.supports.map((s, i) => <li key={i}>{s}</li>)}
-                              </ul>
-                            </div>
-                          )}
-                          {d.does_not_support.length > 0 && !d.does_not_support[0]?.startsWith('None') && (
-                            <div className="enables-section enables-gaps">
-                              <span className="enables-label">Not yet good enough for</span>
-                              <ul className="enables-items-list">
-                                {d.does_not_support.map((s, i) => <li key={i}>{s}</li>)}
-                              </ul>
-                            </div>
-                          )}
-                        </div>
+                        <span className="enables-level-text" style={{ color: LEVEL_COLOURS[d.level] }}>
+                          Level {d.level} — {LEVEL_LABELS[d.level]}
+                        </span>
                       </div>
-                    ))}
-                </div>
-              </details>
+                      <div className="enables-card-body">
+                        {d.supports.length > 0 && (
+                          <div className="enables-section enables-supports">
+                            <span className="enables-label">Supports</span>
+                            <ul className="enables-items-list">
+                              {d.supports.map((s, i) => <li key={i}>{s}</li>)}
+                            </ul>
+                          </div>
+                        )}
+                        {d.does_not_support.length > 0 && !d.does_not_support[0]?.startsWith('None') && (
+                          <div className="enables-section enables-gaps">
+                            <span className="enables-label">Not yet sufficient for</span>
+                            <ul className="enables-items-list">
+                              {d.does_not_support.map((s, i) => <li key={i}>{s}</li>)}
+                            </ul>
+                          </div>
+                        )}
+                        {d.flags.length > 0 && (
+                          <div className="enables-section enables-flags">
+                            <span className="enables-label">Caveats</span>
+                            <span className="enables-items">{d.flags.join('; ')}</span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+              </div>
             </div>
           )}
 
@@ -568,50 +459,6 @@ export default function ResultsDashboard({
                 <strong> Quick wins</strong> unlock specific decisions.
                 <strong> Transformation</strong> embeds data into governance.
               </p>
-
-              {/* Intent gap — domains that need fixing to meet stated goal */}
-              {intentGap && intentGap.shortfall > 0 && (
-                <div className="focus-intent-gap">
-                  <h3 className="section-heading" style={{ fontSize: '0.9375rem' }}>
-                    Priority: close the gap to your stated goal
-                  </h3>
-                  <p className="focus-intent-text">
-                    To support <strong>{intentGap.label}</strong>, all domains need to reach at least level {intentGap.requiredLevel}.
-                    These {intentGap.shortfall} domains fall short:
-                  </p>
-                  <div className="focus-intent-list">
-                    {intentGap.gaps.map((g) => (
-                      <div key={g.name} className="focus-intent-item">
-                        <span className={`level-badge l${g.level}`}>Level {g.level}</span>
-                        <span className="focus-intent-domain">{g.name}</span>
-                        <span className="focus-intent-needed">needs level {g.needed}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Limiting factors — cascade constraints */}
-              {limitingFactors.length > 0 && (
-                <div className="focus-limiting">
-                  <h3 className="section-heading" style={{ fontSize: '0.9375rem' }}>
-                    Fix these first — they constrain downstream calculations
-                  </h3>
-                  <div className="limiting-list">
-                    {limitingFactors.map((f) => (
-                      <div key={f.domain_id} className="limiting-item">
-                        <div className="limiting-item-header">
-                          <span className={`level-badge l${f.maturity}`}>Level {f.maturity}</span>
-                          <strong>{f.domain_name}</strong>
-                        </div>
-                        <p className="limiting-item-impact">
-                          Constrains: {f.affected.join(', ')}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
               {(['Foundation', 'Quick win', 'Transformation'] as const).map((phase) => {
                 const domainMap = groupedRecs[phase];
                 if (!domainMap || domainMap.size === 0) return null;
@@ -654,154 +501,104 @@ export default function ResultsDashboard({
           {activeTab === 'readiness' && (
             <div className="readiness-panel">
               <p className="section-subtext">
-                Can your data answer the questions that matter? Each question maps to the domains that
-                feed it — readiness is set by the weakest input.
+                Can your data support the decisions you need to make? Readiness is set by the weakest input —
+                one weak link constrains the whole decision area.
               </p>
 
               {/* Summary strip */}
-              {(() => {
-                const drMap = new Map(decisionReadiness.map(dr => [dr.area, dr]));
-                const belowDecisionGrade = decisionReadiness.filter(
-                  dr => dr.readiness === 'reporting_only' || dr.readiness === 'directional'
-                ).length;
-
-                // Persona-grouped decision questions
-                const PERSONA_GROUPS: {
-                  persona: string;
-                  description: string;
-                  questions: { question: string; areas: string[]; }[];
-                }[] = [
-                  {
-                    persona: 'Sustainability and reporting',
-                    description: 'Can we produce credible environmental reports and meet disclosure requirements?',
-                    questions: [
-                      { question: 'Can we credibly report our carbon footprint?', areas: ['footprint reporting'] },
-                      { question: 'Can we set and track environmental targets?', areas: ['target setting and governance', 'operational improvement tracking'] },
-                    ],
-                  },
-                  {
-                    persona: 'Infrastructure and operations',
-                    description: 'Can we identify waste, optimise resources, and justify efficiency investments?',
-                    questions: [
-                      { question: 'Can we find where energy and resources are being wasted?', areas: ['hotspot identification'] },
-                      { question: 'Can we rightsize or decommission with confidence?', areas: ['rightsizing and decommissioning'] },
-                      { question: 'Can we make evidence-based refresh and lifecycle decisions?', areas: ['refresh and lifecycle decisions'] },
-                      { question: 'Can we optimise workload placement by cost, carbon, or efficiency?', areas: ['workload placement'] },
-                    ],
-                  },
-                  {
-                    persona: 'Procurement and finance',
-                    description: 'Can we attribute costs and carbon, challenge suppliers, and support business cases?',
-                    questions: [
-                      { question: 'Can we challenge supplier efficiency and sustainability claims?', areas: ['supplier challenge'] },
-                      { question: 'Can we attribute consumption to services, teams, or business units?', areas: ['non-IT load allocation', 'service-level optimisation'] },
-                    ],
-                  },
-                  {
-                    persona: 'Cloud and AI governance',
-                    description: 'Can we govern cloud spend and AI demand with environmental and efficiency data?',
-                    questions: [
-                      { question: 'Can we optimise cloud cost and carbon together?', areas: ['cloud optimisation'] },
-                      { question: 'Can we govern AI infrastructure demand and efficiency?', areas: ['AI demand governance and optimisation'] },
-                    ],
-                  },
-                ];
-
-                // Helper: get best readiness for a question (from its mapped areas)
-                const getQuestionReadiness = (areas: string[]) => {
-                  const matched = areas.map(a => drMap.get(a)).filter(Boolean) as typeof decisionReadiness;
-                  if (matched.length === 0) return { readiness: 'reporting_only' as const, label: 'No data', limiting: [] as string[], summary: '' };
-                  // Use the worst readiness among matched areas
-                  const order: Record<string, number> = { reporting_only: 0, directional: 1, decision_grade: 2, optimisation_grade: 3 };
-                  const worst = matched.reduce((w, dr) => order[dr.readiness] < order[w.readiness] ? dr : w);
-                  const allLimiting = [...new Set(matched.flatMap(dr => dr.limiting_domains))];
-                  return { readiness: worst.readiness, label: worst.label, limiting: allLimiting, summary: worst.summary };
-                };
-
-                const readinessIcon = (r: string) => {
-                  if (r === 'optimisation_grade') return '●';
-                  if (r === 'decision_grade') return '●';
-                  if (r === 'directional') return '◐';
-                  return '○';
-                };
-
-                return (
-                  <>
-                    <div className="readiness-summary-strip">
-                      <p className="readiness-summary-note">
-                        <strong>{belowDecisionGrade} of {decisionReadiness.length}</strong> decision areas
-                        are below decision-grade. Data gaps are limiting what the organisation can confidently act on.
-                      </p>
-                    </div>
-
-                    <div className="readiness-personas">
-                      {PERSONA_GROUPS.map((group) => (
-                        <div key={group.persona} className="readiness-persona-group">
-                          <div className="readiness-persona-header">
-                            <h3 className="readiness-persona-title">{group.persona}</h3>
-                            <p className="readiness-persona-desc">{group.description}</p>
-                          </div>
-                          <div className="readiness-questions">
-                            {group.questions.map((q) => {
-                              const qr = getQuestionReadiness(q.areas);
-                              const colour = READINESS_COLOURS[qr.readiness] || '#94a3b8';
-                              return (
-                                <div key={q.question} className="readiness-question-row">
-                                  <span className="readiness-q-icon" style={{ color: colour }}>{readinessIcon(qr.readiness)}</span>
-                                  <div className="readiness-q-content">
-                                    <span className="readiness-q-text">{q.question}</span>
-                                    <div className="readiness-q-answer">
-                                      <span className="readiness-q-badge" style={{ background: colour }}>{qr.label}</span>
-                                      {qr.limiting.length > 0 && (
-                                        <span className="readiness-q-constraint">
-                                          Constrained by: {qr.limiting.join(', ')}
-                                        </span>
-                                      )}
-                                    </div>
-                                  </div>
-                                </div>
-                              );
-                            })}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-
-                    {/* Collapsible original detail */}
-                    <details className="readiness-raw-detail">
-                      <summary className="enables-detail-toggle">View all decision areas</summary>
-                      <div className="readiness-grid-v2" style={{ marginTop: 16 }}>
-                        {decisionReadiness.map((dr) => {
-                          const colour = READINESS_COLOURS[dr.readiness] || '#94a3b8';
-                          return (
-                            <div key={dr.area} className="readiness-card-v2" style={{ borderLeftColor: colour }}>
-                              <div className="readiness-header-v2">
-                                <span className="readiness-area-v2">{dr.area}</span>
-                                <span className="readiness-badge-v2" style={{ background: colour }}>
-                                  {dr.label}
-                                </span>
-                              </div>
-                              {dr.summary && <p className="readiness-summary-v2">{dr.summary}</p>}
-                              <div className="readiness-domains-v2">
-                                {dr.limiting_domains.length > 0 && (
-                                  <div className="readiness-domain-row">
-                                    <span className="readiness-row-label constraint">Constrained by</span>
-                                    <div className="readiness-chips">
-                                      {dr.limiting_domains.map((d) => (
-                                        <span key={d} className="readiness-chip constraint">{d}</span>
-                                      ))}
-                                    </div>
-                                  </div>
-                                )}
-                              </div>
-                            </div>
-                          );
-                        })}
+              <div className="readiness-summary-strip">
+                <div className="readiness-summary-counts">
+                  {(['optimisation_grade', 'decision_grade', 'directional', 'reporting_only'] as const).map((level) => {
+                    const count = decisionReadiness.filter(dr => dr.readiness === level).length;
+                    if (count === 0) return null;
+                    const labels: Record<string, string> = {
+                      optimisation_grade: 'Optimisation-grade',
+                      decision_grade: 'Decision-grade',
+                      directional: 'Directional only',
+                      reporting_only: 'Reporting only',
+                    };
+                    return (
+                      <div key={level} className="readiness-summary-item">
+                        <span className="readiness-summary-count" style={{ color: READINESS_COLOURS[level] || '#94a3b8' }}>{count}</span>
+                        <span className="readiness-summary-label">{labels[level]}</span>
                       </div>
-                    </details>
-                  </>
-                );
-              })()}
+                    );
+                  })}
+                </div>
+                <p className="readiness-summary-note">
+                  {decisionReadiness.filter(dr => dr.readiness === 'reporting_only' || dr.readiness === 'directional').length} of {decisionReadiness.length} decision areas
+                  are below decision-grade — data gaps are limiting what the organisation can confidently act on.
+                </p>
+              </div>
+              <div className="readiness-grid-v2">
+                {decisionReadiness.map((dr) => {
+                  const colour = READINESS_COLOURS[dr.readiness] || '#94a3b8';
+                  return (
+                    <div key={dr.area} className="readiness-card-v2" style={{ borderLeftColor: colour }}>
+                      <div className="readiness-header-v2">
+                        <span className="readiness-area-v2">{dr.area}</span>
+                        <span className="readiness-badge-v2" style={{ background: colour }}>
+                          {dr.label}
+                        </span>
+                      </div>
+
+                      {dr.summary && (
+                        <p className="readiness-summary-v2">{dr.summary}</p>
+                      )}
+
+                      {/* Visual bar showing readiness level */}
+                      <div className="readiness-bar-wrapper">
+                        <div className="readiness-bar-track">
+                          <div
+                            className="readiness-bar-fill"
+                            style={{
+                              width: `${dr.readiness === 'reporting_only' ? 15 : dr.readiness === 'directional' ? 40 : dr.readiness === 'decision_grade' ? 75 : 95}%`,
+                              background: colour,
+                            }}
+                          />
+                        </div>
+                        <div className="readiness-bar-labels">
+                          <span>Reporting</span>
+                          <span>Directional</span>
+                          <span>Decision-grade</span>
+                          <span>Optimisation</span>
+                        </div>
+                      </div>
+
+                      {/* Constraining and supporting domains as compact chips */}
+                      <div className="readiness-domains-v2">
+                        {dr.limiting_domains.length > 0 && (
+                          <div className="readiness-domain-row">
+                            <span className="readiness-row-label constraint">Constrained by</span>
+                            <div className="readiness-chips">
+                              {dr.limiting_domains.map((d) => (
+                                <span key={d} className="readiness-chip constraint">{d}</span>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                        {dr.supporting_domains.length > 0 && (
+                          <div className="readiness-domain-row">
+                            <span className="readiness-row-label supporting">Supporting</span>
+                            <div className="readiness-chips">
+                              {dr.supporting_domains.map((d) => (
+                                <span key={d} className="readiness-chip supporting">{d}</span>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* One-line remediation hint only if useful */}
+                      {dr.limiting_domains.length === 1 && dr.summary.includes('improves to level 3') && (
+                        <p className="readiness-hint-v2">
+                          Fixing {dr.limiting_domains[0].toLowerCase()} would unlock decision-grade readiness here.
+                        </p>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           )}
 

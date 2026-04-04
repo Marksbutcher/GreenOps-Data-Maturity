@@ -1,4 +1,5 @@
-import { DomainAssessment, MaturityModel, Domain } from '../types';
+import { DomainAssessment, MaturityModel, Domain, MATURITY_LABELS } from '../types';
+import { DEPENDENCY_MAP } from './dependencyChain';
 
 export interface DomainNarrative {
   domain_id: string;
@@ -12,6 +13,8 @@ export interface DomainNarrative {
   weakness_flags: string[];
   operational_impact: string;
   risk_statement: string;
+  cascade_note: string;
+  misinterpretation_risk: string;
 }
 
 /* ─── Domain-specific operational context ─── */
@@ -109,27 +112,80 @@ const OPERATIONAL_CONTEXT: Record<string, Record<number, string>> = {
   },
 };
 
-/* ─── Risk framing by maturity ─── */
+/* ─── Risk framing by maturity — focused on data credibility ─── */
 function getRiskStatement(domain: Domain, maturity: number, weakDimNames: string[]): string {
   if (maturity <= 1) {
     const weakNote = weakDimNames.length > 0
       ? ` Weakest areas: ${weakDimNames.join(', ')}.`
       : '';
-    return `Critical gap: ${domain.name} data is absent or unreliable. Decisions here are based on assumptions, not evidence. Reported figures should be treated as indicative at best. This needs ownership and priority — it is a governance issue, not just a data one.${weakNote}`;
+    return `Data is absent or unreliable. Any figures reported for ${domain.name.toLowerCase()} are based on assumptions rather than measurement — they should not be used for decisions or external disclosure without heavy caveats.${weakNote}`;
   }
   if (maturity === 2) {
     const weakNote = weakDimNames.length > 0
       ? ` Particular weakness in ${weakDimNames.join(' and ')}.`
       : '';
-    return `Significant gap: ${domain.name} data is partial and inconsistent. It supports basic reporting but not confident decisions. The organisation is likely acting on weaker evidence than it realises in this area.${weakNote}`;
+    return `Data is partial and inconsistent. Good enough for rough directional estimates, but not for confident decisions, investment cases, or regulatory disclosure. The organisation may be placing more weight on these figures than the evidence supports.${weakNote}`;
   }
   if (maturity === 3) {
-    return `Moderate gap: ${domain.name} data works for periodic reporting but lacks the precision or timeliness for active management. You can report on the past but cannot optimise in real time.`;
+    return `Data is structured and reportable. Periodic reporting and trend analysis work, but the data lacks the precision or timeliness to support active operational management or to withstand detailed external challenge.`;
   }
   if (maturity === 4) {
-    return `Minor gap: ${domain.name} data is decision-grade for most purposes. Remaining risks are typically edge cases — newer platforms, real-time availability, or end-to-end auditability. Focus on sustaining quality and extending to emerging areas.`;
+    return `Data is measured and defensible. Supports investment cases, governance reviews, and supplier challenge. Remaining gaps are typically in edge cases — emerging platforms, real-time availability, or end-to-end audit traceability.`;
   }
-  return `${domain.name} data is mature and embedded in operations. The priority is maintaining quality as the estate evolves and demonstrating value through outcomes.`;
+  return `Data is comprehensive and continuously validated. Supports audit, automated governance, and continuous improvement. The priority is maintaining quality as the estate evolves.`;
+}
+
+/* ─── Misinterpretation risk — what could go wrong if people trust the numbers ─── */
+function getMisinterpretationRisk(domain: Domain, maturity: number): string {
+  if (maturity <= 1) {
+    return `High risk of misleading results. Without reliable ${domain.name.toLowerCase()} data, any calculations that depend on it will produce figures that look precise but carry very high uncertainty. Stakeholders may act on numbers that do not reflect reality.`;
+  }
+  if (maturity === 2) {
+    return `Moderate risk of overstating confidence. Partial data produces estimates that appear more certain than they are. Where ${domain.name.toLowerCase()} feeds into downstream calculations (carbon, efficiency, allocation), the uncertainty compounds.`;
+  }
+  if (maturity === 3) {
+    return `Low risk for standard reporting. Figures are directionally correct and defensible for periodic use. Risk increases if the data is used for granular per-service attribution, real-time decisions, or external challenge where precision matters.`;
+  }
+  return '';
+}
+
+/* ─── Cascade context — how this domain's quality affects downstream calculations ─── */
+function getCascadeNote(
+  domainId: string,
+  domainName: string,
+  maturity: number,
+  allResults: DomainAssessment[],
+  allDomainNames: Record<string, string>
+): string {
+  const dep = DEPENDENCY_MAP.find(d => d.domain_id === domainId);
+  if (!dep) return '';
+
+  const scoreMap = new Map<string, number>();
+  for (const r of allResults) scoreMap.set(r.domain_id, r.effective_maturity);
+
+  const parts: string[] = [];
+
+  // Upstream constraints
+  if (dep.depends_on.length > 0) {
+    const weakUpstream = dep.depends_on
+      .filter(upId => (scoreMap.get(upId) || 1) < maturity)
+      .map(upId => `${allDomainNames[upId] || upId} (level ${scoreMap.get(upId) || 1})`)
+      .sort();
+
+    if (weakUpstream.length > 0) {
+      parts.push(`Constrained by weaker upstream inputs: ${weakUpstream.join(', ')}. Even though ${domainName.toLowerCase()} scores level ${maturity}, the inputs feeding it are weaker — which limits the real-world reliability of calculations in this area.`);
+    }
+  }
+
+  // Downstream impact
+  if (dep.feeds_into.length > 0 && maturity <= 2) {
+    const affected = dep.feeds_into
+      .map(downId => allDomainNames[downId] || downId)
+      .sort();
+    parts.push(`This domain feeds into ${affected.join(', ')}. At level ${maturity}, it is a constraint on all of them — improving it has a multiplier effect.`);
+  }
+
+  return parts.join(' ');
 }
 
 /* ─── Dimension diagnosis ─── */
@@ -186,6 +242,10 @@ export function generateDomainNarratives(
   results: DomainAssessment[],
   model: MaturityModel
 ): DomainNarrative[] {
+  // Build domain name map for cascade analysis
+  const domainNames: Record<string, string> = {};
+  for (const d of model.domains) domainNames[d.id] = d.name;
+
   return results.map((result) => {
     const domain = model.domains.find((d) => d.id === result.domain_id);
     if (!domain) {
@@ -201,22 +261,24 @@ export function generateDomainNarratives(
         weakness_flags: [],
         operational_impact: '',
         risk_statement: '',
+        cascade_note: '',
+        misinterpretation_risk: '',
       };
     }
 
     const level = String(result.effective_maturity);
+    const maturityLabel = MATURITY_LABELS[result.effective_maturity] || 'Unknown';
     const maturityInfo = domain.maturity_levels[level];
-    const maturityLabel = maturityInfo ? maturityInfo.label : 'Unknown';
     const maturityDesc = maturityInfo ? maturityInfo.description : '';
 
-    // Score explanation with context
+    // Score explanation — clearer framing
     const overrideNote =
       result.assessor_override !== null
         ? ` (assessor override applied; calculated score was ${result.calculated_maturity})`
         : '';
     const flagNote =
       result.weakness_flags.length > 0 ? ` Caveats: ${result.weakness_flags.join('; ')}.` : '';
-    const scoreExplanation = `Assessed at level ${result.effective_maturity} — ${maturityDesc}${overrideNote}.${flagNote}`;
+    const scoreExplanation = `Level ${result.effective_maturity} — ${maturityLabel}. ${maturityDesc}${overrideNote}${flagNote}`;
 
     // Dimension analysis with diagnosis
     const dimEntries = Object.entries(result.dimension_scores);
@@ -231,24 +293,30 @@ export function generateDomainNarratives(
       ? domainContext[result.effective_maturity] || ''
       : '';
 
-    // Risk statement
+    // Risk statement — data credibility framing
     const riskStatement = getRiskStatement(domain, result.effective_maturity, weakDimNames);
+
+    // Misinterpretation risk
+    const misinterpretationRisk = getMisinterpretationRisk(domain, result.effective_maturity);
+
+    // Cascade note — upstream constraints and downstream impact
+    const cascadeNote = getCascadeNote(domain.id, domain.name, result.effective_maturity, results, domainNames);
 
     // Decision support — what you can and cannot do
     const ds = domain.decision_support_by_score[level];
     let dsSummary = '';
     if (ds) {
       if (ds.supports.length > 0) {
-        dsSummary = `At level ${result.effective_maturity}, your data supports: ${ds.supports.join('; ')}. `;
+        dsSummary = `At level ${result.effective_maturity}, this data is good enough for: ${ds.supports.join('; ')}. `;
       }
       if (ds.does_not_support.length > 0 && !ds.does_not_support[0].startsWith('None')) {
-        dsSummary += `Not yet sufficient for: ${ds.does_not_support.join('; ')}.`;
+        dsSummary += `Not yet good enough for: ${ds.does_not_support.join('; ')}.`;
         const nextLevel = Math.min(result.effective_maturity + 1, 5);
         const nextDs = domain.decision_support_by_score[String(nextLevel)];
         if (nextDs) {
           const newCaps = nextDs.supports.filter(s => !ds.supports.includes(s)).join('; ');
           if (newCaps) {
-            dsSummary += ` Reaching level ${nextLevel} would also support: ${newCaps}.`;
+            dsSummary += ` Reaching level ${nextLevel} would unlock: ${newCaps}.`;
           }
         }
       }
@@ -265,15 +333,15 @@ export function generateDomainNarratives(
     let guidance = triggered.map((t) => t.guidance).join(' ');
     if (!guidance) {
       if (result.effective_maturity >= 4) {
-        guidance = `${domain.name} is at a mature level. Focus on maintaining data quality, extending automation, and ensuring governance processes keep pace with estate changes.`;
+        guidance = `${domain.name} data is at a mature level. Focus on maintaining quality, extending automation, and ensuring governance keeps pace with estate changes.`;
       } else {
-        guidance = `Prioritise closing the gap in ${domain.name.toLowerCase()} to unlock stronger operational decisions. Focus first on the weakest dimensions identified above.`;
+        guidance = `Closing the data gap in ${domain.name.toLowerCase()} directly improves the credibility of downstream calculations. Focus first on the weakest dimensions identified above.`;
       }
     }
 
     // Add dimension-specific guidance for weak areas
     if (weakDimNames.length > 0 && result.effective_maturity <= 3) {
-      guidance += ` The weakest dimensions (${weakDimNames.join(', ')}) should be addressed first as they constrain the effective maturity of the entire domain.`;
+      guidance += ` The weakest dimensions (${weakDimNames.join(', ')}) should be addressed first — they set the effective ceiling for this domain.`;
     }
 
     return {
@@ -288,6 +356,8 @@ export function generateDomainNarratives(
       weakness_flags: result.weakness_flags,
       operational_impact: operationalImpact,
       risk_statement: riskStatement,
+      cascade_note: cascadeNote,
+      misinterpretation_risk: misinterpretationRisk,
     };
   });
 }
