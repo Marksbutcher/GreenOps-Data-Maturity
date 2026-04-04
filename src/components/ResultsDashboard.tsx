@@ -198,7 +198,7 @@ export default function ResultsDashboard({
           {activeTab === 'overview' && (
             <div className="overview-panel">
 
-              {/* Summary narrative FIRST */}
+              {/* Stat strip */}
               <div className="overview-summary-strip">
                 <div className="summary-stat-grid">
                   <div className="summary-stat">
@@ -220,26 +220,55 @@ export default function ResultsDashboard({
                 </div>
               </div>
 
+              {/* Executive narrative — formatted with visual hierarchy */}
               <div className="overview-narrative">
-                <div className="summary-text">
-                  {execSummary.split('\n\n').map((para, i) => (
-                    <p key={i}>{para}</p>
-                  ))}
+                <div className="exec-summary">
+                  {execSummary.split('\n\n').map((para, i) => {
+                    // First paragraph is the headline finding — style it bigger
+                    if (i === 0) {
+                      return <p key={i} className="exec-lead">{para}</p>;
+                    }
+                    // Highlight key phrases within paragraphs
+                    const highlighted = para
+                      .replace(/(Critical priority:)/g, '|||STRONG|||$1|||/STRONG|||')
+                      .replace(/(Strongest areas:)/g, '|||STRONG|||$1|||/STRONG|||')
+                      .replace(/(Weakest areas[^:]*:)/g, '|||STRONG|||$1|||/STRONG|||')
+                      .replace(/(\d+ of \d+ domains)/g, '|||STRONG|||$1|||/STRONG|||')
+                      .replace(/(level \d)/gi, '|||EM|||$1|||/EM|||');
+
+                    const parts = highlighted.split(/\|\|\|/);
+                    return (
+                      <p key={i} className="exec-para">
+                        {parts.map((part, j) => {
+                          if (part === 'STRONG') return null;
+                          if (part === '/STRONG') return null;
+                          if (part === 'EM') return null;
+                          if (part === '/EM') return null;
+                          // Check what the previous marker was
+                          const prevMarker = parts[j - 1];
+                          if (prevMarker === 'STRONG') return <strong key={j}>{part}</strong>;
+                          if (prevMarker === 'EM') return <em key={j} className="exec-level">{part}</em>;
+                          if (part === '') return null;
+                          return <Fragment key={j}>{part}</Fragment>;
+                        })}
+                      </p>
+                    );
+                  })}
                 </div>
               </div>
 
-              {/* Charts side-by-side */}
+              {/* Charts — bar full width, radar alongside */}
               <div className="overview-charts-row">
-                <div className="overview-chart-cell">
+                <div className="overview-chart-bar">
                   <h3 className="section-heading">Maturity by domain</h3>
-                  <ResponsiveContainer width="100%" height={Math.max(barData.length * 38, 380)}>
-                    <BarChart data={barData} layout="vertical" margin={{ top: 5, right: 30, bottom: 5, left: 5 }}>
+                  <ResponsiveContainer width="100%" height={Math.max(barData.length * 40, 400)}>
+                    <BarChart data={barData} layout="vertical" margin={{ top: 5, right: 40, bottom: 5, left: 10 }}>
                       <CartesianGrid strokeDasharray="3 3" stroke="#e9ecef" horizontal={false} />
                       <XAxis type="number" domain={[0, 5]} ticks={[1, 2, 3, 4, 5]} fontSize={11} />
                       <YAxis
                         type="category"
-                        dataKey="shortName"
-                        width={180}
+                        dataKey="name"
+                        width={260}
                         tick={{ fontSize: 11, fill: '#495057' }}
                       />
                       <Tooltip
@@ -256,7 +285,7 @@ export default function ResultsDashboard({
                           );
                         }}
                       />
-                      <Bar dataKey="maturity" radius={[0, 4, 4, 0]} barSize={20}>
+                      <Bar dataKey="maturity" radius={[0, 4, 4, 0]} barSize={22}>
                         {barData.map((entry, i) => (
                           <Cell key={i} fill={LEVEL_COLOURS[entry.maturity] || '#94a3b8'} />
                         ))}
@@ -265,12 +294,12 @@ export default function ResultsDashboard({
                   </ResponsiveContainer>
                 </div>
 
-                <div className="overview-chart-cell">
+                <div className="overview-chart-radar">
                   <h3 className="section-heading">Maturity profile</h3>
-                  <ResponsiveContainer width="100%" height={Math.max(barData.length * 38, 380)}>
-                    <RadarChart data={radarData} outerRadius="65%">
+                  <ResponsiveContainer width="100%" height={420}>
+                    <RadarChart data={radarData} outerRadius="68%">
                       <PolarGrid stroke="#e9ecef" />
-                      <PolarAngleAxis dataKey="domain" tick={{ fontSize: 8, fill: '#495057' }} />
+                      <PolarAngleAxis dataKey="domain" tick={{ fontSize: 9, fill: '#495057' }} />
                       <Radar name="Current" dataKey="maturity" stroke="#5AA63E" fill="#5AA63E" fillOpacity={0.3} />
                       <Radar name="Target" dataKey="target" stroke="#94a3b8" fill="none" strokeDasharray="4 4" />
                       <Legend wrapperStyle={{ fontSize: 11 }} />
@@ -402,15 +431,21 @@ export default function ResultsDashboard({
                         </span>
                       </div>
 
+                      {dr.summary && (
+                        <p className="readiness-summary-v2">{dr.summary}</p>
+                      )}
+
                       {/* Visual bar showing readiness level */}
-                      <div className="readiness-bar-track">
-                        <div
-                          className="readiness-bar-fill"
-                          style={{
-                            width: `${dr.readiness === 'reporting_only' ? 15 : dr.readiness === 'directional' ? 40 : dr.readiness === 'decision_grade' ? 75 : 95}%`,
-                            background: colour,
-                          }}
-                        />
+                      <div className="readiness-bar-wrapper">
+                        <div className="readiness-bar-track">
+                          <div
+                            className="readiness-bar-fill"
+                            style={{
+                              width: `${dr.readiness === 'reporting_only' ? 15 : dr.readiness === 'directional' ? 40 : dr.readiness === 'decision_grade' ? 75 : 95}%`,
+                              background: colour,
+                            }}
+                          />
+                        </div>
                         <div className="readiness-bar-labels">
                           <span>Reporting</span>
                           <span>Directional</span>
