@@ -185,9 +185,10 @@ function drawDomainBars(
     // Intent target line (dashed vertical line)
     const intentX = barStartX + (intentLevel / 5) * barMaxWidth;
     doc.setDrawColor(...BRAND.gray);
-    doc.setLineDash([1, 1]);
-    doc.line(intentX, y - 0.5, intentX, y + barHeight + 0.5);
-    doc.setLineDash([]);
+    // Draw dashed intent target line using small segments
+    for (let dy = y - 0.5; dy < y + barHeight + 0.5; dy += 2) {
+      doc.line(intentX, dy, intentX, Math.min(dy + 1, y + barHeight + 0.5));
+    }
 
     // Score label (right)
     doc.setFontSize(7);
@@ -203,9 +204,10 @@ function drawDomainBars(
   y += 2;
   doc.setFontSize(7);
   doc.setTextColor(...BRAND.gray);
-  doc.setLineDash([1, 1]);
-  doc.line(barStartX, y, barStartX + 8, y);
-  doc.setLineDash([]);
+  // Dashed legend line
+  for (let dx = barStartX; dx < barStartX + 8; dx += 2) {
+    doc.line(dx, y, dx + 1, y);
+  }
   doc.text(`Intent target: Level ${intentLevel}`, barStartX + 10, y + 1);
 
   return y + 6;
@@ -268,12 +270,25 @@ function drawRadarChart(
   doc.setDrawColor(...BRAND.green);
   doc.setLineWidth(1);
   if (actualPoints.length > 0) {
-    doc.moveTo(actualPoints[0][0], actualPoints[0][1]);
-    for (let i = 1; i < actualPoints.length; i++) {
-      doc.lineTo(actualPoints[i][0], actualPoints[i][1]);
+    // Draw filled polygon for actual scores
+    doc.setFillColor(90, 166, 62);
+    doc.setDrawColor(60, 140, 40);
+    doc.setLineWidth(0.6);
+    // Build polygon path using triangle fan
+    for (let i = 0; i < actualPoints.length; i++) {
+      const next = (i + 1) % actualPoints.length;
+      doc.triangle(
+        cx, cy,
+        actualPoints[i][0], actualPoints[i][1],
+        actualPoints[next][0], actualPoints[next][1],
+        'F'
+      );
     }
-    doc.lineTo(actualPoints[0][0], actualPoints[0][1]);
-    doc.fill('FD');
+    // Draw outline
+    for (let i = 0; i < actualPoints.length; i++) {
+      const next = (i + 1) % actualPoints.length;
+      doc.line(actualPoints[i][0], actualPoints[i][1], actualPoints[next][0], actualPoints[next][1]);
+    }
   }
 
   // Calculate intent target polygon points (dashed outline)
@@ -286,19 +301,29 @@ function drawRadarChart(
     intentPoints.push([x, y]);
   }
 
-  // Draw intent target polygon (dashed)
+  // Draw intent target polygon (dashed segments)
   doc.setDrawColor(...BRAND.amber);
   doc.setLineWidth(0.8);
-  doc.setLineDash([2, 2]);
   if (intentPoints.length > 0) {
-    doc.moveTo(intentPoints[0][0], intentPoints[0][1]);
-    for (let i = 1; i < intentPoints.length; i++) {
-      doc.lineTo(intentPoints[i][0], intentPoints[i][1]);
+    for (let i = 0; i < intentPoints.length; i++) {
+      const next = (i + 1) % intentPoints.length;
+      const [x1, y1] = intentPoints[i];
+      const [x2, y2] = intentPoints[next];
+      // Draw dashed line between two points
+      const dx = x2 - x1;
+      const dy = y2 - y1;
+      const len = Math.sqrt(dx * dx + dy * dy);
+      const dashLen = 2;
+      const gapLen = 2;
+      let d = 0;
+      while (d < len) {
+        const t1 = d / len;
+        const t2 = Math.min((d + dashLen) / len, 1);
+        doc.line(x1 + dx * t1, y1 + dy * t1, x1 + dx * t2, y1 + dy * t2);
+        d += dashLen + gapLen;
+      }
     }
-    doc.lineTo(intentPoints[0][0], intentPoints[0][1]);
-    doc.stroke();
   }
-  doc.setLineDash([]);
 
   // Label each axis (domain names around the circle)
   doc.setFontSize(6);
@@ -332,8 +357,13 @@ export function downloadPDF(
   const pageNum = { value: 0 };
 
   const stats = calculateOverallStats(results);
-  const limitingFactors = getTopLimitingFactors(results);
-  const cascadeRisks = analyseCascadeRisks(results);
+  // Build domain name lookup
+  const domainNames: Record<string, string> = {};
+  for (const d of model.domains) {
+    domainNames[d.id] = d.name;
+  }
+  const limitingFactors = getTopLimitingFactors(results, domainNames);
+  const cascadeRisks = analyseCascadeRisks(results, domainNames);
   const intentLevel = INTENT_MINIMUM_LEVEL[profile.assessment_intent] || 3;
   const intentLabel = INTENT_LABELS[profile.assessment_intent] || 'Assessment';
   const belowIntentCount = results.filter(r => r.effective_maturity < intentLevel).length;
@@ -464,10 +494,10 @@ export function downloadPDF(
   doc.setFontSize(8);
   doc.setTextColor(...BRAND.slate);
   doc.text('Solid green polygon: Current maturity', 25, legendY);
-  doc.setLineDash([2, 2]);
   doc.setDrawColor(...BRAND.amber);
-  doc.line(25, legendY + 3, 35, legendY + 3);
-  doc.setLineDash([]);
+  for (let dx = 25; dx < 35; dx += 3) {
+    doc.line(dx, legendY + 3, dx + 1.5, legendY + 3);
+  }
   doc.text('Dashed amber polygon: Intent target', 40, legendY + 3);
 
   legendY += 12;
