@@ -66,7 +66,7 @@ export function applyOverrideRules(
   if (answered.length > 0 && (level1Count / answered.length) > 0.3) {
     if (cappedScore > 3) {
       cappedScore = 3;
-      flags.push('Maturity capped at 3: more than 30% of answers are at level 1');
+      flags.push('Score capped at level 3: more than 30% of data inputs are at level 1 (ad hoc or absent). Significant gaps must be closed before this domain can reach decision-grade quality.');
     }
   }
 
@@ -77,7 +77,7 @@ export function applyOverrideRules(
     .map(q => q.options[answers[q.id]]?.score || 0);
 
   if (lineageScores.length > 0 && lineageScores.every(s => s <= 2)) {
-    flags.push('Weak assurance/lineage: decision-readiness may be capped at directional support');
+    flags.push('Data lineage and assurance are weak. Without traceability back to source, calculations using this data cannot be independently verified or defended under challenge.');
   }
 
   return { cappedScore, flags };

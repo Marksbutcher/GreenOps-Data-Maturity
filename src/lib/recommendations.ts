@@ -1,4 +1,5 @@
-import { DomainAssessment, MaturityModel, Recommendation } from '../types';
+import { DomainAssessment, MaturityModel, Recommendation, AssessmentIntent, INTENT_LABELS, INTENT_MINIMUM_LEVEL, MATURITY_LABELS_SHORT, confidenceLabel, CONFIDENCE_DESCRIPTIONS } from '../types';
+import { getTopLimitingFactors } from './dependencyChain';
 
 /* ─── Phase classification considers maturity AND domain strategic weight ─── */
 function classifyPhase(
@@ -152,7 +153,8 @@ export function generateRecommendations(
 
 export function generateExecutiveSummary(
   results: DomainAssessment[],
-  model: MaturityModel
+  model: MaturityModel,
+  intent?: AssessmentIntent
 ): string {
   const domainCount = results.length;
   const effectiveMaturities = results.map((r) => r.effective_maturity);
@@ -161,77 +163,128 @@ export function generateExecutiveSummary(
   const avgMaturity = effectiveMaturities.reduce((a, b) => a + b, 0) / domainCount;
   const weightedMaturity = Math.round(avgMaturity * 10) / 10;
 
+  // Overall confidence from domain confidence scores
+  const avgConfidence = results.reduce((a, r) => a + r.confidence_score, 0) / domainCount;
+  const overallConfidence = confidenceLabel(avgConfidence);
+
   const sorted = [...results].sort((a, b) => a.effective_maturity - b.effective_maturity);
   const weakest = sorted.slice(0, 3);
   const strongest = sorted.slice(-3).reverse();
 
   const weakNames = weakest.map((r) => {
     const d = model.domains.find((dd) => dd.id === r.domain_id);
-    return `${d?.name || r.domain_id} (level ${r.effective_maturity})`;
+    return `${d?.name || r.domain_id} (level ${r.effective_maturity} — ${MATURITY_LABELS_SHORT[r.effective_maturity] || ''})`;
   });
   const strongNames = strongest.map((r) => {
     const d = model.domains.find((dd) => dd.id === r.domain_id);
-    return `${d?.name || r.domain_id} (level ${r.effective_maturity})`;
+    return `${d?.name || r.domain_id} (level ${r.effective_maturity} — ${MATURITY_LABELS_SHORT[r.effective_maturity] || ''})`;
   });
 
+  const parts: string[] = [];
+
+  // 1. Confidence and scope
+  parts.push(
+    `This assessment covers ${domainCount} data input domains. Overall assessment confidence is ${overallConfidence}. ${CONFIDENCE_DESCRIPTIONS[overallConfidence]}`
+  );
+
+  // 2. Intent gap analysis — the critical "is your data good enough for what you need?"
+  if (intent) {
+    const requiredLevel = INTENT_MINIMUM_LEVEL[intent];
+    const intentLabel = INTENT_LABELS[intent];
+    const belowRequired = results.filter((r) => r.effective_maturity < requiredLevel);
+
+    if (belowRequired.length === 0) {
+      parts.push(
+        `Your stated goal is "${intentLabel}". All ${domainCount} domains meet or exceed the minimum data quality level (${requiredLevel}) needed to support this. The data foundation is in place for this use.`
+      );
+    } else {
+      const belowNames = belowRequired
+        .sort((a, b) => a.effective_maturity - b.effective_maturity)
+        .slice(0, 4)
+        .map((r) => {
+          const d = model.domains.find((dd) => dd.id === r.domain_id);
+          return `${d?.name || r.domain_id} (level ${r.effective_maturity})`;
+        });
+      parts.push(
+        `Your stated goal is "${intentLabel}", which requires data quality at level ${requiredLevel} or above across all domains. ${belowRequired.length} of ${domainCount} domains fall short: ${belowNames.join('; ')}. Until these gaps are closed, results in those areas should be treated with caution and may not withstand challenge.`
+      );
+    }
+  }
+
+  // 3. Overall maturity context
+  parts.push(
+    `Overall weighted maturity is ${weightedMaturity} out of 5, ranging from level ${minMaturity} to level ${maxMaturity}. These scores reflect data quality — what you can measure and evidence — not sustainability ambition or operational intent.`
+  );
+
+  // 4. Top limiting factors from the calculation dependency chain
+  const domainNames: Record<string, string> = {};
+  for (const d of model.domains) domainNames[d.id] = d.name;
+  const limitingFactors = getTopLimitingFactors(results, domainNames, 3);
+
+  if (limitingFactors.length > 0) {
+    const factorDesc = limitingFactors
+      .map((f) => `${f.domain_name} (level ${f.maturity}) — constrains ${f.affected.map(a => a.toLowerCase()).join(', ')}`)
+      .join('; ');
+    parts.push(
+      `Top calculation constraints: ${factorDesc}. Weak data in these upstream domains cascades into unreliable results downstream. Fixing them has a multiplier effect.`
+    );
+  }
+
+  // 5. Domain distribution
   const belowThree = results.filter((r) => r.effective_maturity < 3).length;
   const belowTwo = results.filter((r) => r.effective_maturity < 2).length;
   const atFourPlus = results.filter((r) => r.effective_maturity >= 4).length;
+  const distParts: string[] = [];
 
-  // Opening — clear, direct
-  let summary = `This assessment covers ${domainCount} data domains across the technology estate. Overall weighted maturity is ${weightedMaturity} out of 5, with domains ranging from level ${minMaturity} to level ${maxMaturity}. `;
-  summary += `The scores reflect data quality — what you can measure and evidence — not sustainability ambition.`;
-
-  // What that score means in practice
-  if (weightedMaturity < 2.5) {
-    summary += `\n\nAt this level, the data foundation is immature. Most inputs are partial, inconsistent, or absent. The estate is running on estimates rather than measured evidence. This limits you to basic compliance reporting and means efficiency gains, cost savings, and carbon reductions are being missed. External disclosure based on current data should be caveated.`;
-  } else if (weightedMaturity < 3.5) {
-    summary += `\n\nA basic data foundation exists in several areas, but significant gaps remain. Data works for periodic reporting and directional analysis, but is not consistently decision-grade. The priority is closing the weakest gaps — because they represent hidden risk, unquantified waste, and missed cost and carbon reduction.`;
-  } else if (weightedMaturity < 4.5) {
-    summary += `\n\nMost domains are at or near decision-grade quality. The focus should shift from establishing data to using it — embedding GreenOps metrics into governance, investment decisions, procurement, and continuous improvement. The risk now is that good data exists but is not systematically acted on.`;
-  } else {
-    summary += `\n\nThe data capability is mature and comprehensive. Focus on sustaining quality, extending automation, and ensuring governance keeps pace with estate changes and regulatory expectations.`;
-  }
-
-  // Domain counts
   if (belowThree > 0) {
-    summary += `\n\n${belowThree} of ${domainCount} domains are below level 3 — data in those areas is not reliable enough for confident decisions.`;
+    distParts.push(`${belowThree} of ${domainCount} domains are below level 3 — data in those areas is not reliable enough for confident decisions`);
     if (belowTwo > 0) {
-      summary += ` Of these, ${belowTwo} ${belowTwo === 1 ? 'is' : 'are'} at level 1, meaning near-complete absence of usable data.`;
+      distParts.push(`${belowTwo} of those ${belowTwo === 1 ? 'is' : 'are'} at level 1, meaning near-complete absence of usable data`);
     }
   }
   if (atFourPlus > 0) {
-    summary += ` ${atFourPlus} domain${atFourPlus > 1 ? 's are' : ' is'} at level 4 or above, providing decision-grade or optimisation-grade evidence.`;
+    distParts.push(`${atFourPlus} domain${atFourPlus > 1 ? 's are' : ' is'} at level 4 or above, providing measured, defensible evidence`);
+  }
+  if (distParts.length > 0) {
+    parts.push(distParts.join('. ') + '.');
   }
 
-  summary += `\n\nStrongest areas: ${strongNames.join('; ')}.`;
-  summary += `\n\nWeakest areas: ${weakNames.join('; ')}.`;
+  parts.push(`Strongest areas: ${strongNames.join('; ')}.`);
+  parts.push(`Weakest areas: ${weakNames.join('; ')}.`);
 
-  // Priority gaps
+  // 6. Priority gaps
   const highImpactWeak = results
     .filter((r) => r.effective_maturity <= 2 && r.impact_score >= 4)
     .map((r) => model.domains.find((d) => d.id === r.domain_id)?.name || r.domain_id);
 
   if (highImpactWeak.length > 0) {
-    summary += `\n\nCritical priority: ${highImpactWeak.join(', ')} ${highImpactWeak.length === 1 ? 'is' : 'are'} high-impact but low-maturity — the biggest gap between importance and evidence quality. These need named ownership and clear timelines.`;
+    parts.push(
+      `Critical priority: ${highImpactWeak.join(', ')} ${highImpactWeak.length === 1 ? 'is' : 'are'} high-impact but low-maturity — the widest gap between importance and evidence quality. These need named ownership and a clear path to level 3.`
+    );
   }
 
-  // Spread
+  // 7. Spread risk
   const spread = maxMaturity - minMaturity;
   if (spread >= 3) {
-    summary += `\n\nThe ${spread}-level spread between strongest and weakest domains matters. Uneven maturity limits joined-up decisions — strong data in one area is less useful if related areas are weak. Closing the weakest gaps improves the usability of data across the whole estate.`;
+    parts.push(
+      `The ${spread}-level spread between strongest and weakest domains is significant. Uneven maturity limits joined-up decisions — strong data in one area is less useful when related areas are weak. Closing the lowest gaps improves usability across the whole estate.`
+    );
   }
 
-  // Caveats
+  // 8. Caveats
   const flagged = results.filter((r) => r.weakness_flags.length > 0);
   if (flagged.length > 0) {
-    summary += `\n\n${flagged.length} domain${flagged.length > 1 ? 's have' : ' has'} scoring caveats — typically where many level-1 answers or weak assurance limits confidence in the score. Review these in the domain detail.`;
+    parts.push(
+      `${flagged.length} domain${flagged.length > 1 ? 's have' : ' has'} scoring caveats — typically where widespread level-1 answers or weak data lineage limits confidence. Review these in the domain detail.`
+    );
   }
 
   const overrides = results.filter((r) => r.assessor_override !== null);
   if (overrides.length > 0) {
-    summary += ` ${overrides.length} domain${overrides.length > 1 ? 's have' : ' has'} assessor overrides; both calculated and overridden scores are shown.`;
+    parts.push(
+      `${overrides.length} domain${overrides.length > 1 ? 's have' : ' has'} assessor overrides; both calculated and overridden scores are shown.`
+    );
   }
 
-  return summary;
+  return parts.join('\n\n');
 }

@@ -564,6 +564,55 @@ h3 { font-size: 1.125rem; }
   border-top: 1px solid var(--color-border-light);
 }
 
+/* ===== Intent selection cards ===== */
+
+.intent-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+@media (max-width: 640px) {
+  .intent-cards { grid-template-columns: 1fr; }
+}
+
+.intent-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  padding: 16px;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s, box-shadow 0.15s;
+}
+
+.intent-card:hover {
+  border-color: var(--color-leaf);
+  background: rgba(107, 190, 73, 0.04);
+}
+
+.intent-card-selected {
+  border-color: var(--color-leaf);
+  background: rgba(107, 190, 73, 0.06);
+  box-shadow: 0 0 0 1px var(--color-leaf);
+}
+
+.intent-card-label {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--color-text);
+  margin-bottom: 6px;
+}
+
+.intent-card-desc {
+  font-size: 0.8125rem;
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+}
+
 /* ===== Assessment flow — sidebar + main layout ===== */
 
 .assessment-layout {
@@ -2011,6 +2060,110 @@ h3 { font-size: 1.125rem; }
 .overview-panel {
   display: grid;
   gap: var(--space-lg);
+}
+
+/* ── Confidence + intent banner ── */
+.overview-confidence-banner {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-lg);
+  padding: var(--space-md) var(--space-lg);
+  box-shadow: var(--shadow-xs);
+}
+
+.confidence-row {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-xl);
+  flex-wrap: wrap;
+}
+
+.confidence-indicator {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-sm);
+  flex: 1;
+  min-width: 220px;
+}
+
+.confidence-badge {
+  display: inline-block;
+  font-weight: 600;
+  font-size: 0.8125rem;
+  padding: 4px 12px;
+  border-radius: var(--radius-sm);
+  white-space: nowrap;
+}
+
+.confidence-low { background: #fef2f2; color: #b91c1c; }
+.confidence-moderate { background: #fffbeb; color: #92400e; }
+.confidence-high { background: #f0fdf4; color: #166534; }
+
+.confidence-desc {
+  font-size: 0.8125rem;
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+}
+
+.intent-gap-indicator {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+  min-width: 220px;
+}
+
+.intent-gap-label {
+  font-weight: 600;
+  font-size: 0.8125rem;
+  color: var(--color-text);
+}
+
+.intent-gap-met {
+  font-size: 0.8125rem;
+  color: #166534;
+  font-weight: 500;
+}
+
+.intent-gap-unmet {
+  font-size: 0.8125rem;
+  color: #b91c1c;
+  font-weight: 500;
+}
+
+/* ── Limiting factors ── */
+.overview-limiting {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg) var(--space-xl);
+}
+
+.limiting-list {
+  display: grid;
+  gap: var(--space-sm);
+  margin-top: var(--space-md);
+}
+
+.limiting-item {
+  padding: var(--space-sm) var(--space-md);
+  background: var(--color-bg);
+  border-radius: var(--radius-sm);
+  border-left: 3px solid var(--color-border);
+}
+
+.limiting-item-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-size: 0.875rem;
+}
+
+.limiting-item-impact {
+  font-size: 0.8125rem;
+  color: var(--color-text-secondary);
+  margin: 4px 0 0 0;
+  padding-left: 0;
 }
 
 .overview-summary-strip {

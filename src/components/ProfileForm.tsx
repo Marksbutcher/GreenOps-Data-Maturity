@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { OrganisationProfile } from '../types';
+import { OrganisationProfile, AssessmentIntent, INTENT_LABELS, INTENT_DESCRIPTIONS } from '../types';
 
 interface ProfileFormProps {
   profile: OrganisationProfile;
@@ -73,6 +73,35 @@ export default function ProfileForm({ profile, mode, onSubmit, onBack }: Profile
           <p className="text-secondary" style={{ marginTop: 8 }}>
             Capture the key details about the organisation being assessed. These will appear in the report.
           </p>
+        </div>
+
+        <div className="card card-elevated" style={{ marginBottom: 24 }}>
+          <div className="form-group">
+            <label className="form-label form-required" style={{ fontSize: '1rem', marginBottom: 12 }}>
+              What do you need your GreenOps data to support?
+            </label>
+            <p className="text-secondary" style={{ fontSize: '0.875rem', marginBottom: 16, marginTop: 0 }}>
+              This shapes how the assessment interprets your results — what counts as "good enough" depends on what you're trying to do with the data.
+            </p>
+            <div className="intent-cards">
+              {(Object.keys(INTENT_LABELS) as AssessmentIntent[]).map((intent) => (
+                <button
+                  key={intent}
+                  type="button"
+                  className={`intent-card ${form.assessment_intent === intent ? 'intent-card-selected' : ''}`}
+                  onClick={() => update('assessment_intent', intent)}
+                >
+                  <span className="intent-card-label">{INTENT_LABELS[intent]}</span>
+                  <span className="intent-card-desc">{INTENT_DESCRIPTIONS[intent]}</span>
+                </button>
+              ))}
+            </div>
+            {errors.assessment_intent && (
+              <span style={{ color: 'var(--color-high)', fontSize: '0.8125rem' }}>
+                {errors.assessment_intent}
+              </span>
+            )}
+          </div>
         </div>
 
         <div className="card card-elevated">

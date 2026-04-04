@@ -1,6 +1,6 @@
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
-import { OrganisationProfile, DomainAssessment, MaturityModel, Recommendation, DecisionAreaReadiness } from '../types';
+import { OrganisationProfile, DomainAssessment, MaturityModel, Recommendation, DecisionAreaReadiness, MATURITY_LABELS } from '../types';
 import { DomainNarrative } from './narrativeAnalysis';
 import { calculateOverallStats } from './scoring';
 
@@ -17,13 +17,7 @@ const BRAND = {
   greenDk: [60, 140, 40] as [number, number, number],
 };
 
-const LEVEL_LABELS: Record<number, string> = {
-  1: 'Initial / absent',
-  2: 'Ad-hoc / partial',
-  3: 'Structured / consistent',
-  4: 'Decision-grade',
-  5: 'Optimisation-grade',
-};
+const LEVEL_LABELS = MATURITY_LABELS;
 
 function levelColour(level: number): [number, number, number] {
   if (level <= 1) return BRAND.red;

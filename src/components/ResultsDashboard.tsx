@@ -4,11 +4,12 @@ import {
   ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, Radar,
   Cell, Legend,
 } from 'recharts';
-import { MaturityModel, DomainAssessment, OrganisationProfile } from '../types';
+import { MaturityModel, DomainAssessment, OrganisationProfile, MATURITY_LABELS, MATURITY_LABELS_SHORT, INTENT_LABELS, INTENT_MINIMUM_LEVEL, confidenceLabel, CONFIDENCE_DESCRIPTIONS } from '../types';
 import { calculateOverallStats, getAnswerPatternSummary } from '../lib/scoring';
 import { generateDomainNarratives, DomainNarrative } from '../lib/narrativeAnalysis';
 import { generateRecommendations, generateExecutiveSummary } from '../lib/recommendations';
 import { generateDecisionReadiness } from '../lib/decisionReadiness';
+import { getTopLimitingFactors, analyseCascadeRisks } from '../lib/dependencyChain';
 
 interface Props {
   model: MaturityModel;
@@ -37,9 +38,7 @@ const LEVEL_COLOURS: Record<number, string> = {
 const LEVEL_BG: Record<number, string> = {
   1: '#fef2f2', 2: '#fffbeb', 3: '#fefce8', 4: '#f0fdf4', 5: '#f0fdf4',
 };
-const LEVEL_LABELS: Record<number, string> = {
-  1: 'Ad hoc', 2: 'Repeatable', 3: 'Defined', 4: 'Managed', 5: 'Optimising',
-};
+const LEVEL_LABELS = MATURITY_LABELS_SHORT;
 
 const READINESS_COLOURS: Record<string, string> = {
   reporting_only: '#dc2626',
@@ -79,7 +78,7 @@ export default function ResultsDashboard({
   const narratives = useMemo(() => generateDomainNarratives(results, model), [results, model]);
   const recommendations = useMemo(() => generateRecommendations(results, model), [results, model]);
   const decisionReadiness = useMemo(() => generateDecisionReadiness(results, model), [results, model]);
-  const execSummary = useMemo(() => generateExecutiveSummary(results, model), [results, model]);
+  const execSummary = useMemo(() => generateExecutiveSummary(results, model, profile.assessment_intent), [results, model, profile.assessment_intent]);
 
   // Bar chart data — sorted weakest first
   const barData = useMemo(() => {
@@ -151,6 +150,43 @@ export default function ResultsDashboard({
     return result;
   }, [recommendations]);
 
+  // Domain name map for dependency chain
+  const domainNames = useMemo(() => {
+    const map: Record<string, string> = {};
+    for (const d of model.domains) map[d.id] = d.name;
+    return map;
+  }, [model]);
+
+  // Cascade risks and limiting factors
+  const cascadeRisks = useMemo(() => analyseCascadeRisks(results, domainNames), [results, domainNames]);
+  const limitingFactors = useMemo(() => getTopLimitingFactors(results, domainNames, 3), [results, domainNames]);
+
+  // Intent gap analysis
+  const intentGap = useMemo(() => {
+    const intent = profile.assessment_intent;
+    if (!intent) return null;
+    const requiredLevel = INTENT_MINIMUM_LEVEL[intent];
+    const belowRequired = results.filter(r => r.effective_maturity < requiredLevel);
+    return {
+      intent,
+      label: INTENT_LABELS[intent],
+      requiredLevel,
+      shortfall: belowRequired.length,
+      total: results.length,
+      gaps: belowRequired.sort((a, b) => a.effective_maturity - b.effective_maturity).map(r => ({
+        name: domainNames[r.domain_id] || r.domain_id,
+        level: r.effective_maturity,
+        needed: requiredLevel,
+      })),
+    };
+  }, [results, profile.assessment_intent, domainNames]);
+
+  // Overall confidence
+  const overallConfidence = useMemo(() => {
+    const avg = results.reduce((a, r) => a + r.confidence_score, 0) / results.length;
+    return confidenceLabel(avg);
+  }, [results]);
+
   // Key stats for summary strip
   const belowThree = results.filter(r => r.effective_maturity < 3).length;
   const atFourPlus = results.filter(r => r.effective_maturity >= 4).length;
@@ -172,8 +208,8 @@ export default function ResultsDashboard({
           <div className="results-actions">
             <button className="btn btn-ghost" onClick={onBack}>Back to assessment</button>
             <button className="btn btn-ghost" onClick={onStartOver}>Start over</button>
-            <button className="btn btn-outline" onClick={handleSave}>Save assessment</button>
-            <button className="btn btn-primary" onClick={onExportCSV}>Export CSV</button>
+            <button className="btn btn-outline" onClick={handleSave}>Save progress</button>
+            <button className="btn btn-ghost" onClick={onExportCSV}>Export CSV</button>
             <button className="btn btn-accent" onClick={onExportPDF}>Export PDF report</button>
           </div>
         </div>
@@ -198,6 +234,30 @@ export default function ResultsDashboard({
           {activeTab === 'overview' && (
             <div className="overview-panel">
 
+              {/* Confidence and intent banner */}
+              <div className="overview-confidence-banner">
+                <div className="confidence-row">
+                  <div className="confidence-indicator">
+                    <span className={`confidence-badge confidence-${overallConfidence}`}>
+                      {overallConfidence.charAt(0).toUpperCase() + overallConfidence.slice(1)} confidence
+                    </span>
+                    <span className="confidence-desc">{CONFIDENCE_DESCRIPTIONS[overallConfidence]}</span>
+                  </div>
+                  {intentGap && (
+                    <div className="intent-gap-indicator">
+                      <span className="intent-gap-label">Goal: {intentGap.label}</span>
+                      {intentGap.shortfall === 0 ? (
+                        <span className="intent-gap-met">All domains meet the required level {intentGap.requiredLevel}</span>
+                      ) : (
+                        <span className="intent-gap-unmet">
+                          {intentGap.shortfall} of {intentGap.total} domains fall short of level {intentGap.requiredLevel}
+                        </span>
+                      )}
+                    </div>
+                  )}
+                </div>
+              </div>
+
               {/* Stat strip */}
               <div className="overview-summary-strip">
                 <div className="summary-stat-grid">
@@ -211,11 +271,11 @@ export default function ResultsDashboard({
                   </div>
                   <div className="summary-stat">
                     <span className="summary-stat-value summary-stat-alert">{belowThree}</span>
-                    <span className="summary-stat-label">Domains below<br />decision-grade</span>
+                    <span className="summary-stat-label">Domains below<br />level 3</span>
                   </div>
                   <div className="summary-stat">
                     <span className="summary-stat-value summary-stat-good">{atFourPlus}</span>
-                    <span className="summary-stat-label">Domains at<br />decision-grade+</span>
+                    <span className="summary-stat-label">Domains at<br />level 4+</span>
                   </div>
                 </div>
               </div>
@@ -308,6 +368,30 @@ export default function ResultsDashboard({
                   </ResponsiveContainer>
                 </div>
               </div>
+
+              {/* Limiting factors — cascade analysis */}
+              {limitingFactors.length > 0 && (
+                <div className="overview-limiting">
+                  <h3 className="section-heading">Top calculation constraints</h3>
+                  <p className="section-subtext">
+                    These upstream data domains constrain the reliability of downstream calculations.
+                    Improving them has a multiplier effect across the assessment.
+                  </p>
+                  <div className="limiting-list">
+                    {limitingFactors.map((f) => (
+                      <div key={f.domain_id} className="limiting-item">
+                        <div className="limiting-item-header">
+                          <span className={`level-badge l${f.maturity}`}>Level {f.maturity}</span>
+                          <strong>{f.domain_name}</strong>
+                        </div>
+                        <p className="limiting-item-impact">
+                          Constrains: {f.affected.join(', ')}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           )}
 

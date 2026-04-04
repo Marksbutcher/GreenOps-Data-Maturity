@@ -28,6 +28,7 @@ function App() {
     assessment_date: new Date().toISOString().split('T')[0],
     assessor_name: '',
     notes: '',
+    assessment_intent: 'directional_insight',
   });
   const [domainResults, setDomainResults] = useState<DomainAssessment[]>(
     typedModel.domains.map((d) => createBlankAssessment(d))
@@ -45,6 +46,7 @@ function App() {
       assessment_date: new Date().toISOString().split('T')[0],
       assessor_name: '',
       notes: '',
+      assessment_intent: 'directional_insight',
     });
     setView('profile');
   }, []);
@@ -81,7 +83,7 @@ function App() {
     const narratives = generateDomainNarratives(domainResults, typedModel);
     const recommendations = generateRecommendations(domainResults, typedModel);
     const decisionReadiness = generateDecisionReadiness(domainResults, typedModel);
-    const execSummary = generateExecutiveSummary(domainResults, typedModel);
+    const execSummary = generateExecutiveSummary(domainResults, typedModel, profile.assessment_intent);
     downloadPDF(profile, domainResults, typedModel, narratives, recommendations, decisionReadiness, execSummary);
   }, [profile, domainResults]);
 
@@ -97,7 +99,10 @@ function App() {
       try {
         const data = JSON.parse(e.target?.result as string);
         if (data.profile && data.results) {
-          setProfile(data.profile);
+          setProfile({
+            ...data.profile,
+            assessment_intent: data.profile.assessment_intent || 'directional_insight',
+          });
           setAssessmentMode(data.mode || 'facilitated');
 
           // Re-score to ensure consistency with current model

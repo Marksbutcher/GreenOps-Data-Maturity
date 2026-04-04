@@ -32,6 +32,7 @@ export function loadDemoData(): AssessmentState {
     assessment_date: new Date().toISOString().split('T')[0],
     assessor_name: 'Demo Assessment',
     notes: 'Demonstration data showing a typical enterprise with uneven maturity across GreenOps data domains.',
+    assessment_intent: 'evidence_based_decisions',
   };
 
   const results: DomainAssessment[] = typedModel.domains.map((domain) => {

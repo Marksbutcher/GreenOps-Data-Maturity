@@ -84,6 +84,50 @@ export interface MaturityModel {
   domains: Domain[];
 }
 
+export type AssessmentIntent =
+  | 'compliance_reporting'
+  | 'directional_insight'
+  | 'evidence_based_decisions'
+  | 'automated_governance';
+
+export const INTENT_LABELS: Record<AssessmentIntent, string> = {
+  compliance_reporting: 'Basic compliance and reporting',
+  directional_insight: 'Directional insight and benchmarking',
+  evidence_based_decisions: 'Evidence-based optimisation decisions',
+  automated_governance: 'Automated governance and policy integration',
+};
+
+export const INTENT_DESCRIPTIONS: Record<AssessmentIntent, string> = {
+  compliance_reporting: 'Produce high-level carbon reports, meet basic disclosure requirements, and report aggregate consumption figures.',
+  directional_insight: 'Identify trends, compare sites or services, benchmark performance, and prioritise where to investigate further.',
+  evidence_based_decisions: 'Support investment cases, procurement challenges, rightsizing decisions, and accountability with defensible evidence.',
+  automated_governance: 'Embed data into continuous governance — automated controls, real-time optimisation, and policy-driven decision-making.',
+};
+
+/** Minimum data quality level needed for each intent */
+export const INTENT_MINIMUM_LEVEL: Record<AssessmentIntent, number> = {
+  compliance_reporting: 2,
+  directional_insight: 3,
+  evidence_based_decisions: 4,
+  automated_governance: 5,
+};
+
+export type ConfidenceLevel = 'low' | 'moderate' | 'high';
+
+/** Map numeric confidence (1-4) to named level */
+export function confidenceLabel(score: number): ConfidenceLevel {
+  if (score <= 1) return 'low';
+  if (score <= 2) return 'low';
+  if (score <= 3) return 'moderate';
+  return 'high';
+}
+
+export const CONFIDENCE_DESCRIPTIONS: Record<ConfidenceLevel, string> = {
+  low: 'Assessment is based on incomplete answers or inconsistent scoring. Treat results as indicative only.',
+  moderate: 'Reasonable coverage with some variation. Results are directionally useful but may not withstand detailed challenge.',
+  high: 'Strong coverage and consistent scoring. Results can support confident decisions and external reporting.',
+};
+
 export interface OrganisationProfile {
   organisation_name: string;
   sector: string;
@@ -93,6 +137,7 @@ export interface OrganisationProfile {
   assessment_date: string;
   assessor_name: string;
   notes: string;
+  assessment_intent: AssessmentIntent;
 }
 
 export interface DomainAssessment {
@@ -143,3 +188,21 @@ export interface DecisionAreaReadiness {
 }
 
 export type AppView = 'landing' | 'profile' | 'assessment' | 'results';
+
+/** Canonical maturity level labels — CMMI-aligned, single source of truth */
+export const MATURITY_LABELS: Record<number, string> = {
+  1: 'Initial — ad hoc or absent',
+  2: 'Managed — partial coverage',
+  3: 'Defined — standardised and reportable',
+  4: 'Quantitatively Managed — measured and defensible',
+  5: 'Optimising — auditable and continuously improving',
+};
+
+/** Short labels for compact display (badges, charts) */
+export const MATURITY_LABELS_SHORT: Record<number, string> = {
+  1: 'Initial',
+  2: 'Managed',
+  3: 'Defined',
+  4: 'Quantitatively Managed',
+  5: 'Optimising',
+};
