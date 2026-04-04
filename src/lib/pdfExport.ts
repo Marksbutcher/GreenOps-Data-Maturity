@@ -1,13 +1,25 @@
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
-import { OrganisationProfile, DomainAssessment, MaturityModel, Recommendation, DecisionAreaReadiness, MATURITY_LABELS, INTENT_LABELS } from '../types';
+import {
+  OrganisationProfile,
+  DomainAssessment,
+  MaturityModel,
+  Recommendation,
+  DecisionAreaReadiness,
+  MATURITY_LABELS,
+  MATURITY_LABELS_SHORT,
+  INTENT_LABELS,
+  INTENT_MINIMUM_LEVEL,
+  confidenceLabel,
+  CONFIDENCE_DESCRIPTIONS,
+} from '../types';
 import { DomainNarrative } from './narrativeAnalysis';
 import { calculateOverallStats } from './scoring';
-import { getTopLimitingFactors } from './dependencyChain';
+import { getTopLimitingFactors, analyseCascadeRisks } from './dependencyChain';
 
 const BRAND = {
-  green: [90, 166, 62] as [number, number, number],       // Posetiv leaf green
-  charcoal: [45, 45, 45] as [number, number, number],     // Charcoal primary
+  green: [90, 166, 62] as [number, number, number], // Posetiv leaf green
+  charcoal: [45, 45, 45] as [number, number, number], // Charcoal primary
   greenLight: [237, 247, 233] as [number, number, number], // Light green bg
   slate: [73, 80, 87] as [number, number, number],
   white: [255, 255, 255] as [number, number, number],
@@ -26,6 +38,12 @@ function levelColour(level: number): [number, number, number] {
   if (level <= 3) return [100, 130, 170];
   if (level <= 4) return BRAND.greenDk;
   return BRAND.green;
+}
+
+function addPageHeader(doc: jsPDF) {
+  const w = doc.internal.pageSize.width;
+  doc.setFillColor(...BRAND.green);
+  doc.rect(20, 8, w - 40, 0.5, 'F');
 }
 
 function addPageFooter(doc: jsPDF, pageNum: number) {
@@ -59,7 +77,7 @@ function writeBody(
   const h = doc.internal.pageSize.height;
   const indent = opts?.indent ?? 20;
   const fontSize = opts?.fontSize ?? 9;
-  const maxWidth = opts?.maxWidth ?? (w - indent - 20);
+  const maxWidth = opts?.maxWidth ?? w - indent - 20;
 
   doc.setFontSize(fontSize);
   doc.setTextColor(...BRAND.slate);
@@ -75,6 +93,7 @@ function writeBody(
     addPageFooter(doc, pageNum.value);
     doc.addPage();
     pageNum.value++;
+    addPageHeader(doc);
     y = 25;
   }
 
@@ -90,6 +109,214 @@ function accentBar(doc: jsPDF, y: number, colour: [number, number, number]): num
   return y + 4;
 }
 
+/** Draw a metric box (used for key metrics on page 2) */
+function drawMetricBox(
+  doc: jsPDF,
+  x: number,
+  y: number,
+  width: number,
+  height: number,
+  label: string,
+  value: string,
+  colour: [number, number, number]
+) {
+  // Border
+  doc.setDrawColor(...colour);
+  doc.setLineWidth(0.5);
+  doc.rect(x, y, width, height);
+
+  // Label
+  doc.setFontSize(8);
+  doc.setTextColor(...BRAND.gray);
+  doc.text(label, x + 3, y + 4);
+
+  // Value
+  doc.setFontSize(16);
+  doc.setTextColor(...colour);
+  doc.setFont(undefined as any, 'bold');
+  doc.text(value, x + width / 2, y + height / 2 + 4, { align: 'center' });
+  doc.setFont(undefined as any, 'normal');
+}
+
+/** Draw horizontal bar chart for all domains */
+function drawDomainBars(
+  doc: jsPDF,
+  results: DomainAssessment[],
+  model: MaturityModel,
+  profile: OrganisationProfile,
+  startY: number
+): number {
+  const sorted = [...results].sort((a, b) => b.effective_maturity - a.effective_maturity);
+  const w = doc.internal.pageSize.width;
+  const barHeight = 4;
+  const barSpacing = 5;
+  const labelWidth = 40;
+  const barStartX = 70;
+  const barMaxWidth = w - barStartX - 30;
+
+  const intentLevel = INTENT_MINIMUM_LEVEL[profile.assessment_intent] || 3;
+
+  let y = startY;
+
+  // Title
+  doc.setFontSize(11);
+  doc.setTextColor(...BRAND.charcoal);
+  doc.setFont(undefined as any, 'bold');
+  doc.text('Maturity Across All Domains', 20, y);
+  doc.setFont(undefined as any, 'normal');
+  y += 7;
+
+  // Draw each domain bar
+  for (const result of sorted) {
+    const domain = model.domains.find(d => d.id === result.domain_id);
+    const domainName = domain?.name || result.domain_id;
+    const score = result.effective_maturity;
+    const barWidth = (score / 5) * barMaxWidth;
+
+    // Domain name (left)
+    doc.setFontSize(7);
+    doc.setTextColor(...BRAND.slate);
+    doc.text(domainName, 20, y + barHeight / 2 + 1.5, { maxWidth: labelWidth - 5 });
+
+    // Coloured bar
+    doc.setFillColor(...levelColour(score));
+    doc.rect(barStartX, y, barWidth, barHeight, 'F');
+
+    // Intent target line (dashed vertical line)
+    const intentX = barStartX + (intentLevel / 5) * barMaxWidth;
+    doc.setDrawColor(...BRAND.gray);
+    doc.setLineDash([1, 1]);
+    doc.line(intentX, y - 0.5, intentX, y + barHeight + 0.5);
+    doc.setLineDash([]);
+
+    // Score label (right)
+    doc.setFontSize(7);
+    doc.setTextColor(...levelColour(score));
+    doc.setFont(undefined as any, 'bold');
+    doc.text(score.toFixed(1), barStartX + barMaxWidth + 3, y + barHeight / 2 + 1.5);
+    doc.setFont(undefined as any, 'normal');
+
+    y += barSpacing;
+  }
+
+  // Legend for intent line
+  y += 2;
+  doc.setFontSize(7);
+  doc.setTextColor(...BRAND.gray);
+  doc.setLineDash([1, 1]);
+  doc.line(barStartX, y, barStartX + 8, y);
+  doc.setLineDash([]);
+  doc.text(`Intent target: Level ${intentLevel}`, barStartX + 10, y + 1);
+
+  return y + 6;
+}
+
+/** Draw radar/spider chart for all domains */
+function drawRadarChart(
+  doc: jsPDF,
+  results: DomainAssessment[],
+  model: MaturityModel,
+  profile: OrganisationProfile,
+  startX: number,
+  startY: number,
+  size: number
+): number {
+  const cx = startX + size / 2;
+  const cy = startY + size / 2;
+  const maxRadius = size / 2.5;
+  const domainCount = results.length;
+  const intentLevel = INTENT_MINIMUM_LEVEL[profile.assessment_intent] || 3;
+
+  // Title
+  doc.setFontSize(11);
+  doc.setTextColor(...BRAND.charcoal);
+  doc.setFont(undefined as any, 'bold');
+  doc.text('Maturity Profile', startX, startY - 5);
+  doc.setFont(undefined as any, 'normal');
+
+  // Draw concentric circles (grid for levels 1-5)
+  doc.setDrawColor(...BRAND.grayLight);
+  doc.setLineWidth(0.3);
+  for (let level = 1; level <= 5; level++) {
+    const r = (level / 5) * maxRadius;
+    doc.circle(cx, cy, r);
+  }
+
+  // Draw grid lines (axes)
+  doc.setDrawColor(...BRAND.grayLight);
+  doc.setLineWidth(0.2);
+  for (let i = 0; i < domainCount; i++) {
+    const angle = (i / domainCount) * Math.PI * 2 - Math.PI / 2;
+    const x = cx + maxRadius * Math.cos(angle);
+    const y = cy + maxRadius * Math.sin(angle);
+    doc.line(cx, cy, x, y);
+  }
+
+  // Calculate actual maturity polygon points
+  const actualPoints: [number, number][] = [];
+  for (let i = 0; i < domainCount; i++) {
+    const result = results[i];
+    const angle = (i / domainCount) * Math.PI * 2 - Math.PI / 2;
+    const r = (result.effective_maturity / 5) * maxRadius;
+    const x = cx + r * Math.cos(angle);
+    const y = cy + r * Math.sin(angle);
+    actualPoints.push([x, y]);
+  }
+
+  // Draw actual maturity polygon (filled)
+  doc.setFillColor(...BRAND.greenLight);
+  doc.setDrawColor(...BRAND.green);
+  doc.setLineWidth(1);
+  if (actualPoints.length > 0) {
+    doc.moveTo(actualPoints[0][0], actualPoints[0][1]);
+    for (let i = 1; i < actualPoints.length; i++) {
+      doc.lineTo(actualPoints[i][0], actualPoints[i][1]);
+    }
+    doc.lineTo(actualPoints[0][0], actualPoints[0][1]);
+    doc.fill('FD');
+  }
+
+  // Calculate intent target polygon points (dashed outline)
+  const intentPoints: [number, number][] = [];
+  for (let i = 0; i < domainCount; i++) {
+    const angle = (i / domainCount) * Math.PI * 2 - Math.PI / 2;
+    const r = (intentLevel / 5) * maxRadius;
+    const x = cx + r * Math.cos(angle);
+    const y = cy + r * Math.sin(angle);
+    intentPoints.push([x, y]);
+  }
+
+  // Draw intent target polygon (dashed)
+  doc.setDrawColor(...BRAND.amber);
+  doc.setLineWidth(0.8);
+  doc.setLineDash([2, 2]);
+  if (intentPoints.length > 0) {
+    doc.moveTo(intentPoints[0][0], intentPoints[0][1]);
+    for (let i = 1; i < intentPoints.length; i++) {
+      doc.lineTo(intentPoints[i][0], intentPoints[i][1]);
+    }
+    doc.lineTo(intentPoints[0][0], intentPoints[0][1]);
+    doc.stroke();
+  }
+  doc.setLineDash([]);
+
+  // Label each axis (domain names around the circle)
+  doc.setFontSize(6);
+  doc.setTextColor(...BRAND.slate);
+  for (let i = 0; i < domainCount; i++) {
+    const result = results[i];
+    const domain = model.domains.find(d => d.id === result.domain_id);
+    const domainName = domain?.name || result.domain_id;
+    const angle = (i / domainCount) * Math.PI * 2 - Math.PI / 2;
+    const labelDist = maxRadius + 8;
+    const x = cx + labelDist * Math.cos(angle);
+    const y = cy + labelDist * Math.sin(angle);
+    doc.text(domainName, x, y, { align: 'center', maxWidth: 20 });
+  }
+
+  return startY + size + 8;
+}
+
 export function downloadPDF(
   profile: OrganisationProfile,
   results: DomainAssessment[],
@@ -101,20 +328,27 @@ export function downloadPDF(
 ): void {
   const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
   const w = doc.internal.pageSize.width;
+  const h = doc.internal.pageSize.height;
   const pageNum = { value: 0 };
 
   const stats = calculateOverallStats(results);
-  const sorted = [...results].sort((a, b) => a.effective_maturity - b.effective_maturity);
+  const limitingFactors = getTopLimitingFactors(results);
+  const cascadeRisks = analyseCascadeRisks(results);
+  const intentLevel = INTENT_MINIMUM_LEVEL[profile.assessment_intent] || 3;
+  const intentLabel = INTENT_LABELS[profile.assessment_intent] || 'Assessment';
+  const belowIntentCount = results.filter(r => r.effective_maturity < intentLevel).length;
 
   // ═══════════════════════════════════════════════
-  // PAGE 1: Cover
+  // PAGE 1: COVER
   // ═══════════════════════════════════════════════
   doc.setFillColor(...BRAND.green);
   doc.rect(0, 0, w, 120, 'F');
   doc.setTextColor(...BRAND.white);
   doc.setFontSize(28);
+  doc.setFont(undefined as any, 'bold');
   doc.text('GreenOps Data Input', 20, 45);
   doc.text('Maturity Assessment', 20, 60);
+  doc.setFont(undefined as any, 'normal');
   doc.setFontSize(14);
   doc.text('Posetiv', 20, 80);
   doc.setFontSize(9);
@@ -125,64 +359,328 @@ export function downloadPDF(
   doc.setTextColor(...BRAND.slate);
   doc.text(`Organisation: ${profile.organisation_name}`, 20, 140);
   doc.text(`Sector: ${profile.sector}${profile.sub_sector ? ' — ' + profile.sub_sector : ''}`, 20, 148);
-  doc.text(`Date: ${profile.assessment_date}`, 20, 156);
-  doc.text(`Assessor: ${profile.assessor_name || 'Not specified'}`, 20, 164);
+  doc.text(`Assessment Intent: ${intentLabel}`, 20, 156);
+  doc.text(`Date: ${profile.assessment_date}`, 20, 164);
+  doc.text(`Assessor: ${profile.assessor_name || 'Not specified'}`, 20, 172);
 
   doc.setFontSize(9);
   doc.setTextColor(...BRAND.gray);
-  let cy = 185;
-  cy = writeBody(doc, 'This report presents the findings of a structured assessment of GreenOps data inputs across the technology estate. It evaluates the quality, coverage, and decision-readiness of the data that underpins environmental, efficiency, and cost calculations — and identifies where improvement will deliver the most value.', cy, pageNum, { fontSize: 9 });
-  cy = writeBody(doc, 'The assessment covers 13 data domains, from asset inventory and power measurement through to allocation, carbon factors, and decision integration. Each domain is scored on a 1-5 maturity scale, with results interpreted in terms of what decisions the data can and cannot credibly support.', cy, pageNum, { fontSize: 9 });
-
-  pageNum.value++;
-  addPageFooter(doc, pageNum.value);
-
-  // ═══════════════════════════════════════════════
-  // PAGE 2: Executive Summary — using pre-generated narrative
-  // ═══════════════════════════════════════════════
-  doc.addPage();
-  pageNum.value++;
-
-  let ey = sectionHeading(doc, 'Executive Summary', 25, 18);
-
-  // Assessment intent context
-  if (profile.assessment_intent) {
-    const intentLabel = INTENT_LABELS[profile.assessment_intent];
-    ey = writeBody(doc,
-      `Assessment goal: ${intentLabel}`,
-      ey, pageNum, { bold: true, fontSize: 10 }
-    );
-  }
-
-  // Render the pre-generated executive summary paragraph by paragraph
-  const summaryParagraphs = execSummary.split('\n\n');
-  for (const para of summaryParagraphs) {
-    ey = writeBody(doc, para, ey, pageNum, { fontSize: 9 });
-    ey += 1;
-  }
-
-  addPageFooter(doc, pageNum.value);
-
-  // ═══════════════════════════════════════════════
-  // PAGE 3: Maturity at a Glance
-  // ═══════════════════════════════════════════════
-  doc.addPage();
-  pageNum.value++;
-
-  let gy = sectionHeading(doc, 'Maturity at a Glance', 25, 18);
-
-  gy = writeBody(doc,
-    'The table below summarises the assessed maturity for each data domain. The maturity level reflects the quality and coverage of data inputs — what the organisation measures, tracks, and can evidence — not its sustainability ambition.',
-    gy, pageNum, { fontSize: 9 }
+  let cy = 190;
+  cy = writeBody(
+    doc,
+    'This report presents the findings of a structured assessment of GreenOps data inputs across the technology estate. It evaluates the quality, coverage, and decision-readiness of the data that underpins environmental, efficiency, and cost calculations — and identifies where improvement will deliver the most value.',
+    cy,
+    pageNum,
+    { fontSize: 9 }
+  );
+  cy = writeBody(
+    doc,
+    'The assessment covers 13 data domains, from asset inventory and power measurement through to allocation, carbon factors, and decision integration. Each domain is scored on a 1-5 maturity scale, with results interpreted in terms of what decisions the data can and cannot credibly support.',
+    cy,
+    pageNum,
+    { fontSize: 9 }
   );
 
+  pageNum.value++;
+  addPageFooter(doc, pageNum.value);
+
+  // ═══════════════════════════════════════════════
+  // PAGE 2: VISUAL DASHBOARD
+  // ═══════════════════════════════════════════════
+  doc.addPage();
+  pageNum.value++;
+  addPageHeader(doc);
+
+  let dY = 18;
+
+  // KEY METRICS BOXES
+  doc.setFontSize(11);
+  doc.setTextColor(...BRAND.charcoal);
+  doc.setFont(undefined as any, 'bold');
+  doc.text('Key Metrics', 20, dY);
+  doc.setFont(undefined as any, 'normal');
+  dY += 8;
+
+  const metricWidth = 45;
+  const metricHeight = 20;
+  const metricSpacing = 8;
+
+  // Metric 1: Overall weighted maturity
+  drawMetricBox(
+    doc,
+    20,
+    dY,
+    metricWidth,
+    metricHeight,
+    'Overall Maturity',
+    `${stats.weightedMaturity.toFixed(1)}/5.0`,
+    BRAND.green
+  );
+
+  // Metric 2: Confidence level
+  const confLabel = confidenceLabel(stats.avgImpact);
+  const confDescr = CONFIDENCE_DESCRIPTIONS[confLabel] || 'Unknown';
+  drawMetricBox(
+    doc,
+    20 + metricWidth + metricSpacing,
+    dY,
+    metricWidth,
+    metricHeight,
+    'Confidence',
+    confLabel.toUpperCase(),
+    confLabel === 'high' ? BRAND.green : confLabel === 'moderate' ? BRAND.amber : BRAND.red
+  );
+
+  // Metric 3: Domains below intent
+  drawMetricBox(
+    doc,
+    20 + 2 * (metricWidth + metricSpacing),
+    dY,
+    metricWidth,
+    metricHeight,
+    'Below Intent Target',
+    `${belowIntentCount} of ${results.length}`,
+    belowIntentCount > 0 ? BRAND.amber : BRAND.green
+  );
+
+  dY += metricHeight + 8;
+
+  // HORIZONTAL BAR CHART
+  dY = drawDomainBars(doc, results, model, profile, dY);
+
+  addPageFooter(doc, pageNum.value);
+
+  // ═══════════════════════════════════════════════
+  // PAGE 3: VISUAL DASHBOARD (CONTINUED) - RADAR CHART
+  // ═══════════════════════════════════════════════
+  doc.addPage();
+  pageNum.value++;
+  addPageHeader(doc);
+
+  const radarY = drawRadarChart(doc, results, model, profile, 20, 18, 100);
+
+  // Legend below radar
+  let legendY = radarY;
+  doc.setFontSize(8);
+  doc.setTextColor(...BRAND.slate);
+  doc.text('Solid green polygon: Current maturity', 25, legendY);
+  doc.setLineDash([2, 2]);
+  doc.setDrawColor(...BRAND.amber);
+  doc.line(25, legendY + 3, 35, legendY + 3);
+  doc.setLineDash([]);
+  doc.text('Dashed amber polygon: Intent target', 40, legendY + 3);
+
+  legendY += 12;
+
+  // Grid explanation
+  doc.setFontSize(7);
+  doc.setTextColor(...BRAND.gray);
+  doc.text('Concentric circles represent maturity levels 1 (center) to 5 (edge)', 25, legendY);
+
+  addPageFooter(doc, pageNum.value);
+
+  // ═══════════════════════════════════════════════
+  // PAGE 4: EXECUTIVE SUMMARY
+  // ═══════════════════════════════════════════════
+  doc.addPage();
+  pageNum.value++;
+  addPageHeader(doc);
+
+  let esY = sectionHeading(doc, 'Executive Summary', 25, 18);
+
+  // Assessment intent context
+  doc.setFontSize(10);
+  doc.setTextColor(...BRAND.charcoal);
+  doc.setFont(undefined as any, 'bold');
+  doc.text(`Assessment Goal: ${intentLabel}`, 20, esY);
+  doc.setFont(undefined as any, 'normal');
+  esY += 7;
+
+  // Pre-generated executive summary
+  const summaryParagraphs = execSummary.split('\n\n');
+  for (const para of summaryParagraphs) {
+    esY = writeBody(doc, para, esY, pageNum, { fontSize: 9 });
+    esY += 1;
+  }
+
+  esY += 3;
+
+  // Top limiting factors highlighted box
+  if (limitingFactors.length > 0) {
+    doc.setFillColor(...BRAND.greenLight);
+    doc.rect(20, esY, w - 40, 35, 'F');
+
+    doc.setFontSize(9);
+    doc.setTextColor(...BRAND.charcoal);
+    doc.setFont(undefined as any, 'bold');
+    doc.text('Top Limiting Factors', 23, esY + 4);
+    doc.setFont(undefined as any, 'normal');
+
+    doc.setFontSize(8);
+    doc.setTextColor(...BRAND.slate);
+    for (let i = 0; i < Math.min(3, limitingFactors.length); i++) {
+      const factor = limitingFactors[i];
+      const text = `${factor.domain_name} (Level ${factor.maturity}) — affects ${factor.downstream_count} downstream areas`;
+      doc.text(`• ${text}`, 25, esY + 10 + i * 6);
+    }
+
+    esY += 38;
+  }
+
+  esY += 2;
+  doc.setFontSize(9);
+  doc.setTextColor(...BRAND.slate);
+  const readinessPhrase = belowIntentCount === 0
+    ? `All ${results.length} domains meet the intent target level (${intentLevel}).`
+    : belowIntentCount === 1
+      ? `1 of ${results.length} domains falls below the intent target level (${intentLevel}).`
+      : `${belowIntentCount} of ${results.length} domains fall below the intent target level (${intentLevel}).`;
+  doc.text(readinessPhrase, 20, esY, { maxWidth: w - 40 });
+
+  addPageFooter(doc, pageNum.value);
+
+  // ═══════════════════════════════════════════════
+  // PAGE 5: DECISION READINESS
+  // ═══════════════════════════════════════════════
+  doc.addPage();
+  pageNum.value++;
+  addPageHeader(doc);
+
+  let drY = sectionHeading(doc, 'Decision Readiness by Persona', 25, 18);
+
+  drY = writeBody(
+    doc,
+    'The following section maps data readiness to key decision personas across the organisation. Each domain readiness is determined by the weakest supporting data input — a chain is only as strong as its weakest link. Readiness levels range from "reporting only" (retrospective, not actionable) through "decision-grade" (credible for confident action) to "optimisation-grade" (supporting continuous improvement).',
+    drY,
+    pageNum,
+    { fontSize: 9 }
+  );
+
+  drY += 4;
+
+  // Group decision readiness by persona (4 groups from web UI)
+  const personas = [
+    {
+      name: 'Sustainability & Reporting',
+      areas: decisionReadiness.filter(dr =>
+        ['footprint_reporting', 'target_setting'].includes(dr.area)
+      ),
+    },
+    {
+      name: 'Infrastructure & Operations',
+      areas: decisionReadiness.filter(dr =>
+        ['hotspot_identification', 'rightsizing', 'lifecycle_decisions', 'workload_placement'].includes(
+          dr.area
+        )
+      ),
+    },
+    {
+      name: 'Procurement & Finance',
+      areas: decisionReadiness.filter(dr =>
+        ['supplier_challenge', 'attribution'].includes(dr.area)
+      ),
+    },
+    {
+      name: 'Cloud & AI Governance',
+      areas: decisionReadiness.filter(dr =>
+        ['cloud_optimisation', 'ai_demand_governance'].includes(dr.area)
+      ),
+    },
+  ];
+
+  // Summary counts at top
+  const decisionGradeCount = decisionReadiness.filter(dr => dr.readiness === 'decision_grade').length;
+  const directionalCount = decisionReadiness.filter(dr => dr.readiness === 'directional').length;
+  const reportingOnlyCount = decisionReadiness.filter(dr => dr.readiness === 'reporting_only').length;
+
+  drY = writeBody(
+    doc,
+    `Summary: ${decisionGradeCount} decision-grade, ${directionalCount} directional, ${reportingOnlyCount} reporting only.`,
+    drY,
+    pageNum,
+    { fontSize: 9, bold: true }
+  );
+
+  drY += 3;
+
+  // Render each persona group
+  for (const persona of personas) {
+    if (persona.areas.length === 0) continue;
+
+    const space = drY + 30;
+    if (space > h - 20) {
+      addPageFooter(doc, pageNum.value);
+      doc.addPage();
+      pageNum.value++;
+      addPageHeader(doc);
+      drY = 25;
+    }
+
+    drY = sectionHeading(doc, persona.name, drY, 12);
+
+    for (const dr of persona.areas) {
+      let badgeColour = BRAND.red;
+      if (dr.readiness === 'directional') badgeColour = BRAND.amber;
+      if (dr.readiness === 'decision_grade') badgeColour = BRAND.greenDk;
+      if (dr.readiness === 'optimisation_grade') badgeColour = BRAND.green;
+
+      doc.setFontSize(9);
+      doc.setTextColor(...BRAND.charcoal);
+      doc.setFont(undefined as any, 'bold');
+      doc.text(dr.area.replace(/_/g, ' '), 20, drY);
+
+      doc.setFontSize(8);
+      doc.setTextColor(...badgeColour);
+      doc.text(dr.label, w - 20 - doc.getTextWidth(dr.label), drY);
+      doc.setFont(undefined as any, 'normal');
+      drY += 5;
+
+      drY = writeBody(doc, dr.summary, drY, pageNum, { fontSize: 8 });
+
+      if (dr.limiting_domains.length > 0) {
+        drY = writeBody(
+          doc,
+          `Limited by: ${dr.limiting_domains.join(', ')}`,
+          drY,
+          pageNum,
+          { fontSize: 7.5, indent: 24 }
+        );
+      }
+
+      drY += 2;
+    }
+
+    drY += 2;
+  }
+
+  addPageFooter(doc, pageNum.value);
+
+  // ═══════════════════════════════════════════════
+  // PAGE: MATURITY AT A GLANCE TABLE
+  // ═══════════════════════════════════════════════
+  doc.addPage();
+  pageNum.value++;
+  addPageHeader(doc);
+
+  let tY = sectionHeading(doc, 'Maturity at a Glance', 25, 18);
+
+  tY = writeBody(
+    doc,
+    'The table below summarises the assessed maturity for each data domain. The maturity level reflects the quality and coverage of data inputs — what the organisation measures, tracks, and can evidence — not its sustainability ambition.',
+    tY,
+    pageNum,
+    { fontSize: 9 }
+  );
+
+  const sorted = [...results].sort((a, b) => a.effective_maturity - b.effective_maturity);
+
   autoTable(doc, {
-    startY: gy + 2,
+    startY: tY + 2,
     head: [['Domain', 'Level', 'Maturity', 'Impact', 'Priority', 'What this means']],
-    body: sorted.map((r) => {
-      const d = model.domains.find((dd) => dd.id === r.domain_id);
+    body: sorted.map(r => {
+      const d = model.domains.find(dd => dd.id === r.domain_id);
       const levelText = LEVEL_LABELS[r.effective_maturity] || `Level ${r.effective_maturity}`;
-      // Short interpretation based on level
+
       let meaning = '';
       if (r.effective_maturity <= 1) meaning = 'Data absent or unreliable — decisions are uninformed';
       else if (r.effective_maturity <= 2) meaning = 'Partial data — sufficient for basic reporting only';
@@ -212,7 +710,6 @@ export function downloadPDF(
       5: { cellWidth: 55 },
     },
     didParseCell: (data: any) => {
-      // Colour the level column
       if (data.section === 'body' && data.column.index === 1) {
         const val = parseInt(data.cell.raw as string, 10);
         if (!isNaN(val)) {
@@ -226,68 +723,12 @@ export function downloadPDF(
   addPageFooter(doc, pageNum.value);
 
   // ═══════════════════════════════════════════════
-  // PAGES: What Your Data Enables
-  // ═══════════════════════════════════════════════
-  doc.addPage();
-  pageNum.value++;
-
-  let dy = sectionHeading(doc, 'What Your Data Enables', 25, 18);
-  dy = writeBody(doc,
-    'For each domain, this section describes what decisions your current data quality can credibly support, and where gaps prevent confident action. This is the core question: not just what score you achieved, but what it means for the decisions you need to make.',
-    dy, pageNum, { fontSize: 9 }
-  );
-  dy += 2;
-
-  for (const narrative of narratives) {
-    const result = results.find(r => r.domain_id === narrative.domain_id);
-    if (!result) continue;
-
-    const blockHeight = 55; // approximate minimum height needed
-    const h = doc.internal.pageSize.height;
-    if (dy + blockHeight > h - 20) {
-      addPageFooter(doc, pageNum.value);
-      doc.addPage();
-      pageNum.value++;
-      dy = 25;
-    }
-
-    // Domain header with level badge
-    doc.setFontSize(11);
-    doc.setTextColor(...BRAND.charcoal);
-    doc.setFont(undefined as any, 'bold');
-    doc.text(narrative.domain_name, 20, dy);
-
-    // Level indicator
-    const lvl = result.effective_maturity;
-    const levelText = `Level ${lvl} — ${LEVEL_LABELS[lvl] || ''}`;
-    doc.setFontSize(8);
-    doc.setTextColor(...levelColour(lvl));
-    doc.text(levelText, w - 20 - doc.getTextWidth(levelText), dy);
-    doc.setFont(undefined as any, 'normal');
-    dy += 6;
-
-    // Operational impact — what this actually means
-    if (narrative.operational_impact) {
-      dy = writeBody(doc, narrative.operational_impact, dy, pageNum, { fontSize: 8.5 });
-    }
-
-    // Decision support
-    if (narrative.decision_support_summary) {
-      dy = writeBody(doc, narrative.decision_support_summary, dy, pageNum, { fontSize: 8.5 });
-    }
-
-    dy = accentBar(doc, dy + 1, BRAND.grayLight);
-    dy += 2;
-  }
-
-  addPageFooter(doc, pageNum.value);
-
-  // ═══════════════════════════════════════════════
-  // PAGES: Detailed Domain Analysis
+  // PAGES: DETAILED DOMAIN ANALYSIS
   // ═══════════════════════════════════════════════
   for (const narrative of narratives) {
     doc.addPage();
     pageNum.value++;
+    addPageHeader(doc);
 
     let ny = sectionHeading(doc, narrative.domain_name, 25, 14);
 
@@ -367,93 +808,35 @@ export function downloadPDF(
   }
 
   // ═══════════════════════════════════════════════
-  // PAGE: Decision Readiness
+  // PAGE: IMPROVEMENT ROADMAP
   // ═══════════════════════════════════════════════
   doc.addPage();
   pageNum.value++;
-
-  let dry = sectionHeading(doc, 'Decision Readiness', 25, 18);
-  dry = writeBody(doc,
-    'This section assesses whether your data is good enough to support the key decisions that GreenOps, FinOps, and sustainability programmes need to make. Readiness is determined by the weakest data input — a chain is only as strong as its weakest link.',
-    dry, pageNum, { fontSize: 9 }
-  );
-  dry += 3;
-
-  for (const dr of decisionReadiness) {
-    const h = doc.internal.pageSize.height;
-    if (dry + 30 > h - 20) {
-      addPageFooter(doc, pageNum.value);
-      doc.addPage();
-      pageNum.value++;
-      dry = 25;
-    }
-
-    // Decision area heading with readiness badge
-    doc.setFontSize(10);
-    doc.setTextColor(...BRAND.charcoal);
-    doc.setFont(undefined as any, 'bold');
-    doc.text(dr.area, 20, dry);
-
-    // Readiness label colour
-    let badgeColour = BRAND.red;
-    if (dr.readiness === 'directional') badgeColour = BRAND.amber;
-    if (dr.readiness === 'decision_grade') badgeColour = BRAND.greenDk;
-    if (dr.readiness === 'optimisation_grade') badgeColour = BRAND.green;
-
-    doc.setFontSize(8);
-    doc.setTextColor(...badgeColour);
-    doc.setFont(undefined as any, 'bold');
-    doc.text(dr.label, w - 20 - doc.getTextWidth(dr.label), dry);
-    doc.setFont(undefined as any, 'normal');
-    dry += 5;
-
-    // Summary
-    dry = writeBody(doc, dr.summary, dry, pageNum, { fontSize: 8.5 });
-
-    // Limiting/supporting
-    if (dr.limiting_domains.length > 0) {
-      dry = writeBody(doc,
-        `Limited by: ${dr.limiting_domains.join(', ')}`,
-        dry, pageNum, { fontSize: 8, indent: 24 }
-      );
-    }
-    if (dr.supporting_domains.length > 0) {
-      dry = writeBody(doc,
-        `Supported by: ${dr.supporting_domains.join(', ')}`,
-        dry, pageNum, { fontSize: 8, indent: 24 }
-      );
-    }
-
-    dry = accentBar(doc, dry + 1, BRAND.grayLight);
-    dry += 2;
-  }
-
-  addPageFooter(doc, pageNum.value);
-
-  // ═══════════════════════════════════════════════
-  // PAGES: Improvement Roadmap
-  // ═══════════════════════════════════════════════
-  doc.addPage();
-  pageNum.value++;
+  addPageHeader(doc);
 
   let ry = sectionHeading(doc, 'Improvement Roadmap', 25, 18);
 
-  // Overarching recommendation — narrative framing
   const foundationRecs = recommendations.filter(r => r.phase === 'Foundation');
   const quickWinRecs = recommendations.filter(r => r.phase === 'Quick win');
   const transformRecs = recommendations.filter(r => r.phase === 'Transformation');
 
-  ry = writeBody(doc,
-    `The improvement roadmap is structured in three phases. Foundational gaps must be closed before targeted improvements can deliver value, and transformation depends on the basics being in place.`,
-    ry, pageNum, { fontSize: 9.5 }
+  ry = writeBody(
+    doc,
+    'The improvement roadmap is structured in three phases. Foundational gaps must be closed before targeted improvements can deliver value, and transformation depends on the basics being in place.',
+    ry,
+    pageNum,
+    { fontSize: 9.5 }
   );
 
   // Summary counts
   const highCount = recommendations.filter(r => r.priority === 'High').length;
   if (highCount > 0) {
-    ry = writeBody(doc,
+    ry = writeBody(
+      doc,
       `${highCount} action${highCount > 1 ? 's are' : ' is'} high priority — the gap between domain importance and data quality is large enough to need immediate attention. These need named ownership and clear timelines.`,
-      ry, pageNum, { fontSize: 9 }
+      ry,
+      pageNum,
+      { fontSize: 9 }
     );
   }
 
@@ -462,9 +845,12 @@ export function downloadPDF(
   // PHASE 1: Foundation
   if (foundationRecs.length > 0) {
     ry = sectionHeading(doc, 'Phase 1: Foundation', ry, 12);
-    ry = writeBody(doc,
+    ry = writeBody(
+      doc,
       'Foundation actions address domains where data is absent, unreliable, or too incomplete for any meaningful decisions. The goal is not sophistication — it is establishing basic, measurable, traceable data where none exists.',
-      ry, pageNum, { fontSize: 9 }
+      ry,
+      pageNum,
+      { fontSize: 9 }
     );
     ry += 1;
     ry = renderRoadmapPhase(doc, foundationRecs, model, ry, pageNum);
@@ -473,17 +859,20 @@ export function downloadPDF(
 
   // PHASE 2: Quick wins
   if (quickWinRecs.length > 0) {
-    const h = doc.internal.pageSize.height;
     if (ry + 30 > h - 20) {
       addPageFooter(doc, pageNum.value);
       doc.addPage();
       pageNum.value++;
+      addPageHeader(doc);
       ry = 25;
     }
     ry = sectionHeading(doc, 'Phase 2: Quick Wins', ry, 12);
-    ry = writeBody(doc,
+    ry = writeBody(
+      doc,
       'Quick win actions target domains where a basic foundation exists but focused improvement — better coverage, granularity, or attribution — can move data from directional to decision-grade.',
-      ry, pageNum, { fontSize: 9 }
+      ry,
+      pageNum,
+      { fontSize: 9 }
     );
     ry += 1;
     ry = renderRoadmapPhase(doc, quickWinRecs, model, ry, pageNum);
@@ -492,17 +881,20 @@ export function downloadPDF(
 
   // PHASE 3: Transformation
   if (transformRecs.length > 0) {
-    const h = doc.internal.pageSize.height;
     if (ry + 30 > h - 20) {
       addPageFooter(doc, pageNum.value);
       doc.addPage();
       pageNum.value++;
+      addPageHeader(doc);
       ry = 25;
     }
     ry = sectionHeading(doc, 'Phase 3: Transformation', ry, 12);
-    ry = writeBody(doc,
+    ry = writeBody(
+      doc,
       'Transformation actions focus on domains with a reasonable data foundation. The goal is embedding data into operational governance — moving from periodic reporting to continuous management, automation, and optimisation.',
-      ry, pageNum, { fontSize: 9 }
+      ry,
+      pageNum,
+      { fontSize: 9 }
     );
     ry += 1;
     ry = renderRoadmapPhase(doc, transformRecs, model, ry, pageNum);
@@ -511,19 +903,25 @@ export function downloadPDF(
   addPageFooter(doc, pageNum.value);
 
   // ═══════════════════════════════════════════════
-  // FINAL PAGE: Next Steps + Posetiv
+  // FINAL PAGE: NEXT STEPS + POSETIV CTA
   // ═══════════════════════════════════════════════
   doc.addPage();
   pageNum.value++;
+  addPageHeader(doc);
 
   let nsY = sectionHeading(doc, 'Next Steps', 25, 18);
 
-  nsY = writeBody(doc,
+  nsY = writeBody(
+    doc,
     'This report provides an evidence-based view of data maturity across the technology estate. The scores, narratives, and recommendations are designed to support practical decision-making — identifying where data quality is strong enough to act on, where gaps need closing, and what the priorities should be.',
-    nsY, pageNum, { fontSize: 10 }
+    nsY,
+    pageNum,
+    { fontSize: 10 }
   );
 
-  nsY = writeBody(doc, 'To move from assessment to action, we recommend the following:', nsY, pageNum, { fontSize: 10 });
+  nsY = writeBody(doc, 'To move from assessment to action, we recommend the following:', nsY, pageNum, {
+    fontSize: 10,
+  });
 
   const steps = [
     'Review and validate — Walk through domain findings with technical and operational stakeholders. Do the scores match operational reality?',
@@ -544,14 +942,20 @@ export function downloadPDF(
 
   nsY = writeBody(doc, 'How Posetiv can help', nsY, pageNum, { bold: true, fontSize: 11 });
 
-  nsY = writeBody(doc,
+  nsY = writeBody(
+    doc,
     'Posetiv specialises in GreenOps strategy, data maturity, and operational efficiency across enterprise technology estates. We help infrastructure, sustainability, finance, and leadership teams turn assessment findings into practical improvement — connecting better data to better decisions, lower costs, reduced carbon, and stronger governance.',
-    nsY, pageNum, { fontSize: 9.5 }
+    nsY,
+    pageNum,
+    { fontSize: 9.5 }
   );
 
-  nsY = writeBody(doc,
+  nsY = writeBody(
+    doc,
     'If you would like support in interpreting these results, building an improvement roadmap, or embedding GreenOps into your operating model, please get in touch.',
-    nsY, pageNum, { fontSize: 9.5 }
+    nsY,
+    pageNum,
+    { fontSize: 9.5 }
   );
 
   nsY += 4;
@@ -600,6 +1004,7 @@ function renderRoadmapPhase(
       addPageFooter(doc, pageNum.value);
       doc.addPage();
       pageNum.value++;
+      addPageHeader(doc);
       y = 25;
     }
 

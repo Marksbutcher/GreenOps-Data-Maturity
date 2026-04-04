@@ -209,6 +209,7 @@ export default function ResultsDashboard({
             <p className="results-org">{profile.organisation_name} — {profile.assessment_date}</p>
           </div>
           <div className="results-actions">
+            <button className="btn btn-outline" onClick={onBack}>Back to assessment</button>
             <button className="btn btn-outline" onClick={handleSave}>Save progress</button>
             <button className="btn btn-accent" onClick={onExportPDF}>Export PDF report</button>
             <div className="more-menu-wrapper">
@@ -218,7 +219,6 @@ export default function ResultsDashboard({
               {showMoreMenu && (
                 <div className="more-menu-dropdown" onMouseLeave={() => setShowMoreMenu(false)}>
                   <button className="more-menu-item" onClick={() => { onExportCSV(); setShowMoreMenu(false); }}>Export CSV</button>
-                  <button className="more-menu-item" onClick={() => { onBack(); }}>Back to assessment</button>
                   <button className="more-menu-item" onClick={() => { onStartOver(); }}>Start over</button>
                 </div>
               )}
@@ -411,8 +411,10 @@ export default function ResultsDashboard({
           {activeTab === 'enables' && (
             <div className="enables-panel">
               <p className="section-subtext">
-                What can your organisation do with its current data quality? Each use case shows
-                whether the supporting domains are strong enough — and where the gaps are.
+                This view translates domain scores into practical consequences: what decisions your data can credibly support right now,
+                where coverage is inconsistent, and which capabilities are blocked until data quality improves. The assessment maps each
+                domain's maturity against the decisions it feeds — so gaps here are not abstract scores but real constraints on what the
+                organisation can confidently act on.
               </p>
 
               {/* Intent context */}
@@ -429,11 +431,9 @@ export default function ResultsDashboard({
                 </div>
               )}
 
-              {/* Use-case view — good enough / not good enough */}
+              {/* Use-case view — good enough / partially / not good enough */}
               <div className="enables-use-cases">
-                {/* Aggregate "supports" and "does_not_support" across domains into use-case buckets */}
                 {(() => {
-                  // Gather all unique supported/unsupported capabilities across domains
                   const supportedSet = new Map<string, string[]>();
                   const unsupportedSet = new Map<string, { domains: string[]; minLevel: number }>();
 
@@ -451,8 +451,6 @@ export default function ResultsDashboard({
                     }
                   }
 
-                  // Remove from "supported" anything that also appears as unsupported (i.e. some domains support it, some don't)
-                  // Keep it in supported but note the caveat
                   const goodEnough = Array.from(supportedSet.entries())
                     .filter(([cap]) => !unsupportedSet.has(cap))
                     .sort((a, b) => b[1].length - a[1].length);
@@ -463,16 +461,34 @@ export default function ResultsDashboard({
                   const partial = Array.from(supportedSet.entries())
                     .filter(([cap]) => unsupportedSet.has(cap));
 
+                  const totalCaps = goodEnough.length + partial.length + notYet.filter(([cap]) => !supportedSet.has(cap)).length;
+
                   return (
                     <>
+                      {/* Narrative summary of overall data capability */}
+                      <div className="enables-narrative-summary">
+                        {goodEnough.length === 0 && partial.length === 0 ? (
+                          <p>No capabilities are fully supported by current data quality. Every decision area has at least one domain where data inputs are too weak to act on with confidence. This means the organisation is operating without reliable evidence in most areas that matter for GreenOps, sustainability reporting, and operational efficiency.</p>
+                        ) : goodEnough.length > 0 && notYet.length > 0 ? (
+                          <p>Of the {totalCaps} capabilities assessed, <strong>{goodEnough.length}</strong> are fully supported by current data, <strong>{partial.length}</strong> have inconsistent coverage across domains, and <strong>{notYet.filter(([cap]) => !supportedSet.has(cap)).length}</strong> are blocked by data gaps. The good-enough capabilities provide a foundation — but the blocked items represent real constraints on what the organisation can report, optimise, or govern with confidence.</p>
+                        ) : (
+                          <p>All assessed capabilities are supported by current data quality. This is a strong position — the organisation has the data foundation needed for its stated goals. The focus should shift from closing gaps to embedding data into operational governance and continuous improvement.</p>
+                        )}
+                      </div>
+
                       {goodEnough.length > 0 && (
                         <div className="enables-group">
                           <h3 className="enables-group-heading enables-good">Good enough for</h3>
+                          <p className="enables-group-narrative">
+                            These capabilities are supported by data that is structured, measurable, and consistent enough to inform decisions.
+                            The underlying domains have reached a maturity level where the data can be trusted for its intended use — though
+                            continued attention to freshness and traceability will maintain that confidence.
+                          </p>
                           <div className="enables-cap-list">
                             {goodEnough.slice(0, 12).map(([cap, domains]) => (
                               <div key={cap} className="enables-cap-item enables-cap-good">
                                 <span className="enables-cap-text">{cap}</span>
-                                <span className="enables-cap-domains">{domains.length} domain{domains.length !== 1 ? 's' : ''}</span>
+                                <span className="enables-cap-domains">Supported across {domains.length} domain{domains.length !== 1 ? 's' : ''}: {domains.slice(0, 3).join(', ')}{domains.length > 3 ? ` +${domains.length - 3} more` : ''}</span>
                               </div>
                             ))}
                           </div>
@@ -481,7 +497,13 @@ export default function ResultsDashboard({
 
                       {partial.length > 0 && (
                         <div className="enables-group">
-                          <h3 className="enables-group-heading enables-partial">Partially supported — depends on domain</h3>
+                          <h3 className="enables-group-heading enables-partial">Partially supported — inconsistent across domains</h3>
+                          <p className="enables-group-narrative">
+                            These capabilities are supported in some domains but not others. In practice this means the organisation can produce
+                            partial answers — enough for directional insight in some areas, but not a complete or defensible picture. The risk is
+                            that stakeholders assume full coverage when the data only tells part of the story. Closing the gaps in blocking
+                            domains would move these from partial to reliable.
+                          </p>
                           <div className="enables-cap-list">
                             {partial.slice(0, 10).map(([cap, supportingDomains]) => {
                               const blocking = unsupportedSet.get(cap);
@@ -489,8 +511,8 @@ export default function ResultsDashboard({
                                 <div key={cap} className="enables-cap-item enables-cap-partial">
                                   <span className="enables-cap-text">{cap}</span>
                                   <span className="enables-cap-detail">
-                                    Supported by {supportingDomains.length} domain{supportingDomains.length !== 1 ? 's' : ''},
-                                    blocked by {blocking?.domains.length || 0}
+                                    Supported by: {supportingDomains.slice(0, 2).join(', ')}{supportingDomains.length > 2 ? ` +${supportingDomains.length - 2}` : ''}.
+                                    {' '}Blocked by: {blocking?.domains.slice(0, 2).join(', ')}{(blocking?.domains.length || 0) > 2 ? ` +${(blocking?.domains.length || 0) - 2}` : ''}
                                   </span>
                                 </div>
                               );
@@ -499,9 +521,15 @@ export default function ResultsDashboard({
                         </div>
                       )}
 
-                      {notYet.length > 0 && (
+                      {notYet.filter(([cap]) => !supportedSet.has(cap)).length > 0 && (
                         <div className="enables-group">
                           <h3 className="enables-group-heading enables-blocked">Not yet good enough for</h3>
+                          <p className="enables-group-narrative">
+                            These capabilities are blocked by data gaps in one or more domains. The organisation cannot credibly make
+                            these decisions today — any attempt to do so would be based on incomplete, inconsistent, or unverifiable data.
+                            These represent the strongest case for improvement investment, particularly where the blocked capability aligns
+                            with the stated assessment goal.
+                          </p>
                           <div className="enables-cap-list">
                             {notYet.filter(([cap]) => !supportedSet.has(cap)).slice(0, 12).map(([cap, info]) => (
                               <div key={cap} className="enables-cap-item enables-cap-blocked">
@@ -523,37 +551,51 @@ export default function ResultsDashboard({
                 <div className="enables-list" style={{ marginTop: 16 }}>
                   {enablesData
                     .sort((a, b) => a.level - b.level)
-                    .map((d) => (
-                      <div key={d.domain_id} className="enables-card" style={{ borderLeftColor: LEVEL_COLOURS[d.level] }}>
-                        <div className="enables-card-header">
-                          <div className="enables-title-row">
-                            <span className="enables-domain-name">{d.name}</span>
-                            <span className={`priority-tag ${d.priority.toLowerCase()}`}>{d.priority}</span>
+                    .map((d) => {
+                      const narrative = narratives.find(n => n.domain_id === d.domain_id);
+                      return (
+                        <div key={d.domain_id} className="enables-card" style={{ borderLeftColor: LEVEL_COLOURS[d.level] }}>
+                          <div className="enables-card-header">
+                            <div className="enables-title-row">
+                              <span className="enables-domain-name">{d.name}</span>
+                              <span className={`priority-tag ${d.priority.toLowerCase()}`}>{d.priority}</span>
+                            </div>
+                            <span className="enables-level-text" style={{ color: LEVEL_COLOURS[d.level] }}>
+                              Level {d.level} — {LEVEL_LABELS[d.level]}
+                            </span>
                           </div>
-                          <span className="enables-level-text" style={{ color: LEVEL_COLOURS[d.level] }}>
-                            Level {d.level} — {LEVEL_LABELS[d.level]}
-                          </span>
-                        </div>
-                        <div className="enables-card-body">
-                          {d.supports.length > 0 && (
-                            <div className="enables-section enables-supports">
-                              <span className="enables-label">Good enough for</span>
-                              <ul className="enables-items-list">
-                                {d.supports.map((s, i) => <li key={i}>{s}</li>)}
-                              </ul>
-                            </div>
+                          {narrative?.operational_impact && (
+                            <p className="enables-card-narrative">{narrative.operational_impact}</p>
                           )}
-                          {d.does_not_support.length > 0 && !d.does_not_support[0]?.startsWith('None') && (
-                            <div className="enables-section enables-gaps">
-                              <span className="enables-label">Not yet good enough for</span>
-                              <ul className="enables-items-list">
-                                {d.does_not_support.map((s, i) => <li key={i}>{s}</li>)}
-                              </ul>
-                            </div>
-                          )}
+                          <div className="enables-card-body">
+                            {d.supports.length > 0 && (
+                              <div className="enables-section enables-supports">
+                                <span className="enables-label">Good enough for</span>
+                                <ul className="enables-items-list">
+                                  {d.supports.map((s, i) => <li key={i}>{s}</li>)}
+                                </ul>
+                              </div>
+                            )}
+                            {d.does_not_support.length > 0 && !d.does_not_support[0]?.startsWith('None') && (
+                              <div className="enables-section enables-gaps">
+                                <span className="enables-label">Not yet good enough for</span>
+                                <ul className="enables-items-list">
+                                  {d.does_not_support.map((s, i) => <li key={i}>{s}</li>)}
+                                </ul>
+                              </div>
+                            )}
+                            {d.flags.length > 0 && (
+                              <div className="enables-section enables-flags">
+                                <span className="enables-label">Caveats</span>
+                                <ul className="enables-items-list">
+                                  {d.flags.map((f, i) => <li key={i}>{f}</li>)}
+                                </ul>
+                              </div>
+                            )}
+                          </div>
                         </div>
-                      </div>
-                    ))}
+                      );
+                    })}
                 </div>
               </details>
             </div>

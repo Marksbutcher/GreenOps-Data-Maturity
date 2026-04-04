@@ -2397,6 +2397,37 @@ h3 { font-size: 1.125rem; }
   gap: var(--space-sm);
 }
 
+.enables-narrative-summary {
+  background: var(--color-surface-alt);
+  border-radius: var(--radius-md);
+  padding: var(--space-md) var(--space-lg);
+  margin-bottom: var(--space-lg);
+  border-left: 3px solid var(--color-brand-green);
+}
+
+.enables-narrative-summary p {
+  font-size: 0.9375rem;
+  color: var(--color-text-secondary);
+  line-height: 1.65;
+  margin: 0;
+}
+
+.enables-group-narrative {
+  font-size: 0.8125rem;
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+  margin: 0 0 var(--space-sm) 0;
+  padding: 0 var(--space-sm);
+}
+
+.enables-card-narrative {
+  font-size: 0.8125rem;
+  color: var(--color-text-secondary);
+  line-height: 1.55;
+  margin: 0;
+  padding: var(--space-sm) var(--space-md) 0;
+}
+
 .enables-group-heading {
   font-size: 0.9375rem;
   font-weight: 600;
