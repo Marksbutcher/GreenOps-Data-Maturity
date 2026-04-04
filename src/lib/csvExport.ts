@@ -1,4 +1,4 @@
-import { OrganisationProfile, DomainAssessment, MaturityModel } from '../types';
+import { OrganisationProfile, DomainAssessment, MaturityModel, INTENT_LABELS } from '../types';
 
 export function generateCSV(
   profile: OrganisationProfile,
@@ -40,12 +40,15 @@ export function generateCSV(
     ].join(',');
   });
 
+  const intentLabel = profile.assessment_intent ? INTENT_LABELS[profile.assessment_intent] : 'Not specified';
+
   const meta = [
     `# GreenOps Data Input Maturity Assessment`,
     `# Organisation: ${profile.organisation_name}`,
     `# Sector: ${profile.sector}`,
     `# Date: ${profile.assessment_date}`,
     `# Assessor: ${profile.assessor_name}`,
+    `# Assessment Goal: ${intentLabel}`,
     `# Model Version: ${model.version}`,
     '',
   ];

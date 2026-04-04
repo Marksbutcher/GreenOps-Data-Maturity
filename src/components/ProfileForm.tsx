@@ -55,6 +55,7 @@ export default function ProfileForm({ profile, mode, onSubmit, onBack }: Profile
     const newErrors: Record<string, string> = {};
     if (!form.organisation_name.trim()) newErrors.organisation_name = 'Required';
     if (!form.sector.trim()) newErrors.sector = 'Required';
+    if (!form.assessment_intent) newErrors.assessment_intent = 'Please select what you need your data to support';
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
