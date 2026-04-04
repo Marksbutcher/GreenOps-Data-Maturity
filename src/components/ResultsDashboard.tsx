@@ -197,6 +197,8 @@ export default function ResultsDashboard({
     handleSaveAssessment(profile, results);
   }, [profile, results]);
 
+  const [showMoreMenu, setShowMoreMenu] = useState(false);
+
   return (
     <div className="results-page">
       <div className="container-wide">
@@ -207,11 +209,20 @@ export default function ResultsDashboard({
             <p className="results-org">{profile.organisation_name} — {profile.assessment_date}</p>
           </div>
           <div className="results-actions">
-            <button className="btn btn-ghost" onClick={onBack}>Back to assessment</button>
-            <button className="btn btn-ghost" onClick={onStartOver}>Start over</button>
             <button className="btn btn-outline" onClick={handleSave}>Save progress</button>
-            <button className="btn btn-ghost" onClick={onExportCSV}>Export CSV</button>
             <button className="btn btn-accent" onClick={onExportPDF}>Export PDF report</button>
+            <div className="more-menu-wrapper">
+              <button className="btn btn-ghost" onClick={() => setShowMoreMenu(!showMoreMenu)}>
+                More ▾
+              </button>
+              {showMoreMenu && (
+                <div className="more-menu-dropdown" onMouseLeave={() => setShowMoreMenu(false)}>
+                  <button className="more-menu-item" onClick={() => { onExportCSV(); setShowMoreMenu(false); }}>Export CSV</button>
+                  <button className="more-menu-item" onClick={() => { onBack(); }}>Back to assessment</button>
+                  <button className="more-menu-item" onClick={() => { onStartOver(); }}>Start over</button>
+                </div>
+              )}
+            </div>
           </div>
         </div>
 
@@ -643,104 +654,154 @@ export default function ResultsDashboard({
           {activeTab === 'readiness' && (
             <div className="readiness-panel">
               <p className="section-subtext">
-                Can your data support the decisions you need to make? Readiness is set by the weakest input —
-                one weak link constrains the whole decision area.
+                Can your data answer the questions that matter? Each question maps to the domains that
+                feed it — readiness is set by the weakest input.
               </p>
 
               {/* Summary strip */}
-              <div className="readiness-summary-strip">
-                <div className="readiness-summary-counts">
-                  {(['optimisation_grade', 'decision_grade', 'directional', 'reporting_only'] as const).map((level) => {
-                    const count = decisionReadiness.filter(dr => dr.readiness === level).length;
-                    if (count === 0) return null;
-                    const labels: Record<string, string> = {
-                      optimisation_grade: 'Optimisation-grade',
-                      decision_grade: 'Decision-grade',
-                      directional: 'Directional only',
-                      reporting_only: 'Reporting only',
-                    };
-                    return (
-                      <div key={level} className="readiness-summary-item">
-                        <span className="readiness-summary-count" style={{ color: READINESS_COLOURS[level] || '#94a3b8' }}>{count}</span>
-                        <span className="readiness-summary-label">{labels[level]}</span>
-                      </div>
-                    );
-                  })}
-                </div>
-                <p className="readiness-summary-note">
-                  {decisionReadiness.filter(dr => dr.readiness === 'reporting_only' || dr.readiness === 'directional').length} of {decisionReadiness.length} decision areas
-                  are below decision-grade — data gaps are limiting what the organisation can confidently act on.
-                </p>
-              </div>
-              <div className="readiness-grid-v2">
-                {decisionReadiness.map((dr) => {
-                  const colour = READINESS_COLOURS[dr.readiness] || '#94a3b8';
-                  return (
-                    <div key={dr.area} className="readiness-card-v2" style={{ borderLeftColor: colour }}>
-                      <div className="readiness-header-v2">
-                        <span className="readiness-area-v2">{dr.area}</span>
-                        <span className="readiness-badge-v2" style={{ background: colour }}>
-                          {dr.label}
-                        </span>
-                      </div>
+              {(() => {
+                const drMap = new Map(decisionReadiness.map(dr => [dr.area, dr]));
+                const belowDecisionGrade = decisionReadiness.filter(
+                  dr => dr.readiness === 'reporting_only' || dr.readiness === 'directional'
+                ).length;
 
-                      {dr.summary && (
-                        <p className="readiness-summary-v2">{dr.summary}</p>
-                      )}
+                // Persona-grouped decision questions
+                const PERSONA_GROUPS: {
+                  persona: string;
+                  description: string;
+                  questions: { question: string; areas: string[]; }[];
+                }[] = [
+                  {
+                    persona: 'Sustainability and reporting',
+                    description: 'Can we produce credible environmental reports and meet disclosure requirements?',
+                    questions: [
+                      { question: 'Can we credibly report our carbon footprint?', areas: ['footprint reporting'] },
+                      { question: 'Can we set and track environmental targets?', areas: ['target setting and governance', 'operational improvement tracking'] },
+                    ],
+                  },
+                  {
+                    persona: 'Infrastructure and operations',
+                    description: 'Can we identify waste, optimise resources, and justify efficiency investments?',
+                    questions: [
+                      { question: 'Can we find where energy and resources are being wasted?', areas: ['hotspot identification'] },
+                      { question: 'Can we rightsize or decommission with confidence?', areas: ['rightsizing and decommissioning'] },
+                      { question: 'Can we make evidence-based refresh and lifecycle decisions?', areas: ['refresh and lifecycle decisions'] },
+                      { question: 'Can we optimise workload placement by cost, carbon, or efficiency?', areas: ['workload placement'] },
+                    ],
+                  },
+                  {
+                    persona: 'Procurement and finance',
+                    description: 'Can we attribute costs and carbon, challenge suppliers, and support business cases?',
+                    questions: [
+                      { question: 'Can we challenge supplier efficiency and sustainability claims?', areas: ['supplier challenge'] },
+                      { question: 'Can we attribute consumption to services, teams, or business units?', areas: ['non-IT load allocation', 'service-level optimisation'] },
+                    ],
+                  },
+                  {
+                    persona: 'Cloud and AI governance',
+                    description: 'Can we govern cloud spend and AI demand with environmental and efficiency data?',
+                    questions: [
+                      { question: 'Can we optimise cloud cost and carbon together?', areas: ['cloud optimisation'] },
+                      { question: 'Can we govern AI infrastructure demand and efficiency?', areas: ['AI demand governance and optimisation'] },
+                    ],
+                  },
+                ];
 
-                      {/* Visual bar showing readiness level */}
-                      <div className="readiness-bar-wrapper">
-                        <div className="readiness-bar-track">
-                          <div
-                            className="readiness-bar-fill"
-                            style={{
-                              width: `${dr.readiness === 'reporting_only' ? 15 : dr.readiness === 'directional' ? 40 : dr.readiness === 'decision_grade' ? 75 : 95}%`,
-                              background: colour,
-                            }}
-                          />
-                        </div>
-                        <div className="readiness-bar-labels">
-                          <span>Reporting</span>
-                          <span>Directional</span>
-                          <span>Decision-grade</span>
-                          <span>Optimisation</span>
-                        </div>
-                      </div>
+                // Helper: get best readiness for a question (from its mapped areas)
+                const getQuestionReadiness = (areas: string[]) => {
+                  const matched = areas.map(a => drMap.get(a)).filter(Boolean) as typeof decisionReadiness;
+                  if (matched.length === 0) return { readiness: 'reporting_only' as const, label: 'No data', limiting: [] as string[], summary: '' };
+                  // Use the worst readiness among matched areas
+                  const order: Record<string, number> = { reporting_only: 0, directional: 1, decision_grade: 2, optimisation_grade: 3 };
+                  const worst = matched.reduce((w, dr) => order[dr.readiness] < order[w.readiness] ? dr : w);
+                  const allLimiting = [...new Set(matched.flatMap(dr => dr.limiting_domains))];
+                  return { readiness: worst.readiness, label: worst.label, limiting: allLimiting, summary: worst.summary };
+                };
 
-                      {/* Constraining and supporting domains as compact chips */}
-                      <div className="readiness-domains-v2">
-                        {dr.limiting_domains.length > 0 && (
-                          <div className="readiness-domain-row">
-                            <span className="readiness-row-label constraint">Constrained by</span>
-                            <div className="readiness-chips">
-                              {dr.limiting_domains.map((d) => (
-                                <span key={d} className="readiness-chip constraint">{d}</span>
-                              ))}
-                            </div>
-                          </div>
-                        )}
-                        {dr.supporting_domains.length > 0 && (
-                          <div className="readiness-domain-row">
-                            <span className="readiness-row-label supporting">Supporting</span>
-                            <div className="readiness-chips">
-                              {dr.supporting_domains.map((d) => (
-                                <span key={d} className="readiness-chip supporting">{d}</span>
-                              ))}
-                            </div>
-                          </div>
-                        )}
-                      </div>
+                const readinessIcon = (r: string) => {
+                  if (r === 'optimisation_grade') return '●';
+                  if (r === 'decision_grade') return '●';
+                  if (r === 'directional') return '◐';
+                  return '○';
+                };
 
-                      {/* One-line remediation hint only if useful */}
-                      {dr.limiting_domains.length === 1 && dr.summary.includes('improves to level 3') && (
-                        <p className="readiness-hint-v2">
-                          Fixing {dr.limiting_domains[0].toLowerCase()} would unlock decision-grade readiness here.
-                        </p>
-                      )}
+                return (
+                  <>
+                    <div className="readiness-summary-strip">
+                      <p className="readiness-summary-note">
+                        <strong>{belowDecisionGrade} of {decisionReadiness.length}</strong> decision areas
+                        are below decision-grade. Data gaps are limiting what the organisation can confidently act on.
+                      </p>
                     </div>
-                  );
-                })}
-              </div>
+
+                    <div className="readiness-personas">
+                      {PERSONA_GROUPS.map((group) => (
+                        <div key={group.persona} className="readiness-persona-group">
+                          <div className="readiness-persona-header">
+                            <h3 className="readiness-persona-title">{group.persona}</h3>
+                            <p className="readiness-persona-desc">{group.description}</p>
+                          </div>
+                          <div className="readiness-questions">
+                            {group.questions.map((q) => {
+                              const qr = getQuestionReadiness(q.areas);
+                              const colour = READINESS_COLOURS[qr.readiness] || '#94a3b8';
+                              return (
+                                <div key={q.question} className="readiness-question-row">
+                                  <span className="readiness-q-icon" style={{ color: colour }}>{readinessIcon(qr.readiness)}</span>
+                                  <div className="readiness-q-content">
+                                    <span className="readiness-q-text">{q.question}</span>
+                                    <div className="readiness-q-answer">
+                                      <span className="readiness-q-badge" style={{ background: colour }}>{qr.label}</span>
+                                      {qr.limiting.length > 0 && (
+                                        <span className="readiness-q-constraint">
+                                          Constrained by: {qr.limiting.join(', ')}
+                                        </span>
+                                      )}
+                                    </div>
+                                  </div>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Collapsible original detail */}
+                    <details className="readiness-raw-detail">
+                      <summary className="enables-detail-toggle">View all decision areas</summary>
+                      <div className="readiness-grid-v2" style={{ marginTop: 16 }}>
+                        {decisionReadiness.map((dr) => {
+                          const colour = READINESS_COLOURS[dr.readiness] || '#94a3b8';
+                          return (
+                            <div key={dr.area} className="readiness-card-v2" style={{ borderLeftColor: colour }}>
+                              <div className="readiness-header-v2">
+                                <span className="readiness-area-v2">{dr.area}</span>
+                                <span className="readiness-badge-v2" style={{ background: colour }}>
+                                  {dr.label}
+                                </span>
+                              </div>
+                              {dr.summary && <p className="readiness-summary-v2">{dr.summary}</p>}
+                              <div className="readiness-domains-v2">
+                                {dr.limiting_domains.length > 0 && (
+                                  <div className="readiness-domain-row">
+                                    <span className="readiness-row-label constraint">Constrained by</span>
+                                    <div className="readiness-chips">
+                                      {dr.limiting_domains.map((d) => (
+                                        <span key={d} className="readiness-chip constraint">{d}</span>
+                                      ))}
+                                    </div>
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </details>
+                  </>
+                );
+              })()}
             </div>
           )}
 

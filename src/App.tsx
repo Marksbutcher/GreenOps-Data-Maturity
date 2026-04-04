@@ -163,7 +163,6 @@ function App() {
       )}
       {view === 'results' && (
         <ResultsDashboard
-          key={domainResults.map(r => `${r.domain_id}-${r.effective_maturity}-${r.confidence_score}`).join(',')}
           model={typedModel}
           profile={profile}
           results={domainResults}

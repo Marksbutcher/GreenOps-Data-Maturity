@@ -1,9 +1,8 @@
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
-import { OrganisationProfile, DomainAssessment, MaturityModel, Recommendation, DecisionAreaReadiness, MATURITY_LABELS, INTENT_LABELS } from '../types';
+import { OrganisationProfile, DomainAssessment, MaturityModel, Recommendation, DecisionAreaReadiness, MATURITY_LABELS } from '../types';
 import { DomainNarrative } from './narrativeAnalysis';
 import { calculateOverallStats } from './scoring';
-import { getTopLimitingFactors } from './dependencyChain';
 
 const BRAND = {
   green: [90, 166, 62] as [number, number, number],       // Posetiv leaf green
@@ -138,28 +137,84 @@ export function downloadPDF(
   addPageFooter(doc, pageNum.value);
 
   // ═══════════════════════════════════════════════
-  // PAGE 2: Executive Summary — using pre-generated narrative
+  // PAGE 2: Executive Summary — the story
   // ═══════════════════════════════════════════════
   doc.addPage();
   pageNum.value++;
 
   let ey = sectionHeading(doc, 'Executive Summary', 25, 18);
 
-  // Assessment intent context
-  if (profile.assessment_intent) {
-    const intentLabel = INTENT_LABELS[profile.assessment_intent];
+  // Opening narrative paragraph — set the scene
+  ey = writeBody(doc,
+    `This assessment evaluated ${stats.domainCount} data domains across the technology estate of ${profile.organisation_name}. The overall weighted maturity is ${stats.weightedMaturity} out of 5, with individual domains ranging from level ${stats.minMaturity} to level ${stats.maxMaturity}.`,
+    ey, pageNum, { fontSize: 10 }
+  );
+
+  // What does that score actually mean?
+  let interpretation = '';
+  if (stats.weightedMaturity < 2.5) {
+    interpretation = 'At this level, the data foundation is immature. Most inputs are partial, inconsistent, or absent — the estate is running on estimates rather than evidence. This limits you to basic compliance reporting and means efficiency gains, cost savings, and carbon reductions are being missed. External disclosure based on current data should be caveated.';
+  } else if (stats.weightedMaturity < 3.5) {
+    interpretation = 'A basic data foundation exists in several areas, but significant gaps remain. Data works for periodic reporting and directional analysis, but is not consistently decision-grade. The priority is closing the weakest gaps — because they represent hidden risk, unquantified waste, and missed cost and carbon reduction.';
+  } else if (stats.weightedMaturity < 4.5) {
+    interpretation = 'Most domains are at or near decision-grade quality. The focus should shift from establishing data to using it — embedding GreenOps metrics into governance, investment decisions, procurement, and continuous improvement.';
+  } else {
+    interpretation = 'The data capability is mature and comprehensive. Focus on sustaining quality, extending automation, and ensuring governance keeps pace with estate changes and regulatory expectations.';
+  }
+  ey = writeBody(doc, interpretation, ey, pageNum, { fontSize: 10 });
+
+  ey += 2;
+
+  // Key findings — structured but narrative
+  ey = writeBody(doc, 'Key findings:', ey, pageNum, { bold: true, fontSize: 10 });
+
+  const belowThree = results.filter(r => r.effective_maturity < 3).length;
+  const atFourPlus = results.filter(r => r.effective_maturity >= 4).length;
+  const highImpactWeak = results
+    .filter(r => r.effective_maturity <= 2 && r.impact_score >= 4)
+    .map(r => model.domains.find(d => d.id === r.domain_id)?.name || r.domain_id);
+
+  if (belowThree > 0) {
     ey = writeBody(doc,
-      `Assessment goal: ${intentLabel}`,
-      ey, pageNum, { bold: true, fontSize: 10 }
+      `\u2022  ${belowThree} of ${stats.domainCount} domains are below level 3. Data in those areas is not yet reliable enough to support confident operational or investment decisions.`,
+      ey, pageNum, { indent: 24, fontSize: 9 }
+    );
+  }
+  if (atFourPlus > 0) {
+    ey = writeBody(doc,
+      `\u2022  ${atFourPlus} domain${atFourPlus > 1 ? 's are' : ' is'} at level 4 or above, providing decision-grade or optimisation-grade evidence that can support active management.`,
+      ey, pageNum, { indent: 24, fontSize: 9 }
     );
   }
 
-  // Render the pre-generated executive summary paragraph by paragraph
-  const summaryParagraphs = execSummary.split('\n\n');
-  for (const para of summaryParagraphs) {
-    ey = writeBody(doc, para, ey, pageNum, { fontSize: 9 });
-    ey += 1;
+  const spread = stats.maxMaturity - stats.minMaturity;
+  if (spread >= 3) {
+    ey = writeBody(doc,
+      `\u2022  There is a ${spread}-level spread between the strongest and weakest domains. This unevenness limits the organisation's ability to make joined-up decisions — strong data in one area is undermined by weak data in related areas.`,
+      ey, pageNum, { indent: 24, fontSize: 9 }
+    );
   }
+
+  if (highImpactWeak.length > 0) {
+    ey = writeBody(doc,
+      `\u2022  Priority attention needed: ${highImpactWeak.join(', ')} ${highImpactWeak.length === 1 ? 'is' : 'are'} both high-impact and low-maturity. These represent the largest gap between domain importance and evidence quality.`,
+      ey, pageNum, { indent: 24, fontSize: 9 }
+    );
+  }
+
+  // Strongest and weakest
+  const weakest3 = sorted.slice(0, 3).map(r => {
+    const d = model.domains.find(dd => dd.id === r.domain_id);
+    return `${d?.name || r.domain_id} (level ${r.effective_maturity})`;
+  });
+  const strongest3 = sorted.slice(-3).reverse().map(r => {
+    const d = model.domains.find(dd => dd.id === r.domain_id);
+    return `${d?.name || r.domain_id} (level ${r.effective_maturity})`;
+  });
+
+  ey += 3;
+  ey = writeBody(doc, `Strongest areas: ${strongest3.join('; ')}.`, ey, pageNum, { fontSize: 9 });
+  ey = writeBody(doc, `Weakest areas: ${weakest3.join('; ')}.`, ey, pageNum, { fontSize: 9 });
 
   addPageFooter(doc, pageNum.value);
 
@@ -319,38 +374,24 @@ export function downloadPDF(
       ny = writeBody(doc, narrative.dimension_analysis, ny, pageNum, { fontSize: 9 });
     }
 
-    // Data credibility
+    // Risk
     if (narrative.risk_statement) {
       ny += 1;
-      ny = writeBody(doc, 'Data credibility', ny, pageNum, { bold: true, fontSize: 9 });
+      ny = writeBody(doc, 'Risk and exposure', ny, pageNum, { bold: true, fontSize: 9 });
       ny = writeBody(doc, narrative.risk_statement, ny, pageNum, { fontSize: 9 });
     }
 
-    // Misinterpretation risk
-    if (narrative.misinterpretation_risk) {
-      ny += 1;
-      ny = writeBody(doc, 'Misinterpretation risk', ny, pageNum, { bold: true, fontSize: 9 });
-      ny = writeBody(doc, narrative.misinterpretation_risk, ny, pageNum, { fontSize: 9 });
-    }
-
-    // Calculation dependencies
-    if (narrative.cascade_note) {
-      ny += 1;
-      ny = writeBody(doc, 'Calculation dependencies', ny, pageNum, { bold: true, fontSize: 9 });
-      ny = writeBody(doc, narrative.cascade_note, ny, pageNum, { fontSize: 9 });
-    }
-
-    // What this data supports
+    // Decision support
     if (narrative.decision_support_summary) {
       ny += 1;
-      ny = writeBody(doc, 'What this data supports', ny, pageNum, { bold: true, fontSize: 9 });
+      ny = writeBody(doc, 'Decision support', ny, pageNum, { bold: true, fontSize: 9 });
       ny = writeBody(doc, narrative.decision_support_summary, ny, pageNum, { fontSize: 9 });
     }
 
-    // Path forward
+    // Improvement guidance
     if (narrative.improvement_guidance) {
       ny += 1;
-      ny = writeBody(doc, 'Path forward', ny, pageNum, { bold: true, fontSize: 9 });
+      ny = writeBody(doc, 'What to improve', ny, pageNum, { bold: true, fontSize: 9 });
       ny = writeBody(doc, narrative.improvement_guidance, ny, pageNum, { fontSize: 9 });
     }
 
