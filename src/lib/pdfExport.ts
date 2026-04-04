@@ -411,6 +411,16 @@ export function downloadPDF(
     { fontSize: 9 }
   );
 
+  cy += 5;
+  cy = sectionHeading(doc, 'How to read this report', cy, 11);
+  cy = writeBody(
+    doc,
+    'The report is structured in two layers. Pages 2–5 provide a leadership summary: visual dashboard, executive findings, and decision readiness by stakeholder group. Pages 6 onwards provide technical detail for domain owners and practitioners: per-domain analysis, data credibility assessment, and a phased improvement roadmap.',
+    cy,
+    pageNum,
+    { fontSize: 9 }
+  );
+
   pageNum.value++;
   addPageFooter(doc, pageNum.value);
 
@@ -422,6 +432,16 @@ export function downloadPDF(
   addPageHeader(doc);
 
   let dY = 18;
+
+  dY = writeBody(
+    doc,
+    'The following dashboard summarises the maturity profile across all 13 data domains, measured against your stated assessment goal.',
+    dY,
+    pageNum,
+    { fontSize: 9 }
+  );
+
+  dY += 4;
 
   // KEY METRICS BOXES
   doc.setFontSize(11);
@@ -518,6 +538,16 @@ export function downloadPDF(
 
   let esY = sectionHeading(doc, 'Executive Summary', 25, 18);
 
+  esY = writeBody(
+    doc,
+    'This summary highlights the most important findings from the assessment — where the organisation stands, what the data can and cannot support, and where the largest gaps exist.',
+    esY,
+    pageNum,
+    { fontSize: 9 }
+  );
+
+  esY += 2;
+
   // Assessment intent context
   doc.setFontSize(10);
   doc.setTextColor(...BRAND.charcoal);
@@ -586,34 +616,85 @@ export function downloadPDF(
     { fontSize: 9 }
   );
 
+  drY += 3;
+
+  // Add explanation about weakest link
+  drY = writeBody(
+    doc,
+    'Each question below asks whether current data quality is sufficient to support a specific decision. The answer is determined by the weakest data domain that feeds into that decision — because an answer is only as reliable as its weakest input.',
+    drY,
+    pageNum,
+    { fontSize: 9 }
+  );
+
   drY += 4;
+
+  // Mapping of question text to areas (from web UI logic)
+  const questionMappings = [
+    { question: 'Can we credibly report our carbon footprint?', area: 'footprint reporting' },
+    { question: 'Can we set and track environmental targets?', area: 'target setting and governance' },
+    { question: 'Can we find where energy and resources are being wasted?', area: 'hotspot identification' },
+    { question: 'Can we rightsize or decommission with confidence?', area: 'rightsizing and decommissioning' },
+    { question: 'Can we make evidence-based refresh and lifecycle decisions?', area: 'refresh and lifecycle decisions' },
+    { question: 'Can we optimise workload placement by cost, carbon, or efficiency?', area: 'workload placement' },
+    { question: 'Can we drive service-level efficiency improvements?', area: 'service-level optimisation' },
+    { question: 'Can we track whether operational improvements are working?', area: 'operational improvement tracking' },
+    { question: 'Can we challenge supplier efficiency and sustainability claims?', area: 'supplier challenge' },
+    { question: 'Can we attribute consumption to services, teams, or business units?', area: 'non-IT load allocation' },
+    { question: 'Can we optimise cloud cost and carbon together?', area: 'cloud optimisation' },
+    { question: 'Can we govern AI infrastructure demand and efficiency?', area: 'AI demand governance and optimisation' },
+  ];
 
   // Group decision readiness by persona (4 groups from web UI)
   const personas = [
     {
       name: 'Sustainability & Reporting',
       areas: decisionReadiness.filter(dr =>
-        ['footprint_reporting', 'target_setting'].includes(dr.area)
+        ['footprint reporting', 'target setting and governance'].includes(dr.area)
+      ),
+      questions: questionMappings.filter(q =>
+        ['footprint reporting', 'target setting and governance'].includes(q.area)
       ),
     },
     {
       name: 'Infrastructure & Operations',
       areas: decisionReadiness.filter(dr =>
-        ['hotspot_identification', 'rightsizing', 'lifecycle_decisions', 'workload_placement'].includes(
-          dr.area
-        )
+        [
+          'hotspot identification',
+          'rightsizing and decommissioning',
+          'refresh and lifecycle decisions',
+          'workload placement',
+          'service-level optimisation',
+          'operational improvement tracking',
+        ].includes(dr.area)
+      ),
+      questions: questionMappings.filter(q =>
+        [
+          'hotspot identification',
+          'rightsizing and decommissioning',
+          'refresh and lifecycle decisions',
+          'workload placement',
+          'service-level optimisation',
+          'operational improvement tracking',
+        ].includes(q.area)
       ),
     },
     {
       name: 'Procurement & Finance',
       areas: decisionReadiness.filter(dr =>
-        ['supplier_challenge', 'attribution'].includes(dr.area)
+        ['supplier challenge', 'non-IT load allocation'].includes(dr.area)
+      ),
+      questions: questionMappings.filter(q =>
+        ['supplier challenge', 'non-IT load allocation'].includes(q.area)
       ),
     },
     {
       name: 'Cloud & AI Governance',
       areas: decisionReadiness.filter(dr =>
-        ['cloud_optimisation', 'ai_demand_governance'].includes(dr.area)
+        ['cloud optimisation', 'AI demand governance and optimisation'].includes(dr.area)
+      ),
+      questions: questionMappings.filter(q =>
+        ['cloud optimisation', 'AI demand governance and optimisation'].includes(q.area)
       ),
     },
   ];
@@ -648,29 +729,38 @@ export function downloadPDF(
 
     drY = sectionHeading(doc, persona.name, drY, 12);
 
-    for (const dr of persona.areas) {
+    // Render by question (using plain-language questions)
+    for (const question of persona.questions) {
+      // Find the corresponding decision readiness item
+      const dr = persona.areas.find(a => a.area === question.area);
+      if (!dr) continue;
+
       let badgeColour = BRAND.red;
       if (dr.readiness === 'directional') badgeColour = BRAND.amber;
       if (dr.readiness === 'decision_grade') badgeColour = BRAND.greenDk;
       if (dr.readiness === 'optimisation_grade') badgeColour = BRAND.green;
 
+      // Question text in bold
       doc.setFontSize(9);
       doc.setTextColor(...BRAND.charcoal);
       doc.setFont(undefined as any, 'bold');
-      doc.text(dr.area.replace(/_/g, ' '), 20, drY);
+      doc.text(question.question, 20, drY);
 
+      // Badge label on the right
       doc.setFontSize(8);
       doc.setTextColor(...badgeColour);
       doc.text(dr.label, w - 20 - doc.getTextWidth(dr.label), drY);
       doc.setFont(undefined as any, 'normal');
       drY += 5;
 
+      // Summary text
       drY = writeBody(doc, dr.summary, drY, pageNum, { fontSize: 8 });
 
+      // Limiting domains if any
       if (dr.limiting_domains.length > 0) {
         drY = writeBody(
           doc,
-          `Limited by: ${dr.limiting_domains.join(', ')}`,
+          `Constrained by: ${dr.limiting_domains.join(', ')}`,
           drY,
           pageNum,
           { fontSize: 7.5, indent: 24 }
@@ -750,11 +840,99 @@ export function downloadPDF(
     },
   });
 
+  // Get final Y position from autoTable and add maturity level explanations
+  let mlY = (doc as any).lastAutoTable.finalY + 5;
+
+  // Check if we need a new page
+  if (mlY + 60 > h - 20) {
+    addPageFooter(doc, pageNum.value);
+    doc.addPage();
+    pageNum.value++;
+    addPageHeader(doc);
+    mlY = 25;
+  }
+
+  mlY = sectionHeading(doc, 'Maturity Level Explanations', mlY, 11);
+
+  const maturityExplanations = [
+    {
+      level: 1,
+      label: LEVEL_LABELS[1],
+      meaning:
+        'Data is absent, ad hoc, or anecdotal. No reliable basis for any operational or reporting decision.',
+    },
+    {
+      level: 2,
+      label: LEVEL_LABELS[2],
+      meaning:
+        'Some data exists but coverage is incomplete and collection is inconsistent. Sufficient for basic disclosure only.',
+    },
+    {
+      level: 3,
+      label: LEVEL_LABELS[3],
+      meaning:
+        'Data is structured and routinely collected. Supports periodic reporting and identifies broad patterns, but not granular enough for confident action.',
+    },
+    {
+      level: 4,
+      label: LEVEL_LABELS[4],
+      meaning:
+        'Data is measured, attributed, and traceable. Supports confident operational and investment decisions.',
+    },
+    {
+      level: 5,
+      label: LEVEL_LABELS[5],
+      meaning:
+        'Data is continuously collected, automated, and integrated into governance. Supports real-time optimisation and dynamic management.',
+    },
+  ];
+
+  for (const exp of maturityExplanations) {
+    if (mlY + 12 > h - 20) {
+      addPageFooter(doc, pageNum.value);
+      doc.addPage();
+      pageNum.value++;
+      addPageHeader(doc);
+      mlY = 25;
+    }
+
+    doc.setFontSize(9);
+    doc.setTextColor(...levelColour(exp.level));
+    doc.setFont(undefined as any, 'bold');
+    doc.text(`Level ${exp.level}: ${exp.label}`, 20, mlY);
+    doc.setFont(undefined as any, 'normal');
+    mlY += 4;
+
+    mlY = writeBody(doc, exp.meaning, mlY, pageNum, { fontSize: 8.5, indent: 20 });
+    mlY += 1;
+  }
+
   addPageFooter(doc, pageNum.value);
 
   // ═══════════════════════════════════════════════
   // PAGES: DETAILED DOMAIN ANALYSIS
   // ═══════════════════════════════════════════════
+  doc.addPage();
+  pageNum.value++;
+  addPageHeader(doc);
+
+  let domainIntroY = sectionHeading(
+    doc,
+    'Domain Detail Analysis',
+    25,
+    18
+  );
+
+  domainIntroY = writeBody(
+    doc,
+    'The following pages provide detailed analysis for each of the 13 data domains. For each domain, the report covers: what the current data quality means operationally, what decisions it can and cannot support, where misinterpretation risks exist, how upstream data constraints cascade through calculations, and what needs to change.',
+    domainIntroY,
+    pageNum,
+    { fontSize: 9 }
+  );
+
+  addPageFooter(doc, pageNum.value);
+
   for (const narrative of narratives) {
     doc.addPage();
     pageNum.value++;
@@ -852,7 +1030,7 @@ export function downloadPDF(
 
   ry = writeBody(
     doc,
-    'The improvement roadmap is structured in three phases. Foundational gaps must be closed before targeted improvements can deliver value, and transformation depends on the basics being in place.',
+    'The roadmap below translates assessment findings into prioritised action. It is structured in three phases that reflect implementation reality: foundational gaps must be closed before targeted improvements can deliver value, and transformation depends on the basics being in place. Each recommendation identifies what needs to change, why it matters, and what improves if the action is taken.',
     ry,
     pageNum,
     { fontSize: 9.5 }
