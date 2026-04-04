@@ -1,11 +1,42 @@
+import { useState } from 'react';
 import PosetivLogo from './PosetivLogo';
 
 interface LandingPageProps {
   onStartNew: (mode: 'self' | 'facilitated') => void;
   onLoadDemo: () => void;
+  onLoadSaved: (file: File) => void;
 }
 
-export default function LandingPage({ onStartNew, onLoadDemo }: LandingPageProps) {
+export default function LandingPage({ onStartNew, onLoadDemo, onLoadSaved }: LandingPageProps) {
+  const [dragOver, setDragOver] = useState(false);
+
+  const handleFileLoad = () => {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.json';
+    input.onchange = (e) => {
+      const file = (e.target as HTMLInputElement).files?.[0];
+      if (file) onLoadSaved(file);
+    };
+    input.click();
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setDragOver(false);
+    const file = e.dataTransfer.files?.[0];
+    if (file && file.name.endsWith('.json')) {
+      onLoadSaved(file);
+    }
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    setDragOver(true);
+  };
+
+  const handleDragLeave = () => setDragOver(false);
+
   return (
     <div className="landing">
       <div className="landing-hero">
@@ -45,9 +76,37 @@ export default function LandingPage({ onStartNew, onLoadDemo }: LandingPageProps
               <button className="btn btn-outline">Begin workshop assessment</button>
             </div>
           </div>
+
+          {/* Resume / Load section — prominent */}
+          <div className="resume-section">
+            <h2>Resume a previous assessment</h2>
+            <p className="landing-actions-subtitle">
+              Load a previously saved assessment to review results or continue where you left off.
+            </p>
+            <div
+              className={`upload-zone ${dragOver ? 'upload-zone-active' : ''}`}
+              onClick={handleFileLoad}
+              onDrop={handleDrop}
+              onDragOver={handleDragOver}
+              onDragLeave={handleDragLeave}
+            >
+              <div className="upload-zone-icon">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                  <polyline points="17 8 12 3 7 8" />
+                  <line x1="12" y1="3" x2="12" y2="15" />
+                </svg>
+              </div>
+              <p className="upload-zone-text">
+                <strong>Click to browse</strong> or drag and drop your saved assessment file
+              </p>
+              <p className="upload-zone-hint">Accepts .json files saved from a previous assessment</p>
+            </div>
+          </div>
+
           <div className="demo-link">
             <button className="btn btn-ghost" onClick={onLoadDemo}>
-              View demo assessment with sample data
+              Or view a demo assessment with sample data
             </button>
           </div>
         </div>

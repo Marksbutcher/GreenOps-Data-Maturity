@@ -1,10 +1,11 @@
 import { useState, useCallback, useMemo } from 'react';
-import { MaturityModel, DomainAssessment } from '../types';
+import { MaturityModel, DomainAssessment, OrganisationProfile } from '../types';
 import PosetivLogo from './PosetivLogo';
 
 interface AssessmentFlowProps {
   model: MaturityModel;
   mode: 'self' | 'facilitated';
+  profile: OrganisationProfile;
   results: DomainAssessment[];
   onComplete: (results: DomainAssessment[]) => void;
   onBack: () => void;
@@ -15,6 +16,7 @@ type DomainStatus = 'not_started' | 'in_progress' | 'complete';
 export default function AssessmentFlow({
   model,
   mode,
+  profile,
   results: initialResults,
   onComplete,
   onBack,
@@ -140,6 +142,28 @@ export default function AssessmentFlow({
           })}
         </nav>
         <div className="sidebar-footer">
+          <button
+            className="btn btn-outline btn-sm sidebar-save-btn"
+            onClick={() => {
+              const payload = {
+                version: '2.0',
+                saved_at: new Date().toISOString(),
+                mode,
+                profile,
+                results,
+              };
+              const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+              const url = URL.createObjectURL(blob);
+              const a = document.createElement('a');
+              a.href = url;
+              const slug = profile.organisation_name.toLowerCase().replace(/[^a-z0-9]+/g, '-') || 'assessment';
+              a.download = `greenops-assessment-${slug}.json`;
+              a.click();
+              URL.revokeObjectURL(url);
+            }}
+          >
+            Save progress
+          </button>
           <span className="sidebar-mode">{mode === 'facilitated' ? 'Workshop mode' : 'Self-assessment'}</span>
         </div>
       </aside>
@@ -231,7 +255,7 @@ export default function AssessmentFlow({
           )}
         </div>
 
-        {/* Evidence and notes — compact */}
+        {/* Evidence and notes */}
         <div className="evidence-row">
           <div className="evidence-col">
             <label className="field-label">Evidence and sources</label>
@@ -239,8 +263,8 @@ export default function AssessmentFlow({
               className="field-textarea"
               value={result.evidence}
               onChange={(e) => updateResult({ evidence: e.target.value })}
-              placeholder="What evidence supports the answers given?"
-              rows={2}
+              placeholder="What evidence supports the answers given? List data sources, tools, reports, or systems that informed your responses."
+              rows={5}
             />
             {domain.common_evidence_examples.length > 0 && (
               <div className="evidence-examples">
@@ -254,8 +278,8 @@ export default function AssessmentFlow({
               className="field-textarea"
               value={result.rationale}
               onChange={(e) => updateResult({ rationale: e.target.value })}
-              placeholder="Key observations or caveats for this domain"
-              rows={2}
+              placeholder="Key observations, caveats, or context for this domain. Note any known gaps, planned improvements, or dependencies on other teams."
+              rows={5}
             />
           </div>
         </div>

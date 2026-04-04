@@ -51,19 +51,19 @@ const OPERATIONAL_CONTEXT: Record<string, Record<number, string>> = {
     4: 'Supplier-specific or product-level embodied data is used in procurement and refresh decisions. You can model the carbon impact of lifecycle extension versus replacement and factor this into business cases.',
     5: 'Full lifecycle carbon data including manufacturing, transport, use-phase, and end-of-life is available and integrated into procurement, refresh, and circularity decisions.',
   },
-  carbon_emission_factors: {
-    1: 'Carbon factors are absent or use single global averages. Any carbon calculations carry very high uncertainty and cannot distinguish between locations, time periods, or energy sources.',
-    2: 'Basic country or region-level grid factors are applied. You can produce directional carbon estimates but cannot differentiate between sites in different grids, time-of-day variation, or renewable energy procurement effects.',
-    3: 'Location-specific grid factors are used and updated periodically. You can produce credible location-based carbon calculations and distinguish between high and low-carbon sites.',
-    4: 'Both location-based and market-based factors are applied. Renewable energy procurement (PPAs, RECs) is reflected in carbon accounting. You can demonstrate the carbon impact of energy sourcing decisions.',
+  carbon_factors: {
+    1: 'Carbon factors are absent or use single global averages. Any carbon calculations carry very high uncertainty and cannot distinguish between locations, time periods, or energy sources. This undermines the credibility of all downstream carbon reporting.',
+    2: 'Basic country or region-level grid factors are applied. You can produce directional carbon estimates but cannot differentiate between sites in different grids, time-of-day variation, or renewable energy procurement effects. Market-based claims are not substantiated.',
+    3: 'Location-specific grid factors are used and updated periodically. You can produce credible location-based carbon calculations and distinguish between high and low-carbon sites. However, market-based accounting and renewable procurement effects are not yet reflected.',
+    4: 'Both location-based and market-based factors are applied. Renewable energy procurement (PPAs, REGOs, RECs) is reflected in carbon accounting. You can demonstrate the carbon impact of energy sourcing decisions and challenge supplier claims with evidence.',
     5: 'Marginal emission factors, time-of-use adjustments, and full market-based accounting are integrated. Carbon factors are validated, auditable, and support optimisation decisions including workload scheduling by carbon intensity.',
   },
-  utilisation_demand: {
-    1: 'No utilisation data is available. You have no visibility into how much of your provisioned capacity is actually being used. Expect 40-70% waste from over-provisioning, zombie workloads, and unmanaged demand growth.',
-    2: 'Some utilisation data exists, typically from basic monitoring tools, but coverage is patchy and not systematically reviewed. You can identify obvious waste but cannot quantify the scale or drive systematic rightsizing.',
-    3: 'Utilisation is measured across major platforms with reasonable coverage. You can identify under-used resources and estimate waste, but the link between utilisation data and remediation action is informal.',
-    4: 'Comprehensive utilisation monitoring with established thresholds and regular review cycles. Rightsizing recommendations are generated and tracked. The connection between demand, capacity, and cost is managed.',
-    5: 'Real-time utilisation management with automated scaling, demand shaping, and continuous optimisation. Waste is minimised through systematic governance.',
+  utilisation_and_service_usage: {
+    1: 'No utilisation data is available. You have no visibility into how much of your provisioned capacity is actually being used. Expect 40-70% waste from over-provisioning, zombie workloads, and unmanaged demand growth. This is typically the single largest source of hidden cost and carbon.',
+    2: 'Some utilisation data exists, typically from basic monitoring tools, but coverage is patchy and not systematically reviewed. You can identify obvious waste but cannot quantify the scale or drive systematic rightsizing. Demand growth is not governed.',
+    3: 'Utilisation is measured across major platforms with reasonable coverage. You can identify under-used resources and estimate waste, but the link between utilisation data and remediation action is informal. Rightsizing happens reactively rather than through governance.',
+    4: 'Comprehensive utilisation monitoring with established thresholds and regular review cycles. Rightsizing recommendations are generated and tracked. The connection between demand, capacity, and cost is managed. Demand governance is in place for major platforms.',
+    5: 'Real-time utilisation management with automated scaling, demand shaping, and continuous optimisation. Waste is minimised through systematic governance. New demand is assessed for efficiency before provisioning.',
   },
   allocation_attribution: {
     1: 'Carbon and cost cannot be attributed to services, teams, or business units. You are allocating overhead proportionally (if at all) rather than based on actual consumption. Accountability is impossible.',
@@ -79,54 +79,54 @@ const OPERATIONAL_CONTEXT: Record<string, Record<number, string>> = {
     4: 'Comprehensive cloud telemetry including compute, storage, networking, and managed services. Carbon estimates are derived from provider sustainability data. You can support cloud FinOps and GreenOps decisions with measured data.',
     5: 'Full cloud observability with real-time carbon-aware workload placement, automated cost-carbon optimisation, and integration across multi-cloud and hybrid environments.',
   },
-  colocation_third_party: {
-    1: 'No energy or efficiency data from colocation providers. You are entirely dependent on provider claims with no ability to validate, challenge, or compare.',
-    2: 'Some data is received, typically quarterly PUE or aggregate energy consumption from provider reports. Quality, timeliness, and granularity are unclear. You cannot verify the methodology.',
+  colo_provider_data: {
+    1: 'No energy or efficiency data from colocation providers. You are entirely dependent on provider claims with no ability to validate, challenge, or compare. Scope 3 reporting for hosted infrastructure is guesswork.',
+    2: 'Some data is received, typically quarterly PUE or aggregate energy consumption from provider reports. Quality, timeliness, and granularity are unclear. You cannot verify the methodology or allocate consumption to your footprint.',
     3: 'Structured data sharing is in place with major colocation providers. You receive facility-level metrics on a regular schedule and can factor them into carbon calculations, though granularity to your specific allocation remains limited.',
-    4: 'Provider data is detailed, timely, and aligned to your allocated space. Contractual SLAs cover data quality and reporting frequency. You can validate provider efficiency claims against your own measurements.',
-    5: 'Full transparency with real-time data feeds, granular allocation, and contractual obligations for continuous improvement. Provider data is integrated into your own operational systems.',
+    4: 'Provider data is detailed, timely, and aligned to your allocated space. Contractual SLAs cover data quality and reporting frequency. You can validate provider efficiency claims against your own measurements and use data in procurement decisions.',
+    5: 'Full transparency with real-time data feeds, granular allocation, and contractual obligations for continuous improvement. Provider data is integrated into your own operational systems and supports active provider performance management.',
   },
-  temporal_resolution: {
-    1: 'Data is available only at annual or quarterly frequency. You cannot identify trends, seasonal patterns, or respond to changing conditions within any reporting period.',
-    2: 'Monthly or quarterly data is available for some domains. You can identify broad trends over time but cannot support operational decisions that require weekly or daily granularity.',
-    3: 'Monthly data is standard across most domains with some daily granularity for key metrics. Sufficient for periodic reporting and trend analysis but not for real-time operational decisions.',
-    4: 'Daily or sub-daily data is available for key operational metrics. You can support demand-response decisions, identify anomalies promptly, and demonstrate trends within reporting periods.',
-    5: 'Real-time or near-real-time data across all key domains. Supports dynamic optimisation, automated responses, and continuous operational improvement.',
+  temporal_timeliness: {
+    1: 'Data is available only at annual or quarterly frequency. You cannot identify trends, seasonal patterns, or respond to changing conditions within any reporting period. Decision-makers are always working with stale information.',
+    2: 'Monthly or quarterly data is available for some domains. You can identify broad trends over time but cannot support operational decisions that require weekly or daily granularity. Problems are identified long after they start.',
+    3: 'Monthly data is standard across most domains with some daily granularity for key metrics. Sufficient for periodic reporting and trend analysis but not for real-time operational decisions or anomaly detection.',
+    4: 'Daily or sub-daily data is available for key operational metrics. You can support demand-response decisions, identify anomalies promptly, and demonstrate trends within reporting periods. Operational teams can act on current information.',
+    5: 'Real-time or near-real-time data across all key domains. Supports dynamic optimisation, automated responses, and continuous operational improvement. Data freshness is a managed attribute.',
   },
-  data_lineage_assurance: {
-    1: 'No traceability of data sources, transformations, or quality. You cannot explain how any number was derived, which means any figure is challengeable and no metric is auditable.',
-    2: 'Some documentation of data sources exists but it is informal, incomplete, and not maintained. You can explain major data flows when asked but cannot demonstrate a systematic audit trail.',
-    3: 'Data lineage is documented for the main reporting pipelines. Sources, transformations, and assumptions are recorded. You can respond to audit queries but the process is manual.',
+  lineage_assurance: {
+    1: 'No traceability of data sources, transformations, or quality. You cannot explain how any number was derived, which means any figure is challengeable and no metric is auditable. This is a material governance risk.',
+    2: 'Some documentation of data sources exists but it is informal, incomplete, and not maintained. You can explain major data flows when asked but cannot demonstrate a systematic audit trail. External challenge would expose gaps.',
+    3: 'Data lineage is documented for the main reporting pipelines. Sources, transformations, and assumptions are recorded. You can respond to audit queries but the process is manual and dependent on key individuals.',
     4: 'Systematic lineage tracking across the main data flows with regular validation. Assumptions are documented and reviewed. You can support internal and external audit with a clear evidence trail.',
     5: 'Full automated lineage from source to report with version control, validation rules, and exception handling. External assurance is achievable. Any stakeholder can trace any number to its source.',
   },
   decision_integration: {
-    1: 'GreenOps data is not used in any operational or strategic decisions. It may be collected for compliance reporting but sits in a separate silo from operational management.',
-    2: 'Some data is referenced informally in discussions about sustainability, but it does not systematically influence investment decisions, operational priorities, or governance processes.',
-    3: 'GreenOps data is used in some decision processes — typically annual reporting and major procurement events — but integration is inconsistent and depends on individual champions rather than systematic governance.',
-    4: 'Data is integrated into regular decision cycles including capacity planning, procurement, infrastructure investment, and operational reviews. There are defined governance forums where GreenOps data is a required input.',
-    5: 'GreenOps data is embedded in operational management. Carbon and efficiency metrics are treated with the same rigour as financial metrics — with targets, accountability, exception management, and continuous improvement.',
+    1: 'No regular management reporting exists for energy, emissions or efficiency across the IT estate. Environmental data, where it exists, is not reaching decision-makers and is not influencing operational or investment priorities.',
+    2: 'Some reporting exists but it is infrequent, narrowly distributed, and not connected to operational processes. Data may appear in an annual sustainability report but does not inform infrastructure, procurement, or capacity decisions.',
+    3: 'Regular reporting is in place for some areas, typically the main data centre or largest cloud accounts. Reports reach infrastructure leads but not consistently finance, procurement, or senior leadership. Actions are taken ad-hoc rather than through a structured process.',
+    4: 'Structured reporting covers most of the estate with defined cadence, scope, and distribution. Reports reach the right decision-makers and there is a process for turning findings into actions with named ownership. Outcomes are beginning to be tracked.',
+    5: 'Comprehensive, multi-cadence reporting embedded in operational governance. Environmental and efficiency data is treated with the same rigour as financial reporting — with targets, accountability, variance analysis, and closed-loop improvement tracking.',
   },
 };
 
 /* ─── Risk framing by maturity ─── */
 function getRiskStatement(domain: Domain, maturity: number, weakDimNames: string[]): string {
   if (maturity <= 1) {
-    return `Critical gap: ${domain.name} data is absent or unreliable. Decisions in this area are based on assumptions rather than evidence. Regulatory disclosure, investment justification, and supplier negotiations all carry significant risk.`;
+    return `Critical gap: ${domain.name} data is absent or unreliable. Decisions in this area are based on assumptions rather than evidence. This creates material exposure across regulatory disclosure, investment justification, and supplier negotiations. Any reported figures in this domain should be treated as indicative at best. Leadership should treat this as a priority governance issue, not a technical backlog item.`;
   }
   if (maturity === 2) {
     const weakNote = weakDimNames.length > 0
       ? ` Particular exposure in ${weakDimNames.join(' and ')}, which limits both operational and governance use.`
       : '';
-    return `Significant gap: ${domain.name} data is partial and inconsistent. Data supports basic reporting but not operational decisions. Over-reliance on this data for investment or compliance purposes carries material risk.${weakNote}`;
+    return `Significant gap: ${domain.name} data is partial and inconsistent. Data supports basic reporting but not confident operational decisions. Over-reliance on this data for investment or compliance purposes carries material risk. The organisation is likely making decisions in this area that are not supported by the evidence quality available.${weakNote}`;
   }
   if (maturity === 3) {
-    return `Moderate gap: ${domain.name} data is adequate for periodic reporting but lacks the precision, coverage, or timeliness needed for operational management. You can report retrospectively but cannot optimise proactively.`;
+    return `Moderate gap: ${domain.name} data is adequate for periodic reporting but lacks the precision, coverage, or timeliness needed for operational management. You can report retrospectively but cannot optimise proactively. The gap between what is reported and what is operationally actionable should be made explicit to stakeholders.`;
   }
   if (maturity === 4) {
-    return `Minor gap: ${domain.name} data is strong and decision-grade for most purposes. Remaining risks are in edge cases — typically coverage of newer platforms, real-time availability, or end-to-end auditability.`;
+    return `Minor gap: ${domain.name} data is strong and decision-grade for most purposes. Remaining risks are typically in edge cases — coverage of newer platforms, real-time availability, or end-to-end auditability. Focus should be on sustaining quality and extending coverage to emerging estate areas.`;
   }
-  return `${domain.name} data is mature and operationally embedded. Maintain governance and validation to ensure continued quality as the estate evolves.`;
+  return `${domain.name} data is mature and operationally embedded. The priority is maintaining governance discipline, validating continued quality as the estate evolves, and demonstrating value through operational outcomes.`;
 }
 
 /* ─── Dimension diagnosis ─── */

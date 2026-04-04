@@ -164,7 +164,7 @@
           "tags": [],
           "options": [
             {
-              "label": "Asset records are minimal \u2014 maybe hostname, location and rough category. No configuration detail.",
+              "label": "Asset records are minimal — maybe hostname, location and rough category. No configuration detail.",
               "score": 1
             },
             {
@@ -280,7 +280,7 @@
         },
         {
           "id": "ai6",
-          "text": "How easy is it to match your inventory to product data needed for GreenOps calculations?",
+          "text": "Can you match asset records to vendor product specifications — such as make, model, configuration, rated power and warranty data?",
           "dimension": "method_quality",
           "weight": 4,
           "guidance": "",
@@ -288,23 +288,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Cannot match inventory to vendor product data for GreenOps calculations.",
+              "label": "Cannot match assets to vendor product specifications. Records lack the detail needed.",
               "score": 1
             },
             {
-              "label": "Can match a few major product families manually. Most assets lack the detail needed for emissions lookups.",
+              "label": "Can match a few major product families manually. Most assets lack sufficient configuration detail.",
               "score": 2
             },
             {
-              "label": "Can match most servers and storage to vendor product data. Gaps in networking, peripherals and end-user devices.",
+              "label": "Can match most servers and storage to vendor specs. Gaps in networking, peripherals and end-user devices.",
               "score": 3
             },
             {
-              "label": "Strong match rates across main asset classes. Product-specific data available for embodied carbon and power modelling.",
+              "label": "Strong match rates across main asset classes. Product-specific power, configuration and lifecycle data linked.",
               "score": 4
             },
             {
-              "label": "Automated matching to vendor product catalogues. Embodied carbon, rated power and lifecycle data linked at asset level.",
+              "label": "Automated matching to vendor product catalogues. Configuration, power rating, warranty and lifecycle data linked at asset level.",
               "score": 5
             }
           ]
@@ -354,7 +354,7 @@
               "score": 1
             },
             {
-              "label": "Some lifecycle tracking for major assets \u2014 mainly procurement and disposal dates. Status often out of date.",
+              "label": "Some lifecycle tracking for major assets — mainly procurement and disposal dates. Status often out of date.",
               "score": 2
             },
             {
@@ -632,7 +632,7 @@
               "score": 1
             },
             {
-              "label": "Only broad allocation \u2014 e.g. total IT energy divided by headcount or floor area.",
+              "label": "Only broad allocation — e.g. total IT energy divided by headcount or floor area.",
               "score": 2
             },
             {
@@ -690,7 +690,7 @@
           "tags": [],
           "options": [
             {
-              "label": "Significant lag \u2014 weeks or months before energy data is available.",
+              "label": "Significant lag — weeks or months before energy data is available.",
               "score": 1
             },
             {
@@ -721,7 +721,7 @@
           "tags": [],
           "options": [
             {
-              "label": "Cannot tell where energy was consumed \u2014 only total site or contract figures.",
+              "label": "Cannot tell where energy was consumed — only total site or contract figures.",
               "score": 1
             },
             {
@@ -775,7 +775,7 @@
         },
         {
           "id": "op9",
-          "text": "How confident are you in the accuracy and calibration of your energy measurement infrastructure \u2014 meters, sensors, and data collection systems?",
+          "text": "How confident are you in the accuracy and calibration of your energy measurement infrastructure — meters, sensors, and data collection systems?",
           "dimension": "assurance_lineage",
           "weight": 4,
           "guidance": "Measured energy data is only as good as the measurement infrastructure. Sub-metering quality, calibration frequency, and data collection reliability directly affect the credibility of all downstream calculations.",
@@ -1001,7 +1001,7 @@
           "tags": [],
           "options": [
             {
-              "label": "No detail \u2014 just total consumption figures if anything.",
+              "label": "No detail — just total consumption figures if anything.",
               "score": 1
             },
             {
@@ -1036,7 +1036,7 @@
               "score": 1
             },
             {
-              "label": "Very broad \u2014 total water divided by IT load to derive a rough WUE.",
+              "label": "Very broad — total water divided by IT load to derive a rough WUE.",
               "score": 2
             },
             {
@@ -1125,7 +1125,7 @@
           "tags": [],
           "options": [
             {
-              "label": "Months of lag \u2014 water data arrives with utility bills or annual reports.",
+              "label": "Months of lag — water data arrives with utility bills or annual reports.",
               "score": 1
             },
             {
@@ -1314,7 +1314,7 @@
     },
     {
       "id": "infrastructure_efficiency_metrics",
-      "name": "Infrastructure efficiency metric quality",
+      "name": "Infrastructure efficiency metrics (PUE, WUE, CUE)",
       "definition": "Assesses the quality and applicability of PUE, WUE, CUE, CER, CLF and similar metrics used to translate IT activity into total infrastructure impact.",
       "why_it_matters": "Weak efficiency metrics can distort non-IT load allocation and make outputs look more precise than they really are.",
       "default_impact_score": 5,
@@ -1432,7 +1432,7 @@
           "tags": [],
           "options": [
             {
-              "label": "Metrics are nameplate, design or published values \u2014 not measured under real conditions.",
+              "label": "Metrics are nameplate, design or published values — not measured under real conditions.",
               "score": 1
             },
             {
@@ -1494,7 +1494,7 @@
           "tags": [],
           "options": [
             {
-              "label": "Metrics are portfolio averages or generic values \u2014 not site-specific.",
+              "label": "Metrics are portfolio averages or generic values — not site-specific.",
               "score": 1
             },
             {
@@ -1807,7 +1807,7 @@
               "score": 1
             },
             {
-              "label": "Spend-based factors only \u2014 no link to actual product type or specification.",
+              "label": "Spend-based factors only — no link to actual product type or specification.",
               "score": 2
             },
             {
@@ -1981,7 +1981,7 @@
         },
         {
           "id": "ee8",
-          "text": "Is the embodied data good enough to support real decisions, or only broad reporting?",
+          "text": "Do procurement or refresh decisions currently reference embodied emissions data in any form?",
           "dimension": "attribution",
           "weight": 3,
           "guidance": "",
@@ -1989,23 +1989,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Data is not usable for decisions. Only broad reporting at best.",
+              "label": "Embodied emissions not referenced in procurement or refresh decisions.",
               "score": 1
             },
             {
-              "label": "Supports rough portfolio-level estimates for sustainability reports. Not decision-grade.",
+              "label": "Awareness exists but embodied data is not available or used during procurement.",
               "score": 2
             },
             {
-              "label": "Supports comparison between product categories and informs refresh timing at aggregate level.",
+              "label": "Embodied data reviewed informally for major refresh cycles. Not a formal procurement criterion.",
               "score": 3
             },
             {
-              "label": "Supports procurement decisions: vendor comparison, refresh vs extend analysis, circularity trade-offs.",
+              "label": "Embodied data is a formal input to procurement evaluation and refresh business cases for major asset classes.",
               "score": 4
             },
             {
-              "label": "Decision-grade: embedded in procurement governance, supplier scorecards and lifecycle investment cases.",
+              "label": "Embodied carbon is a standard procurement criterion alongside cost, performance and availability. Embedded in supplier scorecards.",
               "score": 5
             }
           ]
@@ -2076,6 +2076,34 @@
             },
             {
               "label": "Circular is the default consideration. Refurbished, extended-life and resale options actively managed with embodied carbon comparison as standard.",
+              "score": 5
+            }
+          ]
+        },
+        {
+          "id": "ee11",
+          "text": "Do you track what happens to IT assets at end of life — including disposal route, materials recovery, WEEE compliance and any associated environmental data?",
+          "dimension": "coverage",
+          "weight": 3,
+          "options": [
+            {
+              "label": "No tracking of asset disposal or end-of-life outcomes.",
+              "score": 1
+            },
+            {
+              "label": "Basic WEEE compliance records kept. No visibility into actual disposal route, materials recovery or environmental impact.",
+              "score": 2
+            },
+            {
+              "label": "Disposal route tracked for most assets. WEEE compliance documented. Reuse and recycling rates estimated at aggregate level.",
+              "score": 3
+            },
+            {
+              "label": "Disposal data linked to asset records. Materials recovery, reuse and recycling tracked per disposal partner. Compliance audited.",
+              "score": 4
+            },
+            {
+              "label": "Full end-of-life tracking: disposal route, materials recovery, refurbishment, resale, recycling and WEEE compliance. Integrated into lifecycle governance and Scope 3 reporting.",
               "score": 5
             }
           ]
@@ -2451,7 +2479,7 @@
         },
         {
           "id": "cf8",
-          "text": "Are the factors good enough for real GreenOps decisions, or just broad reporting?",
+          "text": "Are emissions factors applied consistently across all environments, or do some areas still use broad defaults?",
           "dimension": "attribution",
           "weight": 3,
           "guidance": "",
@@ -2459,23 +2487,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Factors are too crude for any meaningful GreenOps decision beyond rough estimates.",
+              "label": "Factors not applied, or a single generic factor used everywhere regardless of location or source.",
               "score": 1
             },
             {
-              "label": "Support broad portfolio-level carbon reporting. Not reliable enough for site or service-level decisions.",
+              "label": "Broad national factors applied to most areas. No differentiation by site, provider or energy source.",
               "score": 2
             },
             {
-              "label": "Support credible site-level footprint reporting and high-level procurement comparisons.",
+              "label": "Different factors for different locations and main providers. Some parts of the estate still on generic defaults.",
               "score": 3
             },
             {
-              "label": "Support operational decisions: site comparison, supplier evaluation, RE procurement impact assessment.",
+              "label": "Consistent factor application across most environments. Provider, location and tariff differences reflected.",
               "score": 4
             },
             {
-              "label": "Decision-grade: support investment cases, migration planning, supplier scorecards and governance reporting.",
+              "label": "Full factor consistency across all environments. Automated selection based on site, provider and tariff.",
               "score": 5
             }
           ]
@@ -2621,7 +2649,7 @@
     },
     {
       "id": "utilisation_and_service_usage",
-      "name": "Asset, workload, application and service usage maturity",
+      "name": "Utilisation and demand data",
       "definition": "Assesses whether the organisation understands whether infrastructure and services are being used efficiently and meaningfully, including VM-, app-, service- and AI-relevant usage signals.",
       "why_it_matters": "Without utilisation and service usage visibility, GreenOps cannot move from reporting to avoiding low-value demand and optimising live services.",
       "default_impact_score": 5,
@@ -2991,7 +3019,7 @@
         },
         {
           "id": "us11",
-          "text": "Do you systematically optimise AI workloads for computational efficiency \u2014 for example through prompt engineering, model quantisation, inference caching, or batch processing?",
+          "text": "Do you systematically optimise AI workloads for computational efficiency — for example through prompt engineering, model quantisation, inference caching, or batch processing?",
           "dimension": "method_quality",
           "weight": 3,
           "guidance": "AI workloads can be 10x more efficient with targeted optimisation. Prompt engineering (shorter context), model quantisation (faster/cheaper), inference caching (avoid re-inference), and batch processing all reduce resource consumption.",
@@ -3129,7 +3157,7 @@
     },
     {
       "id": "allocation_attribution",
-      "name": "Allocation and attribution logic",
+      "name": "Cost and carbon allocation",
       "definition": "Assesses whether environmental impact can be credibly assigned to teams, services, workloads, products or consumers.",
       "why_it_matters": "Without attribution, outputs remain interesting but hard to act on. Attribution is where reporting becomes operationally useful.",
       "default_impact_score": 5,
@@ -3395,7 +3423,7 @@
         },
         {
           "id": "at8",
-          "text": "Is the attribution good enough to drive real decisions and accountability?",
+          "text": "Is cost or carbon attribution actively used in any operational process — such as chargeback, showback, procurement or performance reviews?",
           "dimension": "attribution",
           "weight": 4,
           "guidance": "",
@@ -3403,30 +3431,30 @@
           "tags": [],
           "options": [
             {
-              "label": "Attribution is not trusted or used for decisions.",
+              "label": "Attribution is not used in any operational process.",
               "score": 1
             },
             {
-              "label": "Used for broad sustainability reporting only. Not trusted for operational or financial decisions.",
+              "label": "Used for broad sustainability reporting only. Not referenced in operational or financial processes.",
               "score": 2
             },
             {
-              "label": "Supports directional decisions: identifying high-impact areas, prioritising improvement efforts.",
+              "label": "Referenced in some planning discussions. Influences direction but not formally embedded in any process.",
               "score": 3
             },
             {
-              "label": "Trusted enough for chargeback, showback and investment prioritisation. Used in business cases.",
+              "label": "Actively used in chargeback, showback or investment prioritisation for main areas of the estate.",
               "score": 4
             },
             {
-              "label": "Decision-grade: embedded in financial governance, procurement, capacity planning and performance management.",
+              "label": "Embedded in financial governance, procurement evaluation, capacity planning and performance management.",
               "score": 5
             }
           ]
         },
         {
           "id": "at9",
-          "text": "Are your carbon attribution and cost allocation methods aligned \u2014 using the same cost drivers and allocation keys?",
+          "text": "Are your carbon attribution and cost allocation methods aligned — using the same cost drivers and allocation keys?",
           "dimension": "attribution",
           "weight": 5,
           "guidance": "Carbon and cost should be allocated together using the same drivers (CPU hours, storage GB, etc). Misalignment creates confusion and blocks operational action. This alignment is essential for FinOps-GreenOps integration.",
@@ -3808,7 +3836,7 @@
           "tags": [],
           "options": [
             {
-              "label": "Cloud data significantly lagged \u2014 weeks or months behind.",
+              "label": "Cloud data significantly lagged — weeks or months behind.",
               "score": 1
             },
             {
@@ -3862,7 +3890,7 @@
         },
         {
           "id": "ct9",
-          "text": "Do you use cloud provider carbon intensity data to inform workload placement decisions \u2014 choosing lower-carbon regions or availability zones where practical?",
+          "text": "Do you use cloud provider carbon intensity data to inform workload placement decisions — choosing lower-carbon regions or availability zones where practical?",
           "dimension": "method_quality",
           "weight": 4,
           "guidance": "Major cloud providers publish carbon intensity by region. Using this data in workload placement decisions is a practical lever for reducing operational carbon, particularly for flexible workloads.",
@@ -4001,7 +4029,7 @@
     },
     {
       "id": "colo_provider_data",
-      "name": "Colocation and third-party provider data quality",
+      "name": "Colocation and provider data",
       "definition": "Assesses the quality, transparency and usability of sustainability and operational data provided by colocation and other third-party providers.",
       "why_it_matters": "Third-party environments are often a major blind spot. Weak provider data limits comparison, attribution, assurance and client confidence.",
       "default_impact_score": 4,
@@ -4267,7 +4295,7 @@
         },
         {
           "id": "cp8",
-          "text": "Is the provider data good enough to support decisions, or only high-level reporting?",
+          "text": "Do you use provider sustainability or efficiency data in contract negotiations, provider reviews or selection decisions?",
           "dimension": "attribution",
           "weight": 3,
           "guidance": "",
@@ -4275,23 +4303,23 @@
           "tags": [],
           "options": [
             {
-              "label": "Provider data not usable for any GreenOps decisions.",
+              "label": "Provider sustainability data not used in any commercial or selection process.",
               "score": 1
             },
             {
-              "label": "Supports broad portfolio-level reporting only. Not reliable for site or service-level decisions.",
+              "label": "Aware that providers publish sustainability data but it plays no role in procurement or contracts.",
               "score": 2
             },
             {
-              "label": "Supports site-level footprint reporting and high-level provider comparison.",
+              "label": "Referenced informally during provider reviews. Not a formal evaluation criterion.",
               "score": 3
             },
             {
-              "label": "Supports operational decisions: provider comparison, contract negotiation, allocation to services.",
+              "label": "Provider efficiency and sustainability data is a formal input to contract negotiations and selection.",
               "score": 4
             },
             {
-              "label": "Decision-grade: supports provider selection, SLA enforcement, customer allocation and regulatory reporting.",
+              "label": "Provider data quality, transparency and performance improvement are contractual requirements with defined SLAs.",
               "score": 5
             }
           ]
@@ -4402,7 +4430,7 @@
     },
     {
       "id": "temporal_timeliness",
-      "name": "Temporal granularity and timeliness",
+      "name": "Data freshness and time resolution",
       "definition": "Assesses whether data is available at the right time resolution and with low enough latency to support the decisions the organisation wants to make.",
       "why_it_matters": "Even good data can be operationally weak if it is too old or too coarse in time.",
       "default_impact_score": 4,
@@ -4571,130 +4599,6 @@
               "score": 5
             }
           ]
-        },
-        {
-          "id": "tt5",
-          "text": "Is the time resolution good enough for the decisions you actually want to make?",
-          "dimension": "attribution",
-          "weight": 4,
-          "guidance": "",
-          "evidence_hint": "",
-          "tags": [],
-          "options": [
-            {
-              "label": "Time resolution too coarse for any operational decision. Annual or less.",
-              "score": 1
-            },
-            {
-              "label": "Sufficient for annual reporting but not for operational management.",
-              "score": 2
-            },
-            {
-              "label": "Monthly resolution supports trend analysis and quarterly planning.",
-              "score": 3
-            },
-            {
-              "label": "Weekly or better supports operational management and improvement tracking.",
-              "score": 4
-            },
-            {
-              "label": "Time resolution matched to decision cadence: real-time for operations, monthly for planning, quarterly for governance.",
-              "score": 5
-            }
-          ]
-        },
-        {
-          "id": "tt6",
-          "text": "How much of the estate benefits from time resolution that is genuinely useful?",
-          "dimension": "coverage",
-          "weight": 3,
-          "guidance": "",
-          "evidence_hint": "",
-          "tags": [],
-          "options": [
-            {
-              "label": "Very little of the estate benefits from useful time resolution.",
-              "score": 1
-            },
-            {
-              "label": "Main data centre sites have reasonable timeliness. Rest of estate lagging.",
-              "score": 2
-            },
-            {
-              "label": "Most on-premise and major cloud environments have useful time resolution.",
-              "score": 3
-            },
-            {
-              "label": "Strong coverage across on-premise, cloud and colo. Only minor gaps.",
-              "score": 4
-            },
-            {
-              "label": "Comprehensive: all environments have time resolution appropriate to their decision-support role.",
-              "score": 5
-            }
-          ]
-        },
-        {
-          "id": "tt7",
-          "text": "Where location or environment changes the timing logic, do you handle that properly?",
-          "dimension": "locational_resolution",
-          "weight": 2,
-          "guidance": "",
-          "evidence_hint": "",
-          "tags": [],
-          "options": [
-            {
-              "label": "Location and environment differences not reflected in timing logic.",
-              "score": 1
-            },
-            {
-              "label": "Same timing assumptions applied everywhere regardless of location or context.",
-              "score": 2
-            },
-            {
-              "label": "Some adjustment for different environments (e.g. cloud data faster than colo provider data).",
-              "score": 3
-            },
-            {
-              "label": "Timing logic reflects operational reality per environment type. Provider data handled on its own cycle.",
-              "score": 4
-            },
-            {
-              "label": "Fully adaptive: timing logic accounts for location, provider, data source and regulatory reporting requirements.",
-              "score": 5
-            }
-          ]
-        },
-        {
-          "id": "tt8",
-          "text": "Can you explain the timing characteristics of the data clearly to users?",
-          "dimension": "assurance_lineage",
-          "weight": 3,
-          "guidance": "",
-          "evidence_hint": "",
-          "tags": [],
-          "options": [
-            {
-              "label": "Users have no idea how old the data is or when it was last updated.",
-              "score": 1
-            },
-            {
-              "label": "Some awareness but not consistently communicated. Users sometimes ask and get inconsistent answers.",
-              "score": 2
-            },
-            {
-              "label": "Data age and refresh dates visible in main reports and dashboards.",
-              "score": 3
-            },
-            {
-              "label": "Timing metadata (collection date, refresh date, next update) available for all major data streams.",
-              "score": 4
-            },
-            {
-              "label": "Full timing transparency: users see data age, refresh cycle, confidence and any staleness warnings inline.",
-              "score": 5
-            }
-          ]
         }
       ],
       "maturity_levels": {
@@ -4802,7 +4706,7 @@
     },
     {
       "id": "lineage_assurance",
-      "name": "Data lineage, transparency and assurance",
+      "name": "Data traceability and audit",
       "definition": "Assesses whether GreenOps data inputs, assumptions, transformations and outputs can be traced, explained and trusted.",
       "why_it_matters": "Without lineage and assurance, the numbers may look sophisticated but remain hard to defend or govern.",
       "default_impact_score": 5,
@@ -4925,7 +4829,7 @@
               "score": 1
             },
             {
-              "label": "Partially \u2014 with significant effort and tacit knowledge from the original author.",
+              "label": "Partially — with significant effort and tacit knowledge from the original author.",
               "score": 2
             },
             {
@@ -4938,37 +4842,6 @@
             },
             {
               "label": "Fully reproducible and automated. Any competent person can regenerate outputs from documented sources and methods.",
-              "score": 5
-            }
-          ]
-        },
-        {
-          "id": "la4",
-          "text": "Do you track data quality issues, exceptions and estimation boundaries properly?",
-          "dimension": "coverage",
-          "weight": 4,
-          "guidance": "",
-          "evidence_hint": "",
-          "tags": [],
-          "options": [
-            {
-              "label": "Data quality issues not tracked. Exceptions and estimation boundaries unknown.",
-              "score": 1
-            },
-            {
-              "label": "Major issues known informally. No systematic tracking of exceptions or data quality.",
-              "score": 2
-            },
-            {
-              "label": "Quality issues logged for main data streams. Estimation boundaries identified for key areas.",
-              "score": 3
-            },
-            {
-              "label": "Systematic quality tracking: exceptions logged, estimation boundaries documented, remediation tracked.",
-              "score": 4
-            },
-            {
-              "label": "Automated quality monitoring with exception management. Data quality KPIs tracked and reported to governance.",
               "score": 5
             }
           ]
@@ -5005,37 +4878,6 @@
           ]
         },
         {
-          "id": "la6",
-          "text": "Do you control and govern methodology changes properly?",
-          "dimension": "timeliness",
-          "weight": 2,
-          "guidance": "",
-          "evidence_hint": "",
-          "tags": [],
-          "options": [
-            {
-              "label": "No change control for GreenOps methodology.",
-              "score": 1
-            },
-            {
-              "label": "Changes happen ad-hoc. Sometimes recognised retrospectively when numbers shift unexpectedly.",
-              "score": 2
-            },
-            {
-              "label": "Major methodology changes documented and communicated. Minor changes less well controlled.",
-              "score": 3
-            },
-            {
-              "label": "Formal change control for methodology. Impact assessed, stakeholders notified, historical comparisons maintained.",
-              "score": 4
-            },
-            {
-              "label": "Full governance: change control board, impact assessment, version control, restatement policy and stakeholder communication.",
-              "score": 5
-            }
-          ]
-        },
-        {
           "id": "la7",
           "text": "Is there a clear distinction between measured, modelled and estimated values?",
           "dimension": "method_quality",
@@ -5062,37 +4904,6 @@
             },
             {
               "label": "Full data quality taxonomy: measured, modelled, estimated, proxy. Each with documented confidence and methodology.",
-              "score": 5
-            }
-          ]
-        },
-        {
-          "id": "la8",
-          "text": "Is the overall assurance level strong enough for the stakeholders using the outputs?",
-          "dimension": "assurance_lineage",
-          "weight": 4,
-          "guidance": "",
-          "evidence_hint": "",
-          "tags": [],
-          "options": [
-            {
-              "label": "Assurance level insufficient for any external or governance use.",
-              "score": 1
-            },
-            {
-              "label": "Sufficient for internal awareness but would not withstand external scrutiny.",
-              "score": 2
-            },
-            {
-              "label": "Sufficient for internal reporting and management information. Some gaps for external assurance.",
-              "score": 3
-            },
-            {
-              "label": "Sufficient for regulatory reporting and external disclosure. Methodology defensible under review.",
-              "score": 4
-            },
-            {
-              "label": "Audit-ready: sufficient for independent third-party assurance. Methodology, data and controls all documented.",
               "score": 5
             }
           ]
@@ -5203,8 +5014,8 @@
     },
     {
       "id": "decision_integration",
-      "name": "Decision integration and optimisation workflow",
-      "definition": "Assesses whether GreenOps inputs are actually embedded into planning, engineering, governance and optimisation processes.",
+      "name": "Using data to drive decisions",
+      "definition": "Assesses what regular management reporting exists for environmental and efficiency data across the IT estate, who receives it, how much of the estate it covers, whether findings are systematically acted upon, and whether outcomes are tracked.",
       "why_it_matters": "GreenOps maturity is not just about good data. It is about using the data to change decisions and outcomes.",
       "default_impact_score": 5,
       "decision_areas": [
@@ -5252,7 +5063,7 @@
       "questions": [
         {
           "id": "di1",
-          "text": "How often is GreenOps input used in real decisions rather than just reporting?",
+          "text": "What regular management reporting exists for energy, emissions, efficiency or environmental performance across your IT estate?",
           "dimension": "attribution",
           "weight": 5,
           "guidance": "",
@@ -5260,30 +5071,30 @@
           "tags": [],
           "options": [
             {
-              "label": "GreenOps data not used in any real decisions. Reporting only, if that.",
+              "label": "No regular reporting on energy, emissions or efficiency for the IT estate.",
               "score": 1
             },
             {
-              "label": "Occasionally referenced in sustainability reports or board packs. Not part of operational decisions.",
+              "label": "Annual sustainability report or board pack includes some IT environmental data. No regular operational reporting.",
               "score": 2
             },
             {
-              "label": "Used in some planning and investment discussions. Influences direction but not formally embedded.",
+              "label": "Quarterly or monthly reports produced for main areas. Coverage and format inconsistent across the estate.",
               "score": 3
             },
             {
-              "label": "Routinely used in procurement, capacity planning and operational decisions. Part of business cases.",
+              "label": "Monthly reporting with defined scope, format and distribution. Covers most of the estate.",
               "score": 4
             },
             {
-              "label": "Embedded in governance: investment approval, procurement criteria, capacity planning, supplier management and operational review.",
+              "label": "Regular, structured reporting at multiple cadences: operational (weekly/monthly), management (monthly/quarterly), governance (quarterly/annual).",
               "score": 5
             }
           ]
         },
         {
           "id": "di2",
-          "text": "Can you link GreenOps insights to named owners and actions?",
+          "text": "Who receives environmental or efficiency reporting, and at what level of the organisation?",
           "dimension": "attribution",
           "weight": 4,
           "guidance": "",
@@ -5291,30 +5102,30 @@
           "tags": [],
           "options": [
             {
-              "label": "No link between GreenOps insights and named decision-makers or actions.",
+              "label": "Reporting not produced or not distributed to any defined audience.",
               "score": 1
             },
             {
-              "label": "Insights shared with sustainability team but not linked to operational owners.",
+              "label": "Sustainability team produces reports. Limited distribution beyond that team.",
               "score": 2
             },
             {
-              "label": "Main insights linked to infrastructure or operations leads. Actions sometimes follow.",
+              "label": "Reports shared with infrastructure and operations leads. Some visibility at CIO or CTO level.",
               "score": 3
             },
             {
-              "label": "Insights linked to named owners with expected actions. Progress tracked for major items.",
+              "label": "Reporting reaches infrastructure, sustainability, finance and senior technology leadership. Defined distribution list.",
               "score": 4
             },
             {
-              "label": "Full accountability: every insight has a named owner, expected action, timeline and tracked outcome.",
+              "label": "Structured reporting to multiple audiences: operational teams, senior leadership, board and external stakeholders. Tailored to each.",
               "score": 5
             }
           ]
         },
         {
           "id": "di3",
-          "text": "How mature is the workflow for turning insight into optimisation activity?",
+          "text": "Is there a defined process for acting on what environmental or efficiency reports show?",
           "dimension": "method_quality",
           "weight": 5,
           "guidance": "",
@@ -5322,30 +5133,30 @@
           "tags": [],
           "options": [
             {
-              "label": "No workflow. Insight exists in reports that nobody acts on.",
+              "label": "No process. Reports may be produced but are not systematically acted upon.",
               "score": 1
             },
             {
-              "label": "Ad-hoc: someone spots an issue and raises it informally.",
+              "label": "Ad-hoc: someone spots an issue and raises it informally. No structured follow-through.",
               "score": 2
             },
             {
-              "label": "Defined process for major optimisation actions (e.g. rightsizing, decommission). Not consistent.",
+              "label": "Defined process for major findings. Actions agreed in review meetings but tracking is inconsistent.",
               "score": 3
             },
             {
-              "label": "Structured workflow: identify, assess, approve, implement, verify. Active for most optimisation types.",
+              "label": "Structured process: findings reviewed, actions assigned to named owners, progress tracked at regular intervals.",
               "score": 4
             },
             {
-              "label": "Automated workflow embedded in operational processes. Actions triggered, tracked and verified against expected outcomes.",
+              "label": "Closed-loop process: findings trigger actions, actions tracked to completion, outcomes verified against expectations.",
               "score": 5
             }
           ]
         },
         {
           "id": "di4",
-          "text": "How much of the estate or organisation is covered by this decision process?",
+          "text": "How much of the IT estate is covered by regular environmental or efficiency reporting?",
           "dimension": "coverage",
           "weight": 3,
           "guidance": "",
@@ -5353,92 +5164,30 @@
           "tags": [],
           "options": [
             {
-              "label": "Decision process covers none of the estate.",
+              "label": "Reporting covers none of the estate in any structured way.",
               "score": 1
             },
             {
-              "label": "Covers one or two areas (e.g. main data centre, largest cloud account).",
+              "label": "Covers one or two areas only — typically the main data centre or largest cloud account.",
               "score": 2
             },
             {
-              "label": "Covers main on-premise and cloud environments. Colo and edge less integrated.",
+              "label": "Covers main on-premise and cloud environments. Colocation, edge and smaller sites less visible.",
               "score": 3
             },
             {
-              "label": "Covers most of the estate including on-premise, cloud and major colo.",
+              "label": "Covers most of the estate including on-premise, cloud and major colocation.",
               "score": 4
             },
             {
-              "label": "Comprehensive coverage across all environments. No material scope excluded from decision processes.",
-              "score": 5
-            }
-          ]
-        },
-        {
-          "id": "di5",
-          "text": "How quickly can teams act on GreenOps signals?",
-          "dimension": "timeliness",
-          "weight": 3,
-          "guidance": "",
-          "evidence_hint": "",
-          "tags": [],
-          "options": [
-            {
-              "label": "Teams cannot act on GreenOps signals \u2014 data is too old, too broad or not trusted.",
-              "score": 1
-            },
-            {
-              "label": "Actions possible but slow. Weeks or months between insight and response.",
-              "score": 2
-            },
-            {
-              "label": "Main teams can act within days or weeks for major issues.",
-              "score": 3
-            },
-            {
-              "label": "Most teams can act within days. Operational alerts trigger prompt response.",
-              "score": 4
-            },
-            {
-              "label": "Near-real-time response capability. Automated alerts, pre-approved actions and rapid escalation paths.",
-              "score": 5
-            }
-          ]
-        },
-        {
-          "id": "di6",
-          "text": "Can current workflows support time- or location-sensitive decisions where needed?",
-          "dimension": "locational_resolution",
-          "weight": 2,
-          "guidance": "",
-          "evidence_hint": "",
-          "tags": [],
-          "options": [
-            {
-              "label": "Cannot support time or location-sensitive decisions.",
-              "score": 1
-            },
-            {
-              "label": "Aware that timing and location matter but workflows don't support it.",
-              "score": 2
-            },
-            {
-              "label": "Some time or location sensitivity in major decisions (e.g. region selection, timing of batch jobs).",
-              "score": 3
-            },
-            {
-              "label": "Time and location factors built into decision workflows for main scope.",
-              "score": 4
-            },
-            {
-              "label": "Full temporal and location awareness: carbon-aware scheduling, region-optimised placement, time-of-use decisions standard practice.",
+              "label": "Comprehensive coverage across all environments. No material scope excluded from reporting.",
               "score": 5
             }
           ]
         },
         {
           "id": "di7",
-          "text": "Do you measure whether actions actually delivered the expected outcome?",
+          "text": "When improvement actions are taken, do you track whether they actually delivered the expected outcome?",
           "dimension": "temporal_resolution",
           "weight": 4,
           "guidance": "",
@@ -5446,7 +5195,7 @@
           "tags": [],
           "options": [
             {
-              "label": "No measurement of whether actions delivered expected outcomes.",
+              "label": "No tracking of whether improvement actions delivered expected outcomes.",
               "score": 1
             },
             {
@@ -5454,46 +5203,99 @@
               "score": 2
             },
             {
-              "label": "Outcomes tracked for major actions (e.g. did the decommission reduce energy as expected?).",
+              "label": "Outcomes tracked for major actions — for example whether a decommission reduced energy as expected.",
               "score": 3
             },
             {
-              "label": "Systematic outcome tracking for most actions. Variance analysis performed. Lessons captured.",
+              "label": "Systematic outcome tracking for most actions. Variance analysis performed and lessons captured.",
               "score": 4
             },
             {
-              "label": "Closed-loop verification: every action tracked against expected outcome. Variance triggers investigation. Continuous improvement embedded.",
+              "label": "Closed-loop verification: every action tracked against expected outcome. Variance triggers investigation.",
               "score": 5
             }
           ]
         },
         {
-          "id": "di8",
-          "text": "Is it fair to say your GreenOps data is truly decision-grade today?",
-          "dimension": "assurance_lineage",
+          "id": "di9",
+          "text": "Do you have defined targets or thresholds for key environmental and efficiency metrics — such as PUE improvement, utilisation floors, carbon reduction targets, or water efficiency goals?",
+          "dimension": "method_quality",
           "weight": 4,
-          "guidance": "",
-          "evidence_hint": "",
-          "tags": [],
           "options": [
             {
-              "label": "No \u2014 data is not trusted for decisions.",
+              "label": "No defined targets or thresholds for any environmental or efficiency metrics.",
               "score": 1
             },
             {
-              "label": "Partially \u2014 data supports directional awareness but not confident decisions.",
+              "label": "Broad aspirational targets exist (e.g. 'reduce carbon') but not quantified, time-bound, or linked to specific metrics.",
               "score": 2
             },
             {
-              "label": "For some domains \u2014 data supports planning and prioritisation. Not yet operational for all areas.",
+              "label": "Quantified targets set for some metrics — typically PUE or overall carbon. Not consistently applied across the estate or linked to operational thresholds.",
               "score": 3
             },
             {
-              "label": "For most domains \u2014 data supports procurement, operational and investment decisions with reasonable confidence.",
+              "label": "Defined targets for key metrics across most domains. Operational thresholds in place — for example utilisation floors that trigger rightsizing reviews or PUE bands that trigger investigation.",
               "score": 4
             },
             {
-              "label": "Yes \u2014 data is decision-grade across the board. Trusted, timely, granular and embedded in governance.",
+              "label": "Comprehensive target framework: quantified targets per domain, operational thresholds, escalation triggers, and regular performance review against targets. Embedded in management scorecards.",
+              "score": 5
+            }
+          ]
+        },
+        {
+          "id": "di10",
+          "text": "Does environmental or efficiency data feed into existing financial or operational governance — such as FinOps reviews, budget cycles, investment cases, or capacity planning?",
+          "dimension": "attribution",
+          "weight": 4,
+          "options": [
+            {
+              "label": "Environmental and efficiency data is completely separate from financial and operational governance.",
+              "score": 1
+            },
+            {
+              "label": "Some awareness that the data should connect but no formal integration. Sustainability and finance operate in separate silos.",
+              "score": 2
+            },
+            {
+              "label": "Data referenced in some financial processes — typically major procurement or annual budget setting. Not routine.",
+              "score": 3
+            },
+            {
+              "label": "Integrated into regular financial and operational processes: FinOps reviews include efficiency data, investment cases reference carbon impact, capacity planning considers environmental constraints.",
+              "score": 4
+            },
+            {
+              "label": "Fully integrated: carbon and efficiency metrics are treated alongside cost in FinOps, TBM and budget governance. Environmental data is a required input to investment approval and capacity decisions.",
+              "score": 5
+            }
+          ]
+        },
+        {
+          "id": "di11",
+          "text": "Do you benchmark your environmental and efficiency performance — against your own historical trends, industry peers, or published standards?",
+          "dimension": "method_quality",
+          "weight": 3,
+          "options": [
+            {
+              "label": "No benchmarking of environmental or efficiency performance.",
+              "score": 1
+            },
+            {
+              "label": "Occasional comparison to published industry averages (e.g. average PUE) but not systematic or regularly updated.",
+              "score": 2
+            },
+            {
+              "label": "Regular comparison against own historical performance for key metrics. Some awareness of industry benchmarks.",
+              "score": 3
+            },
+            {
+              "label": "Structured benchmarking: historical trend analysis, peer comparison where data available, performance against published standards (e.g. EU Code of Conduct, ISO 30134 categories).",
+              "score": 4
+            },
+            {
+              "label": "Comprehensive benchmarking programme: internal trends, peer comparison, standards alignment, and performance context provided alongside all management reporting.",
               "score": 5
             }
           ]

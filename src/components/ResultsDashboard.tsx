@@ -1,11 +1,11 @@
-import { Fragment, useState, useMemo } from 'react';
+import { Fragment, useState, useMemo, useCallback } from 'react';
 import {
-  ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip,
+  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip,
   ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, Radar,
-  ReferenceLine,
+  Cell, Legend,
 } from 'recharts';
 import { MaturityModel, DomainAssessment, OrganisationProfile } from '../types';
-import { calculateOverallStats, getQuadrant, getAnswerPatternSummary } from '../lib/scoring';
+import { calculateOverallStats, getAnswerPatternSummary } from '../lib/scoring';
 import { generateDomainNarratives, DomainNarrative } from '../lib/narrativeAnalysis';
 import { generateRecommendations, generateExecutiveSummary } from '../lib/recommendations';
 import { generateDecisionReadiness } from '../lib/decisionReadiness';
@@ -20,21 +20,53 @@ interface Props {
   onStartOver: () => void;
 }
 
-type Tab = 'summary' | 'scores' | 'analysis' | 'visualizations' | 'readiness' | 'roadmap';
+type Tab = 'overview' | 'enables' | 'focus' | 'readiness' | 'detail';
 
 const TAB_LABELS: Record<Tab, string> = {
-  summary: 'Executive Summary',
-  scores: 'Domain Scores',
-  analysis: 'Detailed Analysis',
-  visualizations: 'Visualisations',
+  overview: 'Overview',
+  enables: 'What Your Data Enables',
+  focus: 'Where to Focus',
   readiness: 'Decision Readiness',
-  roadmap: 'Improvement Roadmap',
+  detail: 'Domain Detail',
 };
+
+/* ─── Colour helpers ─── */
+const LEVEL_COLOURS: Record<number, string> = {
+  1: '#dc2626', 2: '#f59e0b', 3: '#eab308', 4: '#22c55e', 5: '#16a34a',
+};
+const LEVEL_BG: Record<number, string> = {
+  1: '#fef2f2', 2: '#fffbeb', 3: '#fefce8', 4: '#f0fdf4', 5: '#f0fdf4',
+};
+const LEVEL_LABELS: Record<number, string> = {
+  1: 'Ad hoc', 2: 'Repeatable', 3: 'Defined', 4: 'Managed', 5: 'Optimising',
+};
+
+function levelLabel(level: number): string {
+  return `Level ${level} — ${LEVEL_LABELS[level] || ''}`;
+}
+
+/* ─── Save assessment ─── */
+function handleSaveAssessment(profile: OrganisationProfile, results: DomainAssessment[]) {
+  const payload = {
+    version: '2.0',
+    saved_at: new Date().toISOString(),
+    profile,
+    results,
+  };
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  const slug = profile.organisation_name.toLowerCase().replace(/[^a-z0-9]+/g, '-') || 'assessment';
+  a.download = `greenops-assessment-${slug}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
 
 export default function ResultsDashboard({
   model, profile, results, onExportPDF, onExportCSV, onBack, onStartOver,
 }: Props) {
-  const [activeTab, setActiveTab] = useState<Tab>('summary');
+  const [activeTab, setActiveTab] = useState<Tab>('overview');
 
   const stats = useMemo(() => calculateOverallStats(results), [results]);
   const narratives = useMemo(() => generateDomainNarratives(results, model), [results, model]);
@@ -42,42 +74,73 @@ export default function ResultsDashboard({
   const decisionReadiness = useMemo(() => generateDecisionReadiness(results, model), [results, model]);
   const execSummary = useMemo(() => generateExecutiveSummary(results, model), [results, model]);
 
-  // Scatter data
-  const scatterData = results.map((r) => {
-    const d = model.domains.find((dd) => dd.id === r.domain_id);
-    return {
-      name: d?.name || r.domain_id,
-      x: r.effective_maturity,
-      y: r.impact_score,
-      confidence: r.confidence_score,
-      quadrant: getQuadrant(r.effective_maturity, r.impact_score),
-    };
-  });
+  // Bar chart data — sorted weakest first
+  const barData = useMemo(() => {
+    return [...results]
+      .sort((a, b) => a.effective_maturity - b.effective_maturity)
+      .map((r) => {
+        const d = model.domains.find((dd) => dd.id === r.domain_id);
+        return {
+          name: d?.name || r.domain_id,
+          maturity: r.effective_maturity,
+          target: r.target_maturity,
+          gap: r.target_maturity - r.effective_maturity,
+        };
+      });
+  }, [results, model]);
 
   // Radar data
-  const radarData = results.map((r) => {
-    const d = model.domains.find((dd) => dd.id === r.domain_id);
-    const label = d?.name || r.domain_id;
-    return {
-      domain: label.length > 20 ? label.slice(0, 18) + '…' : label,
-      maturity: r.effective_maturity,
-      impact: r.impact_score,
-      target: r.target_maturity,
-    };
-  });
+  const radarData = useMemo(() => {
+    return results.map((r) => {
+      const d = model.domains.find((dd) => dd.id === r.domain_id);
+      const label = d?.name || r.domain_id;
+      return {
+        domain: label.length > 25 ? label.slice(0, 23) + '…' : label,
+        maturity: r.effective_maturity,
+        target: r.target_maturity,
+      };
+    });
+  }, [results, model]);
 
-  // Heatmap data
-  const heatmapData = results.map((r) => {
-    const d = model.domains.find((dd) => dd.id === r.domain_id);
-    return {
-      domain_id: r.domain_id,
-      name: d?.name || r.domain_id,
-      maturity: r.effective_maturity,
-      impact: r.impact_score,
-      confidence: r.confidence_score,
-      gap: r.target_maturity - r.effective_maturity,
+  // "What your data enables" data
+  const enablesData = useMemo(() => {
+    return results.map((r) => {
+      const d = model.domains.find((dd) => dd.id === r.domain_id);
+      const level = String(r.effective_maturity);
+      const ds = d?.decision_support_by_score[level];
+      const gap = r.impact_score - r.effective_maturity;
+      let priority: string;
+      if (gap >= 3 || (r.impact_score >= 4 && r.effective_maturity <= 2)) priority = 'High';
+      else if (gap >= 1.5 || (r.impact_score >= 3 && r.effective_maturity <= 3)) priority = 'Medium';
+      else priority = 'Low';
+      return {
+        domain_id: r.domain_id,
+        name: d?.name || r.domain_id,
+        level: r.effective_maturity,
+        supports: ds?.supports || [],
+        does_not_support: ds?.does_not_support || [],
+        priority,
+        flags: r.weakness_flags,
+      };
+    });
+  }, [results, model]);
+
+  // Roadmap grouped by phase
+  const groupedRecs = useMemo(() => {
+    const groups: Record<string, typeof recommendations> = {
+      'Foundation': [],
+      'Quick win': [],
+      'Transformation': [],
     };
-  });
+    for (const rec of recommendations) {
+      if (groups[rec.phase]) groups[rec.phase].push(rec);
+    }
+    return groups;
+  }, [recommendations]);
+
+  const handleSave = useCallback(() => {
+    handleSaveAssessment(profile, results);
+  }, [profile, results]);
 
   return (
     <div className="results-page">
@@ -86,13 +149,14 @@ export default function ResultsDashboard({
         <div className="results-header">
           <div>
             <h1 className="results-title">Assessment Results</h1>
-            <p className="results-org">{profile.organisation_name}</p>
+            <p className="results-org">{profile.organisation_name} — {profile.assessment_date}</p>
           </div>
           <div className="results-actions">
             <button className="btn btn-ghost" onClick={onBack}>Back to assessment</button>
             <button className="btn btn-ghost" onClick={onStartOver}>Start over</button>
+            <button className="btn btn-outline" onClick={handleSave}>Save assessment</button>
             <button className="btn btn-primary" onClick={onExportCSV}>Export CSV</button>
-            <button className="btn btn-accent" onClick={onExportPDF}>Export PDF</button>
+            <button className="btn btn-accent" onClick={onExportPDF}>Export PDF report</button>
           </div>
         </div>
 
@@ -111,76 +175,198 @@ export default function ResultsDashboard({
 
         {/* Tab content */}
         <div className="tab-content">
-          {/* EXECUTIVE SUMMARY */}
-          {activeTab === 'summary' && (
-            <div className="summary-panel">
-              <div className="stat-cards">
-                <div className="stat-card">
-                  <div className="stat-value">{stats.weightedMaturity}</div>
-                  <div className="stat-label">Weighted maturity</div>
-                </div>
-                <div className="stat-card">
-                  <div className="stat-value">{stats.minMaturity} — {stats.maxMaturity}</div>
-                  <div className="stat-label">Range</div>
-                </div>
-                <div className="stat-card">
-                  <div className="stat-value">{results.filter(r => r.priority === 'High').length}</div>
-                  <div className="stat-label">High priority domains</div>
-                </div>
-                <div className="stat-card">
-                  <div className="stat-value">{results.filter(r => r.effective_maturity < 3).length}</div>
-                  <div className="stat-label">Below decision-grade</div>
+
+          {/* ═══ OVERVIEW ═══ */}
+          {activeTab === 'overview' && (
+            <div className="overview-panel">
+              {/* Maturity bar chart — weakest domains first */}
+              <div className="overview-chart-section">
+                <h3 className="section-heading">Data maturity by domain</h3>
+                <p className="section-subtext">
+                  Each bar shows the assessed data maturity level (1–5) for that domain.
+                  Domains are ordered from weakest to strongest. The dashed line shows the target level.
+                </p>
+                <ResponsiveContainer width="100%" height={Math.max(barData.length * 44, 400)}>
+                  <BarChart data={barData} layout="vertical" margin={{ top: 5, right: 40, bottom: 5, left: 10 }}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#e9ecef" horizontal={false} />
+                    <XAxis type="number" domain={[0, 5]} ticks={[1, 2, 3, 4, 5]} />
+                    <YAxis
+                      type="category"
+                      dataKey="name"
+                      width={240}
+                      tick={{ fontSize: 12, fill: '#495057' }}
+                    />
+                    <Tooltip
+                      content={({ active, payload }) => {
+                        if (!active || !payload?.length) return null;
+                        const d = payload[0].payload;
+                        return (
+                          <div className="chart-tooltip">
+                            <strong>{d.name}</strong><br />
+                            Current: {levelLabel(d.maturity)}<br />
+                            Target: Level {d.target}<br />
+                            Gap: {d.gap > 0 ? `${d.gap} levels to close` : 'On target'}
+                          </div>
+                        );
+                      }}
+                    />
+                    <Bar dataKey="maturity" radius={[0, 4, 4, 0]} barSize={24}>
+                      {barData.map((entry, i) => (
+                        <Cell key={i} fill={LEVEL_COLOURS[entry.maturity] || '#94a3b8'} />
+                      ))}
+                    </Bar>
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+
+              {/* Radar — current vs target */}
+              <div className="overview-chart-section">
+                <h3 className="section-heading">Maturity profile</h3>
+                <p className="section-subtext">
+                  The green area shows your current maturity. The grey outline shows the target maturity for each domain.
+                  The gap between the two shows where improvement is most needed.
+                </p>
+                <ResponsiveContainer width="100%" height={420}>
+                  <RadarChart data={radarData} outerRadius="70%">
+                    <PolarGrid stroke="#e9ecef" />
+                    <PolarAngleAxis dataKey="domain" tick={{ fontSize: 9, fill: '#495057' }} />
+                    <Radar name="Current maturity" dataKey="maturity" stroke="#5AA63E" fill="#5AA63E" fillOpacity={0.3} />
+                    <Radar name="Target" dataKey="target" stroke="#94a3b8" fill="none" strokeDasharray="4 4" />
+                    <Legend />
+                    <Tooltip />
+                  </RadarChart>
+                </ResponsiveContainer>
+              </div>
+
+              {/* Narrative summary */}
+              <div className="overview-narrative">
+                <h3 className="section-heading">Summary</h3>
+                <div className="summary-text">
+                  {execSummary.split('\n\n').map((para, i) => (
+                    <p key={i}>{para}</p>
+                  ))}
                 </div>
               </div>
-              <div className="summary-text">
-                {execSummary.split('\n\n').map((para, i) => (
-                  <p key={i}>{para}</p>
+            </div>
+          )}
+
+          {/* ═══ WHAT YOUR DATA ENABLES ═══ */}
+          {activeTab === 'enables' && (
+            <div className="enables-panel">
+              <p className="section-subtext" style={{ marginBottom: 'var(--space-lg)' }}>
+                Based on the data quality assessed in each domain, this table shows what decisions your current data
+                can support and what it cannot yet support. Priority reflects the gap between how important the domain
+                is and how mature the data is.
+              </p>
+              <div className="enables-list">
+                {enablesData
+                  .sort((a, b) => {
+                    const pOrder: Record<string, number> = { High: 0, Medium: 1, Low: 2 };
+                    return (pOrder[a.priority] || 2) - (pOrder[b.priority] || 2);
+                  })
+                  .map((d) => (
+                    <div key={d.domain_id} className="enables-card">
+                      <div className="enables-card-header">
+                        <div className="enables-domain-name">{d.name}</div>
+                        <div className="enables-badges">
+                          <span className={`level-badge l${d.level}`}>{levelLabel(d.level)}</span>
+                          <span className={`priority-tag ${d.priority.toLowerCase()}`}>{d.priority} priority</span>
+                        </div>
+                      </div>
+                      <div className="enables-card-body">
+                        {d.supports.length > 0 && (
+                          <div className="enables-section enables-supports">
+                            <span className="enables-label">Your data supports:</span>
+                            <span className="enables-items">{d.supports.join('; ')}</span>
+                          </div>
+                        )}
+                        {d.does_not_support.length > 0 && !d.does_not_support[0]?.startsWith('None') && (
+                          <div className="enables-section enables-gaps">
+                            <span className="enables-label">Not yet sufficient for:</span>
+                            <span className="enables-items">{d.does_not_support.join('; ')}</span>
+                          </div>
+                        )}
+                        {d.flags.length > 0 && (
+                          <div className="enables-section enables-flags">
+                            <span className="enables-label">Caveats:</span>
+                            <span className="enables-items">{d.flags.join('; ')}</span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+              </div>
+            </div>
+          )}
+
+          {/* ═══ WHERE TO FOCUS ═══ */}
+          {activeTab === 'focus' && (
+            <div className="focus-panel">
+              <p className="section-subtext" style={{ marginBottom: 'var(--space-lg)' }}>
+                Improvement actions are grouped into three phases. <strong>Foundation</strong> actions build
+                basic data capability where it is missing. <strong>Quick wins</strong> are targeted improvements
+                that unlock specific decisions. <strong>Transformation</strong> actions embed data into operational
+                governance and continuous improvement.
+              </p>
+              {(['Foundation', 'Quick win', 'Transformation'] as const).map((phase) => {
+                const recs = groupedRecs[phase];
+                if (!recs || recs.length === 0) return null;
+                return (
+                  <div key={phase} className="focus-phase-group">
+                    <h3 className="focus-phase-heading">
+                      <span className="phase-tag">{phase}</span>
+                      <span className="focus-phase-count">{recs.length} action{recs.length !== 1 ? 's' : ''}</span>
+                    </h3>
+                    <div className="focus-cards">
+                      {recs.map((rec, i) => (
+                        <div key={i} className="focus-card">
+                          <div className="focus-card-top">
+                            <span className={`priority-tag ${rec.priority.toLowerCase()}`}>{rec.priority}</span>
+                            <span className="focus-domain">{rec.domain_name}</span>
+                          </div>
+                          <div className="focus-action">{rec.action}</div>
+                          <div className="focus-reason">{rec.reason}</div>
+                          {rec.benefit && (
+                            <div className="focus-benefit">{rec.benefit}</div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+
+          {/* ═══ DECISION READINESS ═══ */}
+          {activeTab === 'readiness' && (
+            <div className="readiness-panel">
+              <p className="section-subtext" style={{ marginBottom: 'var(--space-lg)' }}>
+                Each row represents a type of decision your organisation might want to make.
+                Readiness is determined by the weakest supporting domain — one weak link constrains what
+                you can do, regardless of how strong other data is.
+              </p>
+              <div className="readiness-cards">
+                {decisionReadiness.map((dr) => (
+                  <div key={dr.area} className="readiness-card">
+                    <div className="readiness-card-header">
+                      <span className="readiness-area-name">{dr.area}</span>
+                      <span className={`readiness-badge ${dr.readiness}`}>{dr.label}</span>
+                    </div>
+                    <p className="readiness-summary">{dr.summary}</p>
+                    {dr.limiting_domains.length > 0 && (
+                      <div className="readiness-limiters">
+                        <span className="readiness-limiter-label">Constrained by:</span> {dr.limiting_domains.join(', ')}
+                      </div>
+                    )}
+                  </div>
                 ))}
               </div>
             </div>
           )}
 
-          {/* DOMAIN SCORES TABLE */}
-          {activeTab === 'scores' && (
-            <div className="domain-table-wrapper">
-              <table className="domain-table">
-                <thead>
-                  <tr>
-                    <th>Domain</th>
-                    <th>Calculated</th>
-                    <th>Override</th>
-                    <th>Effective</th>
-                    <th>Impact</th>
-                    <th>Confidence</th>
-                    <th>Priority</th>
-                    <th>Decision Support</th>
-                    <th>Flags</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {results.map((r) => {
-                    const d = model.domains.find((dd) => dd.id === r.domain_id);
-                    return (
-                      <tr key={r.domain_id}>
-                        <td className="domain-name-cell">{d?.name || r.domain_id}</td>
-                        <td><span className={`level-badge l${r.calculated_maturity}`}>{r.calculated_maturity}</span></td>
-                        <td>{r.assessor_override !== null ? <span className={`level-badge l${r.assessor_override}`}>{r.assessor_override}</span> : '—'}</td>
-                        <td><span className={`level-badge l${r.effective_maturity}`}>{r.effective_maturity}</span></td>
-                        <td>{r.impact_score}</td>
-                        <td>{r.confidence_score}</td>
-                        <td><span className={`priority-tag ${r.priority.toLowerCase()}`}>{r.priority}</span></td>
-                        <td className="ds-cell">{r.decision_support_status}</td>
-                        <td className="flags-cell">{r.weakness_flags.length > 0 ? r.weakness_flags.join('; ') : '—'}</td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
-          )}
-
-          {/* DETAILED ANALYSIS */}
-          {activeTab === 'analysis' && (
+          {/* ═══ DOMAIN DETAIL ═══ */}
+          {activeTab === 'detail' && (
             <div className="analysis-list">
               {narratives.map((n) => {
                 const result = results.find((r) => r.domain_id === n.domain_id);
@@ -190,16 +376,18 @@ export default function ResultsDashboard({
                   <div key={n.domain_id} className="analysis-card">
                     <div className="analysis-header">
                       <h3>{n.domain_name}</h3>
-                      <span className={`level-badge l${n.maturity_level}`}>Level {n.maturity_level} — {n.maturity_label}</span>
+                      <span className={`level-badge l${n.maturity_level}`}>{levelLabel(Number(n.maturity_level))}</span>
                     </div>
                     <div className="analysis-body">
-                      <div className="analysis-section">
-                        <h4>Score Explanation</h4>
-                        <p>{n.score_explanation}</p>
-                      </div>
+                      {n.operational_impact && (
+                        <div className="analysis-section">
+                          <h4>What this means</h4>
+                          <p>{n.operational_impact}</p>
+                        </div>
+                      )}
                       {n.dimension_analysis && (
                         <div className="analysis-section">
-                          <h4>Dimension Analysis</h4>
+                          <h4>Dimension breakdown</h4>
                           <p>{n.dimension_analysis}</p>
                           {result && Object.keys(result.dimension_scores).length > 0 && (
                             <div className="dimension-bars">
@@ -216,34 +404,21 @@ export default function ResultsDashboard({
                           )}
                         </div>
                       )}
-                      {patterns && (patterns.weakAreas.length > 0 || patterns.strongAreas.length > 0) && (
-                        <div className="analysis-section">
-                          <h4>Answer Patterns</h4>
-                          {patterns.strongAreas.length > 0 && <p><strong>Strong:</strong> {patterns.strongAreas.map(a => a.replace(/_/g, ' ')).join(', ')}</p>}
-                          {patterns.weakAreas.length > 0 && <p><strong>Weak:</strong> {patterns.weakAreas.map(a => a.replace(/_/g, ' ')).join(', ')}</p>}
-                        </div>
-                      )}
-                      {'operational_impact' in n && (n as any).operational_impact && (
-                        <div className="analysis-section">
-                          <h4>Operational Impact</h4>
-                          <p>{(n as any).operational_impact}</p>
-                        </div>
-                      )}
-                      {'risk_statement' in n && (n as any).risk_statement && (
+                      {n.risk_statement && (
                         <div className="analysis-section risk-section">
-                          <h4>Risk Assessment</h4>
-                          <p>{(n as any).risk_statement}</p>
+                          <h4>Risk</h4>
+                          <p>{n.risk_statement}</p>
                         </div>
                       )}
                       {n.decision_support_summary && (
                         <div className="analysis-section">
-                          <h4>Decision Support</h4>
+                          <h4>Decision support</h4>
                           <p>{n.decision_support_summary}</p>
                         </div>
                       )}
                       {n.improvement_guidance && (
                         <div className="analysis-section">
-                          <h4>Improvement Guidance</h4>
+                          <h4>What to improve</h4>
                           <p>{n.improvement_guidance}</p>
                         </div>
                       )}
@@ -257,155 +432,6 @@ export default function ResultsDashboard({
                   </div>
                 );
               })}
-            </div>
-          )}
-
-          {/* VISUALIZATIONS */}
-          {activeTab === 'visualizations' && (
-            <div className="viz-grid">
-              {/* Priority Matrix */}
-              <div className="viz-panel">
-                <h3>Priority Matrix</h3>
-                <ResponsiveContainer width="100%" height={400}>
-                  <ScatterChart margin={{ top: 20, right: 30, bottom: 20, left: 20 }}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#e9ecef" />
-                    <XAxis type="number" dataKey="x" name="Maturity" domain={[0.5, 5.5]} label={{ value: 'Maturity', position: 'bottom' }} />
-                    <YAxis type="number" dataKey="y" name="Impact" domain={[0.5, 5.5]} label={{ value: 'Impact', angle: -90, position: 'left' }} />
-                    <ReferenceLine x={2.75} stroke="#94a3b8" strokeDasharray="4 4" />
-                    <ReferenceLine y={3.25} stroke="#94a3b8" strokeDasharray="4 4" />
-                    <Tooltip
-                      cursor={{ strokeDasharray: '3 3' }}
-                      content={({ active, payload }) => {
-                        if (!active || !payload?.length) return null;
-                        const d = payload[0].payload;
-                        return (
-                          <div className="chart-tooltip">
-                            <strong>{d.name}</strong><br />
-                            Maturity: {d.x} — Impact: {d.y}<br />
-                            Quadrant: {d.quadrant}
-                          </div>
-                        );
-                      }}
-                    />
-                    <Scatter
-                      data={scatterData}
-                      fill="#5AA63E"
-                      shape={(props: any) => {
-                        const { cx, cy, payload } = props as { cx: number; cy: number; payload: typeof scatterData[0] };
-                        const r = Math.max((payload.confidence || 3) * 4, 12);
-                        const label = payload.name.length > 22 ? payload.name.slice(0, 20) + '…' : payload.name;
-                        return (
-                          <g>
-                            <circle cx={cx} cy={cy} r={r} fill="#5AA63E" fillOpacity={0.6} stroke="#4A9132" strokeWidth={1.5} />
-                            <text x={cx} y={cy - r - 4} textAnchor="middle" fontSize={9} fill="#495057">{label}</text>
-                          </g>
-                        );
-                      }}
-                    />
-                  </ScatterChart>
-                </ResponsiveContainer>
-              </div>
-
-              {/* Radar */}
-              <div className="viz-panel">
-                <h3>Maturity Radar</h3>
-                <ResponsiveContainer width="100%" height={400}>
-                  <RadarChart data={radarData} outerRadius="75%">
-                    <PolarGrid stroke="#e9ecef" />
-                    <PolarAngleAxis dataKey="domain" tick={{ fontSize: 9 }} />
-                    <Radar name="Maturity" dataKey="maturity" stroke="#5AA63E" fill="#5AA63E" fillOpacity={0.3} />
-                    <Radar name="Impact" dataKey="impact" stroke="#f59e0b" fill="#f59e0b" fillOpacity={0.1} />
-                    <Radar name="Target" dataKey="target" stroke="#94a3b8" fill="none" strokeDasharray="4 4" />
-                    <Tooltip />
-                  </RadarChart>
-                </ResponsiveContainer>
-              </div>
-
-              {/* Heatmap */}
-              <div className="viz-panel full-width">
-                <h3>Domain Heatmap</h3>
-                <div className="heatmap-grid">
-                  <div className="heatmap-header">
-                    <div className="heatmap-label">Domain</div>
-                    <div className="heatmap-cell-header">Maturity</div>
-                    <div className="heatmap-cell-header">Impact</div>
-                    <div className="heatmap-cell-header">Confidence</div>
-                    <div className="heatmap-cell-header">Gap to target</div>
-                  </div>
-                  {heatmapData.map((r) => (
-                    <Fragment key={r.domain_id}>
-                      <div className="heatmap-label">{r.name}</div>
-                      <div className={`heatmap-cell hl${r.maturity}`}>{r.maturity}</div>
-                      <div className={`heatmap-cell hl${r.impact}`}>{r.impact}</div>
-                      <div className={`heatmap-cell hl${r.confidence}`}>{r.confidence}</div>
-                      <div className={`heatmap-cell ${r.gap >= 3 ? 'hl1' : r.gap >= 2 ? 'hl2' : r.gap >= 1 ? 'hl3' : 'hl5'}`}>{r.gap > 0 ? `+${r.gap}` : '0'}</div>
-                    </Fragment>
-                  ))}
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* DECISION READINESS */}
-          {activeTab === 'readiness' && (
-            <div className="readiness-panel">
-              <p className="readiness-intro">
-                Decision readiness is determined by the weakest supporting domain for each GreenOps decision area.
-              </p>
-              <div className="domain-table-wrapper">
-                <table className="domain-table">
-                  <thead>
-                    <tr>
-                      <th>Decision Area</th>
-                      <th>Readiness</th>
-                      <th>Supporting Domains</th>
-                      <th>Limiting Domains</th>
-                      <th>Summary</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {decisionReadiness.map((dr) => (
-                      <tr key={dr.area}>
-                        <td className="domain-name-cell">{dr.area}</td>
-                        <td><span className={`readiness-badge ${dr.readiness}`}>{dr.label}</span></td>
-                        <td>{dr.supporting_domains.join(', ') || '—'}</td>
-                        <td>{dr.limiting_domains.join(', ') || '—'}</td>
-                        <td className="summary-cell">{dr.summary}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          )}
-
-          {/* IMPROVEMENT ROADMAP */}
-          {activeTab === 'roadmap' && (
-            <div className="roadmap-panel">
-              <div className="domain-table-wrapper">
-                <table className="domain-table">
-                  <thead>
-                    <tr>
-                      <th>Priority</th>
-                      <th>Domain</th>
-                      <th>Action</th>
-                      <th>Phase</th>
-                      <th>Reason</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {recommendations.map((rec, i) => (
-                      <tr key={i}>
-                        <td><span className={`priority-tag ${rec.priority.toLowerCase()}`}>{rec.priority}</span></td>
-                        <td className="domain-name-cell">{rec.domain_name}</td>
-                        <td>{rec.action}</td>
-                        <td><span className="phase-tag">{rec.phase}</span></td>
-                        <td className="summary-cell">{rec.reason}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
             </div>
           )}
         </div>

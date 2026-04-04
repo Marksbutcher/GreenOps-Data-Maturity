@@ -91,12 +91,51 @@ function App() {
     downloadCSV(csv, `greenops-maturity-${slug}.csv`);
   }, [profile, domainResults]);
 
+  const handleLoadSaved = useCallback((file: File) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const data = JSON.parse(e.target?.result as string);
+        if (data.profile && data.results) {
+          setProfile(data.profile);
+          setAssessmentMode(data.mode || 'facilitated');
+
+          // Re-score to ensure consistency with current model
+          const scored = data.results.map((r: DomainAssessment) => {
+            const domain = typedModel.domains.find((d) => d.id === r.domain_id);
+            return domain ? scoreDomainAssessment(domain, r) : r;
+          });
+          setDomainResults(scored);
+
+          // Check if assessment is complete — if any domain has no answers, go to assessment view
+          const totalAnswered = scored.reduce((sum: number, r: DomainAssessment) =>
+            sum + Object.keys(r.question_answers).length, 0);
+          const totalQuestions = typedModel.domains.reduce((sum, d) => sum + d.questions.length, 0);
+
+          if (totalAnswered < totalQuestions * 0.5) {
+            // Less than half answered — resume in assessment flow
+            setView('assessment');
+          } else {
+            // Mostly or fully complete — go to results
+            setView('results');
+          }
+        } else {
+          alert('This file does not appear to be a valid GreenOps assessment. Expected profile and results data.');
+        }
+      } catch {
+        alert('Could not load assessment file. Please check the file is a valid GreenOps assessment JSON.');
+      }
+    };
+    reader.readAsText(file);
+  }, []);
+
   return (
     <div className="app">
       {view === 'landing' && (
         <LandingPage
           onStartNew={handleStartNew}
           onLoadDemo={handleLoadDemo}
+          onLoadSaved={handleLoadSaved}
         />
       )}
       {view === 'profile' && (
@@ -111,6 +150,7 @@ function App() {
         <AssessmentFlow
           model={typedModel}
           mode={assessmentMode}
+          profile={profile}
           results={domainResults}
           onComplete={handleAssessmentComplete}
           onBack={() => setView('profile')}

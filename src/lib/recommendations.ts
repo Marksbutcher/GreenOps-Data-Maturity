@@ -31,35 +31,43 @@ function generateBenefit(
       (s) => !currentDs.supports.includes(s)
     );
     if (newCapabilities.length > 0) {
-      return `Reaching level ${nextLevel} would unlock: ${newCapabilities.slice(0, 2).join('; ')}.`;
+      return `Reaching level ${nextLevel} would unlock: ${newCapabilities.slice(0, 2).join('; ')}. This directly improves the quality of decisions the organisation can make in this area.`;
     }
   }
 
-  if (maturity <= 2) {
-    return `Closing the gap in ${domainName.toLowerCase()} removes a significant blind spot and enables evidence-based decisions in this area.`;
+  if (maturity <= 1) {
+    return `Establishing basic data capability in ${domainName.toLowerCase()} closes a critical blind spot. Without this, the organisation is exposed to uninformed decisions, unsubstantiated reporting, and hidden waste.`;
+  }
+  if (maturity === 2) {
+    return `Moving ${domainName.toLowerCase()} from ad-hoc to structured data removes reliance on estimates and enables evidence-based prioritisation. This is foundational work — it does not deliver optimisation directly, but it makes optimisation possible.`;
   }
   if (maturity === 3) {
-    return `Moving from directional to decision-grade quality enables confident investment and governance decisions.`;
+    return `Advancing to decision-grade quality means the data can confidently support investment cases, governance reviews, and supplier negotiations — not just periodic reporting.`;
   }
-  return `Further improvement supports operational optimisation and continuous improvement capability.`;
+  return `Further improvement supports operational optimisation, automation, and continuous improvement. The marginal value at this level comes from embedding data into operational processes rather than collecting more of it.`;
 }
 
 /* ─── Generate reason linked to dimension weaknesses ─── */
 function generateReason(
   triggerGuidance: string | undefined,
   maturity: number,
-  weakDims: string[]
+  weakDims: string[],
+  impactScore: number
 ): string {
+  const gapContext = impactScore >= 4 && maturity <= 2
+    ? ' This is a high-impact domain at low maturity — the gap between importance and evidence quality is a priority risk.'
+    : '';
+
   if (triggerGuidance) {
     if (weakDims.length > 0) {
-      return `${triggerGuidance} Key dimension weaknesses: ${weakDims.join(', ')}.`;
+      return `${triggerGuidance} Key dimension weaknesses: ${weakDims.join(', ')}.${gapContext}`;
     }
-    return triggerGuidance;
+    return `${triggerGuidance}${gapContext}`;
   }
   if (weakDims.length > 0) {
-    return `Current maturity is level ${maturity}. Weakest dimensions are ${weakDims.join(', ')}, which should be the initial focus.`;
+    return `Current maturity is level ${maturity}. Weakest dimensions are ${weakDims.join(', ')}, which should be the initial focus for improvement.${gapContext}`;
   }
-  return `Current maturity is level ${maturity}. Broad improvement needed across multiple dimensions.`;
+  return `Current maturity is level ${maturity}. Broad improvement needed across multiple dimensions to move from directional to decision-grade evidence.${gapContext}`;
 }
 
 export function generateRecommendations(
@@ -125,7 +133,7 @@ export function generateRecommendations(
         domain_id: domain.id,
         domain_name: domain.name,
         action: theme,
-        reason: generateReason(trigger?.guidance, maturity, weakDims),
+        reason: generateReason(trigger?.guidance, maturity, weakDims, result.impact_score),
         benefit: generateBenefit(domain.name, maturity, domain),
         priority,
         phase,
@@ -170,51 +178,61 @@ export function generateExecutiveSummary(
   const belowTwo = results.filter((r) => r.effective_maturity < 2).length;
   const atFourPlus = results.filter((r) => r.effective_maturity >= 4).length;
 
-  // Opening assessment
-  let summary = `This assessment covers ${domainCount} GreenOps data input domains across the technology estate. `;
-  summary += `The overall weighted maturity is ${weightedMaturity} out of 5, with individual domains ranging from ${minMaturity} to ${maxMaturity}.`;
+  // Opening assessment — leadership-oriented framing
+  let summary = `This assessment evaluates the quality, coverage, and decision-readiness of GreenOps data inputs across ${domainCount} domains of the technology estate. `;
+  summary += `The overall weighted maturity is ${weightedMaturity} out of 5, with individual domains ranging from level ${minMaturity} to level ${maxMaturity}. `;
+  summary += `This score reflects the quality of data available to support operational, financial, and sustainability decisions — not the organisation's sustainability ambition or intent.`;
 
-  // Maturity distribution interpretation
+  // Maturity distribution interpretation — what it means for the business
   if (weightedMaturity < 2.5) {
-    summary += `\n\nAt this level, the organisation's GreenOps data foundation is immature. Most data inputs are partial, inconsistent, or absent. The estate is largely operating on estimates and assumptions rather than measured evidence. This limits the organisation to basic compliance reporting and prevents evidence-based operational decisions.`;
+    summary += `\n\nAt this maturity level, the organisation's GreenOps data foundation is immature. Most data inputs are partial, inconsistent, or absent. The estate is largely operating on estimates and assumptions rather than measured evidence. This limits the organisation to basic compliance reporting, prevents evidence-based operational decisions, and means that efficiency opportunities, cost savings, and carbon reduction are likely being missed. Any external disclosure based on current data should be caveated accordingly.`;
   } else if (weightedMaturity < 3.5) {
-    summary += `\n\nThe organisation has established a basic data foundation in several areas but significant gaps remain. Data is adequate for periodic reporting and directional analysis, but not consistently decision-grade. The priority should be closing the weakest domain gaps to unlock operational value from the data that does exist.`;
+    summary += `\n\nThe organisation has established a basic data foundation in several areas but significant gaps remain. Data is adequate for periodic reporting and directional analysis, but not consistently decision-grade. The immediate priority should be closing the weakest domain gaps — not because reporting requires it, but because these gaps represent hidden operational risk, unquantified waste, and missed opportunities for cost and carbon reduction.`;
   } else if (weightedMaturity < 4.5) {
-    summary += `\n\nThe organisation has a solid data foundation with most domains at decision-grade quality. The focus should shift from establishing data to using it — embedding GreenOps metrics into operational governance, investment decisions, and continuous improvement processes.`;
+    summary += `\n\nThe organisation has a solid data foundation with most domains at decision-grade quality. The strategic focus should shift from establishing data to using it — embedding GreenOps metrics into operational governance, investment decisions, procurement processes, and continuous improvement. The risk at this level is that good data exists but is not systematically acted upon.`;
   } else {
-    summary += `\n\nThe organisation has a mature and comprehensive GreenOps data capability. The focus should be on sustaining quality, extending automation, and demonstrating value through operational outcomes.`;
+    summary += `\n\nThe organisation has a mature and comprehensive GreenOps data capability. The focus should be on sustaining quality, extending automation, demonstrating operational value, and ensuring governance processes keep pace with estate evolution and regulatory expectations.`;
   }
 
-  // Domain breakdown
+  // Domain breakdown — concrete facts
   if (belowThree > 0) {
-    summary += `\n\n${belowThree} of ${domainCount} domains are below level 3, meaning data in those areas is not yet reliable enough to support confident operational decisions.`;
+    summary += `\n\n${belowThree} of ${domainCount} domains are below level 3, meaning data in those areas is not yet reliable enough to support confident operational or investment decisions.`;
     if (belowTwo > 0) {
-      summary += ` Of these, ${belowTwo} ${belowTwo === 1 ? 'is' : 'are'} at level 1, indicating near-complete absence of usable data.`;
+      summary += ` Of these, ${belowTwo} ${belowTwo === 1 ? 'is' : 'are'} at level 1, indicating near-complete absence of usable data — decisions in these areas are effectively uninformed.`;
     }
+  }
+  if (atFourPlus > 0) {
+    summary += ` ${atFourPlus} domain${atFourPlus > 1 ? 's are' : ' is'} at level 4 or above, providing decision-grade or optimisation-grade evidence.`;
   }
 
   summary += `\n\nStrongest areas: ${strongNames.join('; ')}.`;
   summary += `\n\nWeakest areas requiring priority attention: ${weakNames.join('; ')}.`;
 
-  // Strategic interpretation
+  // Strategic interpretation — what leadership should focus on
   const highImpactWeak = results
     .filter((r) => r.effective_maturity <= 2 && r.impact_score >= 4)
     .map((r) => model.domains.find((d) => d.id === r.domain_id)?.name || r.domain_id);
 
   if (highImpactWeak.length > 0) {
-    summary += `\n\nCritical priority: ${highImpactWeak.join(', ')} ${highImpactWeak.length === 1 ? 'is' : 'are'} both high-impact and low-maturity. These represent the largest gap between the importance of the domain and the quality of the data. Improvement here will deliver the most operational value per unit of effort.`;
+    summary += `\n\nCritical priority: ${highImpactWeak.join(', ')} ${highImpactWeak.length === 1 ? 'is' : 'are'} both high-impact and low-maturity. These represent the largest gap between domain importance and evidence quality. Improvement here will deliver the most operational and governance value. These should be treated as leadership priorities with clear ownership and timelines, not left as technical backlog items.`;
+  }
+
+  // Spread analysis — is maturity even or uneven?
+  const spread = maxMaturity - minMaturity;
+  if (spread >= 3) {
+    summary += `\n\nThe ${spread}-level spread between strongest and weakest domains is significant. Uneven maturity limits the organisation's ability to make joined-up decisions — for example, good utilisation data is less useful if allocation and attribution data is weak. Closing the gap in the weakest domains will improve the usability of data across the whole estate.`;
   }
 
   // Flagged domains
   const flagged = results.filter((r) => r.weakness_flags.length > 0);
   if (flagged.length > 0) {
-    summary += `\n\n${flagged.length} domain${flagged.length > 1 ? 's have' : ' has'} scoring caveats applied — typically where a high proportion of level-1 answers or weak assurance/lineage limits confidence in the calculated maturity.`;
+    summary += `\n\n${flagged.length} domain${flagged.length > 1 ? 's have' : ' has'} scoring caveats applied — typically where a high proportion of level-1 answers or weak assurance and lineage limits confidence in the calculated maturity. These caveats should be reviewed during the detailed domain analysis.`;
   }
 
   // Overrides
   const overrides = results.filter((r) => r.assessor_override !== null);
   if (overrides.length > 0) {
-    summary += ` ${overrides.length} domain${overrides.length > 1 ? 's have' : ' has'} assessor overrides applied; both calculated and overridden scores are preserved.`;
+    summary += ` ${overrides.length} domain${overrides.length > 1 ? 's have' : ' has'} assessor overrides applied; both calculated and overridden scores are preserved for transparency.`;
   }
 
   return summary;
