@@ -400,53 +400,151 @@ export default function ResultsDashboard({
           {activeTab === 'enables' && (
             <div className="enables-panel">
               <p className="section-subtext">
-                What decisions can your current data credibly support? Priority reflects the gap between
-                domain importance and data quality.
+                What can your organisation do with its current data quality? Each use case shows
+                whether the supporting domains are strong enough — and where the gaps are.
               </p>
-              <div className="enables-list">
-                {enablesData
-                  .sort((a, b) => {
-                    const pOrder: Record<string, number> = { High: 0, Medium: 1, Low: 2 };
-                    return (pOrder[a.priority] || 2) - (pOrder[b.priority] || 2);
-                  })
-                  .map((d) => (
-                    <div key={d.domain_id} className="enables-card" style={{ borderLeftColor: LEVEL_COLOURS[d.level] }}>
-                      <div className="enables-card-header">
-                        <div className="enables-title-row">
-                          <span className="enables-domain-name">{d.name}</span>
-                          <span className={`priority-tag ${d.priority.toLowerCase()}`}>{d.priority}</span>
+
+              {/* Intent context */}
+              {intentGap && (
+                <div className="enables-intent-context">
+                  <strong>Your goal: {intentGap.label}</strong>
+                  {intentGap.shortfall > 0 ? (
+                    <span className="intent-gap-unmet" style={{ marginLeft: 12 }}>
+                      {intentGap.shortfall} domain{intentGap.shortfall !== 1 ? 's' : ''} below required level {intentGap.requiredLevel}
+                    </span>
+                  ) : (
+                    <span className="intent-gap-met" style={{ marginLeft: 12 }}>All domains meet required level</span>
+                  )}
+                </div>
+              )}
+
+              {/* Use-case view — good enough / not good enough */}
+              <div className="enables-use-cases">
+                {/* Aggregate "supports" and "does_not_support" across domains into use-case buckets */}
+                {(() => {
+                  // Gather all unique supported/unsupported capabilities across domains
+                  const supportedSet = new Map<string, string[]>();
+                  const unsupportedSet = new Map<string, { domains: string[]; minLevel: number }>();
+
+                  for (const d of enablesData) {
+                    for (const s of d.supports) {
+                      if (!supportedSet.has(s)) supportedSet.set(s, []);
+                      supportedSet.get(s)!.push(d.name);
+                    }
+                    for (const s of d.does_not_support) {
+                      if (s.startsWith('None')) continue;
+                      if (!unsupportedSet.has(s)) unsupportedSet.set(s, { domains: [], minLevel: 5 });
+                      const entry = unsupportedSet.get(s)!;
+                      entry.domains.push(d.name);
+                      entry.minLevel = Math.min(entry.minLevel, d.level);
+                    }
+                  }
+
+                  // Remove from "supported" anything that also appears as unsupported (i.e. some domains support it, some don't)
+                  // Keep it in supported but note the caveat
+                  const goodEnough = Array.from(supportedSet.entries())
+                    .filter(([cap]) => !unsupportedSet.has(cap))
+                    .sort((a, b) => b[1].length - a[1].length);
+
+                  const notYet = Array.from(unsupportedSet.entries())
+                    .sort((a, b) => a[1].minLevel - b[1].minLevel);
+
+                  const partial = Array.from(supportedSet.entries())
+                    .filter(([cap]) => unsupportedSet.has(cap));
+
+                  return (
+                    <>
+                      {goodEnough.length > 0 && (
+                        <div className="enables-group">
+                          <h3 className="enables-group-heading enables-good">Good enough for</h3>
+                          <div className="enables-cap-list">
+                            {goodEnough.slice(0, 12).map(([cap, domains]) => (
+                              <div key={cap} className="enables-cap-item enables-cap-good">
+                                <span className="enables-cap-text">{cap}</span>
+                                <span className="enables-cap-domains">{domains.length} domain{domains.length !== 1 ? 's' : ''}</span>
+                              </div>
+                            ))}
+                          </div>
                         </div>
-                        <span className="enables-level-text" style={{ color: LEVEL_COLOURS[d.level] }}>
-                          Level {d.level} — {LEVEL_LABELS[d.level]}
-                        </span>
-                      </div>
-                      <div className="enables-card-body">
-                        {d.supports.length > 0 && (
-                          <div className="enables-section enables-supports">
-                            <span className="enables-label">Supports</span>
-                            <ul className="enables-items-list">
-                              {d.supports.map((s, i) => <li key={i}>{s}</li>)}
-                            </ul>
+                      )}
+
+                      {partial.length > 0 && (
+                        <div className="enables-group">
+                          <h3 className="enables-group-heading enables-partial">Partially supported — depends on domain</h3>
+                          <div className="enables-cap-list">
+                            {partial.slice(0, 10).map(([cap, supportingDomains]) => {
+                              const blocking = unsupportedSet.get(cap);
+                              return (
+                                <div key={cap} className="enables-cap-item enables-cap-partial">
+                                  <span className="enables-cap-text">{cap}</span>
+                                  <span className="enables-cap-detail">
+                                    Supported by {supportingDomains.length} domain{supportingDomains.length !== 1 ? 's' : ''},
+                                    blocked by {blocking?.domains.length || 0}
+                                  </span>
+                                </div>
+                              );
+                            })}
                           </div>
-                        )}
-                        {d.does_not_support.length > 0 && !d.does_not_support[0]?.startsWith('None') && (
-                          <div className="enables-section enables-gaps">
-                            <span className="enables-label">Not yet sufficient for</span>
-                            <ul className="enables-items-list">
-                              {d.does_not_support.map((s, i) => <li key={i}>{s}</li>)}
-                            </ul>
+                        </div>
+                      )}
+
+                      {notYet.length > 0 && (
+                        <div className="enables-group">
+                          <h3 className="enables-group-heading enables-blocked">Not yet good enough for</h3>
+                          <div className="enables-cap-list">
+                            {notYet.filter(([cap]) => !supportedSet.has(cap)).slice(0, 12).map(([cap, info]) => (
+                              <div key={cap} className="enables-cap-item enables-cap-blocked">
+                                <span className="enables-cap-text">{cap}</span>
+                                <span className="enables-cap-domains">Blocked by: {info.domains.slice(0, 3).join(', ')}{info.domains.length > 3 ? ` +${info.domains.length - 3} more` : ''}</span>
+                              </div>
+                            ))}
                           </div>
-                        )}
-                        {d.flags.length > 0 && (
-                          <div className="enables-section enables-flags">
-                            <span className="enables-label">Caveats</span>
-                            <span className="enables-items">{d.flags.join('; ')}</span>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  ))}
+                        </div>
+                      )}
+                    </>
+                  );
+                })()}
               </div>
+
+              {/* Per-domain detail below for drill-down */}
+              <details className="enables-domain-detail">
+                <summary className="enables-detail-toggle">View by domain</summary>
+                <div className="enables-list" style={{ marginTop: 16 }}>
+                  {enablesData
+                    .sort((a, b) => a.level - b.level)
+                    .map((d) => (
+                      <div key={d.domain_id} className="enables-card" style={{ borderLeftColor: LEVEL_COLOURS[d.level] }}>
+                        <div className="enables-card-header">
+                          <div className="enables-title-row">
+                            <span className="enables-domain-name">{d.name}</span>
+                            <span className={`priority-tag ${d.priority.toLowerCase()}`}>{d.priority}</span>
+                          </div>
+                          <span className="enables-level-text" style={{ color: LEVEL_COLOURS[d.level] }}>
+                            Level {d.level} — {LEVEL_LABELS[d.level]}
+                          </span>
+                        </div>
+                        <div className="enables-card-body">
+                          {d.supports.length > 0 && (
+                            <div className="enables-section enables-supports">
+                              <span className="enables-label">Good enough for</span>
+                              <ul className="enables-items-list">
+                                {d.supports.map((s, i) => <li key={i}>{s}</li>)}
+                              </ul>
+                            </div>
+                          )}
+                          {d.does_not_support.length > 0 && !d.does_not_support[0]?.startsWith('None') && (
+                            <div className="enables-section enables-gaps">
+                              <span className="enables-label">Not yet good enough for</span>
+                              <ul className="enables-items-list">
+                                {d.does_not_support.map((s, i) => <li key={i}>{s}</li>)}
+                              </ul>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                </div>
+              </details>
             </div>
           )}
 
@@ -459,6 +557,50 @@ export default function ResultsDashboard({
                 <strong> Quick wins</strong> unlock specific decisions.
                 <strong> Transformation</strong> embeds data into governance.
               </p>
+
+              {/* Intent gap — domains that need fixing to meet stated goal */}
+              {intentGap && intentGap.shortfall > 0 && (
+                <div className="focus-intent-gap">
+                  <h3 className="section-heading" style={{ fontSize: '0.9375rem' }}>
+                    Priority: close the gap to your stated goal
+                  </h3>
+                  <p className="focus-intent-text">
+                    To support <strong>{intentGap.label}</strong>, all domains need to reach at least level {intentGap.requiredLevel}.
+                    These {intentGap.shortfall} domains fall short:
+                  </p>
+                  <div className="focus-intent-list">
+                    {intentGap.gaps.map((g) => (
+                      <div key={g.name} className="focus-intent-item">
+                        <span className={`level-badge l${g.level}`}>Level {g.level}</span>
+                        <span className="focus-intent-domain">{g.name}</span>
+                        <span className="focus-intent-needed">needs level {g.needed}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Limiting factors — cascade constraints */}
+              {limitingFactors.length > 0 && (
+                <div className="focus-limiting">
+                  <h3 className="section-heading" style={{ fontSize: '0.9375rem' }}>
+                    Fix these first — they constrain downstream calculations
+                  </h3>
+                  <div className="limiting-list">
+                    {limitingFactors.map((f) => (
+                      <div key={f.domain_id} className="limiting-item">
+                        <div className="limiting-item-header">
+                          <span className={`level-badge l${f.maturity}`}>Level {f.maturity}</span>
+                          <strong>{f.domain_name}</strong>
+                        </div>
+                        <p className="limiting-item-impact">
+                          Constrains: {f.affected.join(', ')}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
               {(['Foundation', 'Quick win', 'Transformation'] as const).map((phase) => {
                 const domainMap = groupedRecs[phase];
                 if (!domainMap || domainMap.size === 0) return null;
