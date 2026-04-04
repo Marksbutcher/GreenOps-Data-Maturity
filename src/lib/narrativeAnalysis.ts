@@ -17,116 +17,119 @@ export interface DomainNarrative {
 /* ─── Domain-specific operational context ─── */
 const OPERATIONAL_CONTEXT: Record<string, Record<number, string>> = {
   asset_inventory_configuration: {
-    1: 'Your estate visibility is critically weak. You cannot reliably identify what assets you have, where they are, or who owns them. This blocks rightsizing, lifecycle cost allocation, supplier negotiations, and any credible capacity planning. Expect significant hidden waste from orphaned and over-provisioned resources.',
-    2: 'You have partial asset visibility but coverage is inconsistent across environments. You can produce aggregate asset counts but cannot reliably reconcile physical and logical estates. Supplier challenge conversations, lifecycle cost modelling, and refresh planning are operating on incomplete data.',
-    3: 'Most environments are inventoried with reasonable detail. You can support standard reporting and basic lifecycle planning, but gaps in attribution (linking assets to services and owners) limit your ability to drive accountability or optimise at service level.',
-    4: 'Asset data is measured and managed across the estate with good coverage. You can support lifecycle costing, capacity planning, and supplier negotiations with credible evidence. The remaining gap is typically in edge cases — cloud ephemeral resources, shadow IT, and third-party managed estates.',
-    5: 'Comprehensive, continuously validated asset data across all environments. You can drive optimisation decisions, automate lifecycle governance, challenge supplier claims, and demonstrate full traceability for audit purposes.',
+    1: 'You cannot reliably say what assets you have, where they are, or who owns them. Rightsizing, lifecycle costing, supplier negotiations, and capacity planning all depend on this — and right now they are working blind. Orphaned and over-provisioned resources are almost certainly creating hidden waste.',
+    2: 'You have partial asset visibility but it is inconsistent across environments. You can produce aggregate counts but cannot reconcile physical and logical estates. Supplier challenges, lifecycle cost models, and refresh planning are all running on incomplete data.',
+    3: 'Most environments are inventoried with reasonable detail. Standard reporting and basic lifecycle planning work, but you cannot reliably link assets to services and owners — which limits accountability and service-level optimisation.',
+    4: 'Asset data is solid across the estate. Lifecycle costing, capacity planning, and supplier negotiations can use credible evidence. The typical remaining gap is in edge cases: cloud ephemeral resources, shadow IT, and third-party managed estates.',
+    5: 'Comprehensive, continuously validated asset data across all environments. Optimisation, lifecycle governance, supplier challenge, and audit traceability are all well supported.',
   },
   operational_power_energy: {
-    1: 'You have no reliable energy measurement. Any carbon calculations are based on estimates or vendor averages, which typically carry 30-50% uncertainty. You cannot identify energy hotspots, validate efficiency investments, or credibly report energy consumption.',
-    2: 'Facility-level energy data exists but breakdown is limited. You can report aggregate consumption but cannot attribute energy to specific systems, zones, or workloads. Efficiency initiatives are difficult to prioritise or validate.',
-    3: 'Site-level energy data is available with reasonable granularity. You can support footprint reporting and identify major consumption areas, but sub-metering gaps limit precision in hotspot identification and workload-level attribution.',
-    4: 'Energy measurement is granular and timely, typically with sub-metering at zone or rack level. You can identify consumption patterns, validate PUE calculations, and support demand-response decisions. The remaining gap is typically real-time integration with workload scheduling.',
-    5: 'Comprehensive, real-time energy measurement integrated with workload and capacity systems. You can optimise dynamically, validate all efficiency claims with measured data, and demonstrate full energy traceability.',
+    1: 'You have no reliable energy measurement. Carbon calculations rely on estimates or vendor averages, typically carrying 30–50% uncertainty. You cannot find energy hotspots, validate efficiency investments, or credibly report consumption.',
+    2: 'Facility-level energy data exists but breakdown is limited. You can report aggregate consumption but cannot attribute energy to specific systems, zones, or workloads. Efficiency initiatives are hard to prioritise or validate.',
+    3: 'Site-level energy data is available with reasonable granularity. Footprint reporting and major consumption areas are visible, but sub-metering gaps limit precision for hotspot identification and workload-level attribution.',
+    4: 'Energy measurement is granular and timely — typically sub-metered at zone or rack level. Consumption patterns, PUE validation, and demand-response decisions are all supported. The typical gap is real-time integration with workload scheduling.',
+    5: 'Comprehensive real-time energy measurement integrated with workload and capacity systems. Dynamic optimisation, measured efficiency validation, and full energy traceability are all in place.',
   },
   water_data: {
-    1: 'No water consumption data is available. You cannot assess cooling efficiency, water risk exposure, or compliance with water stewardship commitments.',
-    2: 'Some facility-level water data exists, but it is aggregate and often derived from utility bills rather than metering. Sufficient for basic disclosure but not for identifying efficiency opportunities.',
-    3: 'Water data is captured at site level with reasonable frequency. You can support WUE calculations and identify high-consumption facilities, but cannot attribute water use to specific cooling systems or seasonal patterns.',
-    4: 'Water measurement is granular, covering consumption by cooling system or zone. You can optimise cooling strategies, compare technologies, and plan for water stress scenarios with measured data.',
-    5: 'Full water lifecycle tracking including supply, treatment, and discharge. Integrated with efficiency metrics and climate risk assessments.',
+    1: 'No water consumption data is available. Cooling efficiency, water risk exposure, and water stewardship compliance cannot be assessed.',
+    2: 'Some facility-level water data exists, but it is aggregate and usually derived from utility bills rather than meters. Enough for basic disclosure, not for finding efficiency gains.',
+    3: 'Water data is captured at site level with reasonable frequency. WUE calculations and high-consumption site identification work, but you cannot attribute water use to specific cooling systems or seasonal patterns.',
+    4: 'Water measurement is granular — by cooling system or zone. Cooling strategy optimisation, technology comparisons, and water stress scenario planning all use measured data.',
+    5: 'Full water lifecycle tracking: supply, treatment, and discharge. Integrated with efficiency metrics and climate risk assessments.',
   },
   infrastructure_efficiency_metrics: {
-    1: 'No efficiency metrics are tracked. You have no basis for benchmarking, target-setting, or demonstrating improvement. Investment cases for efficiency rely on vendor promises rather than measured performance.',
-    2: 'Basic PUE may be estimated or reported at facility level, but the calculation boundary is unclear, data is infrequent, and there is no breakdown into sub-components. Any efficiency claims are unreliable.',
-    3: 'PUE is calculated consistently at major sites with defined boundaries. You can benchmark against industry averages and set improvement targets, but cannot identify which sub-systems (cooling, distribution, lighting) are driving overhead.',
-    4: 'Multiple efficiency metrics (PUE, WUE, CUE, CLF) are measured with clear boundaries and regular validation. Sub-component analysis is possible. You can justify investment in specific efficiency improvements with measured ROI.',
-    5: 'Full efficiency measurement suite with real-time monitoring, anomaly detection, and integration into operational dashboards. Efficiency is continuously optimised, not just measured.',
+    1: 'No efficiency metrics are tracked. There is no basis for benchmarking, setting targets, or showing improvement. Any investment case for efficiency rests on vendor promises rather than measured performance.',
+    2: 'Basic PUE may be estimated or reported at facility level, but the calculation boundary is unclear, data is infrequent, and there is no breakdown by sub-component. Efficiency claims cannot be trusted.',
+    3: 'PUE is calculated consistently at major sites with defined boundaries. You can benchmark against industry averages and set targets, but you cannot tell which sub-systems (cooling, distribution, lighting) are driving overhead.',
+    4: 'Multiple efficiency metrics (PUE, WUE, CUE, CLF) are measured with clear boundaries and regular validation. Sub-component analysis is possible, and investment in specific improvements can be justified with measured ROI.',
+    5: 'Full efficiency measurement with real-time monitoring, anomaly detection, and integration into operational dashboards. Efficiency is continuously managed, not just measured.',
   },
   embodied_emissions: {
-    1: 'Embodied carbon is not tracked. Procurement decisions are made without any consideration of lifecycle emissions, meaning the full carbon impact of hardware refresh cycles is invisible.',
+    1: 'Embodied carbon is not tracked. Procurement decisions ignore lifecycle emissions entirely, so the full carbon cost of hardware refresh cycles is invisible.',
     2: 'Some awareness of embodied carbon exists, typically using generic industry averages. Not specific enough to compare suppliers, asset types, or refresh strategies. Scope 3 reporting for this category is highly uncertain.',
-    3: 'Product-family level embodied data is available for major asset categories. You can produce reasonable Scope 3 estimates and make broad comparisons between new and refurbished options, but supplier-specific data is limited.',
-    4: 'Supplier-specific or product-level embodied data is used in procurement and refresh decisions. You can model the carbon impact of lifecycle extension versus replacement and factor this into business cases.',
-    5: 'Full lifecycle carbon data including manufacturing, transport, use-phase, and end-of-life is available and integrated into procurement, refresh, and circularity decisions.',
+    3: 'Product-family level embodied data is available for major asset categories. Reasonable Scope 3 estimates and broad new-versus-refurbished comparisons are possible, but supplier-specific data is limited.',
+    4: 'Supplier-specific or product-level embodied data feeds into procurement and refresh decisions. You can model the carbon impact of lifecycle extension versus replacement and factor it into business cases.',
+    5: 'Full lifecycle carbon data — manufacturing, transport, use-phase, and end-of-life — is available and integrated into procurement, refresh, and circularity decisions.',
   },
   carbon_factors: {
-    1: 'Carbon factors are absent or use single global averages. Any carbon calculations carry very high uncertainty and cannot distinguish between locations, time periods, or energy sources. This undermines the credibility of all downstream carbon reporting.',
-    2: 'Basic country or region-level grid factors are applied. You can produce directional carbon estimates but cannot differentiate between sites in different grids, time-of-day variation, or renewable energy procurement effects. Market-based claims are not substantiated.',
-    3: 'Location-specific grid factors are used and updated periodically. You can produce credible location-based carbon calculations and distinguish between high and low-carbon sites. However, market-based accounting and renewable procurement effects are not yet reflected.',
-    4: 'Both location-based and market-based factors are applied. Renewable energy procurement (PPAs, REGOs, RECs) is reflected in carbon accounting. You can demonstrate the carbon impact of energy sourcing decisions and challenge supplier claims with evidence.',
-    5: 'Marginal emission factors, time-of-use adjustments, and full market-based accounting are integrated. Carbon factors are validated, auditable, and support optimisation decisions including workload scheduling by carbon intensity.',
+    1: 'Carbon factors are absent or use a single global average. All downstream carbon calculations carry very high uncertainty and cannot distinguish between locations, time periods, or energy sources.',
+    2: 'Basic country or region-level grid factors are applied. Directional carbon estimates are possible but you cannot differentiate between sites in different grids, reflect time-of-day variation, or substantiate market-based claims.',
+    3: 'Location-specific grid factors are used and updated periodically. Credible location-based carbon calculations are possible — you can distinguish high and low-carbon sites. Market-based accounting and renewable procurement effects are not yet reflected.',
+    4: 'Both location-based and market-based factors are applied. Renewable procurement (PPAs, REGOs, RECs) is reflected in carbon accounting. You can show the carbon impact of energy sourcing decisions and challenge supplier claims.',
+    5: 'Marginal emission factors, time-of-use adjustments, and full market-based accounting are integrated. Carbon factors are validated, auditable, and support optimisation including workload scheduling by carbon intensity.',
   },
   utilisation_and_service_usage: {
-    1: 'No utilisation data is available. You have no visibility into how much of your provisioned capacity is actually being used. Expect 40-70% waste from over-provisioning, zombie workloads, and unmanaged demand growth. This is typically the single largest source of hidden cost and carbon.',
-    2: 'Some utilisation data exists, typically from basic monitoring tools, but coverage is patchy and not systematically reviewed. You can identify obvious waste but cannot quantify the scale or drive systematic rightsizing. Demand growth is not governed.',
-    3: 'Utilisation is measured across major platforms with reasonable coverage. You can identify under-used resources and estimate waste, but the link between utilisation data and remediation action is informal. Rightsizing happens reactively rather than through governance.',
-    4: 'Comprehensive utilisation monitoring with established thresholds and regular review cycles. Rightsizing recommendations are generated and tracked. The connection between demand, capacity, and cost is managed. Demand governance is in place for major platforms.',
+    1: 'No utilisation data. You have no visibility into how much provisioned capacity is actually used. Expect 40–70% waste from over-provisioning, zombie workloads, and unmanaged demand growth. This is typically the single largest source of hidden cost and carbon.',
+    2: 'Some utilisation data exists from basic monitoring, but coverage is patchy and not systematically reviewed. Obvious waste is visible but you cannot quantify the scale or drive systematic rightsizing. Demand growth is ungoverned.',
+    3: 'Utilisation is measured across major platforms with reasonable coverage. Under-used resources and waste estimates are available, but the link between the data and remediation action is informal. Rightsizing happens reactively, not through governance.',
+    4: 'Comprehensive utilisation monitoring with thresholds and regular review cycles. Rightsizing recommendations are tracked. Demand, capacity, and cost are connected. Demand governance is in place for major platforms.',
     5: 'Real-time utilisation management with automated scaling, demand shaping, and continuous optimisation. Waste is minimised through systematic governance. New demand is assessed for efficiency before provisioning.',
   },
   allocation_attribution: {
-    1: 'Carbon and cost cannot be attributed to services, teams, or business units. You are allocating overhead proportionally (if at all) rather than based on actual consumption. Accountability is impossible.',
-    2: 'Some attribution exists for major cost centres, but it is coarse and often based on proxies (headcount, revenue) rather than actual resource consumption. Cannot support meaningful chargeback or carbon showback.',
-    3: 'Attribution is established for the main platforms and service lines using reasonable consumption-based proxies. You can produce directional carbon-per-service estimates but precision varies significantly across the estate.',
-    4: 'Attribution is consumption-based across most of the estate, linking resource use to services and owners. You can support carbon showback, FinOps integration, and accountability conversations with credible data.',
-    5: 'Full attribution with real-time consumption-based allocation. Carbon and cost move together through the same drivers. Service-level carbon budgets are managed and reviewed.',
+    1: 'Carbon and cost cannot be attributed to services, teams, or business units. Overhead is allocated proportionally (if at all) rather than by actual consumption. Accountability is not possible.',
+    2: 'Some attribution exists for major cost centres, but it is coarse and often based on proxies (headcount, revenue) rather than consumption. Meaningful chargeback or carbon showback is not possible.',
+    3: 'Attribution is established for main platforms and service lines using consumption-based proxies. Directional carbon-per-service estimates are available, but precision varies across the estate.',
+    4: 'Consumption-based attribution across most of the estate, linking resource use to services and owners. Carbon showback, FinOps integration, and accountability conversations work with credible data.',
+    5: 'Full real-time consumption-based attribution. Carbon and cost move together through the same drivers. Service-level carbon budgets are managed and reviewed.',
   },
   cloud_telemetry: {
-    1: 'Cloud resource consumption is not monitored beyond basic billing. You have no visibility into what resources are provisioned, how they are used, or what their carbon footprint is.',
-    2: 'Cloud billing data provides aggregate cost and some resource breakdown, but telemetry is not linked to carbon, utilisation is not systematically reviewed, and many resource types are invisible.',
-    3: 'Cloud telemetry covers the major services with reasonable granularity. You can identify major cost and resource consumption patterns, but container workloads, serverless, and multi-cloud environments have gaps.',
-    4: 'Comprehensive cloud telemetry including compute, storage, networking, and managed services. Carbon estimates are derived from provider sustainability data. You can support cloud FinOps and GreenOps decisions with measured data.',
+    1: 'Cloud resource consumption is not monitored beyond basic billing. You have no visibility into what is provisioned, how it is used, or what the carbon footprint is.',
+    2: 'Cloud billing data gives aggregate cost and some resource breakdown, but telemetry is not linked to carbon, utilisation is not systematically reviewed, and many resource types are invisible.',
+    3: 'Cloud telemetry covers major services with reasonable granularity. Major cost and consumption patterns are visible, but container workloads, serverless, and multi-cloud environments have gaps.',
+    4: 'Comprehensive cloud telemetry covering compute, storage, networking, and managed services. Carbon estimates are derived from provider sustainability data. Cloud FinOps and GreenOps decisions use measured data.',
     5: 'Full cloud observability with real-time carbon-aware workload placement, automated cost-carbon optimisation, and integration across multi-cloud and hybrid environments.',
   },
   colo_provider_data: {
-    1: 'No energy or efficiency data from colocation providers. You are entirely dependent on provider claims with no ability to validate, challenge, or compare. Scope 3 reporting for hosted infrastructure is guesswork.',
-    2: 'Some data is received, typically quarterly PUE or aggregate energy consumption from provider reports. Quality, timeliness, and granularity are unclear. You cannot verify the methodology or allocate consumption to your footprint.',
-    3: 'Structured data sharing is in place with major colocation providers. You receive facility-level metrics on a regular schedule and can factor them into carbon calculations, though granularity to your specific allocation remains limited.',
-    4: 'Provider data is detailed, timely, and aligned to your allocated space. Contractual SLAs cover data quality and reporting frequency. You can validate provider efficiency claims against your own measurements and use data in procurement decisions.',
-    5: 'Full transparency with real-time data feeds, granular allocation, and contractual obligations for continuous improvement. Provider data is integrated into your own operational systems and supports active provider performance management.',
+    1: 'No energy or efficiency data from colocation providers. You are entirely dependent on provider claims with no way to validate, challenge, or compare. Scope 3 reporting for hosted infrastructure is guesswork.',
+    2: 'Some data is received — typically quarterly PUE or aggregate energy from provider reports. Quality, timeliness, and granularity are unclear. You cannot verify methodology or allocate consumption to your footprint.',
+    3: 'Structured data sharing is in place with major providers. You receive facility-level metrics on a regular schedule and can factor them into carbon calculations, though granularity to your specific allocation is limited.',
+    4: 'Provider data is detailed, timely, and aligned to your allocation. Contractual SLAs cover data quality and frequency. You can validate provider efficiency claims and use the data in procurement decisions.',
+    5: 'Full transparency with real-time data feeds, granular allocation, and contractual obligations for continuous improvement. Provider data is integrated into your own systems and supports active performance management.',
   },
   temporal_timeliness: {
-    1: 'Data is available only at annual or quarterly frequency. You cannot identify trends, seasonal patterns, or respond to changing conditions within any reporting period. Decision-makers are always working with stale information.',
-    2: 'Monthly or quarterly data is available for some domains. You can identify broad trends over time but cannot support operational decisions that require weekly or daily granularity. Problems are identified long after they start.',
-    3: 'Monthly data is standard across most domains with some daily granularity for key metrics. Sufficient for periodic reporting and trend analysis but not for real-time operational decisions or anomaly detection.',
-    4: 'Daily or sub-daily data is available for key operational metrics. You can support demand-response decisions, identify anomalies promptly, and demonstrate trends within reporting periods. Operational teams can act on current information.',
-    5: 'Real-time or near-real-time data across all key domains. Supports dynamic optimisation, automated responses, and continuous operational improvement. Data freshness is a managed attribute.',
+    1: 'Data is available only annually or quarterly. You cannot spot trends, seasonal patterns, or respond to changing conditions within a reporting period. Decision-makers always work with stale information.',
+    2: 'Monthly or quarterly data is available in some areas. Broad trends over time are visible, but operational decisions needing weekly or daily data are not supported. Problems are found long after they start.',
+    3: 'Monthly data is standard across most domains, with some daily granularity for key metrics. Periodic reporting and trend analysis work; real-time operational decisions and anomaly detection do not.',
+    4: 'Daily or sub-daily data is available for key operational metrics. Demand-response decisions, prompt anomaly detection, and within-period trend reporting are all supported. Operational teams can act on current information.',
+    5: 'Real-time or near-real-time data across all key domains. Dynamic optimisation, automated responses, and continuous improvement are supported. Data freshness is actively managed.',
   },
   lineage_assurance: {
-    1: 'No traceability of data sources, transformations, or quality. You cannot explain how any number was derived, which means any figure is challengeable and no metric is auditable. This is a material governance risk.',
-    2: 'Some documentation of data sources exists but it is informal, incomplete, and not maintained. You can explain major data flows when asked but cannot demonstrate a systematic audit trail. External challenge would expose gaps.',
-    3: 'Data lineage is documented for the main reporting pipelines. Sources, transformations, and assumptions are recorded. You can respond to audit queries but the process is manual and dependent on key individuals.',
-    4: 'Systematic lineage tracking across the main data flows with regular validation. Assumptions are documented and reviewed. You can support internal and external audit with a clear evidence trail.',
+    1: 'No traceability of data sources, transformations, or quality. You cannot explain how any number was derived, which means every figure is challengeable and no metric is auditable. This is a serious governance risk.',
+    2: 'Some documentation of data sources exists but it is informal, incomplete, and not maintained. You can explain major data flows when asked, but there is no systematic audit trail. External challenge would expose gaps quickly.',
+    3: 'Data lineage is documented for the main reporting pipelines. Sources, transformations, and assumptions are recorded. Audit queries can be answered, but the process is manual and depends on key individuals.',
+    4: 'Systematic lineage tracking across main data flows with regular validation. Assumptions are documented and reviewed. Internal and external audit can be supported with a clear evidence trail.',
     5: 'Full automated lineage from source to report with version control, validation rules, and exception handling. External assurance is achievable. Any stakeholder can trace any number to its source.',
   },
   decision_integration: {
-    1: 'No regular management reporting exists for energy, emissions or efficiency across the IT estate. Environmental data, where it exists, is not reaching decision-makers and is not influencing operational or investment priorities.',
-    2: 'Some reporting exists but it is infrequent, narrowly distributed, and not connected to operational processes. Data may appear in an annual sustainability report but does not inform infrastructure, procurement, or capacity decisions.',
-    3: 'Regular reporting is in place for some areas, typically the main data centre or largest cloud accounts. Reports reach infrastructure leads but not consistently finance, procurement, or senior leadership. Actions are taken ad-hoc rather than through a structured process.',
-    4: 'Structured reporting covers most of the estate with defined cadence, scope, and distribution. Reports reach the right decision-makers and there is a process for turning findings into actions with named ownership. Outcomes are beginning to be tracked.',
-    5: 'Comprehensive, multi-cadence reporting embedded in operational governance. Environmental and efficiency data is treated with the same rigour as financial reporting — with targets, accountability, variance analysis, and closed-loop improvement tracking.',
+    1: 'No regular management reporting on energy, emissions, or efficiency across IT. Where environmental data exists, it is not reaching decision-makers or influencing operational or investment choices.',
+    2: 'Some reporting exists but it is infrequent, narrowly distributed, and not connected to operations. Data may appear in an annual sustainability report but does not feed into infrastructure, procurement, or capacity decisions.',
+    3: 'Regular reporting covers some areas — typically the main data centre or largest cloud accounts. Reports reach infrastructure leads but not consistently finance, procurement, or senior leadership. Actions are ad-hoc.',
+    4: 'Structured reporting covers most of the estate with defined cadence, scope, and distribution. The right decision-makers receive reports, and there is a process for turning findings into actions with named owners. Outcome tracking is starting.',
+    5: 'Comprehensive, multi-cadence reporting embedded in operational governance. Environmental and efficiency data is treated with the same discipline as financial reporting — targets, accountability, variance analysis, and closed-loop improvement.',
   },
 };
 
 /* ─── Risk framing by maturity ─── */
 function getRiskStatement(domain: Domain, maturity: number, weakDimNames: string[]): string {
   if (maturity <= 1) {
-    return `Critical gap: ${domain.name} data is absent or unreliable. Decisions in this area are based on assumptions rather than evidence. This creates material exposure across regulatory disclosure, investment justification, and supplier negotiations. Any reported figures in this domain should be treated as indicative at best. Leadership should treat this as a priority governance issue, not a technical backlog item.`;
+    const weakNote = weakDimNames.length > 0
+      ? ` Weakest areas: ${weakDimNames.join(', ')}.`
+      : '';
+    return `Critical gap: ${domain.name} data is absent or unreliable. Decisions here are based on assumptions, not evidence. Reported figures should be treated as indicative at best. This needs ownership and priority — it is a governance issue, not just a data one.${weakNote}`;
   }
   if (maturity === 2) {
     const weakNote = weakDimNames.length > 0
-      ? ` Particular exposure in ${weakDimNames.join(' and ')}, which limits both operational and governance use.`
+      ? ` Particular weakness in ${weakDimNames.join(' and ')}.`
       : '';
-    return `Significant gap: ${domain.name} data is partial and inconsistent. Data supports basic reporting but not confident operational decisions. Over-reliance on this data for investment or compliance purposes carries material risk. The organisation is likely making decisions in this area that are not supported by the evidence quality available.${weakNote}`;
+    return `Significant gap: ${domain.name} data is partial and inconsistent. It supports basic reporting but not confident decisions. The organisation is likely acting on weaker evidence than it realises in this area.${weakNote}`;
   }
   if (maturity === 3) {
-    return `Moderate gap: ${domain.name} data is adequate for periodic reporting but lacks the precision, coverage, or timeliness needed for operational management. You can report retrospectively but cannot optimise proactively. The gap between what is reported and what is operationally actionable should be made explicit to stakeholders.`;
+    return `Moderate gap: ${domain.name} data works for periodic reporting but lacks the precision or timeliness for active management. You can report on the past but cannot optimise in real time.`;
   }
   if (maturity === 4) {
-    return `Minor gap: ${domain.name} data is strong and decision-grade for most purposes. Remaining risks are typically in edge cases — coverage of newer platforms, real-time availability, or end-to-end auditability. Focus should be on sustaining quality and extending coverage to emerging estate areas.`;
+    return `Minor gap: ${domain.name} data is decision-grade for most purposes. Remaining risks are typically edge cases — newer platforms, real-time availability, or end-to-end auditability. Focus on sustaining quality and extending to emerging areas.`;
   }
-  return `${domain.name} data is mature and operationally embedded. The priority is maintaining governance discipline, validating continued quality as the estate evolves, and demonstrating value through operational outcomes.`;
+  return `${domain.name} data is mature and embedded in operations. The priority is maintaining quality as the estate evolves and demonstrating value through outcomes.`;
 }
 
 /* ─── Dimension diagnosis ─── */
@@ -157,17 +160,17 @@ function buildDimensionAnalysis(
     // Diagnose interaction effects
     const weakSet = new Set(weakDims.map(([d]) => d));
     if (weakSet.has('coverage') && weakSet.has('attribution')) {
-      parts.push('Weak coverage combined with weak attribution means you cannot identify where resources are consumed or by whom — this blocks both hotspot analysis and accountability.');
+      parts.push('Weak coverage combined with weak attribution means you cannot tell where resources are consumed or by whom — blocking both hotspot analysis and accountability.');
     } else if (weakSet.has('coverage')) {
-      parts.push('Weak coverage means significant parts of your estate are invisible. You may be optimising what you can see while missing larger problems elsewhere.');
+      parts.push('Weak coverage means parts of your estate are invisible. You may be optimising what you can see while missing bigger problems elsewhere.');
     } else if (weakSet.has('attribution')) {
       parts.push('Weak attribution means you can measure totals but cannot link consumption to services or owners, which blocks chargeback, showback, and accountability.');
     }
     if (weakSet.has('assurance_lineage') || weakSet.has('method_quality')) {
-      parts.push('Weak assurance or method quality means your figures may not survive external challenge — a significant risk for regulatory disclosure or investment justification.');
+      parts.push('Weak assurance or method quality means your figures may not survive external challenge — a risk for regulatory disclosure or investment justification.');
     }
     if (weakSet.has('temporal_resolution') || weakSet.has('timeliness')) {
-      parts.push('Weak temporal resolution limits your ability to detect trends, respond to anomalies, or support real-time operational decisions.');
+      parts.push('Weak temporal resolution limits your ability to spot trends, respond to anomalies, or make real-time operational decisions.');
     }
   }
 
@@ -240,11 +243,13 @@ export function generateDomainNarratives(
       }
       if (ds.does_not_support.length > 0 && !ds.does_not_support[0].startsWith('None')) {
         dsSummary += `Not yet sufficient for: ${ds.does_not_support.join('; ')}.`;
-        // Add remediation hint
         const nextLevel = Math.min(result.effective_maturity + 1, 5);
         const nextDs = domain.decision_support_by_score[String(nextLevel)];
         if (nextDs) {
-          dsSummary += ` Reaching level ${nextLevel} would additionally support: ${nextDs.supports.filter(s => !ds.supports.includes(s)).join('; ') || 'refinement of existing capabilities'}.`;
+          const newCaps = nextDs.supports.filter(s => !ds.supports.includes(s)).join('; ');
+          if (newCaps) {
+            dsSummary += ` Reaching level ${nextLevel} would also support: ${newCaps}.`;
+          }
         }
       }
     }

@@ -507,13 +507,13 @@ export default function ResultsDashboard({
                     <div className="analysis-body">
                       {n.operational_impact && (
                         <div className="analysis-section">
-                          <h4>What this means</h4>
+                          <h4>What This Means</h4>
                           <p>{n.operational_impact}</p>
                         </div>
                       )}
                       {n.dimension_analysis && (
                         <div className="analysis-section">
-                          <h4>Dimension breakdown</h4>
+                          <h4>Dimension Breakdown</h4>
                           <p>{n.dimension_analysis}</p>
                           {result && Object.keys(result.dimension_scores).length > 0 && (
                             <div className="dimension-bars">
@@ -538,13 +538,13 @@ export default function ResultsDashboard({
                       )}
                       {n.decision_support_summary && (
                         <div className="analysis-section">
-                          <h4>Decision support</h4>
+                          <h4>Decision Support</h4>
                           <p>{n.decision_support_summary}</p>
                         </div>
                       )}
                       {n.improvement_guidance && (
                         <div className="analysis-section">
-                          <h4>What to improve</h4>
+                          <h4>What to Improve</h4>
                           <p>{n.improvement_guidance}</p>
                         </div>
                       )}

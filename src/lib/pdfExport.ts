@@ -159,13 +159,13 @@ export function downloadPDF(
   // What does that score actually mean?
   let interpretation = '';
   if (stats.weightedMaturity < 2.5) {
-    interpretation = 'At this level, the organisation\'s data foundation is immature. Most inputs are partial, inconsistent, or absent. The estate is largely operating on estimates and assumptions rather than measured evidence. This limits the organisation to basic compliance reporting and means that efficiency opportunities, cost savings, and carbon reductions are likely being missed. Any external disclosure based on current data should be treated with caution.';
+    interpretation = 'At this level, the data foundation is immature. Most inputs are partial, inconsistent, or absent — the estate is running on estimates rather than evidence. This limits you to basic compliance reporting and means efficiency gains, cost savings, and carbon reductions are being missed. External disclosure based on current data should be caveated.';
   } else if (stats.weightedMaturity < 3.5) {
-    interpretation = 'The organisation has established a basic data foundation in several areas, but significant gaps remain. Data is adequate for periodic reporting and directional analysis in the stronger domains, but is not consistently decision-grade. The immediate priority should be closing the gaps in the weakest domains — not because reporting requires it, but because these gaps represent hidden operational risk, unquantified waste, and missed opportunities.';
+    interpretation = 'A basic data foundation exists in several areas, but significant gaps remain. Data works for periodic reporting and directional analysis, but is not consistently decision-grade. The priority is closing the weakest gaps — because they represent hidden risk, unquantified waste, and missed cost and carbon reduction.';
   } else if (stats.weightedMaturity < 4.5) {
-    interpretation = 'The organisation has a solid data foundation, with most domains at or approaching decision-grade quality. The strategic focus should shift from establishing data to using it — embedding GreenOps metrics into operational governance, investment decisions, procurement processes, and continuous improvement.';
+    interpretation = 'Most domains are at or near decision-grade quality. The focus should shift from establishing data to using it — embedding GreenOps metrics into governance, investment decisions, procurement, and continuous improvement.';
   } else {
-    interpretation = 'The organisation has a mature and comprehensive GreenOps data capability. The focus should be on sustaining quality, extending automation, and ensuring governance processes keep pace with estate evolution and regulatory expectations.';
+    interpretation = 'The data capability is mature and comprehensive. Focus on sustaining quality, extending automation, and ensuring governance keeps pace with estate changes and regulatory expectations.';
   }
   ey = writeBody(doc, interpretation, ey, pageNum, { fontSize: 10 });
 
@@ -491,7 +491,7 @@ export function downloadPDF(
   const transformRecs = recommendations.filter(r => r.phase === 'Transformation');
 
   ry = writeBody(doc,
-    `Based on the assessment findings, the improvement roadmap is structured in three phases. The sequencing reflects a practical reality: foundational gaps must be closed before targeted improvements can deliver value, and transformation depends on having the basics in place.`,
+    `The improvement roadmap is structured in three phases. Foundational gaps must be closed before targeted improvements can deliver value, and transformation depends on the basics being in place.`,
     ry, pageNum, { fontSize: 9.5 }
   );
 
@@ -499,7 +499,7 @@ export function downloadPDF(
   const highCount = recommendations.filter(r => r.priority === 'High').length;
   if (highCount > 0) {
     ry = writeBody(doc,
-      `${highCount} action${highCount > 1 ? 's are' : ' is'} classified as high priority, meaning the gap between domain importance and data quality is large enough to warrant immediate attention. These are not technical backlog items — they are governance priorities that need named ownership and clear timelines.`,
+      `${highCount} action${highCount > 1 ? 's are' : ' is'} high priority — the gap between domain importance and data quality is large enough to need immediate attention. These need named ownership and clear timelines.`,
       ry, pageNum, { fontSize: 9 }
     );
   }
@@ -510,7 +510,7 @@ export function downloadPDF(
   if (foundationRecs.length > 0) {
     ry = sectionHeading(doc, 'Phase 1: Foundation', ry, 12);
     ry = writeBody(doc,
-      'Foundation actions address domains where data is absent, unreliable, or too incomplete to support any meaningful decisions. These are the areas where the organisation is currently operating blind. The goal is not sophistication — it is establishing basic, measurable, traceable data where none exists.',
+      'Foundation actions address domains where data is absent, unreliable, or too incomplete for any meaningful decisions. The goal is not sophistication — it is establishing basic, measurable, traceable data where none exists.',
       ry, pageNum, { fontSize: 9 }
     );
     ry += 1;
@@ -529,7 +529,7 @@ export function downloadPDF(
     }
     ry = sectionHeading(doc, 'Phase 2: Quick Wins', ry, 12);
     ry = writeBody(doc,
-      'Quick win actions target domains where a basic foundation exists but targeted improvements can unlock significantly better decisions. These are areas where relatively focused effort — better coverage, improved granularity, or stronger attribution — can move the needle from directional to decision-grade.',
+      'Quick win actions target domains where a basic foundation exists but focused improvement — better coverage, granularity, or attribution — can move data from directional to decision-grade.',
       ry, pageNum, { fontSize: 9 }
     );
     ry += 1;
@@ -548,7 +548,7 @@ export function downloadPDF(
     }
     ry = sectionHeading(doc, 'Phase 3: Transformation', ry, 12);
     ry = writeBody(doc,
-      'Transformation actions focus on domains that already have a reasonable data foundation. The goal here is embedding data into operational governance — moving from periodic measurement and reporting to continuous management, automation, and optimisation.',
+      'Transformation actions focus on domains with a reasonable data foundation. The goal is embedding data into operational governance — moving from periodic reporting to continuous management, automation, and optimisation.',
       ry, pageNum, { fontSize: 9 }
     );
     ry += 1;
@@ -573,12 +573,12 @@ export function downloadPDF(
   nsY = writeBody(doc, 'To move from assessment to action, we recommend the following:', nsY, pageNum, { fontSize: 10 });
 
   const steps = [
-    'Review and validate — Walk through the domain-level findings with the relevant technical and operational stakeholders. Confirm whether the scores reflect operational reality.',
-    'Prioritise by impact — Focus improvement effort on the domains with the largest gap between impact score and maturity. These are where better data quality will deliver the most operational, financial, and governance value.',
-    'Assign ownership — Each priority domain should have a named owner accountable for closing the gap. Data quality improvement is a management issue, not a technical backlog item.',
-    'Define evidence requirements — For each priority domain, define what "good enough" data looks like: what needs to be measured, at what frequency, with what traceability.',
-    'Build a phased plan — Sequence actions into Foundation, Quick Wins, and Transformation as outlined in the roadmap section of this report.',
-    'Reassess periodically — Repeat the assessment at 6-12 month intervals to track progress, validate improvement, and adjust priorities as the estate evolves.',
+    'Review and validate — Walk through domain findings with technical and operational stakeholders. Do the scores match operational reality?',
+    'Prioritise by impact — Focus on domains with the largest gap between impact and maturity. That is where better data quality delivers the most value.',
+    'Assign ownership — Each priority domain needs a named owner. Data quality is a management issue, not a backlog item.',
+    'Define evidence requirements — For each priority domain, specify what "good enough" data looks like: what to measure, how often, with what traceability.',
+    'Build a phased plan — Sequence actions into Foundation, Quick Wins, and Transformation as outlined in the roadmap.',
+    'Reassess periodically — Repeat the assessment every 6–12 months to track progress and adjust priorities as the estate evolves.',
   ];
 
   for (const step of steps) {
@@ -592,7 +592,7 @@ export function downloadPDF(
   nsY = writeBody(doc, 'How Posetiv can help', nsY, pageNum, { bold: true, fontSize: 11 });
 
   nsY = writeBody(doc,
-    'Posetiv specialises in GreenOps strategy, data maturity, and operational efficiency across enterprise technology estates. We work with infrastructure, sustainability, finance, and leadership teams to turn assessment findings into practical improvement programmes — connecting better data to better decisions, lower costs, reduced carbon, and stronger governance.',
+    'Posetiv specialises in GreenOps strategy, data maturity, and operational efficiency across enterprise technology estates. We help infrastructure, sustainability, finance, and leadership teams turn assessment findings into practical improvement — connecting better data to better decisions, lower costs, reduced carbon, and stronger governance.',
     nsY, pageNum, { fontSize: 9.5 }
   );
 
