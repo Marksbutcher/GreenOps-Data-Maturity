@@ -305,7 +305,7 @@ h3 { font-size: 1.125rem; }
   line-height: 1.15;
 }
 .landing-hero h1 .text-brand {
-  color: var(--color-leaf);
+  color: var(--color-brand-green);
 }
 .landing-hero .subtitle {
   font-size: 1.0625rem;
@@ -593,14 +593,14 @@ h3 { font-size: 1.125rem; }
 }
 
 .intent-card:hover {
-  border-color: var(--color-leaf);
+  border-color: var(--color-brand-green);
   background: rgba(107, 190, 73, 0.04);
 }
 
 .intent-card-selected {
-  border-color: var(--color-leaf);
+  border-color: var(--color-brand-green);
   background: rgba(107, 190, 73, 0.06);
-  box-shadow: 0 0 0 1px var(--color-leaf);
+  box-shadow: 0 0 0 1px var(--color-brand-green);
 }
 
 .intent-card-label {
@@ -728,14 +728,14 @@ h3 { font-size: 1.125rem; }
 .assessment-goal-current {
   font-size: 0.875rem;
   font-weight: 600;
-  color: var(--color-leaf);
+  color: var(--color-brand-green);
 }
 .assessment-goal-toggle {
   font-size: 0.8125rem;
   font-weight: 500;
-  color: var(--color-leaf);
+  color: var(--color-brand-green);
   background: none;
-  border: 1px solid var(--color-leaf);
+  border: 1px solid var(--color-brand-green);
   border-radius: var(--radius-sm);
   padding: 4px 12px;
   cursor: pointer;
@@ -754,10 +754,10 @@ h3 { font-size: 1.125rem; }
 }
 .assessment-goal-cards {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: var(--space-sm);
 }
-@media (max-width: 900px) {
+@media (max-width: 640px) {
   .assessment-goal-cards { grid-template-columns: 1fr; }
 }
 .assessment-goal-card {
@@ -773,13 +773,13 @@ h3 { font-size: 1.125rem; }
   transition: border-color 0.15s, background 0.15s;
 }
 .assessment-goal-card:hover {
-  border-color: var(--color-leaf);
+  border-color: var(--color-brand-green);
   background: rgba(107, 190, 73, 0.03);
 }
 .assessment-goal-card.selected {
-  border-color: var(--color-leaf);
+  border-color: var(--color-brand-green);
   background: rgba(107, 190, 73, 0.06);
-  box-shadow: 0 0 0 1px var(--color-leaf);
+  box-shadow: 0 0 0 1px var(--color-brand-green);
 }
 .assessment-goal-card-label {
   font-weight: 600;
@@ -2575,7 +2575,7 @@ h3 { font-size: 1.125rem; }
 .enables-detail-toggle {
   font-size: 0.875rem;
   font-weight: 600;
-  color: var(--color-leaf);
+  color: var(--color-brand-green);
   cursor: pointer;
   margin-top: var(--space-md);
 }
