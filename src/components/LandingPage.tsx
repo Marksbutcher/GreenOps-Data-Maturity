@@ -5,9 +5,12 @@ interface LandingPageProps {
   onStartNew: (mode: 'self' | 'facilitated') => void;
   onLoadDemo: () => void;
   onLoadSaved: (file: File) => void;
+  hasRecoverableSession?: boolean;
+  onRecoverSession?: () => void;
+  onDismissRecovery?: () => void;
 }
 
-export default function LandingPage({ onStartNew, onLoadDemo, onLoadSaved }: LandingPageProps) {
+export default function LandingPage({ onStartNew, onLoadDemo, onLoadSaved, hasRecoverableSession, onRecoverSession, onDismissRecovery }: LandingPageProps) {
   const [dragOver, setDragOver] = useState(false);
 
   const handleFileLoad = () => {
@@ -57,6 +60,26 @@ export default function LandingPage({ onStartNew, onLoadDemo, onLoadSaved }: Lan
       {/* Main content */}
       <div className="landing-body">
         <div className="container">
+
+          {/* Auto-save recovery banner */}
+          {hasRecoverableSession && (
+            <div className="recovery-banner" role="alert">
+              <div className="recovery-banner-content">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <circle cx="12" cy="12" r="10" />
+                  <polyline points="12 6 12 12 16 14" />
+                </svg>
+                <div className="recovery-banner-text">
+                  <strong>You have an unsaved assessment in progress.</strong>
+                  <span>Your previous session was saved automatically. Resume where you left off?</span>
+                </div>
+              </div>
+              <div className="recovery-banner-actions">
+                <button className="btn btn-primary btn-sm" onClick={onRecoverSession}>Resume assessment</button>
+                <button className="btn btn-ghost btn-sm" onClick={onDismissRecovery}>Discard</button>
+              </div>
+            </div>
+          )}
 
           {/* Start section */}
           <section className="landing-section">

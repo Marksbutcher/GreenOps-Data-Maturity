@@ -10,12 +10,13 @@ import { generateDomainNarratives, DomainNarrative } from '../lib/narrativeAnaly
 import { generateRecommendations, generateExecutiveSummary } from '../lib/recommendations';
 import { generateDecisionReadiness } from '../lib/decisionReadiness';
 import { getTopLimitingFactors, analyseCascadeRisks } from '../lib/dependencyChain';
+import { type PDFSectionOptions, DEFAULT_PDF_SECTIONS, PDF_SECTION_LABELS } from '../lib/pdfExport';
 
 interface Props {
   model: MaturityModel;
   profile: OrganisationProfile;
   results: DomainAssessment[];
-  onExportPDF: () => void;
+  onExportPDF: (sections?: PDFSectionOptions) => void;
   onExportCSV: () => void;
   onBack: () => void;
   onStartOver: () => void;
@@ -199,6 +200,39 @@ export default function ResultsDashboard({
 
   const [showMoreMenu, setShowMoreMenu] = useState(false);
 
+  /* ─── Item 4: PDF section selection modal ─── */
+  const [showPDFModal, setShowPDFModal] = useState(false);
+  const [pdfSections, setPdfSections] = useState<PDFSectionOptions>({ ...DEFAULT_PDF_SECTIONS });
+
+  const handlePDFExport = useCallback(() => {
+    onExportPDF(pdfSections);
+    setShowPDFModal(false);
+  }, [onExportPDF, pdfSections]);
+
+  /* ─── Item 5: Assessment comparison ─── */
+  const [comparisonResults, setComparisonResults] = useState<DomainAssessment[] | null>(null);
+  const [comparisonProfile, setComparisonProfile] = useState<OrganisationProfile | null>(null);
+  const [showComparisonUpload, setShowComparisonUpload] = useState(false);
+
+  const handleComparisonUpload = useCallback((file: File) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const data = JSON.parse(e.target?.result as string);
+        if (data.profile && data.results) {
+          setComparisonProfile(data.profile);
+          setComparisonResults(data.results);
+          setShowComparisonUpload(false);
+        } else {
+          alert('Invalid assessment file — expected profile and results data.');
+        }
+      } catch {
+        alert('Could not parse assessment file.');
+      }
+    };
+    reader.readAsText(file);
+  }, []);
+
   return (
     <div className="results-page">
       <div className="container-wide">
@@ -211,7 +245,7 @@ export default function ResultsDashboard({
           <div className="results-actions">
             <button className="btn btn-outline" onClick={onBack}>Back to assessment</button>
             <button className="btn btn-outline" onClick={handleSave}>Save progress</button>
-            <button className="btn btn-accent" onClick={onExportPDF}>Export PDF report</button>
+            <button className="btn btn-accent" onClick={() => setShowPDFModal(true)}>Export PDF report</button>
             <div className="more-menu-wrapper">
               <button className="btn btn-ghost" onClick={() => setShowMoreMenu(!showMoreMenu)}>
                 More ▾
@@ -219,6 +253,7 @@ export default function ResultsDashboard({
               {showMoreMenu && (
                 <div className="more-menu-dropdown" onMouseLeave={() => setShowMoreMenu(false)}>
                   <button className="more-menu-item" onClick={() => { onExportCSV(); setShowMoreMenu(false); }}>Export CSV</button>
+                  <button className="more-menu-item" onClick={() => { setShowComparisonUpload(true); setShowMoreMenu(false); }}>Compare with previous</button>
                   <button className="more-menu-item" onClick={() => { onStartOver(); }}>Start over</button>
                 </div>
               )}
@@ -246,27 +281,67 @@ export default function ResultsDashboard({
           {activeTab === 'overview' && (
             <div className="overview-panel">
 
-              {/* Confidence and intent banner */}
+              {/* Item 2: Enhanced intent gap warning — prominent banner */}
+              {intentGap && intentGap.shortfall > 0 && (
+                <div className="intent-gap-banner intent-gap-warning" role="alert" aria-label="Assessment goal gap warning">
+                  <div className="intent-gap-banner-header">
+                    <span className="intent-gap-banner-icon" aria-hidden="true">
+                      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+                        <line x1="12" y1="9" x2="12" y2="13" /><line x1="12" y1="17" x2="12.01" y2="17" />
+                      </svg>
+                    </span>
+                    <div className="intent-gap-banner-title">
+                      Your data does not yet support your stated goal
+                    </div>
+                  </div>
+                  <p className="intent-gap-banner-text">
+                    You selected <strong>{intentGap.label}</strong>, which requires all domains at level {intentGap.requiredLevel} or above.
+                    {' '}<strong>{intentGap.shortfall} of {intentGap.total} domains</strong> fall short. Until these gaps close,
+                    the data in those areas cannot reliably support the decisions you need it for.
+                  </p>
+                  <div className="intent-gap-domain-list" role="list" aria-label="Domains below target">
+                    {intentGap.gaps.map((g) => (
+                      <div key={g.name} className="intent-gap-domain-item" role="listitem">
+                        <span className={`level-badge l${g.level}`} aria-label={`Current level ${g.level}`}>
+                          <span className="level-badge-icon" aria-hidden="true">{g.level}</span>
+                          Level {g.level}
+                        </span>
+                        <span className="intent-gap-domain-name">{g.name}</span>
+                        <span className="intent-gap-domain-needed" aria-label={`Needs level ${g.needed}`}>needs level {g.needed}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+              {intentGap && intentGap.shortfall === 0 && (
+                <div className="intent-gap-banner intent-gap-success" role="status" aria-label="Assessment goal met">
+                  <div className="intent-gap-banner-header">
+                    <span className="intent-gap-banner-icon" aria-hidden="true">
+                      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" /><polyline points="22 4 12 14.01 9 11.01" />
+                      </svg>
+                    </span>
+                    <div className="intent-gap-banner-title">
+                      All domains meet your stated goal
+                    </div>
+                  </div>
+                  <p className="intent-gap-banner-text">
+                    Your data meets the minimum level {intentGap.requiredLevel} required for <strong>{intentGap.label}</strong> across all {intentGap.total} domains.
+                    Focus on embedding this data into operational governance and continuous improvement.
+                  </p>
+                </div>
+              )}
+
+              {/* Confidence banner */}
               <div className="overview-confidence-banner">
                 <div className="confidence-row">
                   <div className="confidence-indicator">
-                    <span className={`confidence-badge confidence-${overallConfidence}`}>
+                    <span className={`confidence-badge confidence-${overallConfidence}`} role="status" aria-label={`Assessment confidence: ${overallConfidence}`}>
                       {overallConfidence.charAt(0).toUpperCase() + overallConfidence.slice(1)} confidence
                     </span>
                     <span className="confidence-desc">{CONFIDENCE_DESCRIPTIONS[overallConfidence]}</span>
                   </div>
-                  {intentGap && (
-                    <div className="intent-gap-indicator">
-                      <span className="intent-gap-label">Goal: {intentGap.label}</span>
-                      {intentGap.shortfall === 0 ? (
-                        <span className="intent-gap-met">All domains meet the required level {intentGap.requiredLevel}</span>
-                      ) : (
-                        <span className="intent-gap-unmet">
-                          {intentGap.shortfall} of {intentGap.total} domains fall short of level {intentGap.requiredLevel}
-                        </span>
-                      )}
-                    </div>
-                  )}
                 </div>
               </div>
 
@@ -936,6 +1011,128 @@ export default function ResultsDashboard({
           )}
         </div>
       </div>
+
+      {/* ═══ Item 4: PDF Section Selection Modal ═══ */}
+      {showPDFModal && (
+        <div className="modal-backdrop" onClick={() => setShowPDFModal(false)} role="dialog" aria-modal="true" aria-label="Select PDF report sections">
+          <div className="modal-content pdf-section-modal" onClick={(e) => e.stopPropagation()}>
+            <h3 className="modal-title">Export PDF report</h3>
+            <p className="modal-subtitle">Select which sections to include. Different stakeholders need different views.</p>
+            <div className="pdf-section-list" role="group" aria-label="Report sections">
+              {(Object.keys(pdfSections) as (keyof PDFSectionOptions)[]).map((key) => (
+                <label key={key} className="pdf-section-item">
+                  <input
+                    type="checkbox"
+                    checked={pdfSections[key]}
+                    onChange={(e) => setPdfSections((prev) => ({ ...prev, [key]: e.target.checked }))}
+                    aria-label={PDF_SECTION_LABELS[key]}
+                  />
+                  <span className="pdf-section-label">{PDF_SECTION_LABELS[key]}</span>
+                </label>
+              ))}
+            </div>
+            <div className="pdf-section-presets">
+              <button className="btn btn-ghost btn-sm" onClick={() => setPdfSections({
+                cover: true, executive_summary: true, overview: true,
+                domain_detail: false, recommendations: false, decision_readiness: false,
+                methodology: false, appendix: false,
+              })}>Leadership summary</button>
+              <button className="btn btn-ghost btn-sm" onClick={() => setPdfSections({
+                cover: true, executive_summary: true, overview: true,
+                domain_detail: true, recommendations: true, decision_readiness: true,
+                methodology: true, appendix: true,
+              })}>Full report</button>
+              <button className="btn btn-ghost btn-sm" onClick={() => setPdfSections({
+                cover: true, executive_summary: false, overview: false,
+                domain_detail: true, recommendations: true, decision_readiness: false,
+                methodology: false, appendix: false,
+              })}>Technical detail</button>
+            </div>
+            <div className="modal-actions">
+              <button className="btn btn-ghost" onClick={() => setShowPDFModal(false)}>Cancel</button>
+              <button className="btn btn-accent" onClick={handlePDFExport}>Export PDF</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ═══ Item 5: Comparison Upload Modal ═══ */}
+      {showComparisonUpload && (
+        <div className="modal-backdrop" onClick={() => setShowComparisonUpload(false)} role="dialog" aria-modal="true" aria-label="Upload previous assessment for comparison">
+          <div className="modal-content comparison-modal" onClick={(e) => e.stopPropagation()}>
+            <h3 className="modal-title">Compare with previous assessment</h3>
+            <p className="modal-subtitle">Upload a previously saved assessment JSON file to see what changed.</p>
+            <div className="comparison-upload-zone">
+              <button className="btn btn-outline" onClick={() => {
+                const input = document.createElement('input');
+                input.type = 'file';
+                input.accept = '.json';
+                input.onchange = (e) => {
+                  const file = (e.target as HTMLInputElement).files?.[0];
+                  if (file) handleComparisonUpload(file);
+                };
+                input.click();
+              }}>Select assessment file</button>
+            </div>
+            <div className="modal-actions">
+              <button className="btn btn-ghost" onClick={() => setShowComparisonUpload(false)}>Cancel</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ═══ Item 5: Comparison Results Panel ═══ */}
+      {comparisonResults && (
+        <div className="comparison-panel" role="region" aria-label="Assessment comparison">
+          <div className="container-wide">
+            <div className="comparison-header">
+              <h2>Assessment Comparison</h2>
+              <div>
+                <span className="comparison-dates">
+                  {comparisonProfile?.assessment_date || 'Previous'} vs {profile.assessment_date || 'Current'}
+                </span>
+                <button className="btn btn-ghost btn-sm" onClick={() => { setComparisonResults(null); setComparisonProfile(null); }}>
+                  Close comparison
+                </button>
+              </div>
+            </div>
+            <div className="comparison-grid" role="table" aria-label="Domain maturity comparison">
+              <div className="comparison-grid-header" role="row">
+                <span role="columnheader">Domain</span>
+                <span role="columnheader">Previous</span>
+                <span role="columnheader">Current</span>
+                <span role="columnheader">Change</span>
+              </div>
+              {results.map((r) => {
+                const prev = comparisonResults.find((cr) => cr.domain_id === r.domain_id);
+                const prevLevel = prev?.effective_maturity || 0;
+                const delta = r.effective_maturity - prevLevel;
+                const d = model.domains.find((dd) => dd.id === r.domain_id);
+                return (
+                  <div key={r.domain_id} className="comparison-grid-row" role="row">
+                    <span className="comparison-domain-name" role="cell">{d?.name || r.domain_id}</span>
+                    <span role="cell">
+                      <span className={`level-badge l${prevLevel}`} aria-label={`Previous level ${prevLevel}`}>
+                        <span className="level-badge-icon" aria-hidden="true">{prevLevel}</span>
+                        Level {prevLevel}
+                      </span>
+                    </span>
+                    <span role="cell">
+                      <span className={`level-badge l${r.effective_maturity}`} aria-label={`Current level ${r.effective_maturity}`}>
+                        <span className="level-badge-icon" aria-hidden="true">{r.effective_maturity}</span>
+                        Level {r.effective_maturity}
+                      </span>
+                    </span>
+                    <span role="cell" className={`comparison-delta ${delta > 0 ? 'improved' : delta < 0 ? 'regressed' : 'unchanged'}`}>
+                      {delta > 0 ? `+${delta}` : delta < 0 ? String(delta) : '—'}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

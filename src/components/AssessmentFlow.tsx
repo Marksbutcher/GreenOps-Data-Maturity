@@ -163,12 +163,13 @@ export default function AssessmentFlow({
           </div>
 
         </div>
-        <nav className="sidebar-domain-list">
+        <nav className="sidebar-domain-list" aria-label="Assessment domains">
           <button
             className={`sidebar-domain-item sidebar-goal-item ${isGoalSection ? 'current' : ''} status-complete`}
             onClick={() => jumpToDomain(-1)}
+            aria-current={isGoalSection ? 'step' : undefined}
           >
-            <span className="sidebar-status-dot complete" />
+            <span className="sidebar-status-dot complete" aria-hidden="true" />
             <span className="sidebar-domain-name">Assessment Goal</span>
             <span className="sidebar-domain-count">{INTENT_LABELS[profile.assessment_intent].split(' ')[0]}</span>
           </button>
@@ -181,10 +182,12 @@ export default function AssessmentFlow({
                 key={d.id}
                 className={`sidebar-domain-item ${isCurrent ? 'current' : ''} status-${ds.status}`}
                 onClick={() => jumpToDomain(i)}
+                aria-current={isCurrent ? 'step' : undefined}
+                aria-label={`${d.name}: ${ds.answered} of ${ds.total} answered, ${ds.status.replace('_', ' ')}`}
               >
-                <span className={`sidebar-status-dot ${ds.status}`} />
+                <span className={`sidebar-status-dot ${ds.status}`} aria-hidden="true" />
                 <span className="sidebar-domain-name">{d.name}</span>
-                <span className="sidebar-domain-count">{ds.answered}/{ds.total}</span>
+                <span className="sidebar-domain-count" aria-hidden="true">{ds.answered}/{ds.total}</span>
               </button>
             );
           })}
@@ -228,6 +231,30 @@ export default function AssessmentFlow({
         {/* ═══ ASSESSMENT GOAL SECTION ═══ */}
         {isGoalSection && (
           <div className="assessment-goal-page">
+            {/* Assessment introduction — moved here from domain 1 */}
+            <div className="assessment-intro">
+              <h2 className="assessment-intro-title">GreenOps Data Maturity Assessment</h2>
+              <p className="assessment-intro-text">
+                This assessment evaluates your organisation's data maturity across {total} domains
+                that underpin effective GreenOps decision-making — from energy and carbon measurement
+                through to AI workload governance and lifecycle management.
+              </p>
+              <div className="assessment-intro-details">
+                <div className="intro-detail">
+                  <strong>How it works</strong>
+                  <span>Answer the questions in each domain using the dropdown selectors (typically 8–11 questions per domain). Your maturity scores are calculated automatically from the answers — there is no manual self-scoring.</span>
+                </div>
+                <div className="intro-detail">
+                  <strong>Navigation</strong>
+                  <span>Use the panel on the left to track progress and jump between domains. You can revisit and change answers at any point before completing.</span>
+                </div>
+                <div className="intro-detail">
+                  <strong>What you'll receive</strong>
+                  <span>A scored maturity profile across all {total} domains, decision-readiness analysis, dimension-level breakdowns, and a prioritised improvement roadmap — available on-screen and as PDF or CSV export.</span>
+                </div>
+              </div>
+            </div>
+
             <h2 className="assessment-goal-page-title">What do you need your data to support?</h2>
             <p className="assessment-goal-page-intro">
               This is the most important question in the assessment. Your answer shapes how every domain score is interpreted — what counts as "good enough" depends entirely on what you are trying to do with the data. An organisation that only needs compliance reporting has a very different bar from one that wants to make evidence-based investment decisions.
@@ -291,32 +318,6 @@ export default function AssessmentFlow({
         {/* ═══ DOMAIN SECTIONS ═══ */}
         {!isGoalSection && domain && result && (<>
 
-        {/* Assessment introduction — shown on the first domain */}
-        {currentIndex === 0 && (
-          <div className="assessment-intro">
-            <h2 className="assessment-intro-title">GreenOps Data Maturity Assessment</h2>
-            <p className="assessment-intro-text">
-              This assessment evaluates your organisation's data maturity across {total} domains
-              that underpin effective GreenOps decision-making — from energy and carbon measurement
-              through to AI workload governance and lifecycle management.
-            </p>
-            <div className="assessment-intro-details">
-              <div className="intro-detail">
-                <strong>How it works</strong>
-                <span>Answer the questions in each domain using the dropdown selectors (typically 8–11 questions per domain). Your maturity scores are calculated automatically from the answers — there is no manual self-scoring.</span>
-              </div>
-              <div className="intro-detail">
-                <strong>Navigation</strong>
-                <span>Use the panel on the left to track progress and jump between domains. You can revisit and change answers at any point before completing.</span>
-              </div>
-              <div className="intro-detail">
-                <strong>What you'll receive</strong>
-                <span>A scored maturity profile across all {total} domains, decision-readiness analysis, dimension-level breakdowns, and a prioritised improvement roadmap — available on-screen and as PDF or CSV export.</span>
-              </div>
-            </div>
-          </div>
-        )}
-
         {/* Domain context intro */}
         <div className="domain-intro">
           <div className="domain-intro-header">
@@ -346,14 +347,18 @@ export default function AssessmentFlow({
                 </div>
                 <div className="question-right">
                   <select
-                    className={`question-select ${isUnanswered ? '' : 'answered'}`}
+                    className={`question-select ${isUnanswered ? '' : selectedIdx === -1 ? 'answered-unknown' : 'answered'}`}
                     value={selectedIdx !== undefined ? String(selectedIdx) : ''}
                     onChange={(e) => {
                       const val = e.target.value;
-                      if (val !== '') handleQuestionAnswer(q.id, Number(val));
+                      if (val !== '') handleQuestionAnswer(q.id, Number(val)); // -1 = not assessed
                     }}
+                    aria-label={`Question ${qIdx + 1}: ${q.text}`}
+                    aria-required="true"
+                    aria-invalid={isUnanswered && showIncomplete ? 'true' : undefined}
                   >
                     <option value="" disabled>Select an answer…</option>
+                    <option value="-1" className="option-unknown">Not assessed — we don't have visibility</option>
                     {q.options.map((opt, optIdx) => (
                       <option key={optIdx} value={String(optIdx)}>
                         {opt.label}

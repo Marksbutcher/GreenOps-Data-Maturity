@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import model from './data/greenops_maturity_model.json';
 import { MaturityModel, OrganisationProfile, DomainAssessment, AppView } from './types';
 import { createBlankAssessment, scoreDomainAssessment } from './lib/scoring';
@@ -7,7 +7,7 @@ import { generateRecommendations, generateExecutiveSummary } from './lib/recomme
 import { generateDomainNarratives } from './lib/narrativeAnalysis';
 import { generateDecisionReadiness } from './lib/decisionReadiness';
 import { generateCSV, downloadCSV } from './lib/csvExport';
-import { downloadPDF } from './lib/pdfExport';
+import { downloadPDF, type PDFSectionOptions } from './lib/pdfExport';
 import LandingPage from './components/LandingPage';
 import ProfileForm from './components/ProfileForm';
 import AssessmentFlow from './components/AssessmentFlow';
@@ -15,6 +15,9 @@ import ResultsDashboard from './components/ResultsDashboard';
 import './styles.css';
 
 const typedModel = model as unknown as MaturityModel;
+
+/* ─── Auto-save key ─── */
+const AUTOSAVE_KEY = 'greenops-assessment-autosave';
 
 function App() {
   const [view, setView] = useState<AppView>('landing');
@@ -33,6 +36,79 @@ function App() {
   const [domainResults, setDomainResults] = useState<DomainAssessment[]>(
     typedModel.domains.map((d) => createBlankAssessment(d))
   );
+  const [hasRecoverableSession, setHasRecoverableSession] = useState(false);
+
+  /* ─── Item 1: Auto-save — check for recoverable session on mount ─── */
+  useEffect(() => {
+    try {
+      const saved = sessionStorage.getItem(AUTOSAVE_KEY);
+      if (saved) {
+        const data = JSON.parse(saved);
+        if (data.profile && data.results && data.view === 'assessment') {
+          setHasRecoverableSession(true);
+        }
+      }
+    } catch { /* ignore corrupt data */ }
+  }, []);
+
+  /* ─── Auto-save to sessionStorage whenever assessment state changes ─── */
+  useEffect(() => {
+    if (view === 'assessment') {
+      try {
+        const payload = {
+          version: '2.0',
+          saved_at: new Date().toISOString(),
+          view,
+          mode: assessmentMode,
+          profile,
+          results: domainResults,
+        };
+        sessionStorage.setItem(AUTOSAVE_KEY, JSON.stringify(payload));
+      } catch { /* storage full — fail silently */ }
+    }
+  }, [view, assessmentMode, profile, domainResults]);
+
+  /* ─── Warn on tab close during assessment ─── */
+  useEffect(() => {
+    const handler = (e: BeforeUnloadEvent) => {
+      if (view === 'assessment') {
+        const answered = domainResults.reduce(
+          (sum, r) => sum + Object.keys(r.question_answers).length, 0
+        );
+        if (answered > 0) {
+          e.preventDefault();
+        }
+      }
+    };
+    window.addEventListener('beforeunload', handler);
+    return () => window.removeEventListener('beforeunload', handler);
+  }, [view, domainResults]);
+
+  const handleRecoverSession = useCallback(() => {
+    try {
+      const saved = sessionStorage.getItem(AUTOSAVE_KEY);
+      if (saved) {
+        const data = JSON.parse(saved);
+        setProfile({
+          ...data.profile,
+          assessment_intent: data.profile.assessment_intent || 'directional_insight',
+        });
+        setAssessmentMode(data.mode || 'self');
+        const scored = data.results.map((r: DomainAssessment) => {
+          const domain = typedModel.domains.find((d) => d.id === r.domain_id);
+          return domain ? scoreDomainAssessment(domain, r) : r;
+        });
+        setDomainResults(scored);
+        setView('assessment');
+      }
+    } catch { /* ignore */ }
+    setHasRecoverableSession(false);
+  }, []);
+
+  const handleDismissRecovery = useCallback(() => {
+    sessionStorage.removeItem(AUTOSAVE_KEY);
+    setHasRecoverableSession(false);
+  }, []);
 
   const handleStartNew = useCallback((mode: 'self' | 'facilitated') => {
     setAssessmentMode(mode);
@@ -77,14 +153,16 @@ function App() {
     });
     setDomainResults(scored);
     setView('results');
+    // Clear autosave — assessment is complete
+    sessionStorage.removeItem(AUTOSAVE_KEY);
   }, []);
 
-  const handleExportPDF = useCallback(() => {
+  const handleExportPDF = useCallback((sectionOptions?: PDFSectionOptions) => {
     const narratives = generateDomainNarratives(domainResults, typedModel);
     const recommendations = generateRecommendations(domainResults, typedModel);
     const decisionReadiness = generateDecisionReadiness(domainResults, typedModel);
     const execSummary = generateExecutiveSummary(domainResults, typedModel, profile.assessment_intent);
-    downloadPDF(profile, domainResults, typedModel, narratives, recommendations, decisionReadiness, execSummary);
+    downloadPDF(profile, domainResults, typedModel, narratives, recommendations, decisionReadiness, execSummary, sectionOptions);
   }, [profile, domainResults]);
 
   const handleExportCSV = useCallback(() => {
@@ -141,6 +219,9 @@ function App() {
           onStartNew={handleStartNew}
           onLoadDemo={handleLoadDemo}
           onLoadSaved={handleLoadSaved}
+          hasRecoverableSession={hasRecoverableSession}
+          onRecoverSession={handleRecoverSession}
+          onDismissRecovery={handleDismissRecovery}
         />
       )}
       {view === 'profile' && (

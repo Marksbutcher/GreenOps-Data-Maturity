@@ -15,7 +15,8 @@ export function calculateWeightedMaturity(
 
   for (const q of domain.questions) {
     const idx = answers[q.id];
-    if (idx === undefined || idx < 0 || idx >= q.options.length) continue;
+    // Skip unanswered AND "not assessed" (-1) questions — both excluded from scoring
+    if (idx === undefined || idx === -1 || idx < 0 || idx >= q.options.length) continue;
 
     const optionScore = q.options[idx].score;
     totalWeight += q.weight;
@@ -55,12 +56,19 @@ export function applyOverrideRules(
   const flags: string[] = [];
   let cappedScore = calculatedScore;
 
-  // Count level-1 answers
+  // Count level-1 answers and "not assessed" answers
   const answered = domain.questions.filter(q => answers[q.id] !== undefined);
-  const level1Count = answered.filter(q => {
+  const notAssessedCount = answered.filter(q => answers[q.id] === -1).length;
+  const scoreable = answered.filter(q => answers[q.id] !== -1);
+  const level1Count = scoreable.filter(q => {
     const idx = answers[q.id];
     return idx !== undefined && q.options[idx]?.score === 1;
   }).length;
+
+  // Rule: If >20% of answered questions are "not assessed", flag blind spots
+  if (answered.length > 0 && (notAssessedCount / answered.length) > 0.2) {
+    flags.push(`${notAssessedCount} question${notAssessedCount > 1 ? 's' : ''} marked as "not assessed" — the organisation has identified blind spots in this domain. Scores are derived from assessed questions only and may overstate actual capability.`);
+  }
 
   // Rule: If >30% answers are level 1, cap at 3
   if (answered.length > 0 && (level1Count / answered.length) > 0.3) {
@@ -91,12 +99,15 @@ export function deriveConfidence(
   answers: Record<string, number>
 ): number {
   const answered = domain.questions.filter(q => answers[q.id] !== undefined);
+  const scoreable = answered.filter(q => answers[q.id] !== -1); // exclude "not assessed"
+  const notAssessedCount = answered.filter(q => answers[q.id] === -1).length;
   const total = domain.questions.length;
 
   if (answered.length === 0) return 1;
 
-  const completeness = answered.length / total;
-  const scores = answered.map(q => q.options[answers[q.id]]?.score || 1);
+  // Completeness penalises both unanswered AND "not assessed" — blind spots reduce confidence
+  const completeness = scoreable.length / total;
+  const scores = scoreable.map(q => q.options[answers[q.id]]?.score || 1);
 
   // Check consistency: standard deviation of scores
   const avg = scores.reduce((a, b) => a + b, 0) / scores.length;
@@ -254,7 +265,7 @@ export function getAnswerPatternSummary(
 
   for (const q of domain.questions) {
     const idx = answers[q.id];
-    if (idx === undefined) {
+    if (idx === undefined || idx === -1) {
       unanswered++;
       continue;
     }

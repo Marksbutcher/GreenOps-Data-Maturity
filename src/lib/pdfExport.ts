@@ -17,6 +17,40 @@ import { DomainNarrative } from './narrativeAnalysis';
 import { calculateOverallStats } from './scoring';
 import { getTopLimitingFactors, analyseCascadeRisks } from './dependencyChain';
 
+/* ─── Item 4: PDF section selection types ─── */
+export interface PDFSectionOptions {
+  cover: boolean;
+  executive_summary: boolean;
+  overview: boolean;
+  domain_detail: boolean;
+  recommendations: boolean;
+  decision_readiness: boolean;
+  methodology: boolean;
+  appendix: boolean;
+}
+
+export const DEFAULT_PDF_SECTIONS: PDFSectionOptions = {
+  cover: true,
+  executive_summary: true,
+  overview: true,
+  domain_detail: true,
+  recommendations: true,
+  decision_readiness: true,
+  methodology: true,
+  appendix: true,
+};
+
+export const PDF_SECTION_LABELS: Record<keyof PDFSectionOptions, string> = {
+  cover: 'Cover page',
+  executive_summary: 'Executive summary',
+  overview: 'Visual dashboard and charts',
+  domain_detail: 'Domain-by-domain analysis',
+  recommendations: 'Improvement roadmap',
+  decision_readiness: 'Decision readiness matrix',
+  methodology: 'Methodology and next steps',
+  appendix: 'Appendix (answer details)',
+};
+
 const BRAND = {
   green: [90, 166, 62] as [number, number, number], // Posetiv leaf green
   charcoal: [45, 45, 45] as [number, number, number], // Charcoal primary
@@ -349,8 +383,10 @@ export function downloadPDF(
   narratives: DomainNarrative[],
   recommendations: Recommendation[],
   decisionReadiness: DecisionAreaReadiness[],
-  execSummary: string
+  execSummary: string,
+  sectionOptions?: PDFSectionOptions
 ): void {
+  const sections = sectionOptions || DEFAULT_PDF_SECTIONS;
   const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
   const w = doc.internal.pageSize.width;
   const h = doc.internal.pageSize.height;
@@ -368,9 +404,22 @@ export function downloadPDF(
   const intentLabel = INTENT_LABELS[profile.assessment_intent] || 'Assessment';
   const belowIntentCount = results.filter(r => r.effective_maturity < intentLevel).length;
 
+  // Helper: start a new section — adds a page if not first content page
+  let hasContent = false;
+  const startSection = () => {
+    if (hasContent) {
+      addPageFooter(doc, pageNum.value);
+      doc.addPage();
+      pageNum.value++;
+    }
+    hasContent = true;
+    addPageHeader(doc);
+  };
+
   // ═══════════════════════════════════════════════
   // PAGE 1: COVER
   // ═══════════════════════════════════════════════
+  if (sections.cover) {
   doc.setFillColor(...BRAND.green);
   doc.rect(0, 0, w, 120, 'F');
   doc.setTextColor(...BRAND.white);
@@ -423,12 +472,14 @@ export function downloadPDF(
 
   pageNum.value++;
   addPageFooter(doc, pageNum.value);
+  hasContent = true;
+  } // end sections.cover
 
   // ═══════════════════════════════════════════════
   // PAGE 2: VISUAL DASHBOARD
   // ═══════════════════════════════════════════════
-  doc.addPage();
-  pageNum.value++;
+  if (sections.overview) {
+  if (hasContent) { doc.addPage(); pageNum.value++; } else { hasContent = true; }
   addPageHeader(doc);
 
   let dY = 18;
@@ -561,12 +612,13 @@ export function downloadPDF(
   }
 
   addPageFooter(doc, pageNum.value);
+  } // end sections.overview
 
   // ═══════════════════════════════════════════════
   // PAGE 4: EXECUTIVE SUMMARY
   // ═══════════════════════════════════════════════
-  doc.addPage();
-  pageNum.value++;
+  if (sections.executive_summary) {
+  if (hasContent) { doc.addPage(); pageNum.value++; } else { hasContent = true; }
   addPageHeader(doc);
 
   let esY = sectionHeading(doc, 'Executive Summary', 25, 18);
@@ -631,12 +683,13 @@ export function downloadPDF(
   doc.text(readinessPhrase, 20, esY, { maxWidth: w - 40 });
 
   addPageFooter(doc, pageNum.value);
+  } // end sections.executive_summary
 
   // ═══════════════════════════════════════════════
   // PAGE 5: DECISION READINESS
   // ═══════════════════════════════════════════════
-  doc.addPage();
-  pageNum.value++;
+  if (sections.decision_readiness) {
+  if (hasContent) { doc.addPage(); pageNum.value++; } else { hasContent = true; }
   addPageHeader(doc);
 
   let drY = sectionHeading(doc, 'Decision Readiness by Persona', 25, 18);
@@ -941,12 +994,13 @@ export function downloadPDF(
   }
 
   addPageFooter(doc, pageNum.value);
+  } // end sections.decision_readiness
 
   // ═══════════════════════════════════════════════
   // PAGES: DETAILED DOMAIN ANALYSIS
   // ═══════════════════════════════════════════════
-  doc.addPage();
-  pageNum.value++;
+  if (sections.domain_detail) {
+  if (hasContent) { doc.addPage(); pageNum.value++; } else { hasContent = true; }
   addPageHeader(doc);
 
   let domainIntroY = sectionHeading(
@@ -1048,11 +1102,13 @@ export function downloadPDF(
     addPageFooter(doc, pageNum.value);
   }
 
+  } // end sections.domain_detail
+
   // ═══════════════════════════════════════════════
   // PAGE: IMPROVEMENT ROADMAP
   // ═══════════════════════════════════════════════
-  doc.addPage();
-  pageNum.value++;
+  if (sections.recommendations) {
+  if (hasContent) { doc.addPage(); pageNum.value++; } else { hasContent = true; }
   addPageHeader(doc);
 
   let ry = sectionHeading(doc, 'Improvement Roadmap', 25, 18);
@@ -1142,12 +1198,13 @@ export function downloadPDF(
   }
 
   addPageFooter(doc, pageNum.value);
+  } // end sections.recommendations
 
   // ═══════════════════════════════════════════════
   // FINAL PAGE: NEXT STEPS + POSETIV CTA
   // ═══════════════════════════════════════════════
-  doc.addPage();
-  pageNum.value++;
+  if (sections.methodology) {
+  if (hasContent) { doc.addPage(); pageNum.value++; } else { hasContent = true; }
   addPageHeader(doc);
 
   let nsY = sectionHeading(doc, 'Next Steps', 25, 18);
@@ -1211,6 +1268,7 @@ export function downloadPDF(
   doc.text('www.posetiv.co.uk', 20, nsY);
 
   addPageFooter(doc, pageNum.value);
+  } // end sections.methodology
 
   // Save
   const slug = profile.organisation_name.toLowerCase().replace(/[^a-z0-9]+/g, '-');

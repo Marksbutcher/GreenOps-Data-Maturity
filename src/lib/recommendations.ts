@@ -1,5 +1,5 @@
 import { DomainAssessment, MaturityModel, Recommendation, AssessmentIntent, INTENT_LABELS, INTENT_MINIMUM_LEVEL, MATURITY_LABELS_SHORT, confidenceLabel, CONFIDENCE_DESCRIPTIONS } from '../types';
-import { getTopLimitingFactors } from './dependencyChain';
+import { getTopLimitingFactors, DEPENDENCY_MAP } from './dependencyChain';
 
 /* ─── Phase classification considers maturity AND domain strategic weight ─── */
 function classifyPhase(
@@ -77,6 +77,26 @@ export function generateRecommendations(
 ): Recommendation[] {
   const recommendations: Recommendation[] = [];
 
+  // Item 7: Build upstream impact map — how many downstream domains each domain constrains
+  const domainNames: Record<string, string> = {};
+  for (const d of model.domains) domainNames[d.id] = d.name;
+  const scoreMap = new Map<string, number>();
+  for (const r of results) scoreMap.set(r.domain_id, r.effective_maturity);
+
+  const downstreamImpact = new Map<string, { count: number; names: string[] }>();
+  for (const dep of DEPENDENCY_MAP) {
+    for (const upId of dep.depends_on) {
+      const upScore = scoreMap.get(upId) || 1;
+      const downScore = scoreMap.get(dep.domain_id) || 1;
+      if (upScore <= 2 || upScore < downScore) {
+        if (!downstreamImpact.has(upId)) downstreamImpact.set(upId, { count: 0, names: [] });
+        const entry = downstreamImpact.get(upId)!;
+        entry.count++;
+        entry.names.push(domainNames[dep.domain_id] || dep.domain_id);
+      }
+    }
+  }
+
   for (const result of results) {
     const domain = model.domains.find((d) => d.id === result.domain_id);
     if (!domain) continue;
@@ -119,22 +139,31 @@ export function generateRecommendations(
       const theme = selectedThemes[i];
       const trigger = triggeredGuidance[i] || triggeredGuidance[0];
 
-      // Derive priority from gap analysis, not just trigger metadata
+      // Derive priority from gap analysis + upstream cascade impact
       let priority: 'High' | 'Medium' | 'Low';
       const gap = result.impact_score - maturity;
-      if (gap >= 3 || (result.impact_score >= 4 && maturity <= 2)) {
+      const cascadeInfo = downstreamImpact.get(domain.id);
+      const cascadeBoost = cascadeInfo && cascadeInfo.count >= 2; // constrains 2+ downstream domains
+
+      if (gap >= 3 || (result.impact_score >= 4 && maturity <= 2) || (cascadeBoost && maturity <= 2)) {
         priority = 'High';
-      } else if (gap >= 1.5 || (result.impact_score >= 3 && maturity <= 3)) {
+      } else if (gap >= 1.5 || (result.impact_score >= 3 && maturity <= 3) || cascadeBoost) {
         priority = 'Medium';
       } else {
         priority = 'Low';
+      }
+
+      // Add upstream cascade context to reason
+      let reason = generateReason(trigger?.guidance, maturity, weakDims, result.impact_score);
+      if (cascadeInfo && cascadeInfo.count >= 2) {
+        reason += ` Fix this first: it constrains ${cascadeInfo.count} downstream domains (${cascadeInfo.names.slice(0, 3).join(', ')}${cascadeInfo.names.length > 3 ? ` +${cascadeInfo.names.length - 3} more` : ''}).`;
       }
 
       recommendations.push({
         domain_id: domain.id,
         domain_name: domain.name,
         action: theme,
-        reason: generateReason(trigger?.guidance, maturity, weakDims, result.impact_score),
+        reason,
         benefit: generateBenefit(domain.name, maturity, domain),
         priority,
         phase,
