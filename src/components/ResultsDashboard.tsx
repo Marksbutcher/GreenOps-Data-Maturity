@@ -668,6 +668,22 @@ export default function ResultsDashboard({
                               </div>
                             )}
                           </div>
+                          {(narrative?.misinterpretation_risk || narrative?.cross_domain_diagnosis) && (
+                            <div className="enables-card-warnings">
+                              {narrative?.misinterpretation_risk && (
+                                <div className="enables-warning enables-misinterp">
+                                  <span className="enables-warning-label">What this costs you</span>
+                                  <p>{narrative.misinterpretation_risk}</p>
+                                </div>
+                              )}
+                              {narrative?.cross_domain_diagnosis && (
+                                <div className="enables-warning enables-crossdomain">
+                                  <span className="enables-warning-label">Cross-domain interaction</span>
+                                  <p>{narrative.cross_domain_diagnosis}</p>
+                                </div>
+                              )}
+                            </div>
+                          )}
                         </div>
                       );
                     })}
