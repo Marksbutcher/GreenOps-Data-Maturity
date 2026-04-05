@@ -770,6 +770,13 @@ h3 { font-size: 1.125rem; }
   padding-left: 10px;
   margin-top: 8px;
 }
+.assessment-goal-card-trust {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  border-left: 2px solid var(--color-brand-green);
+  padding-left: 10px;
+  margin-top: 6px;
+}
 
 .sidebar-domain-list {
   flex: 1;

@@ -220,22 +220,26 @@ export default function AssessmentFlow({
                   compliance_reporting: [
                     'Produce high-level carbon and energy reports, meet basic disclosure requirements (SECR, CSRD, ESOS), and report aggregate consumption at portfolio or site level.',
                     'Data quality: Estimates, annual or quarterly figures, vendor-supplied totals, and broad-brush emission factors are sufficient. Coverage gaps are acceptable if the overall picture is directionally correct. Most data will be derived from invoices, billing data, and supplier reports rather than direct measurement.',
+                    'Who uses it: Typically one team produces the numbers — sustainability or facilities — and the output is a report for external disclosure or a board pack. The data does not need to be trusted or usable by other teams because nobody else is making decisions from it.',
                     'Most organisations start here. If your primary need is to fill in a reporting template or produce a board-level sustainability summary, this is your bar.',
                   ],
                   directional_insight: [
                     'Go beyond compliance. Identify hotspots, compare sites or services, benchmark against peers, track trends over time, and prioritise where to investigate or invest next.',
                     'Data quality: Requires consistent, repeatable data across most domains — not just totals but breakdowns by site, environment, or service. Monthly granularity at minimum. Location-based emission factors rather than just grid averages. Coverage needs to be broad enough that comparisons are fair and trends are real, not artefacts of missing data.',
+                    'Who uses it: Multiple teams start to depend on the same data — sustainability needs it for reporting, infrastructure for capacity planning, finance for cost benchmarking. The data needs to be consistent enough that different people looking at the same question get the same answer, even if they are using it for different purposes.',
                     'This is the right level if you need to answer questions like "where is the waste?", "which sites are outliers?", or "are we improving?" — but you are not yet making high-stakes investment or procurement decisions from the data.',
                   ],
                   evidence_based_decisions: [
                     'Support investment cases, procurement challenges, rightsizing and decommissioning decisions, workload placement, and operational accountability with defensible, auditable evidence.',
                     'Data quality: Requires measured, attributed, and traceable data — not estimates. Consumption must be allocated to services, teams, or business units. Temporal resolution needs to be at least monthly, ideally weekly or better for operational domains. Emission factors must be market-based and supplier-specific where available. Data lineage and methodology must be documented well enough to survive challenge in a business case, governance forum, or supplier negotiation.',
+                    'Who uses it: Finance, procurement, operations, and sustainability all rely on the same underlying data to make different decisions — from investment approval through to supplier challenge. The data must be trusted across these personas simultaneously: a CFO needs to sign off on costs, a procurement lead needs to challenge a supplier, an infrastructure lead needs to justify decommissioning. That demands traceability, clear methodology, and documented ownership.',
                     'This is a significant step up. If you need to stand behind a number in a CFO review, defend a procurement challenge, or justify a capacity decision, your data must be evidence-grade.',
                   ],
                   automated_governance: [
-                    'Shift from measurement and reporting to active demand management, avoidance strategies, and continuous operational governance. Embed data into automated controls, policy-driven thresholds, real-time optimisation, and closed-loop management — moving from knowing your footprint to actively reducing it.',
+                    'Shift from measurement and reporting to active demand management, avoidance strategies, and continuous operational governance. Embed data into automated controls, policy-driven thresholds, real-time optimisation, and closed-loop management — moving from knowing your footprint to actively reducing it. This is where sustainability transitions from a reporting obligation to a strategic lever for cost, resilience, and competitive advantage.',
                     'Data quality: Near real-time, granular, fully attributed telemetry integrated with operational tooling. Workload-level or service-level consumption data, not just infrastructure totals. Automated collection with continuous assurance, anomaly detection, and audit trails. Carbon-aware scheduling, dynamic placement, and efficiency-driven lifecycle management require data feeds that are both timely enough and trustworthy enough to act on without human review.',
-                    'This is the highest bar and relatively few organisations are here today. It represents the shift from sustainability as a reporting exercise to sustainability as an operational discipline — where efficiency, cost, carbon, and resilience are managed together, continuously, and with accountability at service level.',
+                    'Who uses it: Data is consumed by automated systems and human decision-makers alike. Policy engines enforce thresholds. Dashboards drive daily operational decisions across infrastructure, cloud, finance, and sustainability teams. The data is a shared operational asset — not owned by one team but governed collectively, with clear accountability at service level. Every persona from CIO to domain engineer depends on the same trusted, real-time picture.',
+                    'Relatively few organisations are here today. This represents the shift from sustainability as a reporting exercise to sustainability as an operational discipline — where efficiency, cost, carbon, and resilience are managed together, continuously, with accountability and avoidance strategies replacing retrospective measurement.',
                   ],
                 };
                 return (
@@ -247,7 +251,7 @@ export default function AssessmentFlow({
                   >
                     <span className="assessment-goal-card-label">{INTENT_LABELS[intent]}</span>
                     {explanations[intent].map((para, pi) => (
-                      <span key={pi} className={`assessment-goal-card-desc ${pi === 1 ? 'assessment-goal-card-data' : ''}`}>{para}</span>
+                      <span key={pi} className={`assessment-goal-card-desc ${pi === 1 ? 'assessment-goal-card-data' : pi === 2 ? 'assessment-goal-card-trust' : ''}`}>{para}</span>
                     ))}
                   </button>
                 );
