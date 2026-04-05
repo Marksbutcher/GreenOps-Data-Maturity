@@ -11,6 +11,7 @@ import { generateRecommendations, generateExecutiveSummary } from '../lib/recomm
 import { generateDecisionReadiness } from '../lib/decisionReadiness';
 import { getTopLimitingFactors, analyseCascadeRisks } from '../lib/dependencyChain';
 import { type PDFSectionOptions, DEFAULT_PDF_SECTIONS, PDF_SECTION_LABELS } from '../lib/pdfExport';
+import PosetivLogo from './PosetivLogo';
 
 interface Props {
   model: MaturityModel;
@@ -238,9 +239,14 @@ export default function ResultsDashboard({
       <div className="container-wide">
         {/* Header */}
         <div className="results-header">
-          <div>
-            <h1 className="results-title">Assessment Results</h1>
-            <p className="results-org">{profile.organisation_name} — {profile.assessment_date}</p>
+          <div className="results-header-left">
+            <div className="results-logo">
+              <PosetivLogo variant="dark" height={28} />
+            </div>
+            <div>
+              <h1 className="results-title">Assessment Results</h1>
+              <p className="results-org">{profile.organisation_name} — {profile.assessment_date}</p>
+            </div>
           </div>
           <div className="results-actions">
             <button className="btn btn-outline" onClick={onBack}>Back to assessment</button>

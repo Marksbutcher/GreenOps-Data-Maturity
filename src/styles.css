@@ -1468,6 +1468,16 @@ h3 { font-size: 1.125rem; }
   gap: var(--space-md);
 }
 
+.results-header-left {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+}
+
+.results-logo {
+  flex-shrink: 0;
+}
+
 .results-header h1 {
   font-size: 1.75rem;
 }
