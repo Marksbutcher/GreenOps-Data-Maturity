@@ -281,7 +281,56 @@ export default function ResultsDashboard({
           {activeTab === 'overview' && (
             <div className="overview-panel">
 
-              {/* Item 2: Enhanced intent gap warning — prominent banner */}
+              {/* Hero results — overall maturity with label */}
+              <div className="overview-hero">
+                <div className="overview-hero-main">
+                  <div className="overview-hero-score">
+                    <span className="hero-score-number">{stats.weightedMaturity}</span>
+                    <span className="hero-score-max">/ 5</span>
+                  </div>
+                  <div className="overview-hero-detail">
+                    <span className="hero-maturity-label">
+                      {MATURITY_LABELS[Math.round(stats.weightedMaturity)] || MATURITY_LABELS[Math.floor(stats.weightedMaturity)] || 'Unknown'}
+                    </span>
+                    <span className="hero-maturity-subtext">
+                      Weighted average across {results.length} domains
+                    </span>
+                  </div>
+                </div>
+                <div className="overview-hero-stats">
+                  <div className="hero-stat">
+                    <span className="hero-stat-value">{stats.minMaturity}–{stats.maxMaturity}</span>
+                    <span className="hero-stat-label">Range</span>
+                    <span className="hero-stat-detail">
+                      {MATURITY_LABELS_SHORT[stats.minMaturity]} to {MATURITY_LABELS_SHORT[stats.maxMaturity]}
+                    </span>
+                  </div>
+                  <div className="hero-stat-divider" aria-hidden="true" />
+                  <div className="hero-stat">
+                    <span className="hero-stat-value hero-stat-alert">{belowThree}</span>
+                    <span className="hero-stat-label">Below level 3</span>
+                    <span className="hero-stat-detail">
+                      {belowThree === 0 ? 'No critical gaps' : belowThree === 1 ? '1 domain needs attention' : `${belowThree} domains need attention`}
+                    </span>
+                  </div>
+                  <div className="hero-stat-divider" aria-hidden="true" />
+                  <div className="hero-stat">
+                    <span className="hero-stat-value hero-stat-good">{atFourPlus}</span>
+                    <span className="hero-stat-label">At level 4+</span>
+                    <span className="hero-stat-detail">
+                      {atFourPlus === 0 ? 'No domains at decision-grade' : atFourPlus === 1 ? '1 domain is decision-grade' : `${atFourPlus} domains are decision-grade`}
+                    </span>
+                  </div>
+                </div>
+                <div className="overview-hero-confidence">
+                  <span className={`confidence-badge confidence-${overallConfidence}`} role="status" aria-label={`Assessment confidence: ${overallConfidence}`}>
+                    {overallConfidence.charAt(0).toUpperCase() + overallConfidence.slice(1)} confidence
+                  </span>
+                  <span className="confidence-desc">{CONFIDENCE_DESCRIPTIONS[overallConfidence]}</span>
+                </div>
+              </div>
+
+              {/* Intent gap — below the results */}
               {intentGap && intentGap.shortfall > 0 && (
                 <div className="intent-gap-banner intent-gap-warning" role="alert" aria-label="Assessment goal gap warning">
                   <div className="intent-gap-banner-header">
@@ -297,8 +346,7 @@ export default function ResultsDashboard({
                   </div>
                   <p className="intent-gap-banner-text">
                     You selected <strong>{intentGap.label}</strong>, which requires all domains at level {intentGap.requiredLevel} or above.
-                    {' '}<strong>{intentGap.shortfall} of {intentGap.total} domains</strong> fall short. Until these gaps close,
-                    the data in those areas cannot reliably support the decisions you need it for.
+                    {' '}<strong>{intentGap.shortfall} of {intentGap.total} domains</strong> fall short.
                   </p>
                   <div className="intent-gap-domain-list" role="list" aria-label="Domains below target">
                     {intentGap.gaps.map((g) => (
@@ -328,44 +376,9 @@ export default function ResultsDashboard({
                   </div>
                   <p className="intent-gap-banner-text">
                     Your data meets the minimum level {intentGap.requiredLevel} required for <strong>{intentGap.label}</strong> across all {intentGap.total} domains.
-                    Focus on embedding this data into operational governance and continuous improvement.
                   </p>
                 </div>
               )}
-
-              {/* Confidence banner */}
-              <div className="overview-confidence-banner">
-                <div className="confidence-row">
-                  <div className="confidence-indicator">
-                    <span className={`confidence-badge confidence-${overallConfidence}`} role="status" aria-label={`Assessment confidence: ${overallConfidence}`}>
-                      {overallConfidence.charAt(0).toUpperCase() + overallConfidence.slice(1)} confidence
-                    </span>
-                    <span className="confidence-desc">{CONFIDENCE_DESCRIPTIONS[overallConfidence]}</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Stat strip */}
-              <div className="overview-summary-strip">
-                <div className="summary-stat-grid">
-                  <div className="summary-stat">
-                    <span className="summary-stat-value">{stats.weightedMaturity}</span>
-                    <span className="summary-stat-label">Overall maturity<br />(out of 5)</span>
-                  </div>
-                  <div className="summary-stat">
-                    <span className="summary-stat-value">{stats.minMaturity}–{stats.maxMaturity}</span>
-                    <span className="summary-stat-label">Maturity range<br />across domains</span>
-                  </div>
-                  <div className="summary-stat">
-                    <span className="summary-stat-value summary-stat-alert">{belowThree}</span>
-                    <span className="summary-stat-label">Domains below<br />level 3</span>
-                  </div>
-                  <div className="summary-stat">
-                    <span className="summary-stat-value summary-stat-good">{atFourPlus}</span>
-                    <span className="summary-stat-label">Domains at<br />level 4+</span>
-                  </div>
-                </div>
-              </div>
 
               {/* Executive narrative — formatted with visual hierarchy */}
               <div className="overview-narrative">
