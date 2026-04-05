@@ -1,5 +1,5 @@
 import { useState, useCallback, useMemo } from 'react';
-import { MaturityModel, DomainAssessment, OrganisationProfile } from '../types';
+import { MaturityModel, DomainAssessment, OrganisationProfile, AssessmentIntent, INTENT_LABELS, INTENT_DESCRIPTIONS } from '../types';
 import PosetivLogo from './PosetivLogo';
 
 interface AssessmentFlowProps {
@@ -9,6 +9,7 @@ interface AssessmentFlowProps {
   results: DomainAssessment[];
   onComplete: (results: DomainAssessment[]) => void;
   onBack: () => void;
+  onUpdateProfile?: (updates: Partial<OrganisationProfile>) => void;
 }
 
 type DomainStatus = 'not_started' | 'in_progress' | 'complete';
@@ -20,10 +21,12 @@ export default function AssessmentFlow({
   results: initialResults,
   onComplete,
   onBack,
+  onUpdateProfile,
 }: AssessmentFlowProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [results, setResults] = useState<DomainAssessment[]>(initialResults);
   const [showIncomplete, setShowIncomplete] = useState(false);
+  const [intentExpanded, setIntentExpanded] = useState(false);
 
   const domain = model.domains[currentIndex];
   const result = results[currentIndex];
@@ -123,6 +126,7 @@ export default function AssessmentFlow({
               style={{ width: `${(completedCount / total) * 100}%` }}
             />
           </div>
+
         </div>
         <nav className="sidebar-domain-list">
           {model.domains.map((d, i) => {
@@ -180,7 +184,7 @@ export default function AssessmentFlow({
         {/* Assessment introduction — shown on the first domain */}
         {currentIndex === 0 && (
           <div className="assessment-intro">
-            <h2 className="assessment-intro-title">GreenOps Data Input Maturity Assessment</h2>
+            <h2 className="assessment-intro-title">GreenOps Data Maturity Assessment</h2>
             <p className="assessment-intro-text">
               This assessment evaluates your organisation's data maturity across {total} domains
               that underpin effective GreenOps decision-making — from energy and carbon measurement
@@ -202,6 +206,44 @@ export default function AssessmentFlow({
             </div>
           </div>
         )}
+
+        {/* Assessment goal — always visible, collapsible after first domain */}
+        <div className={`assessment-goal-section ${intentExpanded || currentIndex === 0 ? 'expanded' : 'collapsed'}`}>
+          <div className="assessment-goal-header" onClick={() => currentIndex > 0 && setIntentExpanded(!intentExpanded)}>
+            <div className="assessment-goal-header-left">
+              <h3 className="assessment-goal-title">Assessment goal</h3>
+              <span className="assessment-goal-current">{INTENT_LABELS[profile.assessment_intent]}</span>
+            </div>
+            {currentIndex > 0 && (
+              <button className="assessment-goal-toggle" type="button">
+                {intentExpanded ? 'Collapse' : 'Change'}
+              </button>
+            )}
+          </div>
+          {(intentExpanded || currentIndex === 0) && (
+            <div className="assessment-goal-body">
+              <p className="assessment-goal-intro">
+                What do you need your GreenOps data to support? This shapes how results are interpreted — what counts as "good enough" depends on what you are trying to do with the data.
+              </p>
+              <div className="assessment-goal-cards">
+                {(Object.keys(INTENT_LABELS) as AssessmentIntent[]).map((intent) => (
+                  <button
+                    key={intent}
+                    type="button"
+                    className={`assessment-goal-card ${profile.assessment_intent === intent ? 'selected' : ''}`}
+                    onClick={() => {
+                      onUpdateProfile?.({ assessment_intent: intent });
+                      if (currentIndex > 0) setIntentExpanded(false);
+                    }}
+                  >
+                    <span className="assessment-goal-card-label">{INTENT_LABELS[intent]}</span>
+                    <span className="assessment-goal-card-desc">{INTENT_DESCRIPTIONS[intent]}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
 
         {/* Domain context intro */}
         <div className="domain-intro">

@@ -376,7 +376,7 @@ export function downloadPDF(
   doc.setTextColor(...BRAND.white);
   doc.setFontSize(28);
   doc.setFont(undefined as any, 'bold');
-  doc.text('GreenOps Data Input', 20, 45);
+  doc.text('GreenOps Data', 20, 45);
   doc.text('Maturity Assessment', 20, 60);
   doc.setFont(undefined as any, 'normal');
   doc.setFontSize(14);
@@ -520,12 +520,45 @@ export function downloadPDF(
   }
   doc.text('Dashed amber polygon: Intent target', 40, legendY + 3);
 
-  legendY += 12;
+  legendY += 10;
 
   // Grid explanation
   doc.setFontSize(7);
   doc.setTextColor(...BRAND.gray);
-  doc.text('Concentric circles represent maturity levels 1 (center) to 5 (edge)', 25, legendY);
+  doc.text('Concentric circles represent maturity levels 1 (centre) to 5 (edge)', 25, legendY);
+
+  legendY += 8;
+
+  // Maturity level key — compact reference so reader can interpret scores immediately
+  doc.setFontSize(9);
+  doc.setTextColor(...BRAND.charcoal);
+  doc.setFont(undefined as any, 'bold');
+  doc.text('Maturity Level Key', 25, legendY);
+  doc.setFont(undefined as any, 'normal');
+  legendY += 5;
+
+  const levelKeyItems = [
+    { level: 1, short: 'Initial', desc: 'Data absent or ad hoc — no reliable basis for decisions' },
+    { level: 2, short: 'Managed', desc: 'Partial coverage — sufficient for basic reporting only' },
+    { level: 3, short: 'Defined', desc: 'Structured and routinely collected — supports periodic reporting' },
+    { level: 4, short: 'Quantitative', desc: 'Measured and attributed — supports confident operational decisions' },
+    { level: 5, short: 'Optimising', desc: 'Automated and integrated — supports continuous improvement' },
+  ];
+
+  for (const item of levelKeyItems) {
+    // Coloured level indicator
+    doc.setFillColor(...levelColour(item.level));
+    doc.rect(25, legendY - 2.5, 3, 3, 'F');
+
+    doc.setFontSize(7.5);
+    doc.setTextColor(...levelColour(item.level));
+    doc.setFont(undefined as any, 'bold');
+    doc.text(`${item.level}`, 30, legendY);
+    doc.setFont(undefined as any, 'normal');
+    doc.setTextColor(...BRAND.slate);
+    doc.text(`${item.short} — ${item.desc}`, 34, legendY);
+    legendY += 4.5;
+  }
 
   addPageFooter(doc, pageNum.value);
 

@@ -45,7 +45,7 @@ export default function LandingPage({ onStartNew, onLoadDemo, onLoadSaved }: Lan
           <div className="landing-hero-brand">
             <PosetivLogo variant="light" height={44} />
           </div>
-          <h1>GreenOps Data Input<br />Maturity Assessment</h1>
+          <h1><span className="text-brand">GreenOps</span> Data<br />Maturity Assessment</h1>
           <p className="subtitle">
             Assess the maturity of data inputs used in GreenOps calculations across your
             technology estate. Understand what decisions your data supports, where the gaps

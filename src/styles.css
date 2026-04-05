@@ -304,6 +304,9 @@ h3 { font-size: 1.125rem; }
   max-width: 680px;
   line-height: 1.15;
 }
+.landing-hero h1 .text-brand {
+  color: var(--color-leaf);
+}
 .landing-hero .subtitle {
   font-size: 1.0625rem;
   color: rgba(255, 255, 255, 0.7);
@@ -689,6 +692,105 @@ h3 { font-size: 1.125rem; }
   background: var(--color-brand-green);
   border-radius: 2px;
   transition: width 0.3s ease;
+}
+
+/* Assessment goal section — in main content area */
+.assessment-goal-section {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--space-lg);
+  overflow: hidden;
+}
+.assessment-goal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-md) var(--space-lg);
+  cursor: pointer;
+}
+.assessment-goal-section.expanded .assessment-goal-header {
+  border-bottom: 1px solid var(--color-border-light);
+}
+.assessment-goal-header-left {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+.assessment-goal-title {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0;
+}
+.assessment-goal-current {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-leaf);
+}
+.assessment-goal-toggle {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--color-leaf);
+  background: none;
+  border: 1px solid var(--color-leaf);
+  border-radius: var(--radius-sm);
+  padding: 4px 12px;
+  cursor: pointer;
+}
+.assessment-goal-toggle:hover {
+  background: rgba(107, 190, 73, 0.06);
+}
+.assessment-goal-body {
+  padding: var(--space-md) var(--space-lg) var(--space-lg);
+}
+.assessment-goal-intro {
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+  margin: 0 0 var(--space-md);
+}
+.assessment-goal-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-sm);
+}
+@media (max-width: 900px) {
+  .assessment-goal-cards { grid-template-columns: 1fr; }
+}
+.assessment-goal-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  padding: var(--space-md);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-bg);
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+.assessment-goal-card:hover {
+  border-color: var(--color-leaf);
+  background: rgba(107, 190, 73, 0.03);
+}
+.assessment-goal-card.selected {
+  border-color: var(--color-leaf);
+  background: rgba(107, 190, 73, 0.06);
+  box-shadow: 0 0 0 1px var(--color-leaf);
+}
+.assessment-goal-card-label {
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: var(--color-text);
+  margin-bottom: 6px;
+}
+.assessment-goal-card-desc {
+  font-size: 0.8125rem;
+  color: var(--color-text-secondary);
+  line-height: 1.55;
 }
 
 .sidebar-domain-list {

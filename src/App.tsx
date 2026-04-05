@@ -159,6 +159,7 @@ function App() {
           results={domainResults}
           onComplete={handleAssessmentComplete}
           onBack={() => setView('profile')}
+          onUpdateProfile={(updates) => setProfile((p) => ({ ...p, ...updates }))}
         />
       )}
       {view === 'results' && (
