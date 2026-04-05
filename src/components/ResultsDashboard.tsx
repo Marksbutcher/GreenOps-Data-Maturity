@@ -996,6 +996,12 @@ export default function ResultsDashboard({
                             <p>{n.cascade_note}</p>
                           </div>
                         )}
+                        {n.cross_domain_diagnosis && (
+                          <div className="analysis-section cross-domain-section">
+                            <h4>Cross-Domain Interaction</h4>
+                            <p>{n.cross_domain_diagnosis}</p>
+                          </div>
+                        )}
                         {n.weakness_flags.length > 0 && (
                           <div className="analysis-section caveats">
                             <h4>Scoring Caveats</h4>

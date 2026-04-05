@@ -1076,6 +1076,13 @@ export function downloadPDF(
       ny = writeBody(doc, narrative.cascade_note, ny, pageNum, { fontSize: 9 });
     }
 
+    // Cross-domain interaction
+    if (narrative.cross_domain_diagnosis) {
+      ny += 1;
+      ny = writeBody(doc, 'Cross-domain interaction', ny, pageNum, { bold: true, fontSize: 9 });
+      ny = writeBody(doc, narrative.cross_domain_diagnosis, ny, pageNum, { fontSize: 9 });
+    }
+
     // What this data supports
     if (narrative.decision_support_summary) {
       ny += 1;

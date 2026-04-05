@@ -4,23 +4,23 @@
   "description": "Question-led source-of-truth model for a GreenOps data input maturity assessment and reporting tool. Designed for derived scoring rather than direct self-selected maturity.",
   "maturity_scale": {
     "1": {
-      "label": "Initial — ad hoc or absent",
+      "label": "Initial \u2014 ad hoc or absent",
       "description": "Inputs are fragmented, reactive, estimate-heavy and not reliable enough for confident decision-making."
     },
     "2": {
-      "label": "Managed — partial coverage",
+      "label": "Managed \u2014 partial coverage",
       "description": "Inputs can be gathered and reused in a repeatable way, but coverage, precision and attribution remain inconsistent."
     },
     "3": {
-      "label": "Defined — standardised and reportable",
+      "label": "Defined \u2014 standardised and reportable",
       "description": "Data sources, methods and ownership are documented and standardised across key areas."
     },
     "4": {
-      "label": "Quantitatively Managed — measured and defensible",
+      "label": "Quantitatively Managed \u2014 measured and defensible",
       "description": "Data quality, granularity, coverage and confidence are measured and controlled using evidence."
     },
     "5": {
-      "label": "Optimising — auditable and continuously improving",
+      "label": "Optimising \u2014 auditable and continuously improving",
       "description": "Inputs are continuously improved, increasingly automated and embedded into operational and strategic decision-making."
     }
   },
@@ -164,7 +164,7 @@
           "tags": [],
           "options": [
             {
-              "label": "Asset records are minimal — maybe hostname, location and rough category. No configuration detail.",
+              "label": "Asset records are minimal \u2014 maybe hostname, location and rough category. No configuration detail.",
               "score": 1
             },
             {
@@ -280,7 +280,7 @@
         },
         {
           "id": "ai6",
-          "text": "Can you match asset records to vendor product specifications — such as make, model, configuration, rated power and warranty data?",
+          "text": "Can you match asset records to vendor product specifications \u2014 such as make, model, configuration, rated power and warranty data?",
           "dimension": "method_quality",
           "weight": 4,
           "guidance": "",
@@ -354,7 +354,7 @@
               "score": 1
             },
             {
-              "label": "Some lifecycle tracking for major assets — mainly procurement and disposal dates. Status often out of date.",
+              "label": "Some lifecycle tracking for major assets \u2014 mainly procurement and disposal dates. Status often out of date.",
               "score": 2
             },
             {
@@ -374,23 +374,23 @@
       ],
       "maturity_levels": {
         "1": {
-          "label": "Initial — ad hoc or absent",
+          "label": "Initial \u2014 ad hoc or absent",
           "description": "Inputs are fragmented, reactive, estimate-heavy and not reliable enough for confident decision-making."
         },
         "2": {
-          "label": "Managed — partial coverage",
+          "label": "Managed \u2014 partial coverage",
           "description": "Inputs can be gathered and reused in a repeatable way, but coverage, precision and attribution remain inconsistent."
         },
         "3": {
-          "label": "Defined — standardised and reportable",
+          "label": "Defined \u2014 standardised and reportable",
           "description": "Data sources, methods and ownership are documented and standardised across key areas."
         },
         "4": {
-          "label": "Quantitatively Managed — measured and defensible",
+          "label": "Quantitatively Managed \u2014 measured and defensible",
           "description": "Data quality, granularity, coverage and confidence are measured and controlled using evidence."
         },
         "5": {
-          "label": "Optimising — auditable and continuously improving",
+          "label": "Optimising \u2014 auditable and continuously improving",
           "description": "Inputs are continuously improved, increasingly automated and embedded into operational and strategic decision-making."
         }
       },
@@ -398,59 +398,66 @@
         "1": {
           "status": "Reporting only",
           "supports": [
-            "Broad awareness and high-level reporting for asset inventory and configuration data",
-            "Very rough hotspot identification"
+            "Rough aggregate estate size reporting",
+            "High-level awareness of technology footprint"
           ],
           "does_not_support": [
-            "Controlled operational decisions",
-            "High-confidence optimisation or accountability",
-            "Strong supplier or engineering challenge"
+            "Per-asset lifecycle costing or embodied carbon",
+            "Reliable Scope 3 hardware emissions",
+            "Service-to-asset mapping for attribution",
+            "Supplier challenge based on estate composition"
           ]
         },
         "2": {
           "status": "Directional decision support",
           "supports": [
-            "Indicative prioritisation",
-            "Repeatable but cautious management reporting",
-            "Early-stage improvement planning"
+            "Aggregate asset counts by category",
+            "Basic refresh cycle planning for known assets",
+            "Directional Scope 3 estimates using generic factors"
           ],
           "does_not_support": [
-            "Decision-grade optimisation",
-            "Fine-grained service or workload trade-offs",
-            "Confident automation or tight target accountability"
+            "Per-service asset attribution",
+            "Supplier-specific embodied carbon comparison",
+            "Reliable rightsizing across the full estate",
+            "Confident decommissioning decisions for shared infrastructure"
           ]
         },
         "3": {
           "status": "Directional decision support",
           "supports": [
-            "Standard management review",
-            "Defined governance and improvement planning",
-            "Some controlled decisions in priority areas"
+            "Standard lifecycle reporting and refresh planning",
+            "Broad capacity planning for major platforms",
+            "Asset-level Scope 3 estimates by product family",
+            "Basic supplier benchmarking on estate composition"
           ],
           "does_not_support": [
-            "Broad optimisation-grade control everywhere",
-            "Highly granular trade-offs without caveats",
-            "Strong claims of precision across the whole estate"
+            "Full service-to-asset-to-carbon traceability",
+            "Confident circularity metrics (reuse rate, ITAD recovery)",
+            "Edge estate and shadow IT governance"
           ]
         },
         "4": {
           "status": "Controlled decision-grade",
           "supports": [
-            "Controlled operational decisions",
-            "Prioritised optimisation in defined areas",
-            "Stronger accountability and provider challenge"
+            "Lifecycle cost modelling with embodied carbon",
+            "Service-level asset attribution",
+            "Supplier challenge and procurement scoring",
+            "Capacity planning across hybrid estates",
+            "Confident Scope 3 Category 2 reporting"
           ],
           "does_not_support": [
-            "Assumption-free interpretation",
-            "Fully automated optimisation without governance"
+            "Full automated asset-to-carbon pipeline without manual reconciliation",
+            "Real-time ephemeral cloud resource tracking"
           ]
         },
         "5": {
           "status": "Optimisation-grade",
           "supports": [
-            "Continuous optimisation",
-            "Fine-grained and confident operational trade-offs",
-            "Strong management, engineering and governance use"
+            "Continuous lifecycle governance",
+            "Automated asset-to-carbon traceability",
+            "Circularity metrics and ITAD performance tracking",
+            "Procurement scoring with embodied carbon weighting",
+            "Audit-ready Scope 3 evidence"
           ],
           "does_not_support": [
             "None by design; caveats should still be made explicit where relevant"
@@ -632,7 +639,7 @@
               "score": 1
             },
             {
-              "label": "Only broad allocation — e.g. total IT energy divided by headcount or floor area.",
+              "label": "Only broad allocation \u2014 e.g. total IT energy divided by headcount or floor area.",
               "score": 2
             },
             {
@@ -690,7 +697,7 @@
           "tags": [],
           "options": [
             {
-              "label": "Significant lag — weeks or months before energy data is available.",
+              "label": "Significant lag \u2014 weeks or months before energy data is available.",
               "score": 1
             },
             {
@@ -721,7 +728,7 @@
           "tags": [],
           "options": [
             {
-              "label": "Cannot tell where energy was consumed — only total site or contract figures.",
+              "label": "Cannot tell where energy was consumed \u2014 only total site or contract figures.",
               "score": 1
             },
             {
@@ -775,7 +782,7 @@
         },
         {
           "id": "op9",
-          "text": "How confident are you in the accuracy and calibration of your energy measurement infrastructure — meters, sensors, and data collection systems?",
+          "text": "How confident are you in the accuracy and calibration of your energy measurement infrastructure \u2014 meters, sensors, and data collection systems?",
           "dimension": "assurance_lineage",
           "weight": 4,
           "guidance": "Measured energy data is only as good as the measurement infrastructure. Sub-metering quality, calibration frequency, and data collection reliability directly affect the credibility of all downstream calculations.",
@@ -811,23 +818,23 @@
       ],
       "maturity_levels": {
         "1": {
-          "label": "Initial — ad hoc or absent",
+          "label": "Initial \u2014 ad hoc or absent",
           "description": "Inputs are fragmented, reactive, estimate-heavy and not reliable enough for confident decision-making."
         },
         "2": {
-          "label": "Managed — partial coverage",
+          "label": "Managed \u2014 partial coverage",
           "description": "Inputs can be gathered and reused in a repeatable way, but coverage, precision and attribution remain inconsistent."
         },
         "3": {
-          "label": "Defined — standardised and reportable",
+          "label": "Defined \u2014 standardised and reportable",
           "description": "Data sources, methods and ownership are documented and standardised across key areas."
         },
         "4": {
-          "label": "Quantitatively Managed — measured and defensible",
+          "label": "Quantitatively Managed \u2014 measured and defensible",
           "description": "Data quality, granularity, coverage and confidence are measured and controlled using evidence."
         },
         "5": {
-          "label": "Optimising — auditable and continuously improving",
+          "label": "Optimising \u2014 auditable and continuously improving",
           "description": "Inputs are continuously improved, increasingly automated and embedded into operational and strategic decision-making."
         }
       },
@@ -835,59 +842,67 @@
         "1": {
           "status": "Reporting only",
           "supports": [
-            "Broad awareness and high-level reporting for operational power and energy data",
-            "Very rough hotspot identification"
+            "Awareness that energy is consumed",
+            "Billing-derived aggregate consumption"
           ],
           "does_not_support": [
-            "Controlled operational decisions",
-            "High-confidence optimisation or accountability",
-            "Strong supplier or engineering challenge"
+            "Credible carbon calculations",
+            "PUE measurement",
+            "Energy hotspot identification",
+            "Efficiency investment validation",
+            "Sub-facility power attribution"
           ]
         },
         "2": {
           "status": "Directional decision support",
           "supports": [
-            "Indicative prioritisation",
-            "Repeatable but cautious management reporting",
-            "Early-stage improvement planning"
+            "Facility-level energy reporting",
+            "Broad consumption trend tracking",
+            "Rough PUE estimation"
           ],
           "does_not_support": [
-            "Decision-grade optimisation",
-            "Fine-grained service or workload trade-offs",
-            "Confident automation or tight target accountability"
+            "Zone or rack-level attribution",
+            "Validated efficiency investment ROI",
+            "Workload-level energy attribution",
+            "Demand-response decisions"
           ]
         },
         "3": {
           "status": "Directional decision support",
           "supports": [
-            "Standard management review",
-            "Defined governance and improvement planning",
-            "Some controlled decisions in priority areas"
+            "Site-level PUE with defined boundaries",
+            "Major consumption area identification",
+            "Periodic energy reporting and trend analysis",
+            "Facility-level carbon calculations using measured energy"
           ],
           "does_not_support": [
-            "Broad optimisation-grade control everywhere",
-            "Highly granular trade-offs without caveats",
-            "Strong claims of precision across the whole estate"
+            "Sub-system overhead breakdown (cooling vs. distribution vs. UPS)",
+            "Workload-level energy attribution",
+            "Real-time demand management"
           ]
         },
         "4": {
           "status": "Controlled decision-grade",
           "supports": [
-            "Controlled operational decisions",
-            "Prioritised optimisation in defined areas",
-            "Stronger accountability and provider challenge"
+            "Zone or rack-level energy attribution",
+            "PUE validation and sub-component breakdown",
+            "Cooling optimisation with measured data",
+            "Demand-response decisions",
+            "Efficiency investment ROI with measured baseline and outcome"
           ],
           "does_not_support": [
-            "Assumption-free interpretation",
-            "Fully automated optimisation without governance"
+            "Fully automated carbon-aware workload scheduling",
+            "Real-time marginal energy cost optimisation"
           ]
         },
         "5": {
           "status": "Optimisation-grade",
           "supports": [
-            "Continuous optimisation",
-            "Fine-grained and confident operational trade-offs",
-            "Strong management, engineering and governance use"
+            "Real-time energy optimisation",
+            "Carbon-aware workload scheduling",
+            "Continuous PUE management",
+            "Automated anomaly detection and response",
+            "Full energy-to-carbon traceability"
           ],
           "does_not_support": [
             "None by design; caveats should still be made explicit where relevant"
@@ -1001,7 +1016,7 @@
           "tags": [],
           "options": [
             {
-              "label": "No detail — just total consumption figures if anything.",
+              "label": "No detail \u2014 just total consumption figures if anything.",
               "score": 1
             },
             {
@@ -1036,7 +1051,7 @@
               "score": 1
             },
             {
-              "label": "Very broad — total water divided by IT load to derive a rough WUE.",
+              "label": "Very broad \u2014 total water divided by IT load to derive a rough WUE.",
               "score": 2
             },
             {
@@ -1125,7 +1140,7 @@
           "tags": [],
           "options": [
             {
-              "label": "Months of lag — water data arrives with utility bills or annual reports.",
+              "label": "Months of lag \u2014 water data arrives with utility bills or annual reports.",
               "score": 1
             },
             {
@@ -1211,23 +1226,23 @@
       ],
       "maturity_levels": {
         "1": {
-          "label": "Initial — ad hoc or absent",
+          "label": "Initial \u2014 ad hoc or absent",
           "description": "Inputs are fragmented, reactive, estimate-heavy and not reliable enough for confident decision-making."
         },
         "2": {
-          "label": "Managed — partial coverage",
+          "label": "Managed \u2014 partial coverage",
           "description": "Inputs can be gathered and reused in a repeatable way, but coverage, precision and attribution remain inconsistent."
         },
         "3": {
-          "label": "Defined — standardised and reportable",
+          "label": "Defined \u2014 standardised and reportable",
           "description": "Data sources, methods and ownership are documented and standardised across key areas."
         },
         "4": {
-          "label": "Quantitatively Managed — measured and defensible",
+          "label": "Quantitatively Managed \u2014 measured and defensible",
           "description": "Data quality, granularity, coverage and confidence are measured and controlled using evidence."
         },
         "5": {
-          "label": "Optimising — auditable and continuously improving",
+          "label": "Optimising \u2014 auditable and continuously improving",
           "description": "Inputs are continuously improved, increasingly automated and embedded into operational and strategic decision-making."
         }
       },
@@ -1235,59 +1250,65 @@
         "1": {
           "status": "Reporting only",
           "supports": [
-            "Broad awareness and high-level reporting for water data",
-            "Very rough hotspot identification"
+            "Acknowledgement of water consumption"
           ],
           "does_not_support": [
-            "Controlled operational decisions",
-            "High-confidence optimisation or accountability",
-            "Strong supplier or engineering challenge"
+            "WUE calculation",
+            "Cooling efficiency assessment",
+            "Water risk quantification",
+            "Water stewardship compliance",
+            "Cooling technology comparison"
           ]
         },
         "2": {
           "status": "Directional decision support",
           "supports": [
-            "Indicative prioritisation",
-            "Repeatable but cautious management reporting",
-            "Early-stage improvement planning"
+            "Aggregate site-level water consumption reporting",
+            "Basic disclosure for sustainability reports",
+            "Rough WUE estimates"
           ],
           "does_not_support": [
-            "Decision-grade optimisation",
-            "Fine-grained service or workload trade-offs",
-            "Confident automation or tight target accountability"
+            "Cooling system efficiency comparison",
+            "Seasonal water pattern analysis",
+            "Water stress scenario planning",
+            "Leak detection or loss identification"
           ]
         },
         "3": {
           "status": "Directional decision support",
           "supports": [
-            "Standard management review",
-            "Defined governance and improvement planning",
-            "Some controlled decisions in priority areas"
+            "Site-level WUE with regular measurement",
+            "High-consumption site identification",
+            "Year-on-year water trend reporting",
+            "Basic water risk exposure assessment"
           ],
           "does_not_support": [
-            "Broad optimisation-grade control everywhere",
-            "Highly granular trade-offs without caveats",
-            "Strong claims of precision across the whole estate"
+            "Cooling technology comparison (adiabatic vs. chiller vs. free cooling)",
+            "Per-system water attribution",
+            "Intra-month seasonal pattern management"
           ]
         },
         "4": {
           "status": "Controlled decision-grade",
           "supports": [
-            "Controlled operational decisions",
-            "Prioritised optimisation in defined areas",
-            "Stronger accountability and provider challenge"
+            "Per-cooling-system water measurement",
+            "Cooling technology optimisation with measured data",
+            "Water stress scenario planning",
+            "Free cooling hour tracking and optimisation",
+            "Confident water stewardship reporting"
           ],
           "does_not_support": [
-            "Assumption-free interpretation",
-            "Fully automated optimisation without governance"
+            "Full water lifecycle accounting (supply, treatment, discharge)",
+            "Automated water-carbon trade-off optimisation"
           ]
         },
         "5": {
           "status": "Optimisation-grade",
           "supports": [
-            "Continuous optimisation",
-            "Fine-grained and confident operational trade-offs",
-            "Strong management, engineering and governance use"
+            "Full water lifecycle tracking",
+            "Integrated water-carbon-cost optimisation",
+            "Climate risk-adjusted water planning",
+            "Continuous cooling efficiency management"
           ],
           "does_not_support": [
             "None by design; caveats should still be made explicit where relevant"
@@ -1432,7 +1453,7 @@
           "tags": [],
           "options": [
             {
-              "label": "Metrics are nameplate, design or published values — not measured under real conditions.",
+              "label": "Metrics are nameplate, design or published values \u2014 not measured under real conditions.",
               "score": 1
             },
             {
@@ -1494,7 +1515,7 @@
           "tags": [],
           "options": [
             {
-              "label": "Metrics are portfolio averages or generic values — not site-specific.",
+              "label": "Metrics are portfolio averages or generic values \u2014 not site-specific.",
               "score": 1
             },
             {
@@ -1611,23 +1632,23 @@
       ],
       "maturity_levels": {
         "1": {
-          "label": "Initial — ad hoc or absent",
+          "label": "Initial \u2014 ad hoc or absent",
           "description": "Inputs are fragmented, reactive, estimate-heavy and not reliable enough for confident decision-making."
         },
         "2": {
-          "label": "Managed — partial coverage",
+          "label": "Managed \u2014 partial coverage",
           "description": "Inputs can be gathered and reused in a repeatable way, but coverage, precision and attribution remain inconsistent."
         },
         "3": {
-          "label": "Defined — standardised and reportable",
+          "label": "Defined \u2014 standardised and reportable",
           "description": "Data sources, methods and ownership are documented and standardised across key areas."
         },
         "4": {
-          "label": "Quantitatively Managed — measured and defensible",
+          "label": "Quantitatively Managed \u2014 measured and defensible",
           "description": "Data quality, granularity, coverage and confidence are measured and controlled using evidence."
         },
         "5": {
-          "label": "Optimising — auditable and continuously improving",
+          "label": "Optimising \u2014 auditable and continuously improving",
           "description": "Inputs are continuously improved, increasingly automated and embedded into operational and strategic decision-making."
         }
       },
@@ -1635,59 +1656,65 @@
         "1": {
           "status": "Reporting only",
           "supports": [
-            "Broad awareness and high-level reporting for infrastructure efficiency metric quality",
-            "Very rough hotspot identification"
+            "Awareness that infrastructure overhead exists"
           ],
           "does_not_support": [
-            "Controlled operational decisions",
-            "High-confidence optimisation or accountability",
-            "Strong supplier or engineering challenge"
+            "PUE, WUE, or CUE measurement",
+            "Efficiency benchmarking",
+            "Target setting",
+            "Investment case for efficiency improvements",
+            "Comparison between sites or providers"
           ]
         },
         "2": {
           "status": "Directional decision support",
           "supports": [
-            "Indicative prioritisation",
-            "Repeatable but cautious management reporting",
-            "Early-stage improvement planning"
+            "Rough PUE estimate for major sites",
+            "Broad awareness of efficiency position relative to industry"
           ],
           "does_not_support": [
-            "Decision-grade optimisation",
-            "Fine-grained service or workload trade-offs",
-            "Confident automation or tight target accountability"
+            "Sub-component overhead diagnosis (cooling vs. UPS vs. distribution)",
+            "Validated efficiency improvement tracking",
+            "Cross-site comparison with consistent boundaries",
+            "Confident target setting"
           ]
         },
         "3": {
           "status": "Directional decision support",
           "supports": [
-            "Standard management review",
-            "Defined governance and improvement planning",
-            "Some controlled decisions in priority areas"
+            "Consistent PUE with defined boundaries at major sites",
+            "Industry benchmarking",
+            "Target setting for overall efficiency",
+            "Periodic efficiency trend reporting"
           ],
           "does_not_support": [
-            "Broad optimisation-grade control everywhere",
-            "Highly granular trade-offs without caveats",
-            "Strong claims of precision across the whole estate"
+            "Sub-system optimisation decisions",
+            "Multiple metric comparison (PUE + WUE + CUE + CLF together)",
+            "Efficiency-linked carbon reduction quantification"
           ]
         },
         "4": {
           "status": "Controlled decision-grade",
           "supports": [
-            "Controlled operational decisions",
-            "Prioritised optimisation in defined areas",
-            "Stronger accountability and provider challenge"
+            "Multi-metric efficiency management (PUE, WUE, CUE, CLF)",
+            "Sub-component overhead analysis",
+            "Investment ROI with measured baseline and outcome",
+            "CER calculation linking efficiency to carbon",
+            "Cross-site comparison with consistent methodology"
           ],
           "does_not_support": [
-            "Assumption-free interpretation",
-            "Fully automated optimisation without governance"
+            "Fully automated efficiency management",
+            "Real-time load-dependent efficiency optimisation"
           ]
         },
         "5": {
           "status": "Optimisation-grade",
           "supports": [
-            "Continuous optimisation",
-            "Fine-grained and confident operational trade-offs",
-            "Strong management, engineering and governance use"
+            "Continuous real-time efficiency monitoring",
+            "Automated anomaly detection",
+            "Load-dependent efficiency tracking",
+            "Seasonal and degradation trend management",
+            "Full efficiency-to-carbon traceability"
           ],
           "does_not_support": [
             "None by design; caveats should still be made explicit where relevant"
@@ -1807,7 +1834,7 @@
               "score": 1
             },
             {
-              "label": "Spend-based factors only — no link to actual product type or specification.",
+              "label": "Spend-based factors only \u2014 no link to actual product type or specification.",
               "score": 2
             },
             {
@@ -2082,7 +2109,7 @@
         },
         {
           "id": "ee11",
-          "text": "Do you track what happens to IT assets at end of life — including disposal route, materials recovery, WEEE compliance and any associated environmental data?",
+          "text": "Do you track what happens to IT assets at end of life \u2014 including disposal route, materials recovery, WEEE compliance and any associated environmental data?",
           "dimension": "coverage",
           "weight": 3,
           "options": [
@@ -2111,23 +2138,23 @@
       ],
       "maturity_levels": {
         "1": {
-          "label": "Initial — ad hoc or absent",
+          "label": "Initial \u2014 ad hoc or absent",
           "description": "Inputs are fragmented, reactive, estimate-heavy and not reliable enough for confident decision-making."
         },
         "2": {
-          "label": "Managed — partial coverage",
+          "label": "Managed \u2014 partial coverage",
           "description": "Inputs can be gathered and reused in a repeatable way, but coverage, precision and attribution remain inconsistent."
         },
         "3": {
-          "label": "Defined — standardised and reportable",
+          "label": "Defined \u2014 standardised and reportable",
           "description": "Data sources, methods and ownership are documented and standardised across key areas."
         },
         "4": {
-          "label": "Quantitatively Managed — measured and defensible",
+          "label": "Quantitatively Managed \u2014 measured and defensible",
           "description": "Data quality, granularity, coverage and confidence are measured and controlled using evidence."
         },
         "5": {
-          "label": "Optimising — auditable and continuously improving",
+          "label": "Optimising \u2014 auditable and continuously improving",
           "description": "Inputs are continuously improved, increasingly automated and embedded into operational and strategic decision-making."
         }
       },
@@ -2135,59 +2162,63 @@
         "1": {
           "status": "Reporting only",
           "supports": [
-            "Broad awareness and high-level reporting for embodied emissions data",
-            "Very rough hotspot identification"
+            "Acknowledgement that hardware has embodied carbon"
           ],
           "does_not_support": [
-            "Controlled operational decisions",
-            "High-confidence optimisation or accountability",
-            "Strong supplier or engineering challenge"
+            "Scope 3 Category 2 reporting",
+            "Lifecycle extension business cases",
+            "New vs. refurbished comparison",
+            "Supplier embodied carbon comparison",
+            "Circular economy metrics"
           ]
         },
         "2": {
           "status": "Directional decision support",
           "supports": [
-            "Indicative prioritisation",
-            "Repeatable but cautious management reporting",
-            "Early-stage improvement planning"
+            "Rough Scope 3 estimates using industry-average factors",
+            "Broad awareness of embodied carbon scale relative to use-phase"
           ],
           "does_not_support": [
-            "Decision-grade optimisation",
-            "Fine-grained service or workload trade-offs",
-            "Confident automation or tight target accountability"
+            "Product-level embodied carbon comparison",
+            "New vs. refurbished trade-off analysis",
+            "Supplier differentiation on lifecycle emissions",
+            "Credible ITAD recovery metrics"
           ]
         },
         "3": {
           "status": "Directional decision support",
           "supports": [
-            "Standard management review",
-            "Defined governance and improvement planning",
-            "Some controlled decisions in priority areas"
+            "Product-family level Scope 3 estimates",
+            "Broad new vs. refurbished comparison by category",
+            "Lifecycle extension impact modelling at category level",
+            "Basic circular economy reporting"
           ],
           "does_not_support": [
-            "Broad optimisation-grade control everywhere",
-            "Highly granular trade-offs without caveats",
-            "Strong claims of precision across the whole estate"
+            "Supplier-specific embodied carbon scoring",
+            "Per-asset lifecycle trade-off decisions",
+            "Validated ITAD recovery and circularity metrics"
           ]
         },
         "4": {
           "status": "Controlled decision-grade",
           "supports": [
-            "Controlled operational decisions",
-            "Prioritised optimisation in defined areas",
-            "Stronger accountability and provider challenge"
+            "Supplier-specific embodied carbon in procurement scoring",
+            "Per-asset lifecycle extension vs. replacement modelling",
+            "Circular economy metrics (reuse rate, refurbishment %, material recovery)",
+            "Credible Scope 3 Category 2 disclosure"
           ],
           "does_not_support": [
-            "Assumption-free interpretation",
-            "Fully automated optimisation without governance"
+            "Full cradle-to-grave carbon traceability per asset",
+            "Automated lifecycle governance triggered by carbon thresholds"
           ]
         },
         "5": {
           "status": "Optimisation-grade",
           "supports": [
-            "Continuous optimisation",
-            "Fine-grained and confident operational trade-offs",
-            "Strong management, engineering and governance use"
+            "Full lifecycle carbon per asset (manufacturing, transport, use, end-of-life)",
+            "Automated refresh governance with carbon criteria",
+            "Validated circularity metrics",
+            "Contractual supplier embodied carbon requirements"
           ],
           "does_not_support": [
             "None by design; caveats should still be made explicit where relevant"
@@ -2546,23 +2577,23 @@
       ],
       "maturity_levels": {
         "1": {
-          "label": "Initial — ad hoc or absent",
+          "label": "Initial \u2014 ad hoc or absent",
           "description": "Inputs are fragmented, reactive, estimate-heavy and not reliable enough for confident decision-making."
         },
         "2": {
-          "label": "Managed — partial coverage",
+          "label": "Managed \u2014 partial coverage",
           "description": "Inputs can be gathered and reused in a repeatable way, but coverage, precision and attribution remain inconsistent."
         },
         "3": {
-          "label": "Defined — standardised and reportable",
+          "label": "Defined \u2014 standardised and reportable",
           "description": "Data sources, methods and ownership are documented and standardised across key areas."
         },
         "4": {
-          "label": "Quantitatively Managed — measured and defensible",
+          "label": "Quantitatively Managed \u2014 measured and defensible",
           "description": "Data quality, granularity, coverage and confidence are measured and controlled using evidence."
         },
         "5": {
-          "label": "Optimising — auditable and continuously improving",
+          "label": "Optimising \u2014 auditable and continuously improving",
           "description": "Inputs are continuously improved, increasingly automated and embedded into operational and strategic decision-making."
         }
       },
@@ -2570,59 +2601,67 @@
         "1": {
           "status": "Reporting only",
           "supports": [
-            "Broad awareness and high-level reporting for carbon intensity and emissions factors",
-            "Very rough hotspot identification"
+            "A carbon number exists (accuracy unknown)"
           ],
           "does_not_support": [
-            "Controlled operational decisions",
-            "High-confidence optimisation or accountability",
-            "Strong supplier or engineering challenge"
+            "Credible carbon reporting at any level",
+            "Distinguishing between high and low-carbon sites",
+            "Reflecting renewable energy procurement",
+            "Carbon target setting with a reliable baseline",
+            "Time-of-use or marginal carbon analysis"
           ]
         },
         "2": {
           "status": "Directional decision support",
           "supports": [
-            "Indicative prioritisation",
-            "Repeatable but cautious management reporting",
-            "Early-stage improvement planning"
+            "Country or region-level location-based carbon estimates",
+            "Broad directional carbon trend tracking",
+            "Basic regulatory disclosure (with caveats)"
           ],
           "does_not_support": [
-            "Decision-grade optimisation",
-            "Fine-grained service or workload trade-offs",
-            "Confident automation or tight target accountability"
+            "Site-level carbon differentiation within a country",
+            "Market-based carbon accounting",
+            "Showing carbon benefit of renewable procurement (PPAs, REGOs, RECs)",
+            "Carbon-aware workload placement"
           ]
         },
         "3": {
           "status": "Directional decision support",
           "supports": [
-            "Standard management review",
-            "Defined governance and improvement planning",
-            "Some controlled decisions in priority areas"
+            "Location-specific carbon calculations",
+            "Cross-site carbon comparison",
+            "Credible location-based disclosure",
+            "Carbon-informed site selection"
           ],
           "does_not_support": [
-            "Broad optimisation-grade control everywhere",
-            "Highly granular trade-offs without caveats",
-            "Strong claims of precision across the whole estate"
+            "Market-based accounting reflecting energy procurement",
+            "Demonstrating carbon benefit of green tariffs or PPAs",
+            "Time-of-use carbon optimisation",
+            "Marginal emission rate analysis"
           ]
         },
         "4": {
           "status": "Controlled decision-grade",
           "supports": [
-            "Controlled operational decisions",
-            "Prioritised optimisation in defined areas",
-            "Stronger accountability and provider challenge"
+            "Dual reporting (location-based and market-based)",
+            "Carbon impact of renewable procurement decisions",
+            "Supplier green energy claim validation",
+            "Residual mix factor application",
+            "Carbon-informed workload placement between sites"
           ],
           "does_not_support": [
-            "Assumption-free interpretation",
-            "Fully automated optimisation without governance"
+            "Marginal emission rate optimisation",
+            "Sub-hourly carbon-aware scheduling",
+            "Fully automated carbon-optimised workload placement"
           ]
         },
         "5": {
           "status": "Optimisation-grade",
           "supports": [
-            "Continuous optimisation",
-            "Fine-grained and confident operational trade-offs",
-            "Strong management, engineering and governance use"
+            "Marginal and time-of-use carbon accounting",
+            "Carbon-aware workload scheduling",
+            "Full market-based accounting with validated instruments",
+            "Auditable carbon factor chain from source to report"
           ],
           "does_not_support": [
             "None by design; caveats should still be made explicit where relevant"
@@ -3019,7 +3058,7 @@
         },
         {
           "id": "us11",
-          "text": "Do you systematically optimise AI workloads for computational efficiency — for example through prompt engineering, model quantisation, inference caching, or batch processing?",
+          "text": "Do you systematically optimise AI workloads for computational efficiency \u2014 for example through prompt engineering, model quantisation, inference caching, or batch processing?",
           "dimension": "method_quality",
           "weight": 3,
           "guidance": "AI workloads can be 10x more efficient with targeted optimisation. Prompt engineering (shorter context), model quantisation (faster/cheaper), inference caching (avoid re-inference), and batch processing all reduce resource consumption.",
@@ -3054,23 +3093,23 @@
       ],
       "maturity_levels": {
         "1": {
-          "label": "Initial — ad hoc or absent",
+          "label": "Initial \u2014 ad hoc or absent",
           "description": "Inputs are fragmented, reactive, estimate-heavy and not reliable enough for confident decision-making."
         },
         "2": {
-          "label": "Managed — partial coverage",
+          "label": "Managed \u2014 partial coverage",
           "description": "Inputs can be gathered and reused in a repeatable way, but coverage, precision and attribution remain inconsistent."
         },
         "3": {
-          "label": "Defined — standardised and reportable",
+          "label": "Defined \u2014 standardised and reportable",
           "description": "Data sources, methods and ownership are documented and standardised across key areas."
         },
         "4": {
-          "label": "Quantitatively Managed — measured and defensible",
+          "label": "Quantitatively Managed \u2014 measured and defensible",
           "description": "Data quality, granularity, coverage and confidence are measured and controlled using evidence."
         },
         "5": {
-          "label": "Optimising — auditable and continuously improving",
+          "label": "Optimising \u2014 auditable and continuously improving",
           "description": "Inputs are continuously improved, increasingly automated and embedded into operational and strategic decision-making."
         }
       },
@@ -3078,59 +3117,66 @@
         "1": {
           "status": "Reporting only",
           "supports": [
-            "Broad awareness and high-level reporting for asset, workload, application and service usage maturity",
-            "Very rough hotspot identification"
+            "Acknowledgement that capacity is provisioned"
           ],
           "does_not_support": [
-            "Controlled operational decisions",
-            "High-confidence optimisation or accountability",
-            "Strong supplier or engineering challenge"
+            "Waste quantification",
+            "Rightsizing recommendations",
+            "Demand governance",
+            "Capacity-to-consumption ratio analysis",
+            "Decommissioning decisions"
           ]
         },
         "2": {
           "status": "Directional decision support",
           "supports": [
-            "Indicative prioritisation",
-            "Repeatable but cautious management reporting",
-            "Early-stage improvement planning"
+            "Identification of obvious waste on monitored systems",
+            "Basic utilisation spot-checks",
+            "Directional capacity planning for monitored platforms"
           ],
           "does_not_support": [
-            "Decision-grade optimisation",
-            "Fine-grained service or workload trade-offs",
-            "Confident automation or tight target accountability"
+            "Estate-wide waste quantification",
+            "Systematic rightsizing",
+            "Demand governance with consumption evidence",
+            "Confident decommissioning decisions"
           ]
         },
         "3": {
           "status": "Directional decision support",
           "supports": [
-            "Standard management review",
-            "Defined governance and improvement planning",
-            "Some controlled decisions in priority areas"
+            "Platform-level utilisation reporting",
+            "Waste estimates for major environments",
+            "Rightsizing candidate identification",
+            "Broad demand trend analysis"
           ],
           "does_not_support": [
-            "Broad optimisation-grade control everywhere",
-            "Highly granular trade-offs without caveats",
-            "Strong claims of precision across the whole estate"
+            "Governance-driven rightsizing with named owners",
+            "Demand management with consumption-based challenge",
+            "Automated scaling decisions",
+            "Per-workload efficiency comparison"
           ]
         },
         "4": {
           "status": "Controlled decision-grade",
           "supports": [
-            "Controlled operational decisions",
-            "Prioritised optimisation in defined areas",
-            "Stronger accountability and provider challenge"
+            "Comprehensive utilisation monitoring with thresholds",
+            "Rightsizing with tracked implementation",
+            "Demand governance with consumption evidence",
+            "Capacity planning using measured demand trends",
+            "Cost-carbon-capacity connected reporting"
           ],
           "does_not_support": [
-            "Assumption-free interpretation",
-            "Fully automated optimisation without governance"
+            "Fully automated real-time scaling and optimisation",
+            "Predictive demand management"
           ]
         },
         "5": {
           "status": "Optimisation-grade",
           "supports": [
-            "Continuous optimisation",
-            "Fine-grained and confident operational trade-offs",
-            "Strong management, engineering and governance use"
+            "Automated scaling and demand shaping",
+            "Continuous waste minimisation",
+            "Predictive capacity planning",
+            "Efficiency-first demand governance for new provisioning"
           ],
           "does_not_support": [
             "None by design; caveats should still be made explicit where relevant"
@@ -3423,7 +3469,7 @@
         },
         {
           "id": "at8",
-          "text": "Is cost or carbon attribution actively used in any operational process — such as chargeback, showback, procurement or performance reviews?",
+          "text": "Is cost or carbon attribution actively used in any operational process \u2014 such as chargeback, showback, procurement or performance reviews?",
           "dimension": "attribution",
           "weight": 4,
           "guidance": "",
@@ -3454,7 +3500,7 @@
         },
         {
           "id": "at9",
-          "text": "Are your carbon attribution and cost allocation methods aligned — using the same cost drivers and allocation keys?",
+          "text": "Are your carbon attribution and cost allocation methods aligned \u2014 using the same cost drivers and allocation keys?",
           "dimension": "attribution",
           "weight": 5,
           "guidance": "Carbon and cost should be allocated together using the same drivers (CPU hours, storage GB, etc). Misalignment creates confusion and blocks operational action. This alignment is essential for FinOps-GreenOps integration.",
@@ -3490,23 +3536,23 @@
       ],
       "maturity_levels": {
         "1": {
-          "label": "Initial — ad hoc or absent",
+          "label": "Initial \u2014 ad hoc or absent",
           "description": "Inputs are fragmented, reactive, estimate-heavy and not reliable enough for confident decision-making."
         },
         "2": {
-          "label": "Managed — partial coverage",
+          "label": "Managed \u2014 partial coverage",
           "description": "Inputs can be gathered and reused in a repeatable way, but coverage, precision and attribution remain inconsistent."
         },
         "3": {
-          "label": "Defined — standardised and reportable",
+          "label": "Defined \u2014 standardised and reportable",
           "description": "Data sources, methods and ownership are documented and standardised across key areas."
         },
         "4": {
-          "label": "Quantitatively Managed — measured and defensible",
+          "label": "Quantitatively Managed \u2014 measured and defensible",
           "description": "Data quality, granularity, coverage and confidence are measured and controlled using evidence."
         },
         "5": {
-          "label": "Optimising — auditable and continuously improving",
+          "label": "Optimising \u2014 auditable and continuously improving",
           "description": "Inputs are continuously improved, increasingly automated and embedded into operational and strategic decision-making."
         }
       },
@@ -3514,59 +3560,65 @@
         "1": {
           "status": "Reporting only",
           "supports": [
-            "Broad awareness and high-level reporting for allocation and attribution logic",
-            "Very rough hotspot identification"
+            "Total estate-level cost and carbon figures"
           ],
           "does_not_support": [
-            "Controlled operational decisions",
-            "High-confidence optimisation or accountability",
-            "Strong supplier or engineering challenge"
+            "Per-service or per-team attribution",
+            "Carbon showback or chargeback",
+            "Accountability for consumption",
+            "FinOps integration",
+            "Demand management with consumption signals"
           ]
         },
         "2": {
           "status": "Directional decision support",
           "supports": [
-            "Indicative prioritisation",
-            "Repeatable but cautious management reporting",
-            "Early-stage improvement planning"
+            "Cost centre-level allocation using proxies",
+            "Broad departmental carbon estimates"
           ],
           "does_not_support": [
-            "Decision-grade optimisation",
-            "Fine-grained service or workload trade-offs",
-            "Confident automation or tight target accountability"
+            "Consumption-based attribution",
+            "Meaningful carbon showback that teams can act on",
+            "Per-service carbon figures",
+            "FinOps-GreenOps integration"
           ]
         },
         "3": {
           "status": "Directional decision support",
           "supports": [
-            "Standard management review",
-            "Defined governance and improvement planning",
-            "Some controlled decisions in priority areas"
+            "Consumption-based attribution for major platforms",
+            "Directional carbon-per-service estimates",
+            "Cloud attribution using billing data",
+            "Basic carbon showback for major service lines"
           ],
           "does_not_support": [
-            "Broad optimisation-grade control everywhere",
-            "Highly granular trade-offs without caveats",
-            "Strong claims of precision across the whole estate"
+            "Consistent attribution across hybrid estates",
+            "Per-service carbon budgets",
+            "FinOps and GreenOps with a single consumption signal",
+            "Accountability for on-premise and colocation consumption"
           ]
         },
         "4": {
           "status": "Controlled decision-grade",
           "supports": [
-            "Controlled operational decisions",
-            "Prioritised optimisation in defined areas",
-            "Stronger accountability and provider challenge"
+            "Consumption-based attribution across most of the estate",
+            "Carbon showback linked to actual resource use",
+            "FinOps-GreenOps integration",
+            "Accountability conversations with credible data",
+            "Service-level carbon reporting"
           ],
           "does_not_support": [
-            "Assumption-free interpretation",
-            "Fully automated optimisation without governance"
+            "Real-time service-level carbon budgets",
+            "Fully automated carbon-linked chargeback"
           ]
         },
         "5": {
           "status": "Optimisation-grade",
           "supports": [
-            "Continuous optimisation",
-            "Fine-grained and confident operational trade-offs",
-            "Strong management, engineering and governance use"
+            "Real-time consumption-based attribution",
+            "Service-level carbon budgets with variance management",
+            "Carbon and cost moving through the same drivers",
+            "Architectural decisions informed by carbon attribution"
           ],
           "does_not_support": [
             "None by design; caveats should still be made explicit where relevant"
@@ -3836,7 +3888,7 @@
           "tags": [],
           "options": [
             {
-              "label": "Cloud data significantly lagged — weeks or months behind.",
+              "label": "Cloud data significantly lagged \u2014 weeks or months behind.",
               "score": 1
             },
             {
@@ -3890,7 +3942,7 @@
         },
         {
           "id": "ct9",
-          "text": "Do you use cloud provider carbon intensity data to inform workload placement decisions — choosing lower-carbon regions or availability zones where practical?",
+          "text": "Do you use cloud provider carbon intensity data to inform workload placement decisions \u2014 choosing lower-carbon regions or availability zones where practical?",
           "dimension": "method_quality",
           "weight": 4,
           "guidance": "Major cloud providers publish carbon intensity by region. Using this data in workload placement decisions is a practical lever for reducing operational carbon, particularly for flexible workloads.",
@@ -3926,23 +3978,23 @@
       ],
       "maturity_levels": {
         "1": {
-          "label": "Initial — ad hoc or absent",
+          "label": "Initial \u2014 ad hoc or absent",
           "description": "Inputs are fragmented, reactive, estimate-heavy and not reliable enough for confident decision-making."
         },
         "2": {
-          "label": "Managed — partial coverage",
+          "label": "Managed \u2014 partial coverage",
           "description": "Inputs can be gathered and reused in a repeatable way, but coverage, precision and attribution remain inconsistent."
         },
         "3": {
-          "label": "Defined — standardised and reportable",
+          "label": "Defined \u2014 standardised and reportable",
           "description": "Data sources, methods and ownership are documented and standardised across key areas."
         },
         "4": {
-          "label": "Quantitatively Managed — measured and defensible",
+          "label": "Quantitatively Managed \u2014 measured and defensible",
           "description": "Data quality, granularity, coverage and confidence are measured and controlled using evidence."
         },
         "5": {
-          "label": "Optimising — auditable and continuously improving",
+          "label": "Optimising \u2014 auditable and continuously improving",
           "description": "Inputs are continuously improved, increasingly automated and embedded into operational and strategic decision-making."
         }
       },
@@ -3950,59 +4002,64 @@
         "1": {
           "status": "Reporting only",
           "supports": [
-            "Broad awareness and high-level reporting for cloud service telemetry and workload data",
-            "Very rough hotspot identification"
+            "Cloud billing total"
           ],
           "does_not_support": [
-            "Controlled operational decisions",
-            "High-confidence optimisation or accountability",
-            "Strong supplier or engineering challenge"
+            "Cloud resource utilisation visibility",
+            "Cloud carbon footprint estimation",
+            "FinOps or GreenOps for cloud",
+            "Provider sustainability data integration",
+            "Multi-cloud comparison"
           ]
         },
         "2": {
           "status": "Directional decision support",
           "supports": [
-            "Indicative prioritisation",
-            "Repeatable but cautious management reporting",
-            "Early-stage improvement planning"
+            "Billing-based cloud cost breakdown",
+            "Major resource category identification",
+            "Rough spend-based carbon estimates"
           ],
           "does_not_support": [
-            "Decision-grade optimisation",
-            "Fine-grained service or workload trade-offs",
-            "Confident automation or tight target accountability"
+            "Utilisation-based cloud optimisation",
+            "Provider carbon data integration",
+            "Container or serverless visibility",
+            "Multi-cloud carbon comparison"
           ]
         },
         "3": {
           "status": "Directional decision support",
           "supports": [
-            "Standard management review",
-            "Defined governance and improvement planning",
-            "Some controlled decisions in priority areas"
+            "Service-level cloud telemetry for major resources",
+            "Provider carbon dashboard integration",
+            "Cloud cost-carbon correlation",
+            "Basic FinOps recommendations"
           ],
           "does_not_support": [
-            "Broad optimisation-grade control everywhere",
-            "Highly granular trade-offs without caveats",
-            "Strong claims of precision across the whole estate"
+            "Cross-provider carbon comparison (methodology differences)",
+            "Container and serverless carbon attribution",
+            "Multi-cloud consistent carbon view"
           ]
         },
         "4": {
           "status": "Controlled decision-grade",
           "supports": [
-            "Controlled operational decisions",
-            "Prioritised optimisation in defined areas",
-            "Stronger accountability and provider challenge"
+            "Comprehensive cloud telemetry including networking and managed services",
+            "Provider carbon data cross-referenced with own factors",
+            "Cloud FinOps and GreenOps with measured data",
+            "Multi-cloud cost and carbon comparison"
           ],
           "does_not_support": [
-            "Assumption-free interpretation",
-            "Fully automated optimisation without governance"
+            "Real-time carbon-aware cloud workload placement",
+            "Fully automated cloud carbon optimisation"
           ]
         },
         "5": {
           "status": "Optimisation-grade",
           "supports": [
-            "Continuous optimisation",
-            "Fine-grained and confident operational trade-offs",
-            "Strong management, engineering and governance use"
+            "Real-time carbon-aware workload placement",
+            "Automated cloud cost-carbon optimisation",
+            "Multi-cloud and hybrid carbon management",
+            "Container-level carbon attribution"
           ],
           "does_not_support": [
             "None by design; caveats should still be made explicit where relevant"
@@ -4327,23 +4384,23 @@
       ],
       "maturity_levels": {
         "1": {
-          "label": "Initial — ad hoc or absent",
+          "label": "Initial \u2014 ad hoc or absent",
           "description": "Inputs are fragmented, reactive, estimate-heavy and not reliable enough for confident decision-making."
         },
         "2": {
-          "label": "Managed — partial coverage",
+          "label": "Managed \u2014 partial coverage",
           "description": "Inputs can be gathered and reused in a repeatable way, but coverage, precision and attribution remain inconsistent."
         },
         "3": {
-          "label": "Defined — standardised and reportable",
+          "label": "Defined \u2014 standardised and reportable",
           "description": "Data sources, methods and ownership are documented and standardised across key areas."
         },
         "4": {
-          "label": "Quantitatively Managed — measured and defensible",
+          "label": "Quantitatively Managed \u2014 measured and defensible",
           "description": "Data quality, granularity, coverage and confidence are measured and controlled using evidence."
         },
         "5": {
-          "label": "Optimising — auditable and continuously improving",
+          "label": "Optimising \u2014 auditable and continuously improving",
           "description": "Inputs are continuously improved, increasingly automated and embedded into operational and strategic decision-making."
         }
       },
@@ -4351,59 +4408,65 @@
         "1": {
           "status": "Reporting only",
           "supports": [
-            "Broad awareness and high-level reporting for colocation and third-party provider data quality",
-            "Very rough hotspot identification"
+            "Awareness that colocation consumes energy"
           ],
           "does_not_support": [
-            "Controlled operational decisions",
-            "High-confidence optimisation or accountability",
-            "Strong supplier or engineering challenge"
+            "Colocation Scope 3 reporting",
+            "Provider efficiency validation",
+            "Provider comparison on sustainability",
+            "Contractual sustainability SLAs",
+            "Allocated energy or carbon for your deployment"
           ]
         },
         "2": {
           "status": "Directional decision support",
           "supports": [
-            "Indicative prioritisation",
-            "Repeatable but cautious management reporting",
-            "Early-stage improvement planning"
+            "Provider-reported facility PUE",
+            "Rough aggregate energy from provider reports",
+            "Directional Scope 3 estimates for colocation"
           ],
           "does_not_support": [
-            "Decision-grade optimisation",
-            "Fine-grained service or workload trade-offs",
-            "Confident automation or tight target accountability"
+            "Verified provider methodology",
+            "Consumption allocated to your deployment",
+            "Cross-provider comparison with consistent metrics",
+            "Contractual data quality SLAs"
           ]
         },
         "3": {
           "status": "Directional decision support",
           "supports": [
-            "Standard management review",
-            "Defined governance and improvement planning",
-            "Some controlled decisions in priority areas"
+            "Structured data sharing with regular schedule",
+            "Facility-level metrics for carbon calculations",
+            "Provider efficiency trend tracking",
+            "Basic Scope 3 reporting for hosted infrastructure"
           ],
           "does_not_support": [
-            "Broad optimisation-grade control everywhere",
-            "Highly granular trade-offs without caveats",
-            "Strong claims of precision across the whole estate"
+            "Allocation to your specific deployment",
+            "Validated provider efficiency claims",
+            "Procurement scoring on sustainability data quality"
           ]
         },
         "4": {
           "status": "Controlled decision-grade",
           "supports": [
-            "Controlled operational decisions",
-            "Prioritised optimisation in defined areas",
-            "Stronger accountability and provider challenge"
+            "Provider data allocated to your deployment",
+            "Contractual data quality and frequency SLAs",
+            "Provider efficiency claim validation",
+            "Procurement scoring using measured sustainability data",
+            "Confident Scope 3 for colocation"
           ],
           "does_not_support": [
-            "Assumption-free interpretation",
-            "Fully automated optimisation without governance"
+            "Real-time provider data integration",
+            "Automated provider performance management"
           ]
         },
         "5": {
           "status": "Optimisation-grade",
           "supports": [
-            "Continuous optimisation",
-            "Fine-grained and confident operational trade-offs",
-            "Strong management, engineering and governance use"
+            "Real-time provider data feeds",
+            "Granular allocation to your racks and services",
+            "Active provider performance management",
+            "Procurement scoring with continuous sustainability metrics"
           ],
           "does_not_support": [
             "None by design; caveats should still be made explicit where relevant"
@@ -4603,23 +4666,23 @@
       ],
       "maturity_levels": {
         "1": {
-          "label": "Initial — ad hoc or absent",
+          "label": "Initial \u2014 ad hoc or absent",
           "description": "Inputs are fragmented, reactive, estimate-heavy and not reliable enough for confident decision-making."
         },
         "2": {
-          "label": "Managed — partial coverage",
+          "label": "Managed \u2014 partial coverage",
           "description": "Inputs can be gathered and reused in a repeatable way, but coverage, precision and attribution remain inconsistent."
         },
         "3": {
-          "label": "Defined — standardised and reportable",
+          "label": "Defined \u2014 standardised and reportable",
           "description": "Data sources, methods and ownership are documented and standardised across key areas."
         },
         "4": {
-          "label": "Quantitatively Managed — measured and defensible",
+          "label": "Quantitatively Managed \u2014 measured and defensible",
           "description": "Data quality, granularity, coverage and confidence are measured and controlled using evidence."
         },
         "5": {
-          "label": "Optimising — auditable and continuously improving",
+          "label": "Optimising \u2014 auditable and continuously improving",
           "description": "Inputs are continuously improved, increasingly automated and embedded into operational and strategic decision-making."
         }
       },
@@ -4627,59 +4690,66 @@
         "1": {
           "status": "Reporting only",
           "supports": [
-            "Broad awareness and high-level reporting for temporal granularity and timeliness",
-            "Very rough hotspot identification"
+            "Annual or quarterly retrospective reporting"
           ],
           "does_not_support": [
-            "Controlled operational decisions",
-            "High-confidence optimisation or accountability",
-            "Strong supplier or engineering challenge"
+            "Trend detection within a reporting period",
+            "Operational anomaly response",
+            "Seasonal pattern management",
+            "Demand-response decisions",
+            "Timely management reporting"
           ]
         },
         "2": {
           "status": "Directional decision support",
           "supports": [
-            "Indicative prioritisation",
-            "Repeatable but cautious management reporting",
-            "Early-stage improvement planning"
+            "Monthly or quarterly trend tracking",
+            "Year-on-year comparison",
+            "Broad seasonal pattern identification"
           ],
           "does_not_support": [
-            "Decision-grade optimisation",
-            "Fine-grained service or workload trade-offs",
-            "Confident automation or tight target accountability"
+            "Weekly or daily operational decisions",
+            "Anomaly detection and prompt response",
+            "Intra-month demand pattern management",
+            "Real-time efficiency monitoring"
           ]
         },
         "3": {
           "status": "Directional decision support",
           "supports": [
-            "Standard management review",
-            "Defined governance and improvement planning",
-            "Some controlled decisions in priority areas"
+            "Monthly reporting across most domains",
+            "Periodic trend analysis",
+            "Seasonal efficiency management",
+            "Management review with current-month data"
           ],
           "does_not_support": [
-            "Broad optimisation-grade control everywhere",
-            "Highly granular trade-offs without caveats",
-            "Strong claims of precision across the whole estate"
+            "Real-time anomaly detection",
+            "Within-month demand management",
+            "Daily operational decisions",
+            "Prompt efficiency degradation response"
           ]
         },
         "4": {
           "status": "Controlled decision-grade",
           "supports": [
-            "Controlled operational decisions",
-            "Prioritised optimisation in defined areas",
-            "Stronger accountability and provider challenge"
+            "Daily or sub-daily data for key metrics",
+            "Anomaly detection with prompt response",
+            "Demand-response operational decisions",
+            "Within-period trend reporting",
+            "Efficiency monitoring with timely feedback loops"
           ],
           "does_not_support": [
-            "Assumption-free interpretation",
-            "Fully automated optimisation without governance"
+            "Fully automated real-time optimisation",
+            "Sub-minute response to efficiency anomalies"
           ]
         },
         "5": {
           "status": "Optimisation-grade",
           "supports": [
-            "Continuous optimisation",
-            "Fine-grained and confident operational trade-offs",
-            "Strong management, engineering and governance use"
+            "Real-time or near-real-time data across key domains",
+            "Automated anomaly response",
+            "Dynamic optimisation using live feeds",
+            "Continuous improvement with immediate feedback"
           ],
           "does_not_support": [
             "None by design; caveats should still be made explicit where relevant"
@@ -4829,7 +4899,7 @@
               "score": 1
             },
             {
-              "label": "Partially — with significant effort and tacit knowledge from the original author.",
+              "label": "Partially \u2014 with significant effort and tacit knowledge from the original author.",
               "score": 2
             },
             {
@@ -4911,23 +4981,23 @@
       ],
       "maturity_levels": {
         "1": {
-          "label": "Initial — ad hoc or absent",
+          "label": "Initial \u2014 ad hoc or absent",
           "description": "Inputs are fragmented, reactive, estimate-heavy and not reliable enough for confident decision-making."
         },
         "2": {
-          "label": "Managed — partial coverage",
+          "label": "Managed \u2014 partial coverage",
           "description": "Inputs can be gathered and reused in a repeatable way, but coverage, precision and attribution remain inconsistent."
         },
         "3": {
-          "label": "Defined — standardised and reportable",
+          "label": "Defined \u2014 standardised and reportable",
           "description": "Data sources, methods and ownership are documented and standardised across key areas."
         },
         "4": {
-          "label": "Quantitatively Managed — measured and defensible",
+          "label": "Quantitatively Managed \u2014 measured and defensible",
           "description": "Data quality, granularity, coverage and confidence are measured and controlled using evidence."
         },
         "5": {
-          "label": "Optimising — auditable and continuously improving",
+          "label": "Optimising \u2014 auditable and continuously improving",
           "description": "Inputs are continuously improved, increasingly automated and embedded into operational and strategic decision-making."
         }
       },
@@ -4935,59 +5005,66 @@
         "1": {
           "status": "Reporting only",
           "supports": [
-            "Broad awareness and high-level reporting for data lineage, transparency and assurance",
-            "Very rough hotspot identification"
+            "Numbers exist in a report"
           ],
           "does_not_support": [
-            "Controlled operational decisions",
-            "High-confidence optimisation or accountability",
-            "Strong supplier or engineering challenge"
+            "Explaining how any figure was derived",
+            "Audit readiness",
+            "Regulatory disclosure confidence",
+            "External challenge response",
+            "Methodology comparison over time"
           ]
         },
         "2": {
           "status": "Directional decision support",
           "supports": [
-            "Indicative prioritisation",
-            "Repeatable but cautious management reporting",
-            "Early-stage improvement planning"
+            "Major data flows can be explained by key individuals",
+            "Basic methodology documentation for main pipelines"
           ],
           "does_not_support": [
-            "Decision-grade optimisation",
-            "Fine-grained service or workload trade-offs",
-            "Confident automation or tight target accountability"
+            "Systematic audit trail",
+            "External assurance",
+            "Methodology version control",
+            "Key-person risk mitigation",
+            "Confident regulatory disclosure"
           ]
         },
         "3": {
           "status": "Directional decision support",
           "supports": [
-            "Standard management review",
-            "Defined governance and improvement planning",
-            "Some controlled decisions in priority areas"
+            "Documented lineage for main reporting pipelines",
+            "Audit query response (manual process)",
+            "Recorded sources, transformations, and assumptions",
+            "Basic methodology change tracking"
           ],
           "does_not_support": [
-            "Broad optimisation-grade control everywhere",
-            "Highly granular trade-offs without caveats",
-            "Strong claims of precision across the whole estate"
+            "Automated lineage from source to report",
+            "External assurance readiness",
+            "Version-controlled methodology with change justification",
+            "Key-person independent traceability"
           ]
         },
         "4": {
           "status": "Controlled decision-grade",
           "supports": [
-            "Controlled operational decisions",
-            "Prioritised optimisation in defined areas",
-            "Stronger accountability and provider challenge"
+            "Systematic lineage tracking with regular validation",
+            "Internal and external audit support",
+            "Version-controlled methodology",
+            "Documented and reviewed assumptions",
+            "Regulatory disclosure with evidence trail"
           ],
           "does_not_support": [
-            "Assumption-free interpretation",
-            "Fully automated optimisation without governance"
+            "Fully automated lineage with exception handling",
+            "Continuous assurance without manual intervention"
           ]
         },
         "5": {
           "status": "Optimisation-grade",
           "supports": [
-            "Continuous optimisation",
-            "Fine-grained and confident operational trade-offs",
-            "Strong management, engineering and governance use"
+            "Automated lineage from source to report",
+            "External assurance achievable",
+            "Full version control with validation rules",
+            "Any stakeholder can trace any number to source"
           ],
           "does_not_support": [
             "None by design; caveats should still be made explicit where relevant"
@@ -5168,7 +5245,7 @@
               "score": 1
             },
             {
-              "label": "Covers one or two areas only — typically the main data centre or largest cloud account.",
+              "label": "Covers one or two areas only \u2014 typically the main data centre or largest cloud account.",
               "score": 2
             },
             {
@@ -5203,7 +5280,7 @@
               "score": 2
             },
             {
-              "label": "Outcomes tracked for major actions — for example whether a decommission reduced energy as expected.",
+              "label": "Outcomes tracked for major actions \u2014 for example whether a decommission reduced energy as expected.",
               "score": 3
             },
             {
@@ -5218,7 +5295,7 @@
         },
         {
           "id": "di9",
-          "text": "Do you have defined targets or thresholds for key environmental and efficiency metrics — such as PUE improvement, utilisation floors, carbon reduction targets, or water efficiency goals?",
+          "text": "Do you have defined targets or thresholds for key environmental and efficiency metrics \u2014 such as PUE improvement, utilisation floors, carbon reduction targets, or water efficiency goals?",
           "dimension": "method_quality",
           "weight": 4,
           "options": [
@@ -5231,11 +5308,11 @@
               "score": 2
             },
             {
-              "label": "Quantified targets set for some metrics — typically PUE or overall carbon. Not consistently applied across the estate or linked to operational thresholds.",
+              "label": "Quantified targets set for some metrics \u2014 typically PUE or overall carbon. Not consistently applied across the estate or linked to operational thresholds.",
               "score": 3
             },
             {
-              "label": "Defined targets for key metrics across most domains. Operational thresholds in place — for example utilisation floors that trigger rightsizing reviews or PUE bands that trigger investigation.",
+              "label": "Defined targets for key metrics across most domains. Operational thresholds in place \u2014 for example utilisation floors that trigger rightsizing reviews or PUE bands that trigger investigation.",
               "score": 4
             },
             {
@@ -5246,7 +5323,7 @@
         },
         {
           "id": "di10",
-          "text": "Does environmental or efficiency data feed into existing financial or operational governance — such as FinOps reviews, budget cycles, investment cases, or capacity planning?",
+          "text": "Does environmental or efficiency data feed into existing financial or operational governance \u2014 such as FinOps reviews, budget cycles, investment cases, or capacity planning?",
           "dimension": "attribution",
           "weight": 4,
           "options": [
@@ -5259,7 +5336,7 @@
               "score": 2
             },
             {
-              "label": "Data referenced in some financial processes — typically major procurement or annual budget setting. Not routine.",
+              "label": "Data referenced in some financial processes \u2014 typically major procurement or annual budget setting. Not routine.",
               "score": 3
             },
             {
@@ -5274,7 +5351,7 @@
         },
         {
           "id": "di11",
-          "text": "Do you benchmark your environmental and efficiency performance — against your own historical trends, industry peers, or published standards?",
+          "text": "Do you benchmark your environmental and efficiency performance \u2014 against your own historical trends, industry peers, or published standards?",
           "dimension": "method_quality",
           "weight": 3,
           "options": [
@@ -5303,23 +5380,23 @@
       ],
       "maturity_levels": {
         "1": {
-          "label": "Initial — ad hoc or absent",
+          "label": "Initial \u2014 ad hoc or absent",
           "description": "Inputs are fragmented, reactive, estimate-heavy and not reliable enough for confident decision-making."
         },
         "2": {
-          "label": "Managed — partial coverage",
+          "label": "Managed \u2014 partial coverage",
           "description": "Inputs can be gathered and reused in a repeatable way, but coverage, precision and attribution remain inconsistent."
         },
         "3": {
-          "label": "Defined — standardised and reportable",
+          "label": "Defined \u2014 standardised and reportable",
           "description": "Data sources, methods and ownership are documented and standardised across key areas."
         },
         "4": {
-          "label": "Quantitatively Managed — measured and defensible",
+          "label": "Quantitatively Managed \u2014 measured and defensible",
           "description": "Data quality, granularity, coverage and confidence are measured and controlled using evidence."
         },
         "5": {
-          "label": "Optimising — auditable and continuously improving",
+          "label": "Optimising \u2014 auditable and continuously improving",
           "description": "Inputs are continuously improved, increasingly automated and embedded into operational and strategic decision-making."
         }
       },
@@ -5327,59 +5404,66 @@
         "1": {
           "status": "Reporting only",
           "supports": [
-            "Broad awareness and high-level reporting for decision integration and optimisation workflow",
-            "Very rough hotspot identification"
+            "Environmental data exists somewhere in the organisation"
           ],
           "does_not_support": [
-            "Controlled operational decisions",
-            "High-confidence optimisation or accountability",
-            "Strong supplier or engineering challenge"
+            "Regular management reporting",
+            "Decision-maker awareness",
+            "Operational action from sustainability data",
+            "Investment decisions informed by environmental evidence",
+            "Closed-loop improvement tracking"
           ]
         },
         "2": {
           "status": "Directional decision support",
           "supports": [
-            "Indicative prioritisation",
-            "Repeatable but cautious management reporting",
-            "Early-stage improvement planning"
+            "Infrequent reporting for sustainability team use",
+            "Annual disclosure inputs",
+            "Ad-hoc awareness for interested stakeholders"
           ],
           "does_not_support": [
-            "Decision-grade optimisation",
-            "Fine-grained service or workload trade-offs",
-            "Confident automation or tight target accountability"
+            "Operational decision-making from environmental data",
+            "Finance or procurement engagement with efficiency data",
+            "Action tracking from report recommendations",
+            "Regular cadenced reporting to decision-makers"
           ]
         },
         "3": {
           "status": "Directional decision support",
           "supports": [
-            "Standard management review",
-            "Defined governance and improvement planning",
-            "Some controlled decisions in priority areas"
+            "Regular reporting for infrastructure leads",
+            "Trend analysis for major environments",
+            "Input to procurement criteria for largest contracts",
+            "Ad-hoc recommendations with some follow-through"
           ],
           "does_not_support": [
-            "Broad optimisation-grade control everywhere",
-            "Highly granular trade-offs without caveats",
-            "Strong claims of precision across the whole estate"
+            "Finance and senior leadership engagement with environmental data",
+            "Outcome tracking for previous recommendations",
+            "Closed-loop improvement governance",
+            "Environmental data in investment approval processes"
           ]
         },
         "4": {
           "status": "Controlled decision-grade",
           "supports": [
-            "Controlled operational decisions",
-            "Prioritised optimisation in defined areas",
-            "Stronger accountability and provider challenge"
+            "Structured multi-audience reporting with defined cadence",
+            "Named owners for actions arising from reports",
+            "Environmental data in investment and procurement decisions",
+            "Outcome tracking starting",
+            "Senior leadership engagement with efficiency data"
           ],
           "does_not_support": [
-            "Assumption-free interpretation",
-            "Fully automated optimisation without governance"
+            "Fully embedded environmental governance equal to financial governance",
+            "Automated variance analysis and closed-loop improvement"
           ]
         },
         "5": {
           "status": "Optimisation-grade",
           "supports": [
-            "Continuous optimisation",
-            "Fine-grained and confident operational trade-offs",
-            "Strong management, engineering and governance use"
+            "Environmental data treated with financial governance discipline",
+            "Targets, accountability, variance analysis, and closed-loop improvement",
+            "Multi-cadence reporting embedded in operational governance",
+            "Continuous improvement driven by measured outcomes"
           ],
           "does_not_support": [
             "None by design; caveats should still be made explicit where relevant"

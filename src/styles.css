@@ -2145,7 +2145,8 @@ h3 { font-size: 1.125rem; }
 .analysis-col-risk .analysis-section.risk-section,
 .analysis-col-risk .analysis-section.caveats,
 .analysis-col-risk .analysis-section.misinterpretation-section,
-.analysis-col-risk .analysis-section.cascade-section {
+.analysis-col-risk .analysis-section.cascade-section,
+.analysis-col-risk .analysis-section.cross-domain-section {
   margin-left: 0;
   margin-right: 0;
 }
@@ -2168,6 +2169,16 @@ h3 { font-size: 1.125rem; }
 
 .analysis-section.cascade-section h4 {
   color: #1e40af;
+}
+
+.analysis-section.cross-domain-section {
+  background: #fdf2f8;
+  border-left: 3px solid #ec4899;
+  border-radius: var(--radius-sm);
+}
+
+.analysis-section.cross-domain-section h4 {
+  color: #9d174d;
 }
 
 .analysis-section {
