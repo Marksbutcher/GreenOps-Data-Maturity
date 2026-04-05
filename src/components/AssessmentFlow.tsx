@@ -27,6 +27,7 @@ export default function AssessmentFlow({
   const [currentIndex, setCurrentIndex] = useState(-1);
   const [results, setResults] = useState<DomainAssessment[]>(initialResults);
   const [showIncomplete, setShowIncomplete] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const total = model.domains.length;
   const isGoalSection = currentIndex === -1;
@@ -118,13 +119,34 @@ export default function AssessmentFlow({
   const jumpToDomain = (index: number) => {
     setShowIncomplete(false);
     setCurrentIndex(index);
+    setSidebarOpen(false);
     window.scrollTo(0, 0);
   };
 
   return (
     <div className="assessment-layout">
+      {/* Mobile header bar — visible below 1024px */}
+      <div className="mobile-assessment-header">
+        <button className="mobile-menu-toggle" onClick={() => setSidebarOpen(!sidebarOpen)} aria-label="Toggle navigation">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            {sidebarOpen ? (
+              <><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></>
+            ) : (
+              <><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="18" x2="21" y2="18" /></>
+            )}
+          </svg>
+        </button>
+        <span className="mobile-assessment-title">
+          {isGoalSection ? 'Assessment Goal' : domain ? domain.name : ''}
+        </span>
+        <span className="mobile-assessment-progress">{completedCount}/{total}</span>
+      </div>
+
+      {/* Sidebar overlay backdrop for mobile */}
+      {sidebarOpen && <div className="sidebar-backdrop" onClick={() => setSidebarOpen(false)} />}
+
       {/* Left sidebar — domain progress panel */}
-      <aside className="assessment-sidebar">
+      <aside className={`assessment-sidebar ${sidebarOpen ? 'open' : ''}`}>
         <div className="sidebar-header">
           <div className="sidebar-logo">
             <PosetivLogo variant="dark" height={32} />

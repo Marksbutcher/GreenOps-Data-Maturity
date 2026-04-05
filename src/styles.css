@@ -625,19 +625,92 @@ h3 { font-size: 1.125rem; }
   background: var(--color-bg);
 }
 
+/* Mobile header — hidden on desktop */
+.mobile-assessment-header {
+  display: none;
+}
+
+/* Sidebar backdrop — hidden by default */
+.sidebar-backdrop {
+  display: none;
+}
+
 @media (max-width: 1024px) {
   .assessment-layout {
     grid-template-columns: 1fr;
+    padding-top: 52px;
   }
-  .assessment-sidebar {
+
+  /* Mobile sticky header */
+  .mobile-assessment-header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
     position: fixed;
     top: 0;
+    left: 0;
+    right: 0;
+    z-index: 90;
+    height: 52px;
+    padding: 0 var(--space-md);
+    background: var(--color-surface);
+    border-bottom: 1px solid var(--color-border-light);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  }
+  .mobile-menu-toggle {
+    background: none;
+    border: none;
+    padding: 6px;
+    color: var(--color-text);
+    cursor: pointer;
+    border-radius: var(--radius-sm);
+  }
+  .mobile-menu-toggle:hover {
+    background: var(--color-surface-alt);
+  }
+  .mobile-assessment-title {
+    flex: 1;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .mobile-assessment-progress {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--color-brand-green);
+    background: rgba(107, 190, 73, 0.1);
+    padding: 3px 8px;
+    border-radius: 10px;
+    white-space: nowrap;
+  }
+
+  /* Sidebar slides in from left */
+  .assessment-sidebar {
+    position: fixed;
+    top: 52px;
+    bottom: 0;
     left: -300px;
+    width: 280px;
     z-index: 100;
     transition: left 0.25s ease;
+    box-shadow: none;
   }
   .assessment-sidebar.open {
     left: 0;
+    box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
+  }
+
+  /* Backdrop overlay */
+  .sidebar-backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    top: 52px;
+    z-index: 99;
+    background: rgba(0, 0, 0, 0.3);
   }
 }
 
@@ -881,6 +954,28 @@ h3 { font-size: 1.125rem; }
 @media (max-width: 1024px) {
   .assessment-main {
     padding: var(--space-lg);
+  }
+}
+
+@media (max-width: 640px) {
+  .assessment-main {
+    padding: var(--space-md);
+  }
+  .assessment-goal-page-title {
+    font-size: 1.25rem;
+  }
+  .assessment-goal-cards {
+    grid-template-columns: 1fr;
+  }
+  .assessment-goal-card {
+    padding: var(--space-md);
+  }
+  .assessment-goal-card-desc {
+    font-size: 0.8125rem;
+  }
+  .assessment-goal-card-data,
+  .assessment-goal-card-trust {
+    font-size: 0.75rem;
   }
 }
 
