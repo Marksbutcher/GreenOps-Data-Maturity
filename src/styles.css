@@ -636,6 +636,18 @@ h3 { font-size: 1.125rem; }
   display: none;
 }
 
+/* Left sidebar — base styles (MUST come before media query) */
+.assessment-sidebar {
+  background: var(--color-surface);
+  border-right: 1px solid var(--color-border-light);
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  position: sticky;
+  top: 0;
+  overflow-y: auto;
+}
+
 @media (max-width: 1024px) {
   .assessment-layout {
     display: block;
@@ -689,13 +701,14 @@ h3 { font-size: 1.125rem; }
     white-space: nowrap;
   }
 
-  /* Sidebar slides in from left */
+  /* Sidebar — fixed overlay on mobile, slides in from left */
   .assessment-sidebar {
     position: fixed;
     top: 52px;
     bottom: 0;
     left: -300px;
     width: 280px;
+    height: auto;
     z-index: 100;
     transition: left 0.25s ease;
     box-shadow: none;
@@ -714,18 +727,6 @@ h3 { font-size: 1.125rem; }
     z-index: 99;
     background: rgba(0, 0, 0, 0.3);
   }
-}
-
-/* Left sidebar — domain progress panel */
-.assessment-sidebar {
-  background: var(--color-surface);
-  border-right: 1px solid var(--color-border-light);
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  position: sticky;
-  top: 0;
-  overflow-y: auto;
 }
 
 .sidebar-header {
