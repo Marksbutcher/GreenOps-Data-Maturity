@@ -23,14 +23,15 @@ export default function AssessmentFlow({
   onBack,
   onUpdateProfile,
 }: AssessmentFlowProps) {
-  const [currentIndex, setCurrentIndex] = useState(0);
+  // -1 = assessment goal section, 0+ = domain index
+  const [currentIndex, setCurrentIndex] = useState(-1);
   const [results, setResults] = useState<DomainAssessment[]>(initialResults);
   const [showIncomplete, setShowIncomplete] = useState(false);
-  const [intentExpanded, setIntentExpanded] = useState(false);
 
-  const domain = model.domains[currentIndex];
-  const result = results[currentIndex];
   const total = model.domains.length;
+  const isGoalSection = currentIndex === -1;
+  const domain = isGoalSection ? null : model.domains[currentIndex];
+  const result = isGoalSection ? null : results[currentIndex];
 
   // Compute domain statuses for sidebar
   const domainStatuses = useMemo((): { status: DomainStatus; answered: number; total: number }[] => {
@@ -49,6 +50,7 @@ export default function AssessmentFlow({
 
   const updateResult = useCallback(
     (updates: Partial<DomainAssessment>) => {
+      if (currentIndex < 0) return;
       setResults((prev) => {
         const next = [...prev];
         next[currentIndex] = { ...next[currentIndex], ...updates };
@@ -60,17 +62,24 @@ export default function AssessmentFlow({
 
   const handleQuestionAnswer = useCallback(
     (questionId: string, optionIndex: number) => {
+      if (!result) return;
       const newAnswers = { ...result.question_answers, [questionId]: optionIndex };
       updateResult({ question_answers: newAnswers });
     },
     [result, updateResult]
   );
 
-  const answeredCount = Object.keys(result.question_answers).length;
-  const totalQuestions = domain.questions.length;
-  const allAnswered = answeredCount === totalQuestions;
+  const answeredCount = result ? Object.keys(result.question_answers).length : 0;
+  const totalQuestions = domain ? domain.questions.length : 0;
+  const allAnswered = answeredCount === totalQuestions && totalQuestions > 0;
 
   const goNext = () => {
+    if (isGoalSection) {
+      // Move from goal section to first domain
+      setCurrentIndex(0);
+      window.scrollTo(0, 0);
+      return;
+    }
     if (!allAnswered) {
       setShowIncomplete(true);
       return;
@@ -84,15 +93,19 @@ export default function AssessmentFlow({
 
   const goPrev = () => {
     setShowIncomplete(false);
-    if (currentIndex > 0) {
+    if (isGoalSection) return;
+    if (currentIndex === 0) {
+      // Go back to goal section
+      setCurrentIndex(-1);
+      window.scrollTo(0, 0);
+    } else {
       setCurrentIndex((i) => i - 1);
       window.scrollTo(0, 0);
     }
   };
 
   const handleComplete = () => {
-    // Allow proceeding even with incomplete domains — results will reflect partial data
-    const answeredDomains = results.filter((r, i) => {
+    const answeredDomains = results.filter((r) => {
       return Object.keys(r.question_answers).length > 0;
     }).length;
     if (answeredDomains === 0) {
@@ -129,6 +142,15 @@ export default function AssessmentFlow({
 
         </div>
         <nav className="sidebar-domain-list">
+          <button
+            className={`sidebar-domain-item sidebar-goal-item ${isGoalSection ? 'current' : ''} status-complete`}
+            onClick={() => jumpToDomain(-1)}
+          >
+            <span className="sidebar-status-dot complete" />
+            <span className="sidebar-domain-name">Assessment Goal</span>
+            <span className="sidebar-domain-count">{INTENT_LABELS[profile.assessment_intent].split(' ')[0]}</span>
+          </button>
+          <div className="sidebar-domain-divider" />
           {model.domains.map((d, i) => {
             const ds = domainStatuses[i];
             const isCurrent = i === currentIndex;
@@ -181,6 +203,50 @@ export default function AssessmentFlow({
 
       {/* Main content area */}
       <main className="assessment-main">
+        {/* ═══ ASSESSMENT GOAL SECTION ═══ */}
+        {isGoalSection && (
+          <div className="assessment-goal-page">
+            <h2 className="assessment-goal-page-title">What do you need your data to support?</h2>
+            <p className="assessment-goal-page-intro">
+              This is the most important question in the assessment. Your answer shapes how every domain score is interpreted — what counts as "good enough" depends entirely on what you are trying to do with the data. An organisation that only needs compliance reporting has a very different bar from one that wants to make evidence-based investment decisions.
+            </p>
+            <p className="assessment-goal-page-intro">
+              Select the option that best describes your ambition. You can change this at any point during the assessment — your results will update to reflect the new target.
+            </p>
+
+            <div className="assessment-goal-cards">
+              {(Object.keys(INTENT_LABELS) as AssessmentIntent[]).map((intent) => {
+                const explanations: Record<string, string> = {
+                  compliance_reporting: 'You need to produce high-level carbon reports, meet basic disclosure requirements such as SECR or CSRD, and report aggregate consumption figures. This is the minimum bar — your data needs to be broadly directional but does not need to be granular or real-time. Most organisations start here.',
+                  directional_insight: 'You want to go beyond basic reporting. You need to identify trends, compare sites or services, benchmark performance against peers, and prioritise where to investigate further. This requires better coverage and consistency across your data domains, but does not yet demand full attribution or real-time feeds.',
+                  evidence_based_decisions: 'You need your data to support investment cases, procurement challenges, rightsizing decisions, and operational accountability with defensible evidence. This is a significant step up — it requires attributed, traceable data that can withstand scrutiny in business cases and governance forums.',
+                  automated_governance: 'You want data embedded into continuous governance — automated controls, real-time optimisation, policy-driven thresholds, and dynamic management. This is the highest bar and requires near-complete automation, integration with operational tooling, and continuous assurance.',
+                };
+                return (
+                  <button
+                    key={intent}
+                    type="button"
+                    className={`assessment-goal-card ${profile.assessment_intent === intent ? 'selected' : ''}`}
+                    onClick={() => onUpdateProfile?.({ assessment_intent: intent })}
+                  >
+                    <span className="assessment-goal-card-label">{INTENT_LABELS[intent]}</span>
+                    <span className="assessment-goal-card-desc">{explanations[intent]}</span>
+                  </button>
+                );
+              })}
+            </div>
+
+            <div className="assessment-goal-actions">
+              <button className="btn btn-primary btn-lg" onClick={goNext}>
+                Continue to assessment
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* ═══ DOMAIN SECTIONS ═══ */}
+        {!isGoalSection && domain && result && (<>
+
         {/* Assessment introduction — shown on the first domain */}
         {currentIndex === 0 && (
           <div className="assessment-intro">
@@ -206,44 +272,6 @@ export default function AssessmentFlow({
             </div>
           </div>
         )}
-
-        {/* Assessment goal — always visible, collapsible after first domain */}
-        <div className={`assessment-goal-section ${intentExpanded || currentIndex === 0 ? 'expanded' : 'collapsed'}`}>
-          <div className="assessment-goal-header" onClick={() => currentIndex > 0 && setIntentExpanded(!intentExpanded)}>
-            <div className="assessment-goal-header-left">
-              <h3 className="assessment-goal-title">Assessment goal</h3>
-              <span className="assessment-goal-current">{INTENT_LABELS[profile.assessment_intent]}</span>
-            </div>
-            {currentIndex > 0 && (
-              <button className="assessment-goal-toggle" type="button">
-                {intentExpanded ? 'Collapse' : 'Change'}
-              </button>
-            )}
-          </div>
-          {(intentExpanded || currentIndex === 0) && (
-            <div className="assessment-goal-body">
-              <p className="assessment-goal-intro">
-                What do you need your GreenOps data to support? This shapes how results are interpreted — what counts as "good enough" depends on what you are trying to do with the data.
-              </p>
-              <div className="assessment-goal-cards">
-                {(Object.keys(INTENT_LABELS) as AssessmentIntent[]).map((intent) => (
-                  <button
-                    key={intent}
-                    type="button"
-                    className={`assessment-goal-card ${profile.assessment_intent === intent ? 'selected' : ''}`}
-                    onClick={() => {
-                      onUpdateProfile?.({ assessment_intent: intent });
-                      if (currentIndex > 0) setIntentExpanded(false);
-                    }}
-                  >
-                    <span className="assessment-goal-card-label">{INTENT_LABELS[intent]}</span>
-                    <span className="assessment-goal-card-desc">{INTENT_DESCRIPTIONS[intent]}</span>
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
 
         {/* Domain context intro */}
         <div className="domain-intro">
@@ -337,9 +365,9 @@ export default function AssessmentFlow({
         <div className="assessment-nav">
           <button
             className="btn btn-ghost"
-            onClick={currentIndex === 0 ? onBack : goPrev}
+            onClick={currentIndex === 0 ? goPrev : goPrev}
           >
-            {currentIndex === 0 ? 'Back to profile' : 'Previous domain'}
+            {currentIndex === 0 ? 'Back to assessment goal' : 'Previous domain'}
           </button>
           <div className="nav-right">
             {currentIndex < total - 1 ? (
@@ -353,6 +381,8 @@ export default function AssessmentFlow({
             )}
           </div>
         </div>
+
+        </>)}
       </main>
     </div>
   );
