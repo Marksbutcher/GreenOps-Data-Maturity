@@ -623,6 +623,7 @@ h3 { font-size: 1.125rem; }
   grid-template-columns: 280px 1fr;
   min-height: 100vh;
   background: var(--color-bg);
+  overflow-x: hidden;
 }
 
 /* Mobile header — hidden on desktop */
@@ -637,8 +638,9 @@ h3 { font-size: 1.125rem; }
 
 @media (max-width: 1024px) {
   .assessment-layout {
-    grid-template-columns: 1fr;
+    display: block;
     padding-top: 52px;
+    min-height: 100vh;
   }
 
   /* Mobile sticky header */
@@ -954,6 +956,9 @@ h3 { font-size: 1.125rem; }
 @media (max-width: 1024px) {
   .assessment-main {
     padding: var(--space-lg);
+    max-width: 100%;
+    width: 100%;
+    box-sizing: border-box;
   }
 }
 
@@ -1117,6 +1122,11 @@ h3 { font-size: 1.125rem; }
 @media (max-width: 1024px) {
   .question-row {
     grid-template-columns: 1fr;
+    padding: var(--space-md);
+    gap: var(--space-sm);
+  }
+  .questions-grid {
+    overflow: visible;
   }
 }
 
